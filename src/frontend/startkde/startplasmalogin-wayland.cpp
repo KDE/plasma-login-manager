@@ -4,7 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-// #include "startplasma.h"
+#include "startplasma.h"
 #include <KConfig>
 #include <KConfigGroup>
 #include <QDebug>
@@ -16,16 +16,13 @@
 #include <QCoreApplication>
 #include <signal.h>
 
-// commented out code is from 'startplasma' which isn't here..
-// not sure how we want to approach that
-
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
 
-    // createConfigDirectory();
-    // setupCursor(true);
-    // signal(SIGTERM, sigtermHandler);
+    createConfigDirectory();
+    setupCursor(true);
+    signal(SIGTERM, sigtermHandler);
 
     // Let clients try to reconnect to kwin after a restart
     qputenv("QT_WAYLAND_RECONNECT", "1");
@@ -60,17 +57,18 @@ int main(int argc, char **argv)
             qWarning() << "not a reply org.freedesktop.locale1" << resultMessage;
         }
     }
-    // runEnvironmentScripts();
+    runEnvironmentScripts();
 
-    // setupPlasmaEnvironment();
-    // runStartupConfig();
-/*
+    setupPlasmaEnvironment();
+    runStartupConfig();
+
     auto oldSystemdEnvironment = getSystemdEnvironment();
     if (!syncDBusEnvironment()) {
         out << "Could not sync environment to dbus.\n";
         return 1;
-    }*/
+    }
 
+    //DAVE useless??
     // We import systemd environment after we sync the dbus environment here.
     // Otherwise it may leads to some unwanted order of applying environment
     // variables (e.g. LANG and LC_*)

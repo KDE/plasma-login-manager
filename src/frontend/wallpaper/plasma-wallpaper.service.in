@@ -4,6 +4,6 @@ PartOf=plasma-login-wayland.target
 After=plasma-kwin_wayland.service
 
 [Service]
-ExecStart=@CMAKE_INSTALL_FULL_LIBEXECDIR@/plasma-wallpaper
+ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/plasma-login-wallpaper
 Slice=background.slice
 
