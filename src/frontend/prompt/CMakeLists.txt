@@ -20,7 +20,6 @@ ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
 
 add_executable(plasma-login-greeter ${LOGIN_GREETER_SRCS})
 target_link_libraries(plasma-login-greeter
-    PW::KWorkspace
     Qt::Quick
     Qt::DBus
     KF6::I18n
