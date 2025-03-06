@@ -21,3 +21,4 @@ target_link_libraries(plasma-login-wallpaper PRIVATE
 )
 
 install(TARGETS plasma-login-wallpaper DESTINATION ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+ecm_install_configured_files(INPUT plasma-wallpaper.service.in DESTINATION ${KDE_INSTALL_SYSTEMDUSERUNITDIR})

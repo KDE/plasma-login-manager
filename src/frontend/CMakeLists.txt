@@ -37,5 +37,6 @@ find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)
 
 add_subdirectory(wallpaper)
 add_subdirectory(prompt)
+add_subdirectory(startkde)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

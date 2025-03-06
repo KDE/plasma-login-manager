@@ -1,0 +1,9 @@
+[Unit]
+Description=Plasma Wallpaper on Login screen
+PartOf=plasma-login-wayland.target
+After=plasma-kwin_wayland.service
+
+[Service]
+ExecStart=@CMAKE_INSTALL_FULL_LIBEXECDIR@/plasma-wallpaper
+Slice=background.slice
+
