@@ -1,11 +1,309 @@
-import QtQuick 2.0
-import org.kde.plasma.components 3.0 as PlasmaComponents
+import QtQuick
 import QtQuick.Layouts
-import org.greetd
+import QtQuick.Controls as QQC2
+import Qt5Compat.GraphicalEffects
 
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.breeze.components as BreezeComponents
+
+import org.greetd as Greet
+
+Item {
+    id: root
+    anchors.fill: parent
+
+    // If we're using software rendering, draw outlines instead of shadows
+    // See https://bugs.kde.org/show_bug.cgi?id=398317
+    readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software
+
+    Kirigami.Theme.colorSet: Kirigami.Theme.Complementary
+    Kirigami.Theme.inherit: false
+
+    property string notificationMessage
+
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
+
+    BreezeComponents.RejectPasswordAnimation {
+        id: rejectPasswordAnimation
+        target: mainStack
+    }
+
+    MouseArea {
+        id: loginScreenRoot
+        anchors.fill: parent
+
+        property bool uiVisible: true
+        property bool blockUI: false // userListComponent.mainPasswordBox.text.length > 0 ...
+
+        hoverEnabled: true
+        onPressed: uiVisible = true;
+        onPositionChanged: uiVisible = true;
+        onUiVisibleChanged: {
+            if (blockUI) {
+                fadeoutTimer.running = false;
+            } else if (uiVisible) {
+                fadeoutTimer.restart();
+            }
+        }
+        onBlockUIChanged: {
+            if (blockUI) {
+                fadeoutTimer.running = false;
+                uiVisible = true;
+            } else if (uiVisible) {
+                fadeoutTimer.restart();
+            }
+        }
+
+        Keys.onPressed: (event) => {
+            uiVisible = true;
+            event.accepted = true;
+        }
+
+        Timer {
+            id: fadeoutTimer
+            running: true
+            interval: 60000
+            onTriggered: {
+                if (!loginScreenRoot.blockUI) {
+                    userListComponent.mainPasswordBox.showPassword = false;
+                    loginScreenRoot.uiVisible = false;
+                }
+            }
+        }
+
+        DropShadow {
+            id: clockShadow
+            anchors.fill: clock
+            source: clock
+            visible: !softwareRendering && clock.visible
+            radius: 6
+            samples: 14
+            spread: 0.3
+            color: "black" // shadows should always be black
+            Behavior on opacity {
+                OpacityAnimator {
+                    duration: Kirigami.Units.veryLongDuration * 2
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        }
+
+        BreezeComponents.Clock {
+            id: clock
+            property Item shadow: clockShadow
+            visible: y > 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            //y: (userListComponent.userList.y + mainStack.y)/2 - height/2 // TODO, no userListComponent yet
+            y: height/2
+            Layout.alignment: Qt.AlignBaseline
+        }
+
+        QQC2.StackView {
+            id: mainStack
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            height: root.height + Kirigami.Units.gridUnit * 3
+
+            hoverEnabled: true
+
+            focus: true
+
+            Behavior on opacity {
+                OpacityAnimator {
+                    duration: Kirigami.Units.longDuration
+                }
+            }
+
+            initialItem: userPromptComponent
+
+            readonly property real zoomFactor: 1.5
+
+            popEnter: Transition {
+                ScaleAnimator {
+                    from: mainStack.zoomFactor
+                    to: 1
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+                OpacityAnimator {
+                    from: 0
+                    to: 1
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            popExit: Transition {
+                ScaleAnimator {
+                    from: 1
+                    to: 1 / mainStack.zoomFactor
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+                OpacityAnimator {
+                    from: 1
+                    to: 0
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            pushEnter: Transition {
+                ScaleAnimator {
+                    from: 1 / mainStack.zoomFactor
+                    to: 1
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+                OpacityAnimator {
+                    from: 0
+                    to: 1
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            pushExit: Transition {
+                ScaleAnimator {
+                    from: 1
+                    to: mainStack.zoomFactor
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+                OpacityAnimator {
+                    from: 1
+                    to: 0
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.OutCubic
+                }
+            }
+        }
+
+        Component {
+            id: userListComponent
+
+            Item {}
+        }
+
+        Component {
+            id: userPromptComponent
+
+            Login {
+                showUsernamePrompt: true
+                notificationMessage: root.notificationMessage
+                loginScreenUiVisible: loginScreenRoot.uiVisible
+                fontSize: Kirigami.Theme.defaultFont.pointSize + 2
+
+                // using a model rather than a QObject list to avoid QTBUG-75900
+                userListModel: ListModel {
+                    ListElement {
+                        name: ""
+                        icon: ""
+                    }
+                    Component.onCompleted: {
+                        // as we can't bind inside ListElement
+                        setProperty(0, "name", i18nd("plasma-desktop-sddm-theme", "Type in Username and Password"));
+                        setProperty(0, "icon", Qt.resolvedUrl("faces/.face.icon"))
+                    }
+                }
+
+                onLoginRequest: (username, password) => {
+                    root.notificationMessage = ""
+                    /*sddm.login(username, password, sessionButton.currentIndex);*/
+                    root.tryLogin(username, password);
+                }
+
+                //actionItemsVisible: !inputPanel.keyboardActive
+                actionItems: [
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-suspend"
+                        text: i18ndc("plasma-desktop-sddm-theme", "Suspend to RAM", "Sleep")
+                        //onClicked: sddm.suspend()
+                        //enabled: sddm.canSuspend
+                    },
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-reboot"
+                        text: i18nd("plasma-desktop-sddm-theme", "Restart")
+                        //onClicked: sddm.reboot()
+                        //enabled: sddm.canReboot
+                    },
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-shutdown"
+                        text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
+                        //onClicked: sddm.powerOff()
+                        //enabled: sddm.canPowerOff
+                    }/*,
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-user-list"
+                        text: i18nd("plasma-desktop-sddm-theme", "List Users")
+                        //onClicked: mainStack.pop()
+                    }*/
+                ]
+            }
+        }
+
+        RowLayout {
+            id: footer
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: Kirigami.Units.smallSpacing
+
+            spacing: Kirigami.Units.smallSpacing
+
+            Behavior on opacity {
+                OpacityAnimator {
+                    duration: Kirigami.Units.longDuration
+                }
+            }
+
+            /* Virtual keyboard btn */
+            /* Keyboard btn */
+            /* Session btn */
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            /* Battery */
+        }
+    }
+
+    function tryLogin(username, password) {
+        if (Greet.Authenticator.authenticate(username, password)) {
+            // we would then do Autenticator.startSession()
+            // probably with an abstraction so we pass the desktop file
+
+            mainStack.opacity = 0
+            footer.opacity = 0
+        } else {
+            notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed")
+            footer.enabled = true
+            mainStack.enabled = true
+            //userListComponent.userList.opacity = 1 // TODO
+            rejectPasswordAnimation.start()
+        }
+    }
+
+    onNotificationMessageChanged: {
+        if (notificationMessage) {
+            notificationResetTimer.start();
+        }
+    }
+
+    Timer {
+        id: notificationResetTimer
+        interval: 3000
+        onTriggered: notificationMessage = ""
+    }
+}
+
+/*
 Rectangle {
     anchors.fill: parent
-    color: "grey"
 
     ColumnLayout {
         anchors.centerIn: parent
@@ -23,7 +321,7 @@ Rectangle {
             text: "login"
             onClicked: function () {
                 result.text = "LOGIN STARTED"
-                if (Authenticator.authenticate(usernameField.text, passwordField.text)) {
+                if (Greet.Authenticator.authenticate(usernameField.text, passwordField.text)) {
                     result.text = "LOGIN SUCCESSFUL"
                     // we would then do Autenticator.startSession()
                     // probably with an abstraction so we pass the desktop file
@@ -34,3 +332,4 @@ Rectangle {
         }
     }
 }
+*/

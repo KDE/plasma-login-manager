@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>Login.qml</file>
+        <file>faces/.face.icon</file>
     </qresource>
 </RCC>
