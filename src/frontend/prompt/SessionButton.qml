@@ -10,7 +10,7 @@ import QtQuick 2.15
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kirigami 2.20 as Kirigami
 
-import org.greetd as Greet
+import org.kde.plasma.login as PlasmaLogin
 
 PlasmaComponents.ToolButton {
     id: root
@@ -21,8 +21,7 @@ PlasmaComponents.ToolButton {
     visible: menu.count > 1
 
     Component.onCompleted: {
-        console.log(Greet.SessionModel)
-        currentIndex = Greet.SessionModel.lastIndex
+        currentIndex = PlasmaLogin.SessionModel.lastIndex
     }
     checkable: true
     checked: menu.opened
@@ -43,7 +42,7 @@ PlasmaComponents.ToolButton {
         id: menu
         Instantiator {
             id: instantiator
-            model: Greet.SessionModel
+            model: PlasmaLogin.SessionModel
             onObjectAdded: (index, object) => menu.insertItem(index, object)
             onObjectRemoved: (index, object) => menu.removeItem(object)
             delegate: PlasmaComponents.MenuItem {

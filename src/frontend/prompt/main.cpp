@@ -7,8 +7,8 @@
 #include <QScreen>
 
 #include "greetd/GreetdManager.hpp"
-#include "greetd/SessionModel.h"
-#include "greetd/UserModel.h"
+#include "SessionModel.h"
+#include "UserModel.h"
 
 class LoginGreeter : public QObject
 {
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
 
     // TODO: Singleton registered by registerSingletonInstance must only be accessed from one engine
     //       (is nullptr in other engines, hence only works on one window)
-    qmlRegisterSingletonInstance("org.greetd", 0, 1, "SessionModel", new SDDM::SessionModel);
-    qmlRegisterSingletonInstance("org.greetd", 0, 1, "UserModel", new SDDM::UserModel(true));
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new SDDM::UserModel(true));
 
     LoginGreeter greeter;
     return app.exec();

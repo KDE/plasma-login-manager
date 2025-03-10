@@ -9,6 +9,7 @@ import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 
 import org.greetd as Greet
+import org.kde.plasma.login as PlasmaLogin
 
 Item {
     id: root
@@ -124,10 +125,10 @@ Item {
 
             initialItem: Login {
                 id: userListComponent
-                userListModel: Greet.UserModel
+                userListModel: PlasmaLogin.UserModel
                 loginScreenUiVisible: loginScreenRoot.uiVisible
-                userListCurrentIndex: Greet.UserModel.lastIndex >= 0 ? Greet.UserModel.lastIndex : 0
-                lastUserName: Greet.UserModel.lastUser
+                userListCurrentIndex: PlasmaLogin.UserModel.lastIndex >= 0 ? PlasmaLogin.UserModel.lastIndex : 0
+                lastUserName: PlasmaLogin.UserModel.lastUser
                 showUserList: {
                     if (!userListModel.hasOwnProperty("count")
                         || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {

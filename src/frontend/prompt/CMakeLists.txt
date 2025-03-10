@@ -6,9 +6,9 @@ remove_definitions(-DQT_USE_QSTRINGBUILDER)
 set(LOGIN_GREETER_SRCS main.cpp
     greetd/GreetdManager.cpp
     greetd/LoginManager.cpp
-    greetd/Session.cpp
-    greetd/SessionModel.cpp
-    greetd/UserModel.cpp
+    Session.cpp
+    SessionModel.cpp
+    UserModel.cpp
 )
 
 qt_add_resources(RESOURCE_FILES resources.qrc)
