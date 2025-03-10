@@ -327,7 +327,10 @@ Item {
             }
 
             /* Virtual keyboard btn */
-            /* Keyboard btn */
+
+            KeyboardButton {
+                id: keyboardButton
+            }
 
             SessionButton {
                 id: sessionButton
