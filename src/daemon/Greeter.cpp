@@ -32,6 +32,7 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QProcess>
+#include <QStandardPaths>
 #include <VirtualTerminal.h>
 
 namespace PLASMALOGIN {
@@ -65,63 +66,19 @@ namespace PLASMALOGIN {
         if (m_started)
             return false;
 
-        QString greeterPath = QStringLiteral("/opt/kde6/lib/libexec/plasma-login-greeter");
-        if (!QFileInfo(greeterPath).isExecutable()) {
-            qWarning() << "could not find plasma-login";
-        }
 
-        // greeter command
-        QStringList args;
-        args << QLatin1String("--socket") << m_socket;
+        QString greeterCommand = QStandardPaths::findExecutable(QStringLiteral("startplasma-login-wayland"));
+        // allow overriding for test setups.
+        greeterCommand = qEnvironmentVariable("PLASMALOGIN_GREETER_EXEC", greeterCommand);
+
+        if (greeterCommand.isEmpty()) {
+            qCritical("Could not find greeter");
+        }
 
         Q_ASSERT(m_display);
         auto *displayServer = m_display->displayServer();
 
-        if (daemonApp->testing()) {
-            // create process
-            m_process = new QProcess(this);
-
-            // delete process on finish
-            connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Greeter::finished);
-
-            connect(m_process, &QProcess::readyReadStandardOutput, this, &Greeter::onReadyReadStandardOutput);
-            connect(m_process, &QProcess::readyReadStandardError, this, &Greeter::onReadyReadStandardError);
-
-            // log message
-            qDebug() << "Greeter starting...";
-
-            args << QStringLiteral("--test-mode");
-
-            if (m_display->displayServerType() == Display::X11DisplayServerType) {
-                // set process environment
-                QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-                env.insert(QStringLiteral("DISPLAY"), m_display->name());
-                env.insert(QStringLiteral("XAUTHORITY"), qobject_cast<XorgDisplayServer*>(displayServer)->authPath());
-                m_process->setProcessEnvironment(env);
-            }
-            // Greeter command
-            m_process->start(greeterPath, args);
-
-            //if we fail to start bail immediately, and don't block in waitForStarted
-            if (m_process->state() == QProcess::NotRunning) {
-                qCritical() << "Greeter failed to launch.";
-                return false;
-            }
-            // wait for greeter to start
-            if (!m_process->waitForStarted()) {
-                // log message
-                qCritical() << "Failed to start greeter.";
-
-                // return fail
-                return false;
-            }
-
-            // log message
-            qDebug() << "Greeter started.";
-
-            // set flag
-            m_started = true;
-        } else {
+        {
             // authentication
             m_auth = new Auth(this);
             m_auth->setVerbose(true);
@@ -131,10 +88,6 @@ namespace PLASMALOGIN {
             connect(m_auth, &Auth::finished, this, &Greeter::onHelperFinished);
             connect(m_auth, &Auth::info, this, &Greeter::authInfo);
             connect(m_auth, &Auth::error, this, &Greeter::authError);
-
-            // command
-            QStringList cmd;
-            cmd << greeterPath << args;
 
             // greeter environment
             QProcessEnvironment env;
@@ -158,6 +111,7 @@ namespace PLASMALOGIN {
                 env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_display->terminalId()));
             env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("greeter"));
             env.insert(QStringLiteral("XDG_SESSION_TYPE"), m_display->sessionType());
+            env.insert(QStringLiteral("SDDM_SOCKET"), m_socket);
 
             m_auth->insertEnvironment(env);
 
@@ -168,7 +122,7 @@ namespace PLASMALOGIN {
             m_auth->setUser(QStringLiteral("plasmalogin"));
             m_auth->setDisplayServerCommand(m_displayServerCmd);
             m_auth->setGreeter(true);
-            m_auth->setSession(cmd.join(QLatin1Char(' ')));
+            m_auth->setSession(greeterCommand);
             m_auth->start();
         }
 
