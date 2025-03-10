@@ -7,6 +7,7 @@
 #include <QScreen>
 
 #include "greetd/GreetdManager.hpp"
+#include "greetd/SessionModel.h"
 
 class LoginGreeter : public QObject
 {
@@ -50,6 +51,11 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterSingletonInstance("org.greetd", 0, 1, "Authenticator", new GreetdLogin);
+
+    // TODO: Singleton registered by registerSingletonInstance must only be accessed from one engine
+    //       (is nullptr in other engines, hence only works on one window)
+    qmlRegisterSingletonInstance("org.greetd", 0, 1, "SessionModel", new SDDM::SessionModel);
+
     LoginGreeter greeter;
     return app.exec();
 }

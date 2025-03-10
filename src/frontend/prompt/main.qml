@@ -262,7 +262,30 @@ Item {
 
             /* Virtual keyboard btn */
             /* Keyboard btn */
-            /* Session btn */
+
+            SessionButton {
+                id: sessionButton
+
+                onSessionChanged: {
+                    // NOTE: This won't work for userPromptComponent: we might
+                    // want a function to focus the correct password box, but
+                    // userPromptComponent has both that and the user box
+                    // Perhaps we need to store which one last had focus
+
+                    // Otherwise the password field loses focus and virtual keyboard
+                    // keystrokes get eaten
+                    userListComponent.mainPasswordBox.forceActiveFocus();
+                }
+
+                Layout.fillHeight: true
+                containmentMask: Item {
+                    parent: sessionButton
+                    anchors.fill: parent
+                    anchors.leftMargin: virtualKeyboardButton.visible || keyboardButton.visible
+                        ? 0 : -footer.anchors.margins
+                    anchors.bottomMargin: -footer.anchors.margins
+                }
+            }
 
             Item {
                 Layout.fillWidth: true
@@ -272,7 +295,8 @@ Item {
         }
     }
 
-    function tryLogin(username, password) {
+    function tryLogin(username, password, sessionIdx) {
+        // TODO: sessionIdx unused
         if (Greet.Authenticator.authenticate(username, password)) {
             // we would then do Autenticator.startSession()
             // probably with an abstraction so we pass the desktop file
