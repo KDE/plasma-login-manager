@@ -71,9 +71,9 @@ namespace SDDM {
 
         beginResetModel();
         if (dri_active) {
-            populate(Session::WaylandSession, {QStringLiteral("/usr/local/share/wayland-sessions")});
+            populate(Session::WaylandSession, {QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")});
         }
-        populate(Session::X11Session, {QStringLiteral("/usr/local/share/xsessions")});
+        populate(Session::X11Session, {QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")});
         endResetModel();
 
         // refresh everytime a file is changed, added or removed
@@ -85,13 +85,13 @@ namespace SDDM {
             d->sessions.clear();
             d->displayNames.clear();
             if (dri_active) {
-                populate(Session::WaylandSession, {QStringLiteral("/usr/local/share/wayland-sessions")});
+                populate(Session::WaylandSession, {QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")});
             }
-            populate(Session::X11Session, {QStringLiteral("/usr/local/share/xsessions")});
+            populate(Session::X11Session, {QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")});
             endResetModel();
         });
-        watcher->addPaths({QStringLiteral("/usr/local/share/wayland-sessions")});
-        watcher->addPaths({QStringLiteral("/usr/local/share/xsessions")});
+        watcher->addPaths({QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")});
+        watcher->addPaths({QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")});
     }
 
     SessionModel::~SessionModel() {
