@@ -162,20 +162,20 @@ Item {
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma-desktop-sddm-theme", "Suspend to RAM", "Sleep")
-                        //onClicked: sddm.suspend()
-                        //enabled: sddm.canSuspend
+                        enabled: PlasmaLogin.SessionManagement.canSuspend
+                        onClicked: PlasmaLogin.SessionManagement.suspend()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
                         text: i18nd("plasma-desktop-sddm-theme", "Restart")
-                        //onClicked: sddm.reboot()
-                        //enabled: sddm.canReboot
+                        enabled: PlasmaLogin.SessionManagement.canReboot
+                        onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
                         text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
-                        //onClicked: sddm.powerOff()
-                        //enabled: sddm.canPowerOff
+                        enabled: PlasmaLogin.SessionManagement.canShutdown
+                        onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-prompt"
@@ -287,20 +287,20 @@ Item {
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma-desktop-sddm-theme", "Suspend to RAM", "Sleep")
-                        //onClicked: sddm.suspend()
-                        //enabled: sddm.canSuspend
+                        enabled: PlasmaLogin.SessionManagement.canSuspend
+                        onClicked: PlasmaLogin.SessionManagement.suspend()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
                         text: i18nd("plasma-desktop-sddm-theme", "Restart")
-                        //onClicked: sddm.reboot()
-                        //enabled: sddm.canReboot
+                        enabled: PlasmaLogin.SessionManagement.canReboot
+                        onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
                         text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
-                        //onClicked: sddm.powerOff()
-                        //enabled: sddm.canPowerOff
+                        enabled: PlasmaLogin.SessionManagement.canShutdown
+                        onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-list"

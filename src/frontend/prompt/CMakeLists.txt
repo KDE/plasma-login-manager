@@ -32,6 +32,7 @@ target_link_libraries(plasma-login-greeter
     KF6::ConfigCore
     X11::X11
     LayerShellQt::Interface
+    PW::KWorkspace
 )
 target_sources(plasma-login-greeter PRIVATE ${RESOURCE_FILES})
 

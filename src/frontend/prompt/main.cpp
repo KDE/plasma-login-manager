@@ -6,6 +6,8 @@
 #include <QQuickView>
 #include <QScreen>
 
+#include <kworkspace6/sessionmanagement.h>
+
 #include "greetd/GreetdManager.hpp"
 #include "SessionModel.h"
 #include "UserModel.h"
@@ -57,6 +59,7 @@ int main(int argc, char *argv[])
     //       (is nullptr in other engines, hence only works on one window)
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new SDDM::UserModel(true));
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
 
     LoginGreeter greeter;
     return app.exec();
