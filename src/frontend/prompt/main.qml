@@ -4,8 +4,9 @@ import QtQuick.Controls as QQC2
 import Qt5Compat.GraphicalEffects
 
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.components as PlasmaComponents
 import org.kde.breeze.components as BreezeComponents
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 
 import org.greetd as Greet
 
@@ -25,6 +26,11 @@ Item {
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
+    KeyboardIndicator.KeyState {
+        id: capsLockState
+        key: Qt.Key_CapsLock
+    }
+
     BreezeComponents.RejectPasswordAnimation {
         id: rejectPasswordAnimation
         target: mainStack
@@ -35,7 +41,7 @@ Item {
         anchors.fill: parent
 
         property bool uiVisible: true
-        property bool blockUI: false // userListComponent.mainPasswordBox.text.length > 0 ...
+        property bool blockUI: mainStack.depth > 1 || userListComponent.mainPasswordBox.text.length > 0 // || inputPanel.keyboardActive || config.type !== "image"
 
         hoverEnabled: true
         onPressed: uiVisible = true;
@@ -78,8 +84,8 @@ Item {
             anchors.fill: clock
             source: clock
             visible: !softwareRendering && clock.visible
-            radius: 6
-            samples: 14
+            radius: 7
+            samples: 15
             spread: 0.3
             color: "black" // shadows should always be black
             Behavior on opacity {
@@ -95,8 +101,7 @@ Item {
             property Item shadow: clockShadow
             visible: y > 0
             anchors.horizontalCenter: parent.horizontalCenter
-            //y: (userListComponent.userList.y + mainStack.y)/2 - height/2 // TODO, no userListComponent yet
-            y: height/2
+            y: (userListComponent.userList.y + mainStack.y)/2 - height/2
             Layout.alignment: Qt.AlignBaseline
         }
 
@@ -117,7 +122,73 @@ Item {
                 }
             }
 
-            initialItem: userPromptComponent
+            initialItem: Login {
+                id: userListComponent
+                userListModel: Greet.UserModel
+                loginScreenUiVisible: loginScreenRoot.uiVisible
+                userListCurrentIndex: Greet.UserModel.lastIndex >= 0 ? Greet.UserModel.lastIndex : 0
+                lastUserName: Greet.UserModel.lastUser
+                showUserList: {
+                    if (!userListModel.hasOwnProperty("count")
+                        || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {
+                        return false
+                    }
+
+                    if (userListModel.count === 0 ) {
+                        return false
+                    }
+
+                    if (userListModel.hasOwnProperty("containsAllUsers") && !userListModel.containsAllUsers) {
+                        return false
+                    }
+
+                    return userListModel.count <= userListModel.disableAvatarsThreshold
+                }
+
+                notificationMessage: {
+                    const parts = [];
+                    if (capsLockState.locked) {
+                        parts.push(i18nd("plasma-desktop-sddm-theme", "Caps Lock is on"));
+                    }
+                    if (root.notificationMessage) {
+                        parts.push(root.notificationMessage);
+                    }
+                    return parts.join(" • ");
+                }
+
+                //actionItemsVisible: !inputPanel.keyboardActive
+                actionItems: [
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-suspend"
+                        text: i18ndc("plasma-desktop-sddm-theme", "Suspend to RAM", "Sleep")
+                        //onClicked: sddm.suspend()
+                        //enabled: sddm.canSuspend
+                    },
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-reboot"
+                        text: i18nd("plasma-desktop-sddm-theme", "Restart")
+                        //onClicked: sddm.reboot()
+                        //enabled: sddm.canReboot
+                    },
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-shutdown"
+                        text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
+                        //onClicked: sddm.powerOff()
+                        //enabled: sddm.canPowerOff
+                    },
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-user-prompt"
+                        text: i18ndc("plasma-desktop-sddm-theme", "For switching to a username and password prompt", "Other…")
+                        onClicked: mainStack.push(userPromptComponent)
+                        visible: !userListComponent.showUsernamePrompt
+                    }]
+
+                onLoginRequest: (username, password) => {
+                    root.notificationMessage = ""
+                    /*sddm.login(username, password, sessionButton.currentIndex);*/
+                    root.tryLogin(username, password, sessionButton.currentIndex);
+                }
+            }
 
             readonly property real zoomFactor: 1.5
 
@@ -183,12 +254,6 @@ Item {
         }
 
         Component {
-            id: userListComponent
-
-            Item {}
-        }
-
-        Component {
             id: userPromptComponent
 
             Login {
@@ -213,7 +278,7 @@ Item {
                 onLoginRequest: (username, password) => {
                     root.notificationMessage = ""
                     /*sddm.login(username, password, sessionButton.currentIndex);*/
-                    root.tryLogin(username, password);
+                    root.tryLogin(username, password, sessionButton.currentIndex);
                 }
 
                 //actionItemsVisible: !inputPanel.keyboardActive
@@ -235,12 +300,12 @@ Item {
                         text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
                         //onClicked: sddm.powerOff()
                         //enabled: sddm.canPowerOff
-                    }/*,
+                    },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-list"
                         text: i18nd("plasma-desktop-sddm-theme", "List Users")
-                        //onClicked: mainStack.pop()
-                    }*/
+                        onClicked: mainStack.pop()
+                    }
                 ]
             }
         }
@@ -281,8 +346,11 @@ Item {
                 containmentMask: Item {
                     parent: sessionButton
                     anchors.fill: parent
+                    /*
                     anchors.leftMargin: virtualKeyboardButton.visible || keyboardButton.visible
                         ? 0 : -footer.anchors.margins
+                    */
+                    anchors.leftMargin: 0
                     anchors.bottomMargin: -footer.anchors.margins
                 }
             }
@@ -295,8 +363,8 @@ Item {
         }
     }
 
-    function tryLogin(username, password, sessionIdx) {
-        // TODO: sessionIdx unused
+    function tryLogin(username, password, sessionIndex) {
+        // TODO: sessionIndex unused
         if (Greet.Authenticator.authenticate(username, password)) {
             // we would then do Autenticator.startSession()
             // probably with an abstraction so we pass the desktop file
@@ -307,7 +375,7 @@ Item {
             notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed")
             footer.enabled = true
             mainStack.enabled = true
-            //userListComponent.userList.opacity = 1 // TODO
+            userListComponent.userList.opacity = 1
             rejectPasswordAnimation.start()
         }
     }
