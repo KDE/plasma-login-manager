@@ -9,6 +9,10 @@ set(LOGIN_GREETER_SRCS main.cpp
     Session.cpp
     SessionModel.cpp
     UserModel.cpp
+    greetd/Session.cpp
+    greetd/SessionModel.cpp
+    backend/GreeterProxy.cpp
+    backend/SocketWriter.cpp
 )
 
 qt_add_resources(RESOURCE_FILES resources.qrc)
