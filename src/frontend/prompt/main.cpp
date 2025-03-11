@@ -34,27 +34,33 @@ public:
 private:
     void createWindowForScreen(QScreen *screen)
     {
+        if (s_testMode && m_hasWindow) {
+            return;
+        }
+
         QQuickView *window = new QQuickView();
         window->QObject::setParent(this);
         window->setScreen(screen);
 
-
         if (s_testMode) {
             window->setColor(Qt::black);
-            window->show();
+            window->showFullScreen();
         } else {
             window->setColor(Qt::transparent);
             window->showFullScreen();
         }
 
         window->setSource(QUrl("qrc:/main.qml"));
-        connect(qApp, &QGuiApplication::screenRemoved, this, [this, window, screen](QScreen *screenRemoved) {
+        connect(qApp, &QGuiApplication::screenRemoved, this, [window, screen](QScreen *screenRemoved) {
             if (screenRemoved == screen) {
                 delete window;
             }
         });
+
+        m_hasWindow = true;
     }
 
+    bool m_hasWindow = false;
     static bool s_testMode;
 };
 
