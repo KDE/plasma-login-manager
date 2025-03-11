@@ -23,7 +23,7 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
             layerShellWindow->setScope(QStringLiteral("plasma-login-wallpaper"));
             layerShellWindow->setLayer(LayerShellQt::Window::LayerBackground);
             layerShellWindow->setExclusiveZone(-1);
-            layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::None);
+            layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
         }
     }
 
