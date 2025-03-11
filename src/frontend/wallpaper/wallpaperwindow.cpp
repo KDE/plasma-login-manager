@@ -23,7 +23,7 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
             layerShellWindow->setScope(QStringLiteral("plasma-login-wallpaper"));
             layerShellWindow->setLayer(LayerShellQt::Window::LayerBackground);
             layerShellWindow->setExclusiveZone(-1);
-            layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
+            layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::None);
         }
     }
 
@@ -45,6 +45,4 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
         // on Wayland we cannot go fullscreen due to QTBUG 54883
         setWindowState(Qt::WindowFullScreen);
     }
-
-    QTimer::singleShot(5000, this, &QWindow::close); // TODO: Remove when appropriate
 }
