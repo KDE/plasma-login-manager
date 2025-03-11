@@ -40,7 +40,7 @@ namespace PLASMALOGIN {
         Q_PROPERTY(bool     canHybridSleep  READ canHybridSleep NOTIFY canHybridSleepChanged)
 
     public:
-        explicit GreeterProxy(const QString &socket, QObject *parent = 0);
+        explicit GreeterProxy(QObject *parent = 0);
         ~GreeterProxy();
 
         const QString &hostName() const;

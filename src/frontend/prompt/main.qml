@@ -369,7 +369,7 @@ Item {
 
     function tryLogin(username, password, sessionIndex) {
         // TODO: sessionIndex unused
-        if (Greet.Authenticator.authenticate(username, password)) {
+        if (Greet.Authenticator.login(username, password, sessionIndex)) {
             // we would then do Autenticator.startSession()
             // probably with an abstraction so we pass the desktop file
 

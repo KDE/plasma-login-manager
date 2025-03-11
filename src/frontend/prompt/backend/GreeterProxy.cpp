@@ -41,7 +41,7 @@ namespace PLASMALOGIN {
         bool canHybridSleep { false };
     };
 
-    GreeterProxy::GreeterProxy(const QString &socket, QObject *parent) : QObject(parent), d(new GreeterProxyPrivate()) {
+    GreeterProxy::GreeterProxy(QObject *parent) : QObject(parent), d(new GreeterProxyPrivate()) {
         d->socket = new QLocalSocket(this);
         // connect signals
         connect(d->socket, &QLocalSocket::connected, this, &GreeterProxy::connected);
@@ -49,6 +49,8 @@ namespace PLASMALOGIN {
         connect(d->socket, &QLocalSocket::readyRead, this, &GreeterProxy::readyRead);
         connect(d->socket, &QLocalSocket::errorOccurred, this, &GreeterProxy::error);
 
+        const QString socket = qEnvironmentVariable("SDDM_SOCKET");
+        qDebug() << "TRYING SOCKET" << socket;
         // connect to server
         d->socket->connectToServer(socket);
     }

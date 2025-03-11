@@ -9,7 +9,7 @@
 #include <LayerShellQt/Window>
 #include <PlasmaQuick/QuickViewSharedEngine>
 
-#include "greetd/GreetdManager.hpp"
+#include "backend/GreeterProxy.h"
 #include "SessionModel.h"
 #include "UserModel.h"
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
 
     QQuickWindow::setDefaultAlphaBuffer(true);
-    qmlRegisterSingletonInstance("org.greetd", 0, 1, "Authenticator", new GreetdLogin);
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new SDDM::UserModel(true));
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
