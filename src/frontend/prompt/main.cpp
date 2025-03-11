@@ -1,15 +1,13 @@
-#include <QGuiApplication>
-#include <QObject>
-#include <QQmlComponent>
-#include <QQmlContext>
-#include <QQmlEngine>
-#include <QQuickView>
-#include <QScreen>
-
 #include <QCommandLineOption>
 #include <QCommandLineParser>
+#include <QGuiApplication>
+#include <QObject>
+#include <QScreen>
 
 #include <kworkspace6/sessionmanagement.h>
+#include <KWindowSystem>
+#include <LayerShellQt/Window>
+#include <PlasmaQuick/QuickViewSharedEngine>
 
 #include "greetd/GreetdManager.hpp"
 #include "SessionModel.h"
@@ -38,24 +36,44 @@ private:
             return;
         }
 
-        QQuickView *window = new QQuickView();
+        auto *window = new PlasmaQuick::QuickViewSharedEngine();
         window->QObject::setParent(this);
         window->setScreen(screen);
+        window->setColor(s_testMode ? Qt::black : Qt::transparent);
 
-        if (s_testMode) {
-            window->setColor(Qt::black);
-            window->showFullScreen();
-        } else {
-            window->setColor(Qt::transparent);
-            window->showFullScreen();
+        window->setGeometry(screen->geometry());
+        connect(screen, &QScreen::geometryChanged, this, [window]() {
+            window->setGeometry(window->screen()->geometry());
+        });
+
+        if (KWindowSystem::isPlatformWayland()) {
+            if (auto layerShellWindow = LayerShellQt::Window::get(window)) {
+                layerShellWindow->setScope(QStringLiteral("plasma-login-wallpaper"));
+                layerShellWindow->setLayer(LayerShellQt::Window::LayerTop);
+                layerShellWindow->setExclusiveZone(-1);
+                layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
+            }
+        }
+
+        window->setResizeMode(PlasmaQuick::QuickViewSharedEngine::SizeRootObjectToView);
+
+        if (KWindowSystem::isPlatformX11()) {
+            // X11 specific hint only on X11
+            window->setFlags(Qt::BypassWindowManagerHint);
+        } else if (!KWindowSystem::isPlatformWayland()) {
+            // on other platforms go fullscreen
+            // on Wayland we cannot go fullscreen due to QTBUG 54883
+            window->setWindowState(Qt::WindowFullScreen);
         }
 
         window->setSource(QUrl("qrc:/main.qml"));
-        connect(qApp, &QGuiApplication::screenRemoved, this, [window, screen](QScreen *screenRemoved) {
-            if (screenRemoved == screen) {
+        connect(qApp, &QGuiApplication::screenRemoved, this, [window](QScreen *screenRemoved) {
+            if (screenRemoved == window->screen()) {
                 delete window;
             }
         });
+
+        window->show();
 
         m_hasWindow = true;
     }
@@ -83,9 +101,6 @@ int main(int argc, char *argv[])
 
     QQuickWindow::setDefaultAlphaBuffer(true);
     qmlRegisterSingletonInstance("org.greetd", 0, 1, "Authenticator", new GreetdLogin);
-
-    // TODO: Singleton registered by registerSingletonInstance must only be accessed from one engine
-    //       (is nullptr in other engines, hence only works on one window)
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new SDDM::UserModel(true));
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
