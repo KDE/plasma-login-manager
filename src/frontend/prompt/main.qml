@@ -363,7 +363,7 @@ Item {
                 Layout.fillWidth: true
             }
 
-            /* Battery */
+            BreezeComponents.Battery {}
         }
     }
 
