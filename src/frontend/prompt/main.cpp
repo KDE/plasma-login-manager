@@ -6,6 +6,9 @@
 #include <QQuickView>
 #include <QScreen>
 
+#include <QCommandLineOption>
+#include <QCommandLineParser>
+
 #include <kworkspace6/sessionmanagement.h>
 
 #include "greetd/GreetdManager.hpp"
@@ -26,6 +29,7 @@ public:
             createWindowForScreen(screen);
         }
     }
+    static void setTestModeEnabled(bool testModeEnabled);
 
 private:
     void createWindowForScreen(QScreen *screen)
@@ -33,7 +37,16 @@ private:
         QQuickView *window = new QQuickView();
         window->QObject::setParent(this);
         window->setScreen(screen);
-        window->showFullScreen();
+
+
+        if (s_testMode) {
+            window->setColor(Qt::black);
+            window->show();
+        } else {
+            window->setColor(Qt::transparent);
+            window->showFullScreen();
+        }
+
         window->setSource(QUrl("qrc:/main.qml"));
         connect(qApp, &QGuiApplication::screenRemoved, this, [this, window, screen](QScreen *screenRemoved) {
             if (screenRemoved == screen) {
@@ -42,17 +55,27 @@ private:
         });
     }
 
-private Q_SLOTS:
-    void onScreenAdded(QScreen *screen)
-    {
-        createWindowForScreen(screen);
-    }
+    static bool s_testMode;
 };
+
+bool LoginGreeter::s_testMode = false;
+
+void LoginGreeter::setTestModeEnabled(bool testModeEnabled)
+{
+    s_testMode = testModeEnabled;
+}
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QCommandLineParser parser;
+    parser.addOption(QCommandLineOption(QStringLiteral("test"), QStringLiteral("Run in test mode")));
+    parser.addHelpOption();
 
+    QGuiApplication app(argc, argv);
+    parser.process(app);
+    LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
+
+    QQuickWindow::setDefaultAlphaBuffer(true);
     qmlRegisterSingletonInstance("org.greetd", 0, 1, "Authenticator", new GreetdLogin);
 
     // TODO: Singleton registered by registerSingletonInstance must only be accessed from one engine
