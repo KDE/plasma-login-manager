@@ -27,7 +27,6 @@
 namespace PLASMALOGIN {
     class Configuration;
     class DisplayManager;
-    class PowerManager;
     class SeatManager;
     class SignalHandler;
 
@@ -45,7 +44,6 @@ namespace PLASMALOGIN {
 
         QString hostName() const;
         DisplayManager *displayManager() const;
-        PowerManager *powerManager() const;
         SeatManager *seatManager() const;
         SignalHandler *signalHandler() const;
 
@@ -59,7 +57,6 @@ namespace PLASMALOGIN {
 
         bool m_testing { false };
         DisplayManager *m_displayManager { nullptr };
-        PowerManager *m_powerManager { nullptr };
         SeatManager *m_seatManager { nullptr };
         SignalHandler *m_signalHandler { nullptr };
     };

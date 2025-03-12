@@ -26,32 +26,14 @@ namespace PLASMALOGIN {
     enum class GreeterMessages {
         Connect = 0,
         Login,
-        PowerOff,
-        Reboot,
-        Suspend,
-        Hibernate,
-        HybridSleep
     };
 
     enum class DaemonMessages {
         HostName,
-        Capabilities,
         LoginSucceeded,
         LoginFailed,
         InformationMessage,
     };
-
-    enum Capability {
-        None = 0x0000,
-        PowerOff = 0x0001,
-        Reboot = 0x0002,
-        Suspend = 0x0004,
-        Hibernate = 0x0008,
-        HybridSleep = 0x0010
-    };
-
-    Q_DECLARE_FLAGS(Capabilities, Capability)
-    Q_DECLARE_OPERATORS_FOR_FLAGS(Capabilities)
 }
 
 #endif // PLASMALOGIN_MESSAGES_H

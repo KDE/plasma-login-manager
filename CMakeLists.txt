@@ -127,8 +127,6 @@ if(SYSTEMD_FOUND)
         pkg_get_variable(SYSTEMD_TMPFILES_DIR systemd tmpfilesdir)
     endif()
 
-    set(HALT_COMMAND "/usr/bin/systemctl poweroff")
-    set(REBOOT_COMMAND "/usr/bin/systemctl reboot")
 else()
     set(SYSTEMD_FOUND 0)
 endif()
@@ -140,27 +138,6 @@ if(NO_SYSTEMD AND USE_ELOGIND)
     pkg_check_modules(ELOGIND "libelogind")
 endif()
 
-if(ELOGIND_FOUND)
-    add_definitions(-DHAVE_ELOGIND)
-    set(CMAKE_AUTOMOC_MOC_OPTIONS -DHAVE_ELOGIND)
-
-    set(HALT_COMMAND "/usr/bin/loginctl poweroff")
-    set(REBOOT_COMMAND "/usr/bin/loginctl reboot")
-endif()
-add_feature_info("elogind" ELOGIND_FOUND "elogind support")
-
-# Default behaviour if neither systemd nor elogind is used
-if (NOT ELOGIND_FOUND AND NOT SYSTEMD_FOUND)
-    # Set the VT on which plasmalogin will normally appear, and the
-    # commands for shutdown and reboot. On FreeBSD, there are
-    # normally more getty's running than on Linux.
-    if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-        set(HALT_COMMAND "/sbin/shutdown -p now")
-    else()
-        set(HALT_COMMAND "/sbin/shutdown -h -P now")
-    endif()
-    set(REBOOT_COMMAND "/sbin/shutdown -r now")
-endif()
 
 if (SYSTEMD_FOUND)
     set(RUNTIME_DIR_DEFAULT "/run/plasmalogin")
