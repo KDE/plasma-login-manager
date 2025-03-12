@@ -208,14 +208,14 @@ namespace SDDM {
             /* TODO: persistent config
             sessionDirs = mainConfig.Wayland.SessionDir.get();
             */
-            sessionDirs = {QStringLiteral("/usr/local/share/wayland-sessions")};
+            sessionDirs = {QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")};
             m_xdgSessionType = QStringLiteral("wayland");
             break;
         case X11Session:
             /* TODO: persistent config
             sessionDirs = mainConfig.X11.SessionDir.get();
             */
-            sessionDirs = {QStringLiteral("/usr/local/share/xsessions")};
+            sessionDirs = {QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")};
             m_xdgSessionType = QStringLiteral("x11");
             break;
         default:
