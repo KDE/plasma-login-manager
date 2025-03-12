@@ -22,7 +22,6 @@
 #include "Configuration.h"
 #include "Constants.h"
 #include "DisplayManager.h"
-#include "PowerManager.h"
 #include "SeatManager.h"
 #include "SignalHandler.h"
 
@@ -68,9 +67,6 @@ namespace PLASMALOGIN {
         // create display manager
         m_displayManager = new DisplayManager(this);
 
-        // create power manager
-        m_powerManager = new PowerManager(this);
-
         // create seat manager
         m_seatManager = new SeatManager(this);
 
@@ -102,10 +98,6 @@ namespace PLASMALOGIN {
 
     DisplayManager *DaemonApp::displayManager() const {
         return m_displayManager;
-    }
-
-    PowerManager *DaemonApp::powerManager() const {
-        return m_powerManager;
     }
 
     SeatManager *DaemonApp::seatManager() const {

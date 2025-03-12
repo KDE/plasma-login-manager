@@ -31,7 +31,7 @@ PLASMALOGIN depends on PAM for authorization and XCB to communicate with the X s
 Apart from other things, it also depends on Qt for the user interface and event
 loop management.
 PLASMALOGIN can optionally make use of logind (the systemd login manager API), or
-ConsoleKit2, or upower to enable support for suspend, hibernate etc.
+ConsoleKit2.
 In order to build the man pages, you will need `rst2man` installed. It is
 provided by the python `docutils` package
 

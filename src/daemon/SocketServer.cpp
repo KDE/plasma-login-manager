@@ -22,7 +22,6 @@
 
 #include "DaemonApp.h"
 #include "Messages.h"
-#include "PowerManager.h"
 #include "SocketWriter.h"
 #include "Utils.h"
 
@@ -121,9 +120,6 @@ namespace PLASMALOGIN {
                     // log message
                     qDebug() << "Message received from greeter: Connect";
 
-                    // send capabilities
-                    SocketWriter(socket) << quint32(DaemonMessages::Capabilities) << quint32(daemonApp->powerManager()->capabilities());
-
                     // send host name
                     SocketWriter(socket) << quint32(DaemonMessages::HostName) << daemonApp->hostName();
 
@@ -142,45 +138,6 @@ namespace PLASMALOGIN {
 
                     // emit signal
                     emit login(socket, user, password, session);
-                }
-                break;
-                case GreeterMessages::PowerOff: {
-                    // log message
-                    qDebug() << "Message received from greeter: PowerOff";
-
-                    // power off
-                    daemonApp->powerManager()->powerOff();
-                }
-                break;
-                case GreeterMessages::Reboot: {
-                    // log message
-                    qDebug() << "Message received from greeter: Reboot";
-
-                    // reboot
-                    daemonApp->powerManager()->reboot();
-                }
-                break;
-                case GreeterMessages::Suspend: {
-                    // log message
-                    qDebug() << "Message received from greeter: Suspend";
-
-                    // suspend
-                    daemonApp->powerManager()->suspend();
-                }
-                break;
-                case GreeterMessages::Hibernate: {
-                    // log message
-                    qDebug() << "Message received from greeter: Hibernate";
-
-                    // hibernate
-                    daemonApp->powerManager()->hibernate();
-                }
-                break;
-                case GreeterMessages::HybridSleep: {
-                    // log message
-                    qDebug() << "Message received from greeter: HybridSleep";
-                    // hybrid sleep
-                    daemonApp->powerManager()->hybridSleep();
                 }
                 break;
                 default: {
