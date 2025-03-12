@@ -33,12 +33,6 @@ namespace PLASMALOGIN {
     public:
         SessionModel *sessionModel { nullptr };
         QLocalSocket *socket { nullptr };
-        QString hostName;
-        bool canPowerOff { false };
-        bool canReboot { false };
-        bool canSuspend { false };
-        bool canHibernate { false };
-        bool canHybridSleep { false };
     };
 
     GreeterProxy::GreeterProxy(QObject *parent) : QObject(parent), d(new GreeterProxyPrivate()) {
@@ -58,57 +52,8 @@ namespace PLASMALOGIN {
     GreeterProxy::~GreeterProxy() {
         delete d;
     }
-
-    const QString &GreeterProxy::hostName() const {
-        return d->hostName;
-    }
-
     void GreeterProxy::setSessionModel(SessionModel *model) {
         d->sessionModel = model;
-    }
-
-    bool GreeterProxy::canPowerOff() const {
-        return d->canPowerOff;
-    }
-
-    bool GreeterProxy::canReboot() const {
-        return d->canReboot;
-    }
-
-    bool GreeterProxy::canSuspend() const {
-        return d->canSuspend;
-    }
-
-    bool GreeterProxy::canHibernate() const {
-        return d->canHibernate;
-    }
-
-    bool GreeterProxy::canHybridSleep() const {
-        return d->canHybridSleep;
-    }
-
-    bool GreeterProxy::isConnected() const {
-        return d->socket->state() == QLocalSocket::ConnectedState;
-    }
-
-    void GreeterProxy::powerOff() {
-        SocketWriter(d->socket) << quint32(GreeterMessages::PowerOff);
-    }
-
-    void GreeterProxy::reboot() {
-        SocketWriter(d->socket) << quint32(GreeterMessages::Reboot);
-    }
-
-    void GreeterProxy::suspend() {
-        SocketWriter(d->socket) << quint32(GreeterMessages::Suspend);
-    }
-
-    void GreeterProxy::hibernate() {
-        SocketWriter(d->socket) << quint32(GreeterMessages::Hibernate);
-    }
-
-    void GreeterProxy::hybridSleep() {
-        SocketWriter(d->socket) << quint32(GreeterMessages::HybridSleep);
     }
 
     void GreeterProxy::login(const QString &user, const QString &password, const int sessionIndex) const {
@@ -162,40 +107,6 @@ namespace PLASMALOGIN {
             input >> message;
 
             switch (DaemonMessages(message)) {
-                case DaemonMessages::Capabilities: {
-                    // log message
-                    qDebug() << "Message received from daemon: Capabilities";
-
-                    // read capabilities
-                    quint32 capabilities;
-                    input >> capabilities;
-
-                    // parse capabilities
-                    d->canPowerOff = capabilities & Capability::PowerOff;
-                    d->canReboot = capabilities & Capability::Reboot;
-                    d->canSuspend = capabilities & Capability::Suspend;
-                    d->canHibernate = capabilities & Capability::Hibernate;
-                    d->canHybridSleep = capabilities & Capability::HybridSleep;
-
-                    // emit signals
-                    emit canPowerOffChanged(d->canPowerOff);
-                    emit canRebootChanged(d->canReboot);
-                    emit canSuspendChanged(d->canSuspend);
-                    emit canHibernateChanged(d->canHibernate);
-                    emit canHybridSleepChanged(d->canHybridSleep);
-                }
-                break;
-                case DaemonMessages::HostName: {
-                    // log message
-                    qDebug() << "Message received from daemon: HostName";
-
-                    // read host name
-                    input >> d->hostName;
-
-                    // emit signal
-                    emit hostNameChanged(d->hostName);
-                }
-                break;
                 case DaemonMessages::LoginSucceeded: {
                     // log message
                     qDebug() << "Message received from daemon: LoginSucceeded";
