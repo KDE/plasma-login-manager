@@ -24,7 +24,6 @@
 #include "DaemonApp.h"
 #include "DisplayManager.h"
 #include "Seat.h"
-#include "ThemeMetadata.h"
 #include "Display.h"
 #include "XorgDisplayServer.h"
 #include "XorgUserDisplayServer.h"

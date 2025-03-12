@@ -200,45 +200,9 @@ bool XOrgUserHelper::startServer(const QString &cmd)
 
 void XOrgUserHelper::startDisplayCommand()
 {
-    const QString xcursorTheme = mainConfig.Theme.CursorTheme.get(),
-                  xcursorSize = mainConfig.Theme.CursorSize.get();
-
     auto env = QProcessEnvironment::systemEnvironment();
     env.insert(QStringLiteral("DISPLAY"), m_display);
     env.insert(QStringLiteral("XAUTHORITY"), m_xauth.authPath());
-    if (!xcursorTheme.isEmpty())
-        env.insert(QStringLiteral("XCURSOR_THEME"), xcursorTheme);
-    if (!xcursorSize.isEmpty())
-        env.insert(QStringLiteral("XCURSOR_SIZE"), xcursorSize);
-
-    // Set cursor
-    qInfo("Setting default cursor...");
-    QProcess *setCursor = nullptr;
-    if (startProcess(QStringLiteral("xsetroot -cursor_name left_ptr"), env, &setCursor)) {
-        if (!setCursor->waitForFinished(1000)) {
-            qWarning() << "Could not setup default cursor";
-            setCursor->kill();
-        }
-        setCursor->deleteLater();
-    }
-
-    // Unlike libXcursor, xcb-util-cursor no longer looks at XCURSOR_*. Set the resources.
-    if (!xcursorTheme.isEmpty() || !xcursorSize.isEmpty()) {
-        QProcess xrdbProcess;
-        xrdbProcess.setProcessEnvironment(env);
-        xrdbProcess.start(QStringLiteral("xrdb"), QStringList{QStringLiteral("-nocpp"), QStringLiteral("-merge")});
-        if (!xcursorTheme.isEmpty())
-            xrdbProcess.write(QStringLiteral("Xcursor.theme: %1\n").arg(xcursorTheme).toUtf8());
-
-        if (!xcursorSize.isEmpty())
-            xrdbProcess.write(QStringLiteral("Xcursor.size: %1\n").arg(xcursorSize).toUtf8());
-
-        xrdbProcess.closeWriteChannel();
-        if (!xrdbProcess.waitForFinished(1000)) {
-            qDebug() << "Could not set Xcursor resources" << xrdbProcess.error();
-            xrdbProcess.kill();
-        }
-    }
 
     // Display setup script
     auto cmd = mainConfig.X11.DisplayCommand.get();

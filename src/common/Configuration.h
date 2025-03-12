@@ -47,20 +47,6 @@ namespace PLASMALOGIN {
                                                                                                    "NOTE: Currently ignored if autologin is enabled."));
         Entry(Namespaces,          QStringList, QStringList(),                                  _S("Comma-separated list of Linux namespaces for user session to enter"));
         Entry(GreeterEnvironment,  QStringList, QStringList(),                                  _S("Comma-separated list of environment variables to be set"));
-        //  Name   Entries (but it's a regular class again)
-        Section(Theme,
-            Entry(ThemeDir,            QString,     _S(DATA_INSTALL_DIR "/themes"),             _S("Theme directory path"));
-            Entry(Current,             QString,     _S(""),                                     _S("Current theme name"));
-            Entry(FacesDir,            QString,     _S(DATA_INSTALL_DIR "/faces"),              _S("Global directory for user avatars\n"
-                                                                                                   "The files should be named <username>.face.icon"));
-            Entry(CursorTheme,         QString,     QString(),                                  _S("Cursor theme used in the greeter"));
-            Entry(CursorSize,          QString,     QString(),                                  _S("Cursor size used in the greeter"));
-            Entry(Font,                QString,     QString(),                                  _S("Font used in the greeter"));
-            Entry(EnableAvatars,       bool,        true,                                       _S("Enable display of custom user avatars"));
-            Entry(DisableAvatarsThreshold,int,      7,                                          _S("Number of users to use as threshold\n"
-                                                                                                   "above which avatars are disabled\n"
-                                                                                                   "unless explicitly enabled with EnableAvatars"));
-        );
 
         // TODO: Not absolutely sure if everything belongs here. Xsessions, VT and probably some more seem universal
         Section(X11,
