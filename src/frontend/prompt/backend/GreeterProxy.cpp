@@ -112,13 +112,13 @@ namespace PLASMALOGIN {
     }
 
     void GreeterProxy::login(const QString &user, const QString &password, const int sessionIndex) const {
-        if (!d->sessionModel) {
-            // log error
-            qCritical() << "Session model is not set.";
-
-            // return
-            return;
-        }
+        // if (!d->sessionModel) {
+        //     // log error
+        //     qCritical() << "Session model is not set.";
+        //
+        //     // return
+        //     return;
+        // }
 
         // get model index
         // QModelIndex index = d->sessionModel->index(sessionIndex, 0);

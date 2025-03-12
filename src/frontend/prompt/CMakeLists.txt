@@ -16,7 +16,7 @@ qt_add_resources(RESOURCE_FILES resources.qrc)
 ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
                                 IDENTIFIER LOGOUT_GREETER
                                 CATEGORY_NAME kde.login_greeter
-                                DEFAULT_SEVERITY Info
+                                DEFAULT_SEVERITY Debug
                                 DESCRIPTION "login greeter debug"
                                 EXPORT PLASMAWORKSPACE
                             )

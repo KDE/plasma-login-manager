@@ -8,7 +8,6 @@ import org.kde.breeze.components as BreezeComponents
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 
-import org.greetd as Greet
 import org.kde.plasma.login as PlasmaLogin
 
 Item {
@@ -186,7 +185,6 @@ Item {
 
                 onLoginRequest: (username, password) => {
                     root.notificationMessage = ""
-                    /*sddm.login(username, password, sessionButton.currentIndex);*/
                     root.tryLogin(username, password, sessionButton.currentIndex);
                 }
             }
@@ -368,8 +366,7 @@ Item {
     }
 
     function tryLogin(username, password, sessionIndex) {
-        // TODO: sessionIndex unused
-        if (Greet.Authenticator.login(username, password, sessionIndex)) {
+        if (PlasmaLogin.Authenticator.login(username, password, sessionIndex)) {
             // we would then do Autenticator.startSession()
             // probably with an abstraction so we pass the desktop file
 
