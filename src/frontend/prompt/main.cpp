@@ -15,8 +15,6 @@
 #include "SessionModel.h"
 #include "UserModel.h"
 
-
-
 class LoginGreeter : public QObject
 {
     Q_OBJECT
@@ -116,7 +114,7 @@ int main(int argc, char *argv[])
         qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
     }
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
-    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new SDDM::UserModel(true));
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new PlasmaLogin::UserModel(true));
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
 
     LoginGreeter greeter;
