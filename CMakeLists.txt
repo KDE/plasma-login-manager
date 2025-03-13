@@ -6,6 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
+
 # Set version
 set(PLASMALOGIN_VERSION_MAJOR 0)
 set(PLASMALOGIN_VERSION_MINOR 21)
@@ -18,12 +19,13 @@ option(BUILD_MAN_PAGES "Build man pages" OFF)
 option(ENABLE_JOURNALD "Enable logging to journald" ON)
 option(NO_SYSTEMD "Disable systemd support" OFF)
 option(USE_ELOGIND "Use elogind instead of logind" OFF)
-option(BUILD_WITH_QT6 "Build with Qt 6" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+message("${CMAKE_MODULE_PATH}")
 
 # Definitions
 add_definitions(-Wall -Wextra -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_FOREACH)
@@ -52,8 +54,21 @@ if(NOT DEFINED CMAKE_INSTALL_LOCALSTATEDIR)
     set(CMAKE_INSTALL_LOCALSTATEDIR "/var")
 endif()
 
+set(QT_MAJOR_VERSION 6)
+
+find_package(Qt${QT_MAJOR_VERSION} CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config)
+
 # Standard installation paths
 include(GNUInstallDirs)
+
+# PAM
+find_package(PAM REQUIRED)
+
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+include(KDEInstallDirs)
+include(KDECMakeSettings)
 
 # Macros
 include(FeatureSummary)
@@ -61,34 +76,17 @@ include(FeatureSummary)
 # PKG-CONFIG
 find_package(PkgConfig)
 
-# PAM
-find_package(PAM REQUIRED)
-
 # XAU
 pkg_check_modules(LIBXAU REQUIRED "xau")
 
 # XCB
-find_package(XCB REQUIRED)
+find_package(XCB MODULE REQUIRED COMPONENTS AUX XCB CURSOR RANDR IMAGE)
 
-# XKB
-find_package(XKB REQUIRED)
+# # XKB
+# find_package(XKB REQUIRED)
 
-# Qt
-if(BUILD_WITH_QT6)
-    set(QT_MAJOR_VERSION 6)
-    message(STATUS "Building Qt 6 version")
-else()
-    set(QT_MAJOR_VERSION 5)
-    message(STATUS "Building Qt 5 version")
-endif()
 
-find_package(Qt${QT_MAJOR_VERSION} 5.15.0 CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest)
 
-# find qt5 imports dir
-get_target_property(QMAKE_EXECUTABLE Qt${QT_MAJOR_VERSION}::qmake LOCATION)
-if(NOT QT_IMPORTS_DIR)
-    execute_process(COMMAND ${QMAKE_EXECUTABLE} -query QT_INSTALL_QML OUTPUT_VARIABLE QT_IMPORTS_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif()
 
 # systemd
 if(NOT NO_SYSTEMD AND NOT USE_ELOGIND)
