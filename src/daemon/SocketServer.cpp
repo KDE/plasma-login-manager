@@ -22,10 +22,11 @@
 
 #include "DaemonApp.h"
 #include "Messages.h"
-#include "SocketWriter.h"
 #include "Utils.h"
+#include "SocketWriter.h"
 
 #include <QLocalServer>
+#include <QLocalSocket>
 
 namespace PLASMALOGIN {
     SocketServer::SocketServer(QObject *parent) : QObject(parent) {
