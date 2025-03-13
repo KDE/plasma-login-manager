@@ -15,4 +15,7 @@ Q_SIGNALS:
     void socketDisconnected();
     void loginFailed();
     void loginSucceeded();
+
+private:
+    static constexpr QLatin1String s_mockPassword = QLatin1String("mypassword");
 };

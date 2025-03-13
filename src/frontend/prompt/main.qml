@@ -183,10 +183,7 @@ Item {
                         visible: !userListComponent.showUsernamePrompt
                     }]
 
-                onLoginRequest: (username, password) => {
-                    root.notificationMessage = ""
-                    root.tryLogin(username, password, sessionButton.currentIndex);
-                }
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentIndex)
             }
 
             readonly property real zoomFactor: 1.5
@@ -274,11 +271,7 @@ Item {
                     }
                 }
 
-                onLoginRequest: (username, password) => {
-                    root.notificationMessage = ""
-                    /*sddm.login(username, password, sessionButton.currentIndex);*/
-                    root.tryLogin(username, password, sessionButton.currentIndex);
-                }
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentIndex)
 
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
@@ -365,19 +358,27 @@ Item {
         }
     }
 
-    function tryLogin(username, password, sessionIndex) {
-        if (PlasmaLogin.Authenticator.login(username, password, sessionIndex)) {
-            // we would then do Autenticator.startSession()
-            // probably with an abstraction so we pass the desktop file
+    function handleLoginRequest(username, password, sessionIndex) {
+        root.notificationMessage = "";
+        PlasmaLogin.Authenticator.login(username, password, sessionIndex);
+    }
 
-            mainStack.opacity = 0
-            footer.opacity = 0
-        } else {
-            notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed")
-            footer.enabled = true
-            mainStack.enabled = true
-            userListComponent.userList.opacity = 1
-            rejectPasswordAnimation.start()
+    Connections {
+        target: PlasmaLogin.Authenticator
+
+        function onLoginFailed() {
+            notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed");
+
+            footer.enabled = true;
+            mainStack.enabled = true;
+            userListComponent.userList.opacity = 1;
+
+            rejectPasswordAnimation.start();
+        }
+
+        function onLoginSucceeded() {
+            mainStack.opacity = 0;
+            footer.opacity = 0;
         }
     }
 
@@ -393,36 +394,3 @@ Item {
         onTriggered: notificationMessage = ""
     }
 }
-
-/*
-Rectangle {
-    anchors.fill: parent
-
-    ColumnLayout {
-        anchors.centerIn: parent
-        PlasmaComponents.TextField {
-            id: usernameField
-        }
-        PlasmaComponents.TextField {
-            id: passwordField
-            echoMode: TextInput.Password
-        }
-        PlasmaComponents.Label {
-            id: result
-        }
-        PlasmaComponents.Button {
-            text: "login"
-            onClicked: function () {
-                result.text = "LOGIN STARTED"
-                if (Greet.Authenticator.authenticate(usernameField.text, passwordField.text)) {
-                    result.text = "LOGIN SUCCESSFUL"
-                    // we would then do Autenticator.startSession()
-                    // probably with an abstraction so we pass the desktop file
-                } else {
-                    result.text = "LOGIN FAILED"
-                }
-            }
-        }
-    }
-}
-*/

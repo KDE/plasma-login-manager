@@ -1,29 +1,24 @@
 #include "MockGreeterProxy.h"
 
-#include <QTextStream>
+#include <QCoreApplication>
 #include <QDebug>
 #include <QTimer>
 
-QTextStream& qStdOut()
-{
-    static QTextStream ts( stdout );
-    return ts;
-}
-
 MockGreeterProxy::MockGreeterProxy()
 {
-
+    qDebug().noquote() << QStringLiteral("Mock backend in use, use password %1 for successful login on any user").arg(s_mockPassword);
 }
 
 void MockGreeterProxy::login(const QString &user, const QString &password, const int sessionIndex)
 {
-    Q_UNUSED(sessionIndex);
-    qStdOut() << "Login attempt. User: " << user << " Password: " << password << Qt::endl;
+    bool const success = (!user.isEmpty() && password == s_mockPassword);
 
-    if(password == "mypassword" && !user.isEmpty()) {
+    qDebug().nospace() << "Login " << (success ? "success" : "failure") << " with user " << user << ", password " << password << ", session " << sessionIndex;
+
+    if (success) {
         QTimer::singleShot(100, this, &MockGreeterProxy::loginSucceeded);
+        QTimer::singleShot(800, []() { QCoreApplication::quit(); });
     } else {
-        qDebug() << "Use password 'mypassword' for successful login";
         QTimer::singleShot(100, this, &MockGreeterProxy::loginFailed);
     }
 }
