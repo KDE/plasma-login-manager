@@ -3,7 +3,6 @@ include_directories(
     "${CMAKE_SOURCE_DIR}/src/auth"
     "${CMAKE_BINARY_DIR}/src/common"
     ${LIBXAU_INCLUDE_DIRS}
-    "${LIBXCB_INCLUDE_DIR}"
 )
 
 configure_file(config.h.in config.h IMMEDIATE @ONLY)
@@ -61,8 +60,7 @@ target_link_libraries(plasmalogin
                       Qt${QT_MAJOR_VERSION}::DBus
                       Qt${QT_MAJOR_VERSION}::Network
                       Qt${QT_MAJOR_VERSION}::Qml
-                      ${LIBXAU_LINK_LIBRARIES}
-                      ${LIBXCB_LIBRARIES})
+                      ${LIBXAU_LINK_LIBRARIES})
 if(PAM_FOUND)
     target_link_libraries(plasmalogin ${PAM_LIBRARIES})
 else()
