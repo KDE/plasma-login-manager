@@ -51,7 +51,6 @@ namespace PLASMALOGIN {
 
     signals:
         void informationMessage(const QString &message);
-        void hostNameChanged(const QString &hostName);
 
         void socketDisconnected();
         void loginFailed();

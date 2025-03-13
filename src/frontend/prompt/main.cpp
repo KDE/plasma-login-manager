@@ -10,8 +10,12 @@
 #include <PlasmaQuick/QuickViewSharedEngine>
 
 #include "backend/GreeterProxy.h"
+#include "mockbackend/MockGreeterProxy.h"
+
 #include "SessionModel.h"
 #include "UserModel.h"
+
+
 
 class LoginGreeter : public QObject
 {
@@ -28,6 +32,7 @@ public:
         }
     }
     static void setTestModeEnabled(bool testModeEnabled);
+    static bool testModeEnabled();
 
 private:
     void createWindowForScreen(QScreen *screen)
@@ -89,6 +94,11 @@ void LoginGreeter::setTestModeEnabled(bool testModeEnabled)
     s_testMode = testModeEnabled;
 }
 
+bool LoginGreeter::testModeEnabled()
+{
+    return s_testMode;
+}
+
 int main(int argc, char *argv[])
 {
     QCommandLineParser parser;
@@ -100,7 +110,11 @@ int main(int argc, char *argv[])
     LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
 
     QQuickWindow::setDefaultAlphaBuffer(true);
-    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
+    if (LoginGreeter::testModeEnabled()) {
+        qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new MockGreeterProxy);
+    } else {
+        qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
+    }
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new SDDM::UserModel(true));
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());

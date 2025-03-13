@@ -9,6 +9,7 @@ set(LOGIN_GREETER_SRCS main.cpp
     UserModel.cpp
     backend/GreeterProxy.cpp
     backend/SocketWriter.cpp
+    mockbackend/MockGreeterProxy.cpp
 )
 
 qt_add_resources(RESOURCE_FILES resources.qrc)
