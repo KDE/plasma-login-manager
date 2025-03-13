@@ -60,12 +60,8 @@ target_link_libraries(plasmalogin
                       Qt${QT_MAJOR_VERSION}::DBus
                       Qt${QT_MAJOR_VERSION}::Network
                       Qt${QT_MAJOR_VERSION}::Qml
-                      ${LIBXAU_LINK_LIBRARIES})
-if(PAM_FOUND)
-    target_link_libraries(plasmalogin ${PAM_LIBRARIES})
-else()
-    target_link_libraries(plasmalogin crypt)
-endif()
+                      ${LIBXAU_LINK_LIBRARIES}
+                      ${PAM_LIBRARIES})
 
 if(JOURNALD_FOUND)
     target_link_libraries(plasmalogin ${JOURNALD_LIBRARIES})
