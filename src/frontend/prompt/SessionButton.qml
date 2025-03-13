@@ -21,7 +21,9 @@ PlasmaComponents.ToolButton {
     visible: menu.count > 1
 
     Component.onCompleted: {
-        currentIndex = PlasmaLogin.SessionModel.lastIndex
+        // TODO: Configuration to pre-select previous option or perhaps configured default based on path
+        //currentIndex = PlasmaLogin.SessionModel.lastIndex
+        currentIndex = 0;
     }
     checkable: true
     checked: menu.opened
@@ -46,7 +48,11 @@ PlasmaComponents.ToolButton {
             onObjectAdded: (index, object) => menu.insertItem(index, object)
             onObjectRemoved: (index, object) => menu.removeItem(object)
             delegate: PlasmaComponents.MenuItem {
-                text: model.name
+                PlasmaComponents.ToolTip.text: model.comment
+                PlasmaComponents.ToolTip.visible: hovered
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+                text: model.display
                 onTriggered: {
                     root.currentIndex = model.index
                     sessionChanged()

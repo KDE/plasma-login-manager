@@ -1,66 +1,56 @@
-/***************************************************************************
-* Copyright (c) 2015-2016 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-* Copyright (c) 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* This program is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
-
-#ifndef SDDM_SESSIONMODEL_H
-#define SDDM_SESSIONMODEL_H
-
-#include "Session.h"
+/*
+ *  SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ *
+ *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
+ */
 
 #include <QAbstractListModel>
+#include <QUrl>
 
-#include <QHash>
-
-namespace SDDM {
-    class SessionModelPrivate;
-
-    class SessionModel : public QAbstractListModel {
-        Q_OBJECT
-        Q_DISABLE_COPY(SessionModel)
-        Q_PROPERTY(int lastIndex READ lastIndex CONSTANT)
-        Q_PROPERTY(int count READ rowCount CONSTANT)
-    public:
-        enum SessionRole {
-            DirectoryRole = Qt::UserRole + 1,
-            FileRole,
-            TypeRole,
-            NameRole,
-            ExecRole,
-            CommentRole
-        };
-        Q_ENUM(SessionRole)
-
-        SessionModel(QObject *parent = 0);
-        ~SessionModel();
-
-        QHash<int, QByteArray> roleNames() const override;
-
-        int lastIndex() const;
-
-        int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-        QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-    private:
-        SessionModelPrivate *d { nullptr };
-
-        void populate(Session::Type type, const QStringList &dirPaths);
+struct Session {
+    enum Type {
+        X11 = 0,
+        Wayland
     };
-}
 
-#endif // SDDM_SESSIONMODEL_H
+    QString path;
+    Type type;
+    QString displayName;
+    QString comment;
+
+    Session(QString path, Type type, QString displayName, QString comment)
+        : path(std::move(path))
+        , type(type)
+        , displayName(std::move(displayName))
+        , comment(std::move(comment))
+    {
+    }
+};
+
+class SessionModel : public QAbstractListModel
+{
+    Q_OBJECT
+
+public:
+    SessionModel(QObject *parent = nullptr);
+    ~SessionModel() override = default;
+
+    enum SessionRoles {
+        PathRole = Qt::UserRole + 1,
+        TypeRole,
+        DisplayNameRole,
+        CommentRole
+    };
+    Q_ENUM(SessionRoles)
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    QHash<int, QByteArray> roleNames() const override;
+
+private:
+    void repopulate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths);
+    void addSession(const QString path, const Session::Type type);
+
+    QList<Session> m_sessions;
+};

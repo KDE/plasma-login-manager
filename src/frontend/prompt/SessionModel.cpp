@@ -1,203 +1,185 @@
-/***************************************************************************
-* Copyright (c) 2015-2016 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-* Copyright (c) 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* This program is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+/*
+ *  SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ *
+ *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
+ */
+
+#include <QDir>
+#include <QFileSystemWatcher>
+#include <QStandardPaths>
+
+#include <KDesktopFile>
+#include <KLocalizedString>
 
 #include "SessionModel.h"
 
-// #include "Configuration.h" // TODO: persistent config
+SessionModel::SessionModel(QObject *parent)
+    : QAbstractListModel(parent)
+{
+    // NOTE: /usr/local/share is listed first, then /usr/share, so sessions in the former take precedence
+    const QStringList xSessionPaths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, "xsessions", QStandardPaths::LocateDirectory);
+    const QStringList waylandSessionPaths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, "wayland-sessions", QStandardPaths::LocateDirectory);
 
-#include <QFileInfo>
-#include <QVector>
-#include <QProcessEnvironment>
-#include <QFileSystemWatcher>
+    // NOTE: SDDM checks for the existence of /dev/dri before including wayland sessions
+    // This is not duplicated here — if wayland isn't going to work, then neither is the greeter
 
-namespace SDDM {
-    class SessionModelPrivate {
-    public:
-        ~SessionModelPrivate() {
-            qDeleteAll(sessions);
-            sessions.clear();
+    repopulate(xSessionPaths, waylandSessionPaths);
+
+    QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
+    watcher->addPaths(xSessionPaths + waylandSessionPaths);
+    connect(watcher, &QFileSystemWatcher::directoryChanged, [this, xSessionPaths, waylandSessionPaths]() {
+        repopulate(xSessionPaths, waylandSessionPaths);
+    });
+}
+
+int SessionModel::rowCount(const QModelIndex &parent) const
+{
+    return parent.isValid() ? 0 : m_sessions.count();
+}
+
+QVariant SessionModel::data(const QModelIndex &index, int role) const
+{
+    if (index.row() < 0 || index.row() >= m_sessions.count()) {
+        return {};
+    }
+
+    Session session = m_sessions[index.row()];
+
+    auto getDisplay = [this, session]() {
+        // Here we want to handle gracefully any sessions with the same display name by disambiguating using
+        // the session type and if not enough, an index (which will be as consistent as the installed files)
+
+        const bool shouldAppendType = std::any_of(m_sessions.cbegin(), m_sessions.cend(), [session](const Session &other) {
+            return session.path != other.path // Don't compare to ourselves
+                && session.displayName == other.displayName // Display names are the same...
+                && session.type != other.type; // ...but the type is different
+        });
+
+        int index = 1;
+        const bool shouldAppendIndex = std::any_of(m_sessions.cbegin(), m_sessions.cend(), [session, &index](const Session &other) {
+            const bool match = session.path != other.path // Don't compare to ourselves
+                && session.displayName == other.displayName // Display names are the same...
+                && session.type == other.type; // ..and so is the type
+
+            if (match && other.path < session.path) {
+                ++index;
+            }
+
+            return match;
+        });
+
+        if (shouldAppendType && shouldAppendIndex) {
+            switch (session.type) {
+            case Session::Type::X11:
+                return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session",
+                             "%1 (X11) (%2)",
+                             session.displayName,
+                             index);
+            case Session::Type::Wayland:
+                return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session",
+                             "%1 (Wayland) (%2)",
+                             session.displayName,
+                             index);
+            }
+        } else if (shouldAppendType) {
+            switch (session.type) {
+            case Session::Type::X11:
+                return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (X11)", session.displayName);
+            case Session::Type::Wayland:
+                return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (Wayland)", session.displayName);
+            }
+        } else if (shouldAppendIndex) {
+            return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the sessionn", "%1 (%2)", session.displayName, index);
         }
 
-        int lastIndex { 0 };
-        QStringList displayNames;
-        QVector<Session *> sessions;
+        return session.displayName;
     };
 
-    SessionModel::SessionModel(QObject *parent) : QAbstractListModel(parent), d(new SessionModelPrivate()) {
-        // Check for flag to show Wayland sessions
-        bool dri_active = QFileInfo::exists(QStringLiteral("/dev/dri"));
-
-        // initial population
-        /* // TODO: persistent configuration
-        beginResetModel();
-        if (dri_active)
-            populate(Session::WaylandSession, mainConfig.Wayland.SessionDir.get());
-        populate(Session::X11Session, mainConfig.X11.SessionDir.get());
-        endResetModel();
-
-        // refresh everytime a file is changed, added or removed
-        QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
-        connect(watcher, &QFileSystemWatcher::directoryChanged, [this]() {
-            // Recheck for flag to show Wayland sessions
-            bool dri_active = QFileInfo::exists(QStringLiteral("/dev/dri"));
-            beginResetModel();
-            d->sessions.clear();
-            d->displayNames.clear();
-            if (dri_active)
-                populate(Session::WaylandSession, mainConfig.Wayland.SessionDir.get());
-            populate(Session::X11Session, mainConfig.X11.SessionDir.get());
-            endResetModel();
-        });
-        watcher->addPaths(mainConfig.Wayland.SessionDir.get());
-        watcher->addPaths(mainConfig.X11.SessionDir.get());
-        */
-
-        beginResetModel();
-        if (dri_active) {
-            populate(Session::WaylandSession, {QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")});
-        }
-        populate(Session::X11Session, {QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")});
-        endResetModel();
-
-        // refresh everytime a file is changed, added or removed
-        QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
-        connect(watcher, &QFileSystemWatcher::directoryChanged, [this]() {
-            // Recheck for flag to show Wayland sessions
-            bool dri_active = QFileInfo::exists(QStringLiteral("/dev/dri"));
-            beginResetModel();
-            d->sessions.clear();
-            d->displayNames.clear();
-            if (dri_active) {
-                populate(Session::WaylandSession, {QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")});
-            }
-            populate(Session::X11Session, {QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")});
-            endResetModel();
-        });
-        watcher->addPaths({QStringLiteral("/usr/local/share/wayland-sessions"), QStringLiteral("/usr/share/wayland-sessions")});
-        watcher->addPaths({QStringLiteral("/usr/local/share/xsessions"), QStringLiteral("/usr/share/xsessions")});
+    switch (role) {
+    case Qt::DisplayRole:
+        return getDisplay();
+    case SessionModel::DisplayNameRole:
+        return session.displayName;
+    case SessionModel::PathRole:
+        return session.path;
+    case SessionModel::TypeRole:
+        return session.type;
+    case SessionModel::CommentRole:
+        return session.comment;
+    default:
+        break;
     }
 
-    SessionModel::~SessionModel() {
-        delete d;
-    }
+    return {};
+}
 
-    QHash<int, QByteArray> SessionModel::roleNames() const {
-        // set role names
-        QHash<int, QByteArray> roleNames;
-        roleNames[DirectoryRole] = QByteArrayLiteral("directory");
-        roleNames[FileRole] = QByteArrayLiteral("file");
-        roleNames[TypeRole] = QByteArrayLiteral("type");
-        roleNames[NameRole] = QByteArrayLiteral("name");
-        roleNames[ExecRole] = QByteArrayLiteral("exec");
-        roleNames[CommentRole] = QByteArrayLiteral("comment");
+QHash<int, QByteArray> SessionModel::roleNames() const
+{
+    QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
+    roles[PathRole] = "path";
+    roles[TypeRole] = "type";
+    roles[DisplayNameRole] = "displayName";
+    roles[CommentRole] = "comment";
+    return roles;
+}
 
-        return roleNames;
-    }
+void SessionModel::repopulate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths)
+{
+    beginResetModel();
 
-    int SessionModel::lastIndex() const {
-        return d->lastIndex;
-    }
+    m_sessions.clear();
 
-    int SessionModel::rowCount(const QModelIndex &parent) const {
-        return parent.isValid() ? 0 : d->sessions.length();
-    }
-
-    QVariant SessionModel::data(const QModelIndex &index, int role) const {
-        if (index.row() < 0 || index.row() >= d->sessions.count())
-            return QVariant();
-
-        // get session
-        Session *session = d->sessions[index.row()];
-
-        // return correct value
-        switch (role) {
-        case DirectoryRole:
-            return session->directory().absolutePath();
-        case FileRole:
-            return session->fileName();
-        case TypeRole:
-            return session->type();
-        case NameRole:
-            if (d->displayNames.count(session->displayName()) > 1 && session->type() == Session::WaylandSession)
-                return tr("%1 (Wayland)").arg(session->displayName());
-            return session->displayName();
-        case ExecRole:
-            return session->exec();
-        case CommentRole:
-            return session->comment();
-        default:
-            break;
-        }
-
-        // return empty value
-        return QVariant();
-    }
-
-    void SessionModel::populate(Session::Type type, const QStringList &dirPaths) {
-        // read session files
+    auto findSessions = [](const QStringList &sessionPaths) {
         QStringList sessions;
-        for (const auto &path: dirPaths) {
-            QDir dir = path;
-            dir.setNameFilters(QStringList() << QStringLiteral("*.desktop"));
+
+        for (const auto &sessionPath : sessionPaths) {
+            QDir dir = sessionPath;
+            dir.setNameFilters({QStringLiteral("*.desktop")});
             dir.setFilter(QDir::Files);
-            sessions += dir.entryList();
-        }
-        // read session
-        sessions.removeDuplicates();
-        for (auto& session : std::as_const(sessions)) {
-            Session *si = new Session(type, session);
-            bool execAllowed = true;
-            QFileInfo fi(si->tryExec());
-            if (fi.isAbsolute()) {
-                if (!fi.exists() || !fi.isExecutable())
-                    execAllowed = false;
-            } else {
-                execAllowed = false;
-                QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-                QString envPath = env.value(QStringLiteral("PATH"));
-                const QStringList pathList = envPath.split(QLatin1Char(':'));
-                for(const QString &path : pathList) {
-                    QDir pathDir(path);
-                    fi.setFile(pathDir, si->tryExec());
-                    if (fi.exists() && fi.isExecutable()) {
-                        execAllowed = true;
+
+            for (const auto &session : dir.entryList()) {
+                QString sessionFileName = QFileInfo(session).fileName();
+
+                // Ignore duplicate sessions, already added ones take precedence
+                bool isDuplicate = false;
+                for (const auto &existingSession : sessions) {
+                    if (QFileInfo(existingSession).fileName() == sessionFileName) {
+                        isDuplicate = true;
                         break;
                     }
                 }
-            }
-            // add to sessions list
-            if (!si->isHidden() && !si->isNoDisplay() && execAllowed) {
-                d->displayNames.append(si->displayName());
-                d->sessions.push_back(si);
-            } else {
-                delete si;
+
+                if (!isDuplicate) {
+                    sessions.append(sessionPath + "/" + session);
+                }
             }
         }
-        /* TODO: persistent config
-        // find out index of the last session
-        for (int i = 0; i < d->sessions.size(); ++i) {
-            if (d->sessions.at(i)->fileName() == stateConfig.Last.Session.get()) {
-                d->lastIndex = i;
-                break;
-            }
-        }
-        */
+
+        return sessions;
+    };
+
+    for (const auto &xSession : findSessions(xSessionPaths)) {
+        addSession(xSession, Session::Type::X11);
     }
+
+    for (const auto &waylandSession : findSessions(waylandSessionPaths)) {
+        addSession(waylandSession, Session::Type::Wayland);
+    }
+
+    /*
+    // Useful for testing SessionModel::Data(index, Qt::DisplayRole) getDisplay lambda
+    m_sessions << Session("/foo/bar1.desktop", Session::Type::Wayland, "Plasma", "This is Plasma Wayland 1");
+    m_sessions << Session("/foo/bar2.desktop", Session::Type::Wayland, "Plasma", "This is Plasma Wayland 2");
+    m_sessions << Session("/foo/bar3.desktop", Session::Type::X11, "Plasma", "This is Plasma X11 1");
+    */
+
+    endResetModel();
+}
+
+void SessionModel::addSession(const QString path, const Session::Type type)
+{
+    qDebug().nospace() << "Reading session (" << type << ") from " << path;
+
+    KDesktopFile desktop(path); // NOTE: localises for us
+    m_sessions << Session(path, type, desktop.readName(), desktop.readComment());
 }

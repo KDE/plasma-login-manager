@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QScreen>
 
+#include <KLocalizedString>
 #include <kworkspace6/sessionmanagement.h>
 #include <KWindowSystem>
 #include <LayerShellQt/Window>
@@ -99,6 +100,8 @@ bool LoginGreeter::testModeEnabled()
 
 int main(int argc, char *argv[])
 {
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("plasma-login"));
+
     QCommandLineParser parser;
     parser.addOption(QCommandLineOption(QStringLiteral("test"), QStringLiteral("Run in test mode")));
     parser.addHelpOption();
@@ -113,7 +116,7 @@ int main(int argc, char *argv[])
     } else {
         qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
     }
-    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SDDM::SessionModel);
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SessionModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new PlasmaLogin::UserModel(true));
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
 
