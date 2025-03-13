@@ -141,6 +141,8 @@ void setEnvironmentVariable(const char *name, QByteArrayView value)
 
 void sourceFiles(const QStringList &files)
 {
+    Q_UNUSED(files); // FIXME
+
     // QStringList filteredFiles;
     // std::copy_if(files.begin(), files.end(), std::back_inserter(filteredFiles), [](const QString &i) {
     //     return QFileInfo(i).isReadable();
