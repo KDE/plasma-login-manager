@@ -18,7 +18,7 @@ MockGreeterProxy::MockGreeterProxy()
 void MockGreeterProxy::login(const QString &user, const QString &password, const int sessionIndex)
 {
     Q_UNUSED(sessionIndex);
-    qStdOut() << "Login attempt. User: " << user << " Password: " << password;
+    qStdOut() << "Login attempt. User: " << user << " Password: " << password << Qt::endl;
 
     if(password == "mypassword" && !user.isEmpty()) {
         QTimer::singleShot(100, this, &MockGreeterProxy::loginSucceeded);
