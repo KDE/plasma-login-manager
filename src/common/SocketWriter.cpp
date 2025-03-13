@@ -44,9 +44,9 @@ namespace PLASMALOGIN {
         return *this;
     }
 
-    SocketWriter &SocketWriter::operator << (const Session &s) {
-        *output << s;
+    // SocketWriter &SocketWriter::operator << (const Session &s) {
+    //     *output << s;
 
-        return *this;
-    }
+    //     return *this;
+    // }
 }

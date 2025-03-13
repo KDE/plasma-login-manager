@@ -59,6 +59,8 @@ namespace PLASMALOGIN {
 
         bool isWaylandGreeter = false;
 
+qDebug() << "DAVE" << env.value(QStringLiteral("XDG_SESSION_TYPE"));
+
         if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("x11")) {
             QString command;
             if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {

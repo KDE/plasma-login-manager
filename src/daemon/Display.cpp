@@ -46,6 +46,9 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 
+#include <KDesktopFile>
+#include <KConfigGroup>
+
 #include "Login1Manager.h"
 #include "Login1Session.h"
 #include "VirtualTerminal.h"
@@ -180,9 +183,9 @@ namespace PLASMALOGIN {
                 autologinSession = stateConfig.Last.Session.get();
             }
             if (findSessionEntry(mainConfig.Wayland.SessionDir.get(), autologinSession)) {
-                m_autologinSession.setTo(Session::WaylandSession, autologinSession);
+                m_autologinSession = Session::create(Session::WaylandSession, autologinSession);
             } else if (findSessionEntry(mainConfig.X11.SessionDir.get(), autologinSession)) {
-                m_autologinSession.setTo(Session::X11Session, autologinSession);
+                m_autologinSession = Session::create(Session::X11Session, autologinSession);
             } else {
                 qCritical() << "Unable to find autologin session entry" << autologinSession;
             }
@@ -320,6 +323,7 @@ namespace PLASMALOGIN {
         startAuth(user, password, session);
     }
 
+    // DAVE: drop this
     bool Display::findSessionEntry(const QStringList &dirPaths, const QString &name) const {
         const QFileInfo fileInfo(name);
         QString fileName = name;
@@ -344,6 +348,8 @@ namespace PLASMALOGIN {
 
     bool Display::startAuth(const QString &user, const QString &password, const Session &session) {
 
+        qDebug() << "start auth" << "user" << session.isValid() << session.exec();
+
         if (m_auth->isActive()) {
             qWarning() << "Existing authentication ongoing, aborting";
             return false;
@@ -356,6 +362,7 @@ namespace PLASMALOGIN {
             qCritical() << "Invalid session" << session.fileName();
             return false;
         }
+
         if (session.xdgSessionType().isEmpty()) {
             qCritical() << "Failed to find XDG session type for session" << session.fileName();
             return false;
@@ -399,11 +406,9 @@ namespace PLASMALOGIN {
 
 
         // some information
-        qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId;
+        qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId << session.xdgSessionType();
 
         QProcessEnvironment env;
-        env.insert(session.additionalEnv());
-
         env.insert(QStringLiteral("PATH"), mainConfig.Users.DefaultPath.get());
         env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(seat()->name()));
         env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
