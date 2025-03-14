@@ -43,7 +43,6 @@ namespace PLASMALOGIN {
         Q_DISABLE_COPY(Display)
     public:
         enum DisplayServerType {
-            X11DisplayServerType,
             X11UserDisplayServerType,
             WaylandDisplayServerType
         };
@@ -90,7 +89,7 @@ namespace PLASMALOGIN {
         void startSocketServerAndGreeter();
         bool handleAutologinFailure();
 
-        DisplayServerType m_displayServerType = X11DisplayServerType;
+        DisplayServerType m_displayServerType = WaylandDisplayServerType;
 
         bool m_started { false };
 

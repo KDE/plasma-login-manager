@@ -27,7 +27,6 @@ set(DAEMON_SOURCES
     Seat.cpp
     SeatManager.cpp
     SocketServer.cpp
-    XorgDisplayServer.cpp
     XorgUserDisplayServer.cpp
     XorgUserDisplayServer.h
     WaylandDisplayServer.cpp
