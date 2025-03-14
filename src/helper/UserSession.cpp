@@ -59,40 +59,6 @@ namespace PLASMALOGIN {
 
         bool isWaylandGreeter = false;
 
-        // If the Xorg display server was already started, write the passed
-        // auth cookie to /tmp/xauth_XXXXXX. This is done in the parent process
-        // so that it can clean up the file on session end.
-        if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("x11")
-            && m_displayServerCmd.isEmpty()) {
-            // Create the Xauthority file
-            QByteArray cookie = helper->cookie();
-            if (cookie.isEmpty()) {
-                qCritical() << "Can't start X11 session with empty auth cookie";
-                return false;
-            }
-
-            // Place it into /tmp, which is guaranteed to be read/writeable by
-            // everyone while having the sticky bit set to avoid messing with
-            // other's files.
-            m_xauthFile.setFileTemplate(QStringLiteral("/tmp/xauth_XXXXXX"));
-
-            if (!m_xauthFile.open()) {
-                qCritical() << "Could not create the Xauthority file";
-                return false;
-            }
-
-            QString display = processEnvironment().value(QStringLiteral("DISPLAY"));
-
-            if (!XAuth::writeCookieToFile(display, m_xauthFile.fileName(), cookie)) {
-                qCritical() << "Failed to write the Xauthority file";
-                m_xauthFile.close();
-                return false;
-            }
-
-            env.insert(QStringLiteral("XAUTHORITY"), m_xauthFile.fileName());
-            setProcessEnvironment(env);
-        }
-
         if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("x11")) {
             QString command;
             if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
@@ -262,12 +228,6 @@ namespace PLASMALOGIN {
                 qCritical() << "getpwnam_r(" << username << ") username not found!";
             else
                 qCritical() << "getpwnam_r(" << username << ") failed with error: " << strerror(err);
-            exit(Auth::HELPER_OTHER_ERROR);
-        }
-
-        const int xauthHandle = m_xauthFile.handle();
-        if (xauthHandle != -1 && fchown(xauthHandle, pw.pw_uid, pw.pw_gid) != 0) {
-            qCritical() << "fchown failed for" << m_xauthFile.fileName();
             exit(Auth::HELPER_OTHER_ERROR);
         }
 
