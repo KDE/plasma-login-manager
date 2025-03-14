@@ -24,7 +24,6 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QProcess>
-#include <QtCore/QTemporaryFile>
 
 namespace PLASMALOGIN {
     class HelperApp;
@@ -69,7 +68,6 @@ namespace PLASMALOGIN {
 #endif
 
         QString m_path { };
-        QTemporaryFile m_xauthFile;
         QString m_displayServerCmd;
 
         /*!
