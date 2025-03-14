@@ -1,0 +1,19 @@
+[Domain]
+Name=PlasmaLogin
+Icon=kauth-example
+URL=https://invent.kde.org/davidedmundson/plasma-login
+
+[org.kde.kcontrol.kcmplasmalogin.save]
+Name=Save Settings
+Description=Save Settings in Plasma Login
+Policy=auth_admin
+
+[org.kde.kcontrol.kcmplasmalogin.sync]
+Name=Synchronize Settings
+Description=Synchronize user settings with Plasma Login settings
+Policy=auth_admin
+
+[org.kde.kcontrol.kcmplasmalogin.reset]
+Name=Reset Settings
+Description=Reset Plasma Login settings to factory default state
+Policy=auth_admin
