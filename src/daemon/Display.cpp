@@ -24,7 +24,6 @@
 #include "Configuration.h"
 #include "DaemonApp.h"
 #include "DisplayManager.h"
-#include "XorgDisplayServer.h"
 #include "XorgUserDisplayServer.h"
 #include "Seat.h"
 #include "SocketServer.h"
@@ -96,11 +95,9 @@ namespace PLASMALOGIN {
         } else if (displayServerType == QStringLiteral("wayland")) {
             ret = WaylandDisplayServerType;
         } else {
-            if (displayServerType != QLatin1String("x11")) {
-                qWarning("\"%s\" is an invalid value for General.DisplayServer: fall back to \"x11\"",
+            qWarning("\"%s\" is an invalid value for General.DisplayServer: fall back to \"wayland\"",
                     qPrintable(displayServerType));
-            }
-            ret = X11DisplayServerType;
+            ret = WaylandDisplayServerType;
         }
         return ret;
     }
@@ -234,17 +231,14 @@ namespace PLASMALOGIN {
 
         // Handle autologin early, unless it needs the display server to be up
         // (rootful X + X11 autologin session).
-        if (m_autologinSession.isValid()
-            && !(m_displayServerType == X11DisplayServerType
-                 && m_autologinSession.type() == Session::X11Session)) {
+        if (m_autologinSession.isValid()) {
             m_auth->setAutologin(true);
             if (startAuth(mainConfig.Autologin.User.get(), QString(), m_autologinSession))
                 return true;
             else
                 return handleAutologinFailure();
          }
-
-        return m_displayServer->start();
+         return m_displayServer->start();
     }
 
     void Display::startSocketServerAndGreeter() {
@@ -272,13 +266,7 @@ namespace PLASMALOGIN {
         qWarning() << "Autologin failed!";
         m_auth->setAutologin(false);
         // For late autologin handling only the greeter needs to be started.
-        if (m_displayServerType == X11DisplayServerType
-            && m_autologinSession.type() == Session::X11Session) {
-            startSocketServerAndGreeter();
-            return true;
-        } else {
-            return m_displayServer->start();
-        }
+        return m_displayServer->start();
     }
 
     void Display::displayServerStarted() {
@@ -287,18 +275,6 @@ namespace PLASMALOGIN {
 
         // log message
         qDebug() << "Display server started.";
-
-        // Handle autologin late if it needs the display server to be up
-        // (rootful X + X11 autologin session).
-        if (m_autologinSession.isValid()
-            && (m_displayServerType == X11DisplayServerType
-                && m_autologinSession.type() == Session::X11Session)) {
-            m_auth->setAutologin(true);
-            if (!startAuth(mainConfig.Autologin.User.get(), QString(), m_autologinSession))
-                handleAutologinFailure();
-
-            return;
-        }
 
         startSocketServerAndGreeter();
     }
@@ -413,12 +389,14 @@ namespace PLASMALOGIN {
         m_sessionName = session.fileName();
 
         m_sessionTerminalId = m_terminalId;
-        if ((session.type() == Session::WaylandSession && m_displayServerType == X11DisplayServerType) || (m_greeter->isRunning() && m_displayServerType != X11DisplayServerType)) {
+
+        if (m_greeter->isRunning()) {
             // Create a new VT when we need to have another compositor running
             if (seat()->canTTY()) {
                 m_sessionTerminalId = VirtualTerminal::setUpNewVt();
             }
         }
+
 
         // some information
         qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId;
@@ -442,10 +420,7 @@ namespace PLASMALOGIN {
 #endif
 
         if (session.xdgSessionType() == QLatin1String("x11")) {
-          if (m_displayServerType == X11DisplayServerType)
-            env.insert(QStringLiteral("DISPLAY"), name());
-          else
-            m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
+             m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
         } else {
             m_auth->setDisplayServerCommand(QStringLiteral());
 	}
@@ -472,9 +447,6 @@ namespace PLASMALOGIN {
                 OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
                 manager.UnlockSession(m_reuseSessionId);
                 manager.ActivateSession(m_reuseSessionId);
-            } else {
-                if (qobject_cast<XorgDisplayServer *>(m_displayServer))
-                    m_auth->setCookie(qobject_cast<XorgDisplayServer *>(m_displayServer)->cookie());
             }
 
             // save last user and last session

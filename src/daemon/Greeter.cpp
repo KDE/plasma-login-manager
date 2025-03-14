@@ -25,7 +25,6 @@
 #include "DisplayManager.h"
 #include "Seat.h"
 #include "Display.h"
-#include "XorgDisplayServer.h"
 #include "XorgUserDisplayServer.h"
 #include "WaylandDisplayServer.h"
 

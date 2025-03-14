@@ -23,7 +23,6 @@
 #include "Configuration.h"
 #include "DaemonApp.h"
 #include "Display.h"
-#include "XorgDisplayServer.h"
 #include "VirtualTerminal.h"
 
 #include <QDebug>
