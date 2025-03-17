@@ -1,5 +1,7 @@
 #include <QObject>
 
+#include "../backend/Messages.h"
+
 // this class needs the same QML interface as GreeterProxy
 class MockGreeterProxy : public QObject
 {
@@ -7,7 +9,7 @@ class MockGreeterProxy : public QObject
 public:
     MockGreeterProxy();
 public Q_SLOTS:
-    void login(const QString &user, const QString &password, const int sessionIndex);
+    void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
 
 Q_SIGNALS:
     void informationMessage(const QString &message);

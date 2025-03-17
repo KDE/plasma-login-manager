@@ -17,6 +17,9 @@ PlasmaComponents.ToolButton {
 
     property int currentIndex: -1
 
+    readonly property int currentSessionType: instantiator.model.data(instantiator.model.index(currentIndex, 0), PlasmaLogin.SessionModel.TypeRole)
+    readonly property string currentSessionFileName: instantiator.model.data(instantiator.model.index(currentIndex, 0), PlasmaLogin.SessionModel.FileNameRole)
+
     text: i18nd("plasma-desktop-sddm-theme", "Desktop Session: %1", instantiator.objectAt(currentIndex).text || "")
     visible: menu.count > 1
 

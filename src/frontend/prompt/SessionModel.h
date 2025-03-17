@@ -9,18 +9,19 @@
 
 struct Session {
     enum Type {
-        X11 = 0,
+        Unknown = 0,
+        X11,
         Wayland
     };
 
-    QString path;
     Type type;
+    QString path;
     QString displayName;
     QString comment;
 
-    Session(QString path, Type type, QString displayName, QString comment)
-        : path(std::move(path))
-        , type(type)
+    Session(Type type, QString path, QString displayName, QString comment)
+        : type(type)
+        , path(std::move(path))
         , displayName(std::move(displayName))
         , comment(std::move(comment))
     {
@@ -36,8 +37,9 @@ public:
     ~SessionModel() override = default;
 
     enum SessionRoles {
-        PathRole = Qt::UserRole + 1,
-        TypeRole,
+        TypeRole = Qt::UserRole + 1,
+        PathRole,
+        FileNameRole,
         DisplayNameRole,
         CommentRole
     };

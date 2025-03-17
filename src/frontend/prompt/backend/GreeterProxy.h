@@ -22,6 +22,8 @@
 
 #include <QObject>
 
+#include "Messages.h"
+
 class QLocalSocket;
 
 namespace PLASMALOGIN {
@@ -41,7 +43,7 @@ namespace PLASMALOGIN {
         void setSessionModel(SessionModel *model);
 
     public slots:
-        void login(const QString &user, const QString &password, const int sessionIndex) const;
+        void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
 
     private slots:
         void connected();

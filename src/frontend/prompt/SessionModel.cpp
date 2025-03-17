@@ -70,6 +70,11 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
 
         if (shouldAppendType && shouldAppendIndex) {
             switch (session.type) {
+            case Session::Type::Unknown:
+                return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session",
+                             "%1 (Unknown) (%2)",
+                             session.displayName,
+                             index);
             case Session::Type::X11:
                 return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session",
                              "%1 (X11) (%2)",
@@ -83,6 +88,8 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
             }
         } else if (shouldAppendType) {
             switch (session.type) {
+            case Session::Type::Unknown:
+                return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (Unknown)", session.displayName);
             case Session::Type::X11:
                 return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (X11)", session.displayName);
             case Session::Type::Wayland:
@@ -100,10 +107,12 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
         return getDisplay();
     case SessionModel::DisplayNameRole:
         return session.displayName;
-    case SessionModel::PathRole:
-        return session.path;
     case SessionModel::TypeRole:
         return session.type;
+    case SessionModel::PathRole:
+        return session.path;
+    case SessionModel::FileNameRole:
+        return QFileInfo(session.path).fileName();
     case SessionModel::CommentRole:
         return session.comment;
     default:
@@ -116,8 +125,8 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> SessionModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-    roles[PathRole] = "path";
     roles[TypeRole] = "type";
+    roles[PathRole] = "path";
     roles[DisplayNameRole] = "displayName";
     roles[CommentRole] = "comment";
     return roles;
@@ -168,9 +177,9 @@ void SessionModel::repopulate(const QStringList &xSessionPaths, const QStringLis
 
     /*
     // Useful for testing SessionModel::Data(index, Qt::DisplayRole) getDisplay lambda
-    m_sessions << Session("/foo/bar1.desktop", Session::Type::Wayland, "Plasma", "This is Plasma Wayland 1");
-    m_sessions << Session("/foo/bar2.desktop", Session::Type::Wayland, "Plasma", "This is Plasma Wayland 2");
-    m_sessions << Session("/foo/bar3.desktop", Session::Type::X11, "Plasma", "This is Plasma X11 1");
+    m_sessions << Session(Session::Type::Wayland, "/foo/bar1.desktop", "Plasma", "This is Plasma Wayland 1");
+    m_sessions << Session(Session::Type::Wayland, "/foo/bar2.desktop", "Plasma", "This is Plasma Wayland 2");
+    m_sessions << Session(Session::Type::X11, "/foo/bar3.desktop", "Plasma", "This is Plasma X11 1");
     */
 
     endResetModel();
@@ -181,5 +190,5 @@ void SessionModel::addSession(const QString path, const Session::Type type)
     qDebug().nospace() << "Reading session (" << type << ") from " << path;
 
     KDesktopFile desktop(path); // NOTE: localises for us
-    m_sessions << Session(path, type, desktop.readName(), desktop.readComment());
+    m_sessions << Session(type, path, desktop.readName(), desktop.readComment());
 }
