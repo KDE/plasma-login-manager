@@ -4,7 +4,6 @@ remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY=0)
 remove_definitions(-DQT_USE_QSTRINGBUILDER)
 
 set(LOGIN_GREETER_SRCS main.cpp
-    Session.cpp
     SessionModel.cpp
     UserModel.cpp
     backend/GreeterProxy.cpp

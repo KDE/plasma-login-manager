@@ -36,7 +36,11 @@ namespace PLASMALOGIN {
         InformationMessage,
     };
 
-
+    enum class SessionType {
+        Unknown = 0,
+        X11,
+        Wayland
+    };
 }
 
 #endif // PLASMALOGIN_MESSAGES_H

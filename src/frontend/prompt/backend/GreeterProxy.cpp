@@ -19,10 +19,6 @@
 ***************************************************************************/
 
 #include "GreeterProxy.h"
-
-// #include "Configuration.h"
-#include "Messages.h"
-// #include "SessionModel.h"
 #include "SocketWriter.h"
 
 #include <QLocalSocket>
@@ -56,28 +52,8 @@ namespace PLASMALOGIN {
         d->sessionModel = model;
     }
 
-    void GreeterProxy::login(const QString &user, const QString &password, const int sessionIndex) const {
-        Q_UNUSED(sessionIndex); // FIXME
-
-        // if (!d->sessionModel) {
-        //     // log error
-        //     qCritical() << "Session model is not set.";
-        //
-        //     // return
-        //     return;
-        // }
-
-        // get model index
-        // QModelIndex index = d->sessionModel->index(sessionIndex, 0);
-
-        // send command to the daemon
-        // Session::Type type = static_cast<Session::Type>(d->sessionModel->data(index, SessionModel::TypeRole).toInt());
-        // QString name = d->sessionModel->data(index, SessionModel::FileRole).toString();
-        // Session session(type, name);
-
-        // DAVE, fix this somehow.
-
-        SocketWriter(d->socket) << quint32(GreeterMessages::Login) << user << password << 2 << "plasmawayland-dev6.desktop";
+    void GreeterProxy::login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const {
+        SocketWriter(d->socket) << quint32(GreeterMessages::Login) << user << password << static_cast<uint32_t>(sessionType) << sessionFileName;
     }
 
     void GreeterProxy::connected() {

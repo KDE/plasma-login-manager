@@ -183,7 +183,7 @@ Item {
                         visible: !userListComponent.showUsernamePrompt
                     }]
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentIndex)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
             }
 
             readonly property real zoomFactor: 1.5
@@ -271,7 +271,7 @@ Item {
                     }
                 }
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentIndex)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
 
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
@@ -358,9 +358,9 @@ Item {
         }
     }
 
-    function handleLoginRequest(username, password, sessionIndex) {
+    function handleLoginRequest(username, password, sessionType, sessionFileName) {
         root.notificationMessage = "";
-        PlasmaLogin.Authenticator.login(username, password, sessionIndex);
+        PlasmaLogin.Authenticator.login(username, password, sessionType, sessionFileName);
     }
 
     Connections {

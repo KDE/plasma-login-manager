@@ -9,11 +9,24 @@ MockGreeterProxy::MockGreeterProxy()
     qDebug().noquote() << QStringLiteral("Mock backend in use, use password %1 for successful login on any user").arg(s_mockPassword);
 }
 
-void MockGreeterProxy::login(const QString &user, const QString &password, const int sessionIndex)
+void MockGreeterProxy::login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const
 {
     bool const success = (!user.isEmpty() && password == s_mockPassword);
 
-    qDebug().nospace() << "Login " << (success ? "success" : "failure") << " with user " << user << ", password " << password << ", session " << sessionIndex;
+    QString sessionTypeName;
+    switch (sessionType) {
+        case PLASMALOGIN::SessionType::Unknown:
+        sessionTypeName = QStringLiteral("Unknown");
+        break;
+    case PLASMALOGIN::SessionType::X11:
+        sessionTypeName = QStringLiteral("X11");
+        break;
+    case PLASMALOGIN::SessionType::Wayland:
+        sessionTypeName = QStringLiteral("Wayland");
+        break;
+    }
+
+    qDebug().nospace() << "Login " << (success ? "success" : "failure") << " with user " << user << ", password " << password << ", session " << sessionTypeName << " " << sessionFileName;
 
     if (success) {
         QTimer::singleShot(100, this, &MockGreeterProxy::loginSucceeded);
