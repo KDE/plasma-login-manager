@@ -57,8 +57,6 @@ namespace PLASMALOGIN {
         );
 
         Section(Wayland,
-            Entry(SessionDir,          QStringList, {_S("/usr/local/share/wayland-sessions"),
-                                                     _S("/usr/share/wayland-sessions")},        _S("Comma-separated list of directories containing available Wayland sessions"));
             Entry(SessionCommand,      QString,     _S(WAYLAND_SESSION_COMMAND),                _S("Path to a script to execute when starting the desktop session"));
             Entry(SessionLogFile,      QString,     _S(".local/share/plasmalogin/wayland-session.log"),_S("Path to the user session log file"));
         );
