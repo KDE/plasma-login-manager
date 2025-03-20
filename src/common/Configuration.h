@@ -44,7 +44,6 @@ namespace PLASMALOGIN {
                                                                                                    "If property is set to none, numlock won't be changed\n"
                                                                                                    "NOTE: Currently ignored if autologin is enabled."));
         Entry(Namespaces,          QStringList, QStringList(),                                  _S("Comma-separated list of Linux namespaces for user session to enter"));
-        Entry(GreeterEnvironment,  QStringList, QStringList(),                                  _S("Comma-separated list of environment variables to be set"));
 
         // TODO: Not absolutely sure if everything belongs here. Xsessions, VT and probably some more seem universal
         Section(X11,
@@ -55,7 +54,6 @@ namespace PLASMALOGIN {
             Entry(SessionLogFile,      QString,     _S(".local/share/plasmalogin/xorg-session.log"),   _S("Path to the user session log file"));
             Entry(DisplayCommand,      QString,     _S(DATA_INSTALL_DIR "/scripts/Xsetup"),     _S("Path to a script to execute when starting the display server"));
             Entry(DisplayStopCommand,  QString,     _S(DATA_INSTALL_DIR "/scripts/Xstop"),      _S("Path to a script to execute when stopping the display server"));
-            Entry(EnableHiDPI,         bool,        true,                                      _S("Enable Qt's automatic high-DPI scaling"));
         );
 
         Section(Wayland,
