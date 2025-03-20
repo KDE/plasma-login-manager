@@ -22,7 +22,6 @@
 #include "HelperApp.h"
 
 #include "backend/PamBackend.h"
-#include "Configuration.h"
 #include "UserSession.h"
 
 #include <QtCore/QProcessEnvironment>
@@ -108,14 +107,6 @@ namespace PLASMALOGIN {
         if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
             // Qt internally may load the xdg portal system early on, prevent this, we do not have a functional session running.
             env.insert(QStringLiteral("QT_NO_XDG_DESKTOP_PORTAL"), QStringLiteral("1"));
-            for (const auto &entry : mainConfig.GreeterEnvironment.get()) {
-                const int index = entry.indexOf(QLatin1Char('='));
-                if (index < 0) {
-                    qWarning() << "Malformed environment variable" << entry;
-                    continue;
-                }
-                env.insert(entry.left(index), entry.mid(index + 1));
-            }
         }
         // TODO: I'm fairly sure this shouldn't be done for PAM sessions, investigate!
         m_app->session()->setProcessEnvironment(env);
