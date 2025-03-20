@@ -141,17 +141,7 @@ namespace PLASMALOGIN {
 
         // log message
         qDebug() << "Greeter stopping...";
-
-        if (daemonApp->testing()) {
-            // terminate process
-            m_process->terminate();
-
-            // wait for finished
-            if (!m_process->waitForFinished(5000))
-                m_process->kill();
-        } else {
-            m_auth->stop();
-        }
+        m_auth->stop();
     }
 
     void Greeter::finished() {

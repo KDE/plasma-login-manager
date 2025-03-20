@@ -96,7 +96,7 @@ namespace PLASMALOGIN {
     }
 
     void SeatManager::initialize() {
-        if (DaemonApp::instance()->testing() || !Logind::isAvailable()) {
+        if (!Logind::isAvailable()) {
             //if we don't have logind/CK2, just create a single seat immediately and don't do any other connections
             createSeat(QStringLiteral("seat0"));
             return;

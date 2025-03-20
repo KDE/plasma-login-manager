@@ -38,8 +38,6 @@ namespace PLASMALOGIN {
 
         static DaemonApp *instance() { return self; }
 
-        // TODO: move these two away
-        bool testing() const;
         bool first { true };
 
         QString hostName() const;

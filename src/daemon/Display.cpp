@@ -247,15 +247,12 @@ namespace PLASMALOGIN {
     void Display::startSocketServerAndGreeter() {
         // start socket server
         m_socketServer->start(m_displayServer->display());
-
-        if (!daemonApp->testing()) {
-            // change the owner and group of the socket to avoid permission denied errors
-            struct passwd *pw = getpwnam("plasmalogin");
-            if (pw) {
-                if (chown(qPrintable(m_socketServer->socketAddress()), pw->pw_uid, pw->pw_gid) == -1) {
-                    qWarning() << "Failed to change owner of the socket";
-                    return;
-                }
+        // change the owner and group of the socket to avoid permission denied errors
+        struct passwd *pw = getpwnam("plasmalogin");
+        if (pw) {
+            if (chown(qPrintable(m_socketServer->socketAddress()), pw->pw_uid, pw->pw_gid) == -1) {
+                qWarning() << "Failed to change owner of the socket";
+                return;
             }
         }
 
