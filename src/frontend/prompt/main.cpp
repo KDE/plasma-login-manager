@@ -13,8 +13,8 @@
 #include "backend/GreeterProxy.h"
 #include "mockbackend/MockGreeterProxy.h"
 
-#include "SessionModel.h"
-#include "UserModel.h"
+#include "models/sessionmodel.h"
+#include "models/usermodel.h"
 
 class LoginGreeter : public QObject
 {
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
         qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
     }
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionModel", new SessionModel);
-    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new PlasmaLogin::UserModel(true));
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new UserModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
 
     LoginGreeter greeter;

@@ -4,8 +4,6 @@ remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY=0)
 remove_definitions(-DQT_USE_QSTRINGBUILDER)
 
 set(LOGIN_GREETER_SRCS main.cpp
-    SessionModel.cpp
-    UserModel.cpp
     backend/GreeterProxy.cpp
     backend/SocketWriter.cpp
     mockbackend/MockGreeterProxy.cpp
@@ -23,6 +21,7 @@ ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
 
 add_executable(plasma-login-greeter ${LOGIN_GREETER_SRCS})
 target_link_libraries(plasma-login-greeter
+    settings
     Qt::Quick
     Qt::DBus
     KF6::I18n

@@ -1,21 +1,25 @@
 /*
-    SPDX-FileCopyrightText: 2020 David Redondo <kde@david-redondo.de>
-    SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
+ *  SPDX-FileCopyrightText: 2020 Cyril Rossi <cyril.rossi@enioka.com>
+ *  SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ *
+ *  SPDX-License-Identifier: GPL-2.0-or-later
+ */
 
 #pragma once
 
-#include <KCModuleData>
+#include <QObject>
 
-class PlasmaLoginSettings;
+#include "kcmoduledata.h"
 
 class PlasmaLoginData : public KCModuleData
 {
     Q_OBJECT
+
 public:
-    PlasmaLoginData(QObject *parent);
-    PlasmaLoginSettings *plasmaLoginSettings() const;
+    explicit PlasmaLoginData(QObject *parent);
+
+    bool isDefaults() const override;
 
 private:
-    PlasmaLoginSettings *m_settings;
+    WallpaperSettings *m_wallpaperSettings = nullptr;
 };

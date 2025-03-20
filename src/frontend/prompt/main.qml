@@ -126,9 +126,13 @@ Item {
                 id: userListComponent
                 userListModel: PlasmaLogin.UserModel
                 loginScreenUiVisible: loginScreenRoot.uiVisible
-                userListCurrentIndex: PlasmaLogin.UserModel.lastIndex >= 0 ? PlasmaLogin.UserModel.lastIndex : 0
-                lastUserName: PlasmaLogin.UserModel.lastUser
+                //userListCurrentIndex: PlasmaLogin.UserModel.lastIndex >= 0 ? PlasmaLogin.UserModel.lastIndex : 0
+                userListCurrentIndex: 0 // TODO: State config!
+                //lastUserName: PlasmaLogin.UserModel.lastUser
+                lastUserName: "" // TODO: State config!
                 showUserList: {
+                    return userListModel.count <= 7;
+                    /*
                     if (!userListModel.hasOwnProperty("count")
                         || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {
                         return false
@@ -143,6 +147,7 @@ Item {
                     }
 
                     return userListModel.count <= userListModel.disableAvatarsThreshold
+                    */
                 }
 
                 notificationMessage: {

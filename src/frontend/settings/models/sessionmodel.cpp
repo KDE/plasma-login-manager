@@ -11,7 +11,7 @@
 #include <KDesktopFile>
 #include <KLocalizedString>
 
-#include "SessionModel.h"
+#include "sessionmodel.h"
 
 SessionModel::SessionModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -23,12 +23,12 @@ SessionModel::SessionModel(QObject *parent)
     // NOTE: SDDM checks for the existence of /dev/dri before including wayland sessions
     // This is not duplicated here — if wayland isn't going to work, then neither is the greeter
 
-    repopulate(xSessionPaths, waylandSessionPaths);
+    populate(xSessionPaths, waylandSessionPaths);
 
     QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
     watcher->addPaths(xSessionPaths + waylandSessionPaths);
     connect(watcher, &QFileSystemWatcher::directoryChanged, [this, xSessionPaths, waylandSessionPaths]() {
-        repopulate(xSessionPaths, waylandSessionPaths);
+        populate(xSessionPaths, waylandSessionPaths);
     });
 }
 
@@ -125,7 +125,7 @@ QHash<int, QByteArray> SessionModel::roleNames() const
     return roles;
 }
 
-void SessionModel::repopulate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths)
+void SessionModel::populate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths)
 {
     beginResetModel();
 

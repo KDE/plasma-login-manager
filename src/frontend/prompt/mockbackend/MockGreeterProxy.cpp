@@ -15,9 +15,6 @@ void MockGreeterProxy::login(const QString &user, const QString &password, const
 
     QString sessionTypeName;
     switch (sessionType) {
-        case PLASMALOGIN::SessionType::Unknown:
-        sessionTypeName = QStringLiteral("Unknown");
-        break;
     case PLASMALOGIN::SessionType::X11:
         sessionTypeName = QStringLiteral("X11");
         break;

@@ -36,6 +36,7 @@ find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LibKWorkspace ${PROJECT_DEP_VERSION} REQUIRED)
 
+add_subdirectory(settings)
 add_subdirectory(wallpaper)
 add_subdirectory(prompt)
 add_subdirectory(startkde)

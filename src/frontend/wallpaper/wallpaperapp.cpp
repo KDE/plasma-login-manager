@@ -12,9 +12,10 @@
 
 #include <LayerShellQt/Shell>
 
+#include "wallpaperintegration.h"
+#include "plasmaloginsettings.h"
+
 #include "wallpaperwindow.h"
-#include "wallpaper_integration.h"
-#include "kscreensaversettingsbase.h"
 
 #include "wallpaperapp.h"
 
@@ -25,8 +26,8 @@ public:
     explicit WallpaperItem(QQuickItem *parent = nullptr)
         : WallpaperIntegration(parent)
     {
-        setConfig(KScreenSaverSettingsBase::self()->sharedConfig());
-        setPluginName(KScreenSaverSettingsBase::self()->wallpaperPluginId());
+        setConfig(PlasmaLoginSettings::getInstance().sharedConfig());
+        setPluginName(PlasmaLoginSettings::getInstance().wallpaperPluginId());
         init();
     }
 };
@@ -39,7 +40,7 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
     qmlRegisterType<WallpaperItem>("org.kde.plasma.plasmoid", 2, 0, "WallpaperItem");
 
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
-    m_wallpaperPackage.setPath(KScreenSaverSettingsBase::self()->wallpaperPluginId());
+    m_wallpaperPackage.setPath(PlasmaLoginSettings::getInstance().wallpaperPluginId());
 
     for (const auto screenList{screens()}; QScreen *screen : screenList) {
         adoptScreen(screen);

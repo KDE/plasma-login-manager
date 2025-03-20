@@ -1,67 +1,82 @@
 /*
-    SPDX-FileCopyrightText: 2013 Reza Fatahilah Shah <rshah0385@kireihana.com>
-    SPDX-FileCopyrightText: 2019 Filip Fila <filipfila.kde@gmail.com>
-    SPDX-FileCopyrightText: 2020 David Redondo <kde@david-redondo.de>
-
-    SPDX-License-Identifier: GPL-2.0-or-later
+ *  SPDX-FileCopyrightText: 2014 Martin Gräßlin <mgraesslin@kde.org>
+ *  SPDX-FileCopyrightText: 2019 Kevin Ottens <kevin.ottens@enioka.com>
+ *  SPDX-FileCopyrightText: 2020 David Redondo <kde@david-redondo.de>
+ *  SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ *
+ *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "kcm.h"
-
-#include "config.h"
-#include "plasmalogindata.h"
-
-#include "models/sessionmodel.h"
-#include "models/usersmodel.h"
-
-#include <QApplication>
-#include <QDir>
+#include <QList>
 
 #include <KAuth/ExecuteJob>
 #include <KIO/ApplicationLauncherJob>
-#include <KLazyLocalizedString>
+#include <KConfigLoader>
+#include <KConfigPropertyMap>
 #include <KLocalizedString>
 #include <KPluginFactory>
 #include <KService>
-#include <KUser>
 
-K_PLUGIN_FACTORY_WITH_JSON(KCMPlasmaLoginFactory, "kcm_plasmalogin.json", registerPlugin<PlasmaLoginKcm>(); registerPlugin<PlasmaLoginData>();)
+#include "wallpapersettings.h"
+#include "plasmalogindata.h"
+#include "models/usermodel.h"
+#include "models/sessionmodel.h"
 
-PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &metaData)
-    : KQuickManagedConfigModule(parent, metaData)
-    , m_data(new PlasmaLoginData(this))
+#include "kcm.h"
+
+K_PLUGIN_FACTORY_WITH_JSON(PlasmaLoginKcmFactory, "kcm_plasmalogin.json", registerPlugin<PlasmaLoginKcm>(); registerPlugin<PlasmaLoginData>();)
+
+PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
+    : KQuickManagedConfigModule(parent, data)
+    , m_wallpaperSettings(new WallpaperSettings(this))
 {
     setAuthActionName(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.save"));
+    registerSettings(&PlasmaLoginSettings::getInstance());
 
-    qmlRegisterType<UsersModel>("org.kde.private.kcms.plasmalogin", 1, 0, "UsersModel");
-    qmlRegisterType<SessionModel>("org.kde.private.kcms.plasmalogin", 1, 0, "SessionModel");
-    qmlRegisterAnonymousType<PlasmaLoginSettings>("org.kde.private.kcms.plasmalogin", 1);
+    constexpr const char *url = "org.kde.private.kcms.plasmalogin";
+    qRegisterMetaType<QList<WallpaperInfo>>("QList<WallpaperInfo>");
+    qmlRegisterAnonymousType<PlasmaLoginSettings>(url, 1);
+    qmlRegisterAnonymousType<WallpaperInfo>(url, 1);
+    qmlRegisterAnonymousType<WallpaperIntegration>(url, 1);
+    qmlRegisterAnonymousType<KConfigPropertyMap>(url, 1);
+    qmlRegisterType<UserModel>(url, 1, 0, "UserModel");
+    qmlRegisterType<SessionModel>(url, 1, 0, "SessionModel");
+    qmlProtectModule(url, 1);
+
+    // Our modules will be checking the Plasmoid attached object when running from Plasma, let it load the module
+    constexpr const char *uri = "org.kde.plasma.plasmoid";
+    qmlRegisterUncreatableType<QObject>(uri, 2, 0, "PlasmoidPlaceholder", QStringLiteral("Do not create objects of type Plasmoid"));
+
+    connect(&PlasmaLoginSettings::getInstance(),
+            &PlasmaLoginSettings::WallpaperPluginIdChanged,
+            m_wallpaperSettings,
+            &WallpaperSettings::loadWallpaperConfig);
+    connect(m_wallpaperSettings, &WallpaperSettings::currentWallpaperChanged, this, &PlasmaLoginKcm::currentWallpaperChanged);
 }
 
-PlasmaLoginKcm::~PlasmaLoginKcm()
+void PlasmaLoginKcm::load()
 {
-}
+    KQuickManagedConfigModule::load();
+    m_wallpaperSettings->load();
 
-PlasmaLoginSettings *PlasmaLoginKcm::plasmaLoginSettings() const
-{
-    return m_data->plasmaLoginSettings();
-}
-
-QString PlasmaLoginKcm::toLocalFile(const QUrl &url)
-{
-    return url.toLocalFile();
+    updateState();
+    Q_EMIT loadCalled();
 }
 
 void PlasmaLoginKcm::save()
 {
+
     QVariantMap args;
-    args[QStringLiteral("kde_settings.conf/Autologin/User")] = m_data->plasmaLoginSettings()->user();
-    args[QStringLiteral("kde_settings.conf/Autologin/Session")] = m_data->plasmaLoginSettings()->session();
-    args[QStringLiteral("kde_settings.conf/Autologin/Relogin")] = m_data->plasmaLoginSettings()->relogin();
-    args[QStringLiteral("kde_settings.conf/Users/MinimumUid")] = m_data->plasmaLoginSettings()->minimumUid();
-    args[QStringLiteral("kde_settings.conf/Users/MaximumUid")] = m_data->plasmaLoginSettings()->maximumUid();
-    args[QStringLiteral("kde_settings.conf/General/HaltCommand")] = m_data->plasmaLoginSettings()->haltCommand();
-    args[QStringLiteral("kde_settings.conf/General/RebootCommand")] = m_data->plasmaLoginSettings()->rebootCommand();
+    args[QStringLiteral("Autologin/User")] = PlasmaLoginSettings::getInstance().user();
+    args[QStringLiteral("Autologin/Session")] = PlasmaLoginSettings::getInstance().session();
+    args[QStringLiteral("Autologin/Relogin")] = PlasmaLoginSettings::getInstance().relogin();
+    args[QStringLiteral("Users/MinimumUid")] = PlasmaLoginSettings::getInstance().minimumUid();
+    args[QStringLiteral("Users/MaximumUid")] = PlasmaLoginSettings::getInstance().maximumUid();
+    args[QStringLiteral("General/HaltCommand")] = PlasmaLoginSettings::getInstance().haltCommand();
+    args[QStringLiteral("General/RebootCommand")] = PlasmaLoginSettings::getInstance().rebootCommand();
+    args[QStringLiteral("Greeter/ShowClock")] = PlasmaLoginSettings::getInstance().showClock();
+    args[QStringLiteral("Greeter/WallpaperPluginId")] = PlasmaLoginSettings::getInstance().wallpaperPluginId();
+    // TODO: Save relevant wallpaper group?
 
     KAuth::Action saveAction(authActionName());
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
@@ -70,9 +85,10 @@ void PlasmaLoginKcm::save()
     auto job = saveAction.execute();
     connect(job, &KJob::result, this, [this, job] {
         if (job->error()) {
-            Q_EMIT errorOccured(job->errorString());
+            Q_EMIT errorOccurred(job->errorString());
         } else {
-            m_data->plasmaLoginSettings()->load();
+            //m_data->plasmaLoginSettings()->load();
+            updateState();
         }
         // Clarify enable or disable the Apply button.
         this->setNeedsSave(job->error());
@@ -82,196 +98,75 @@ void PlasmaLoginKcm::save()
 
 void PlasmaLoginKcm::synchronizeSettings()
 {
-    // initial check for sddm user; abort if user not present
-    // we have to check with QString and isEmpty() instead of QDir and exists() because
-    // QDir returns "." and true for exists() in the case of a non-existent user;
-    QString sddmHomeDirPath = KUser("sddm").homeDir();
-    if (sddmHomeDirPath.isEmpty()) {
-        Q_EMIT errorOccured(QString::fromUtf8(kli18n("Cannot proceed, user 'sddm' does not exist. Please check your SDDM install.").untranslatedText()));
-        return;
-    }
-
-    // read Plasma values
-    KConfig cursorConfig(QStringLiteral("kcminputrc"));
-    KConfigGroup cursorConfigGroup(&cursorConfig, QStringLiteral("Mouse"));
-    QString cursorTheme = cursorConfigGroup.readEntry("cursorTheme", QString());
-    QString cursorSize = cursorConfigGroup.readEntry("cursorSize", QString());
-
-    KConfig dpiConfig(QStringLiteral("kcmfonts"));
-    KConfigGroup dpiConfigGroup(&dpiConfig, QStringLiteral("General"));
-    QString dpiValue = dpiConfigGroup.readEntry("forceFontDPI");
-    QString dpiArgument = QStringLiteral("-dpi ") + dpiValue;
-
-    KConfig numLockConfig(QStringLiteral("kcminputrc"));
-    KConfigGroup numLockConfigGroup(&numLockConfig, QStringLiteral("Keyboard"));
-    QString numLock = numLockConfigGroup.readEntry("NumLock");
-
-    // Syncing the font only works with SDDM >= 0.19, but will not have a negative effect with older versions
-    KConfig plasmaFontConfig(QStringLiteral("kdeglobals"));
-    KConfigGroup plasmaFontGroup(&plasmaFontConfig, QStringLiteral("General"));
-    QString plasmaFont = plasmaFontGroup.readEntry("font", QApplication::font().toString());
-
-    // define paths
-    const QString fontconfigPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("fontconfig"), QStandardPaths::LocateDirectory);
-    const QString kdeglobalsPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kdeglobals"));
-    const QString plasmarcPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("plasmarc"));
-    const QString kcminputrcPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kcminputrc"));
-    const QString kwinoutputconfigPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kwinoutputconfig.json"));
-
-    // send values and paths to helper, debug if it fails
-    QVariantMap args;
-
-    args[QStringLiteral("kde_settings.conf")] = QString{QLatin1String(PLASMALOGIN_CONFIG_DIR "/") + QStringLiteral("kde_settings.conf")};
-
-    args[QStringLiteral("sddm.conf")] = QLatin1String(PLASMALOGIN_CONFIG_FILE);
-
-    if (!cursorTheme.isNull()) {
-        args[QStringLiteral("kde_settings.conf/Theme/CursorTheme")] = cursorTheme;
-    } else {
-        qDebug() << "Cannot find cursor theme value; unsetting it";
-        args[QStringLiteral("kde_settings.conf/Theme/CursorTheme")] = QVariant();
-    }
-    if (!cursorSize.isNull()) {
-        args[QStringLiteral("kde_settings.conf/Theme/CursorSize")] = cursorSize;
-    } else {
-        qDebug() << "Cannot find cursor size value; unsetting it";
-        args[QStringLiteral("kde_settings.conf/Theme/CursorSize")] = QVariant();
-    }
-
-    if (!dpiValue.isEmpty()) {
-        args[QStringLiteral("kde_settings.conf/X11/ServerArguments")] = dpiArgument;
-    } else {
-        qDebug() << "Cannot find scaling DPI value.";
-    }
-
-    if (!numLock.isEmpty()) {
-        if (numLock == QStringLiteral("0")) {
-            args[QStringLiteral("kde_settings.conf/General/Numlock")] = QStringLiteral("on");
-        } else if (numLock == QStringLiteral("1")) {
-            args[QStringLiteral("kde_settings.conf/General/Numlock")] = QStringLiteral("off");
-        } else if (numLock == QStringLiteral("2")) {
-            args[QStringLiteral("kde_settings.conf/General/Numlock")] = QStringLiteral("none");
-        }
-    } else {
-        qDebug() << "Cannot find NumLock value.";
-    }
-
-    if (!plasmaFont.isEmpty()) {
-        args[QStringLiteral("kde_settings.conf/Theme/Font")] = plasmaFont;
-    } else {
-        qDebug() << "Cannot find Plasma font value.";
-    }
-
-    if (!fontconfigPath.isEmpty()) {
-        args[QStringLiteral("fontconfig")] = fontconfigPath;
-    } else {
-        qDebug() << "Cannot find fontconfig folder.";
-    }
-
-    if (!kdeglobalsPath.isEmpty()) {
-        args[QStringLiteral("kdeglobals")] = kdeglobalsPath;
-    } else {
-        qDebug() << "Cannot find kdeglobals file.";
-    }
-
-    if (!plasmarcPath.isEmpty()) {
-        args[QStringLiteral("plasmarc")] = plasmarcPath;
-    } else {
-        qDebug() << "Cannot find plasmarc file.";
-    }
-
-    if (!kcminputrcPath.isEmpty()) {
-        args[QStringLiteral("kcminputrc")] = kcminputrcPath;
-    } else {
-        qDebug() << "Cannot find kcminputrc file.";
-    }
-
-    if (!kwinoutputconfigPath.isEmpty()) {
-        args[QStringLiteral("kwinoutputconfig")] = kwinoutputconfigPath;
-    } else {
-        qDebug() << "Cannot find kwinoutputconfiguration.json file";
-    }
-
-    auto path = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("kscreen/"), QStandardPaths::LocateDirectory);
-    if (!path.isEmpty()) {
-        args[QStringLiteral("kscreen-config")] = path;
-    }
-
-    // TODO: KAuth syncAction
-    KAuth::Action syncAction(QStringLiteral("org.kde.kcontrol.kcmplasmaloginsync"));
-    syncAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
-    syncAction.setArguments(args);
-
-    auto job = syncAction.execute();
-    connect(job, &KJob::result, this, [this, job] {
-        if (job->error()) {
-            qDebug() << "Synchronization failed";
-            qDebug() << job->errorString();
-            qDebug() << job->errorText();
-            if (!job->errorText().isEmpty()) {
-                Q_EMIT errorOccured(job->errorText());
-            }
-        } else {
-            qDebug() << "Synchronization successful";
-        }
-
-        Q_EMIT syncAttempted();
-    });
-    job->start();
+    // TODO: Go to KAuth
 }
 
-void PlasmaLoginKcm::resetSyncronizedSettings()
+void PlasmaLoginKcm::resetSynchronizedSettings()
 {
-    // initial check for sddm user; abort if user not present
-    // we have to check with QString and isEmpty() instead of QDir and exists() because
-    // QDir returns "." and true for exists() in the case of a non-existent user
-    QString sddmHomeDirPath = KUser("sddm").homeDir();
-    if (sddmHomeDirPath.isEmpty()) {
-        Q_EMIT errorOccured(QString::fromUtf8(kli18n("Cannot proceed, user 'sddm' does not exist. Please check your SDDM install.").untranslatedText()));
-        return;
-    }
+    // TODO: Go to KAuth
+}
 
-    // send paths to helper
-    QVariantMap args;
+void PlasmaLoginKcm::defaults()
+{
+    KQuickManagedConfigModule::defaults();
+    m_wallpaperSettings->defaults();
 
-    args[QStringLiteral("kde_settings.conf")] = QStringLiteral(PLASMALOGIN_CONFIG_DIR "/kde_settings.conf");
+    updateState();
+    Q_EMIT defaultsCalled();
+}
 
-    args[QStringLiteral("sddm.conf")] = QLatin1String(PLASMALOGIN_CONFIG_FILE);
+void PlasmaLoginKcm::updateState()
+{
+    m_forceUpdateState = false;
+    settingsChanged();
+    Q_EMIT isDefaultsWallpaperChanged();
+}
 
-    args[QStringLiteral("kde_settings.conf/Theme/CursorTheme")] = QVariant();
+void PlasmaLoginKcm::forceUpdateState()
+{
+    m_forceUpdateState = true;
+    settingsChanged();
+    Q_EMIT isDefaultsWallpaperChanged();
+}
 
-    args[QStringLiteral("kde_settings.conf/Theme/CursorSize")] = QVariant();
+bool PlasmaLoginKcm::isSaveNeeded() const
+{
+    return m_forceUpdateState || m_wallpaperSettings->isSaveNeeded();
+}
 
-    args[QStringLiteral("kde_settings.conf/X11/ServerArguments")] = QVariant();
+bool PlasmaLoginKcm::isDefaults() const
+{
+    return m_wallpaperSettings->isDefaults();
+}
 
-    args[QStringLiteral("kde_settings.conf/General/Numlock")] = QVariant();
+KConfigPropertyMap *PlasmaLoginKcm::wallpaperConfiguration() const
+{
+    return m_wallpaperSettings->wallpaperConfiguration();
+}
 
-    args[QStringLiteral("kde_settings.conf/Theme/Font")] = QVariant();
+PlasmaLoginSettings *PlasmaLoginKcm::settings() const
+{
+    return &PlasmaLoginSettings::getInstance();
+}
 
-    args[QStringLiteral("theme.conf.user/General/showClock")] = true;
+QString PlasmaLoginKcm::currentWallpaper() const
+{
+    return PlasmaLoginSettings::getInstance().wallpaperPluginId();
+}
 
-    // TODO: KAuth resetAction
-    KAuth::Action resetAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.reset"));
-    resetAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
-    resetAction.setArguments(args);
+bool PlasmaLoginKcm::isDefaultsWallpaper() const
+{
+    return m_wallpaperSettings->isDefaults();
+}
 
-    auto job = resetAction.execute();
+QUrl PlasmaLoginKcm::wallpaperConfigFile() const
+{
+    return m_wallpaperSettings->wallpaperConfigFile();
+}
 
-    connect(job, &KJob::result, this, [this, job] {
-        if (job->error()) {
-            qDebug() << "Reset failed";
-            qDebug() << job->errorString();
-            qDebug() << job->errorText();
-            if (!job->errorText().isEmpty()) {
-                Q_EMIT errorOccured(job->errorText());
-            }
-        } else {
-            qDebug() << "Reset successful";
-        }
-
-        Q_EMIT syncAttempted();
-    });
-    job->start();
+WallpaperIntegration *PlasmaLoginKcm::wallpaperIntegration() const
+{
+    return m_wallpaperSettings->wallpaperIntegration();
 }
 
 bool PlasmaLoginKcm::KDEWalletAvailable()
@@ -287,3 +182,5 @@ void PlasmaLoginKcm::openKDEWallet()
 }
 
 #include "kcm.moc"
+
+#include "moc_kcm.cpp"

@@ -6,7 +6,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
  */
 #include "plasmaloginauthhelper.h"
-#include "../config.h"
+#include "config.h"
 
 #include <unistd.h>
 
@@ -104,6 +104,10 @@ void PlasmaLoginAuthHelper::copyFile(const QString &source, const QString &desti
 
 ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
 {
+    Q_UNUSED(args);
+    return ActionReply::HelperErrorReply();
+
+    /*
     // abort if user not present
     const QString sddmHomeDirPath = SddmUserCheck();
     if (sddmHomeDirPath.isEmpty()) {
@@ -225,10 +229,15 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
     sddmConfig->sync();
 
     return ActionReply::SuccessReply();
+    */
 }
 
 ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
 {
+    Q_UNUSED(args);
+    return ActionReply::HelperErrorReply();
+
+    /*
     // abort if user not present
     const QString sddmHomeDirPath = SddmUserCheck();
     if (sddmHomeDirPath.isEmpty()) {
@@ -276,10 +285,27 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
     sddmConfig->sync();
 
     return ActionReply::SuccessReply();
+    */
 }
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
+    QSharedPointer<KConfig> plasmaLoginConfig = openConfig(QLatin1String(PLASMALOGIN_CONFIG_FILE));
+
+    QMap<QString, QVariant>::const_iterator iterator;
+    for (iterator = args.constBegin(); iterator != args.constEnd(); ++iterator) {
+        QStringList configFields = iterator.key().split(QLatin1Char('/'));
+        QString groupName = configFields[0];
+        QString keyName = configFields[1];
+
+        plasmaLoginConfig->group(groupName).writeEntry(keyName, iterator.value());
+    }
+
+    plasmaLoginConfig->sync();
+
+    return ActionReply::SuccessReply();
+
+    /*
     ActionReply reply = ActionReply::HelperErrorReply();
     QSharedPointer<KConfig> sddmConfig = openConfig(QString{QLatin1String(PLASMALOGIN_CONFIG_DIR "/") + QStringLiteral("kde_settings.conf")});
     QSharedPointer<KConfig> sddmOldConfig = openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE));
@@ -354,6 +380,7 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
     }
 
     return ActionReply::SuccessReply();
+    */
 }
 
 KAUTH_HELPER_MAIN("org.kde.kcontrol.kcmplasmalogin", PlasmaLoginAuthHelper)

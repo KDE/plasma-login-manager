@@ -1,12 +1,9 @@
-add_subdirectory(settings)
-
 add_executable(plasma-login-wallpaper)
 
 target_sources(plasma-login-wallpaper PRIVATE
     main.cpp
     wallpaperapp.cpp
     wallpaperwindow.cpp
-    settings/wallpaper_integration.cpp
 )
 
 target_link_libraries(plasma-login-wallpaper PRIVATE

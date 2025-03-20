@@ -9,7 +9,7 @@
 
 struct Session {
     enum Type {
-        X11,
+        X11 = 0,
         Wayland
     };
 
@@ -50,7 +50,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    void repopulate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths);
+    void populate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths);
     void addSession(const QString path, const Session::Type type);
 
     QList<Session> m_sessions;

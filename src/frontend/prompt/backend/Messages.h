@@ -36,8 +36,7 @@ namespace PLASMALOGIN {
     };
 
     enum class SessionType {
-        Unknown = 0,
-        X11,
+        X11 = 0,
         Wayland
     };
 }

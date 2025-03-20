@@ -1,30 +1,25 @@
 /*
-    SPDX-FileCopyrightText: 2020 David Redondo <kde@david-redondo.de>
-    SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
-*/
-#include "plasmalogindata.h"
+ *  SPDX-FileCopyrightText: 2020 Cyril Rossi <cyril.rossi@enioka.com>
+ *  SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ *
+ *  SPDX-License-Identifier: GPL-2.0-or-later
+ */
 
-#include "config.h"
+#include "wallpapersettings.h"
 #include "plasmaloginsettings.h"
 
-#include <KSharedConfig>
-
-#include <QDir>
+#include "plasmalogindata.h"
 
 PlasmaLoginData::PlasmaLoginData(QObject *parent)
     : KCModuleData(parent)
+    , m_wallpaperSettings(new WallpaperSettings(this))
 {
-    auto config = KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE), KConfig::CascadeConfig);
-    QStringList configFiles = QDir(QStringLiteral(PLASMALOGIN_CONFIG_DIR)).entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
-    std::transform(configFiles.begin(), configFiles.end(), configFiles.begin(), [](const QString &filename) -> QString {
-        return QStringLiteral(PLASMALOGIN_CONFIG_DIR "/") + filename;
-    });
-    config->addConfigSources(configFiles);
-    m_settings = new PlasmaLoginSettings(config, this);
-    autoRegisterSkeletons();
+    m_wallpaperSettings->load();
 }
 
-PlasmaLoginSettings *PlasmaLoginData::plasmaLoginSettings() const
+bool PlasmaLoginData::isDefaults() const
 {
-    return m_settings;
+    return PlasmaLoginSettings::getInstance().isDefaults() && m_wallpaperSettings->isDefaults();
 }
+
+#include "moc_plasmalogindata.cpp"

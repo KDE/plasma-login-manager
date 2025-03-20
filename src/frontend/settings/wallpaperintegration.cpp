@@ -3,15 +3,14 @@ SPDX-FileCopyrightText: 2016 Martin Gräßlin <mgraesslin@kde.org>
 
 SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
-
-#include <QFile>
+#include "wallpaperintegration.h"
 
 #include <KConfig>
 #include <KConfigGroup>
 #include <KConfigLoader>
 #include <KPackage/PackageLoader>
 
-#include "wallpaper_integration.h"
+#include <QFile>
 
 WallpaperIntegration::WallpaperIntegration(QQuickItem *parent)
     : QQuickItem(parent)
@@ -71,4 +70,4 @@ void WallpaperIntegration::setAccentColor(const QColor &)
 {
 }
 
-#include "moc_wallpaper_integration.cpp"
+#include "moc_wallpaperintegration.cpp"
