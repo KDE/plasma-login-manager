@@ -18,7 +18,6 @@
 ***************************************************************************/
 
 #include "Configuration.h"
-#include "DaemonApp.h"
 #include "Display.h"
 #include "Seat.h"
 #include "XorgUserDisplayServer.h"
@@ -48,21 +47,15 @@ void XorgUserDisplayServer::setDisplayName(const QString &displayName)
 QString XorgUserDisplayServer::command(Display *display)
 {
     QStringList args;
+    args << mainConfig.X11.ServerPath.get()
+         << mainConfig.X11.ServerArguments.get().split(QLatin1Char(' '), Qt::SkipEmptyParts)
+         << QStringLiteral("-background") << QStringLiteral("none")
+         << QStringLiteral("-seat") << display->seat()->name()
+         << QStringLiteral("-noreset")
+         << QStringLiteral("-keeptty")
+         << QStringLiteral("-novtswitch")
+         << QStringLiteral("-verbose") << QStringLiteral("3");
 
-    if (daemonApp->testing()) {
-        args << mainConfig.X11.XephyrPath.get()
-             << QStringLiteral("-br")
-             << QStringLiteral("-screen") << QStringLiteral("800x600");
-    } else {
-        args << mainConfig.X11.ServerPath.get()
-             << mainConfig.X11.ServerArguments.get().split(QLatin1Char(' '), Qt::SkipEmptyParts)
-             << QStringLiteral("-background") << QStringLiteral("none")
-             << QStringLiteral("-seat") << display->seat()->name()
-             << QStringLiteral("-noreset")
-             << QStringLiteral("-keeptty")
-             << QStringLiteral("-novtswitch")
-             << QStringLiteral("-verbose") << QStringLiteral("3");
-    }
 
     return args.join(QLatin1Char(' '));
 }

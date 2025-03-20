@@ -87,11 +87,6 @@ namespace PLASMALOGIN {
         m_seatManager->initialize();
     }
 
-    bool DaemonApp::testing() const {
-        return m_testing;
-    }
-
-
     QString DaemonApp::hostName() const {
         return QHostInfo::localHostName();
     }

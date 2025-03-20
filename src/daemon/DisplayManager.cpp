@@ -37,7 +37,7 @@ namespace PLASMALOGIN {
         new DisplayManagerAdaptor(this);
 
         // register object
-        QDBusConnection connection = (daemonApp->testing()) ? QDBusConnection::sessionBus() : QDBusConnection::systemBus();
+        QDBusConnection connection = QDBusConnection::systemBus();
         connection.registerService(DISPLAYMANAGER_SERVICE);
         connection.registerObject(DISPLAYMANAGER_PATH, this);
     }
@@ -135,7 +135,7 @@ namespace PLASMALOGIN {
         new SeatAdaptor(this);
 
         // register object
-        QDBusConnection connection = (daemonApp->testing()) ? QDBusConnection::sessionBus() : QDBusConnection::systemBus();
+        QDBusConnection connection = QDBusConnection::systemBus();
         connection.registerService(DISPLAYMANAGER_SERVICE);
         connection.registerObject(m_path, this);
     }
@@ -174,7 +174,7 @@ namespace PLASMALOGIN {
         new SessionAdaptor(this);
 
         // register object
-        QDBusConnection connection = (daemonApp->testing()) ? QDBusConnection::sessionBus() : QDBusConnection::systemBus();
+        QDBusConnection connection = QDBusConnection::systemBus();
         connection.registerService(DISPLAYMANAGER_SERVICE);
         connection.registerObject(m_path, this);
     }
