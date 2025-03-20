@@ -11,10 +11,10 @@ Session Session::create(Type type, const QString &name)
     QString filePath;
     switch (type) {
     case Session::X11Session:
-        filePath =  QStringLiteral("/usr/share/xsessions/") + name + QStringLiteral(".desktop");
+        filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("/xsessions/") + name + QStringLiteral(".desktop"));
         break;
     case Session::WaylandSession:
-        filePath = QStringLiteral("/usr/share/wayland-sessions/") + name + QStringLiteral(".desktop");
+        filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("/wayland-sessions/") + name + QStringLiteral(".desktop"));
         break;
     default:
         filePath = QString();
