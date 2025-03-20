@@ -28,7 +28,6 @@ namespace PLASMALOGIN {
 class Session  {
 public:
     enum Type {
-        UnknownSession = 0,
         X11Session,
         WaylandSession
     };
@@ -49,7 +48,7 @@ public:
 
 private:
     Session(Type type, KSharedConfigPtr desktopFile);
-    Type m_type = UnknownSession;
+    Type m_type = WaylandSession;
     KSharedConfig::Ptr m_desktopFile;
     QString m_name;
 };

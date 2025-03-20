@@ -29,9 +29,7 @@ Session Session::create(Type type, const QString &name)
 }
 
 Session::Session():
-    Session(UnknownSession, KSharedConfigPtr())
-    // DAVE, this is bad. Our shared config can be null, what sort of rubbish design is that.
-    // drop unkonwn session type
+    Session(WaylandSession, KSharedConfigPtr())
 {}
 
 Session::Session(Type type, KSharedConfigPtr desktopFile)
@@ -42,7 +40,7 @@ Session::Session(Type type, KSharedConfigPtr desktopFile)
 
 bool Session::isValid() const
 {
-    return m_type != UnknownSession && m_desktopFile;
+    return m_desktopFile;
 }
 
 Session::Type Session::type() const {
