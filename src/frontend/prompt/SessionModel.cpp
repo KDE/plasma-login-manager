@@ -70,11 +70,6 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
 
         if (shouldAppendType && shouldAppendIndex) {
             switch (session.type) {
-            case Session::Type::Unknown:
-                return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session",
-                             "%1 (Unknown) (%2)",
-                             session.displayName,
-                             index);
             case Session::Type::X11:
                 return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session",
                              "%1 (X11) (%2)",
@@ -88,8 +83,6 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
             }
         } else if (shouldAppendType) {
             switch (session.type) {
-            case Session::Type::Unknown:
-                return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (Unknown)", session.displayName);
             case Session::Type::X11:
                 return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (X11)", session.displayName);
             case Session::Type::Wayland:

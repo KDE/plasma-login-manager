@@ -9,7 +9,6 @@
 
 struct Session {
     enum Type {
-        Unknown = 0,
         X11,
         Wayland
     };
