@@ -30,7 +30,6 @@ namespace PLASMALOGIN {
 
     enum class DaemonMessages {
         HostName,
-        Capabilities,
         LoginSucceeded,
         LoginFailed,
         InformationMessage,
