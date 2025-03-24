@@ -170,7 +170,7 @@ namespace PLASMALOGIN {
         }
 
         // switch to greeter
-        m_seats.value(name)->createDisplay(Display::defaultDisplayServerType());
+        m_seats.value(name)->createDisplay();
     }
 
     void PLASMALOGIN::SeatManager::logindSecureAttentionKey(const QString& name, const QDBusObjectPath& objectPath)

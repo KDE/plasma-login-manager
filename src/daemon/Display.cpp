@@ -89,54 +89,19 @@ namespace PLASMALOGIN {
         return VirtualTerminal::setUpNewVt();
     }
 
-    Display::DisplayServerType Display::defaultDisplayServerType()
-    {
-        const QString &displayServerType = mainConfig.DisplayServer.get().toLower();
-        DisplayServerType ret;
-        if (displayServerType == QStringLiteral("x11-user")) {
-            ret = X11UserDisplayServerType;
-        } else if (displayServerType == QStringLiteral("wayland")) {
-            ret = WaylandDisplayServerType;
-        } else {
-            qWarning("\"%s\" is an invalid value for General.DisplayServer: fall back to \"wayland\"",
-                    qPrintable(displayServerType));
-            ret = WaylandDisplayServerType;
-        }
-        return ret;
-    }
-
-    Display::Display(Seat *parent, DisplayServerType serverType)
+    Display::Display(Seat *parent)
         : QObject(parent),
-        m_displayServerType(serverType),
         m_auth(new Auth(this)),
         m_seat(parent),
         m_socketServer(new SocketServer(this)),
         m_greeter(new Greeter(this))
     {
 
-        qDebug() << "Starting" << m_displayServerType;
-        // Create display server
-        switch (m_displayServerType) {
-        // case X11DisplayServerType:
-        //     if (seat()->canTTY()) {
-        //         m_terminalId = VirtualTerminal::setUpNewVt();
-        //     }
-        //     m_displayServer = new XorgDisplayServer(this);
-        //     break;
-        // case X11UserDisplayServerType:
-        //     if (seat()->canTTY()) {
-        //         m_terminalId = fetchAvailableVt();
-        //     }
-        //     m_displayServer = new XorgUserDisplayServer(this);
-        //     m_greeter->setDisplayServerCommand(XorgUserDisplayServer::command(this));
-        //     break;
-        case WaylandDisplayServerType:
-            if (seat()->canTTY()) {
-                m_terminalId = fetchAvailableVt();
-            }
-            m_displayServer = new WaylandDisplayServer(this);
-            break;
+
+        if (seat()->canTTY()) {
+            m_terminalId = fetchAvailableVt();
         }
+        m_displayServer = new WaylandDisplayServer(this);
 
         qDebug("Using VT %d", m_terminalId);
 
@@ -198,11 +163,6 @@ namespace PLASMALOGIN {
     Display::~Display() {
         disconnect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
         stop();
-    }
-
-    Display::DisplayServerType Display::displayServerType() const
-    {
-        return m_displayServerType;
     }
 
     DisplayServer *Display::displayServer() const

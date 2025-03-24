@@ -21,33 +21,16 @@
 #define PLASMALOGIN_XORGUSERDISPLAYSERVER_H
 
 #include "DisplayServer.h"
-#include "XAuth.h"
 
 class QProcess;
 
 namespace PLASMALOGIN {
 
-class XorgUserDisplayServer : public DisplayServer
+class XorgUserDisplayServer
 {
-    Q_OBJECT
-    Q_DISABLE_COPY(XorgUserDisplayServer)
 public:
-    explicit XorgUserDisplayServer(Display *parent);
-    ~XorgUserDisplayServer();
-
-    QString sessionType() const;
-
-    void setDisplayName(const QString &displayName);
-
     static QString command(Display *display);
-
-public Q_SLOTS:
-    bool start();
-    void stop();
-    void finished();
-    void setupDisplay();
 };
-
 } // namespace PLASMALOGIN
 
 #endif // PLASMALOGIN_XORGUSERDISPLAYSERVER_H

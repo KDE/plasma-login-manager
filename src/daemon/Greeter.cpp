@@ -181,10 +181,6 @@ namespace PLASMALOGIN {
     {
         auto *displayServer = m_display->displayServer();
 
-        auto *xorgUser = qobject_cast<XorgUserDisplayServer *>(displayServer);
-        if (xorgUser)
-            xorgUser->setDisplayName(displayName);
-
         auto *wayland = qobject_cast<WaylandDisplayServer *>(displayServer);
         if (wayland)
             wayland->setDisplayName(displayName);

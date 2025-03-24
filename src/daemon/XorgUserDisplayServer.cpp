@@ -24,26 +24,6 @@
 
 namespace PLASMALOGIN {
 
-XorgUserDisplayServer::XorgUserDisplayServer(Display *parent)
-    : DisplayServer(parent)
-{
-}
-
-XorgUserDisplayServer::~XorgUserDisplayServer()
-{
-    stop();
-}
-
-QString XorgUserDisplayServer::sessionType() const
-{
-    return QStringLiteral("x11");
-}
-
-void XorgUserDisplayServer::setDisplayName(const QString &displayName)
-{
-    m_display = displayName;
-}
-
 QString XorgUserDisplayServer::command(Display *display)
 {
     QStringList args;
@@ -56,40 +36,8 @@ QString XorgUserDisplayServer::command(Display *display)
          << QStringLiteral("-novtswitch")
          << QStringLiteral("-verbose") << QStringLiteral("3");
 
-
     return args.join(QLatin1Char(' '));
 }
 
-bool XorgUserDisplayServer::start()
-{
-    // Check flag
-    if (m_started)
-        return false;
-
-    // Set flag
-    m_started = true;
-    emit started();
-
-    return true;
-}
-
-void XorgUserDisplayServer::stop()
-{
-    // Check flag
-    if (!m_started)
-        return;
-
-    // Reset flag
-    m_started = false;
-    emit stopped();
-}
-
-void XorgUserDisplayServer::finished()
-{
-}
-
-void XorgUserDisplayServer::setupDisplay()
-{
-}
 
 } // namespace PLASMALOGIN

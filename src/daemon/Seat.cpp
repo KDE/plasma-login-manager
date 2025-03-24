@@ -38,36 +38,27 @@
 
 namespace PLASMALOGIN {
     Seat::Seat(const QString &name, QObject *parent) : QObject(parent), m_name(name) {
-        createDisplay(Display::defaultDisplayServerType());
+        createDisplay();
     }
 
     const QString &Seat::name() const {
         return m_name;
     }
 
-    void Seat::createDisplay(Display::DisplayServerType serverType) {
+    void Seat::createDisplay() {
         //reload config if needed
         mainConfig.load();
 
         // create a new display
         qDebug() << "Adding new display...";
-        Display *display = new Display(this, serverType);
+        Display *display = new Display(this);
 
         // restart display on stop
         connect(display, &Display::stopped, this, &Seat::displayStopped);
         connect(display, &Display::displayServerFailed, this, [this, display] {
             removeDisplay(display);
-
-            // If we failed to create a display with wayland or rootful x11, try with
-            // x11-user. There's a chance it might work. It's a handy fallback
-            // since the alternative is a black screen
-            if (display->displayServerType() != Display::X11UserDisplayServerType) {
-                qWarning() << "Failed to launch the display server, falling back to DisplayServer=x11-user";
-                createDisplay(Display::X11UserDisplayServerType);
-            } else if (m_displays.isEmpty()) {
-                qWarning() << "Failed to launch a DisplayServer=x11-user session, aborting";
-                QCoreApplication::instance()->exit(12);
-            }
+            qWarning() << "Failed to launch a display server";
+            QCoreApplication::instance()->exit(12);
         });
 
         // add display to the list
@@ -126,7 +117,7 @@ namespace PLASMALOGIN {
 
         // restart otherwise
         if (m_displays.isEmpty()) {
-            createDisplay(Display::defaultDisplayServerType());
+            createDisplay();
         }
         // If there is still a session running on some display,
         // switch to last display in display vector.

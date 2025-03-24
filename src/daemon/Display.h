@@ -42,17 +42,11 @@ namespace PLASMALOGIN {
         Q_OBJECT
         Q_DISABLE_COPY(Display)
     public:
-        enum DisplayServerType {
-            X11UserDisplayServerType,
-            WaylandDisplayServerType
-        };
-        Q_ENUM(DisplayServerType)
 
-        static DisplayServerType defaultDisplayServerType();
-        explicit Display(Seat *parent, DisplayServerType serverType);
+
+        explicit Display(Seat *parent);
         ~Display();
 
-        DisplayServerType displayServerType() const;
         DisplayServer *displayServer() const;
 
         int terminalId() const;
@@ -88,8 +82,6 @@ namespace PLASMALOGIN {
 
         void startSocketServerAndGreeter();
         bool handleAutologinFailure();
-
-        DisplayServerType m_displayServerType = WaylandDisplayServerType;
 
         bool m_started { false };
 
