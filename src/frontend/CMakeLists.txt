@@ -38,7 +38,7 @@ find_package(LibKWorkspace ${PROJECT_DEP_VERSION} REQUIRED)
 
 add_subdirectory(settings)
 add_subdirectory(wallpaper)
-add_subdirectory(prompt)
+add_subdirectory(greeter)
 add_subdirectory(startkde)
 add_subdirectory(kcm)
 
