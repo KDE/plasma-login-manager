@@ -28,7 +28,7 @@ include(KDEGitCommitHooks)
 include(ECMDeprecationSettings)
 include(ECMQtDeclareLoggingCategory)
 include(ECMConfiguredInstall)
-
+include(ECMQmlModule)
 
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Gui Quick)
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config Package WindowSystem I18n DBusAddons KCMUtils Auth KIO)

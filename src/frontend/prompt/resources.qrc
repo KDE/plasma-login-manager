@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>main.qml</file>
-        <file>Login.qml</file>
-        <file>faces/.face.icon</file>
-        <file>SessionButton.qml</file>
-        <file>KeyboardButton.qml</file>
-    </qresource>
-</RCC>

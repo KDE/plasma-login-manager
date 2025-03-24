@@ -70,7 +70,7 @@ private:
             window->setWindowState(Qt::WindowFullScreen);
         }
 
-        window->setSource(QUrl("qrc:/main.qml"));
+        window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
         connect(qApp, &QGuiApplication::screenRemoved, this, [window](QScreen *screenRemoved) {
             if (screenRemoved == window->screen()) {
                 delete window;

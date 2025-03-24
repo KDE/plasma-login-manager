@@ -9,8 +9,6 @@ set(LOGIN_GREETER_SRCS main.cpp
     mockbackend/MockGreeterProxy.cpp
 )
 
-qt_add_resources(RESOURCE_FILES resources.qrc)
-
 ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
                                 IDENTIFIER LOGOUT_GREETER
                                 CATEGORY_NAME kde.login_greeter
@@ -20,7 +18,20 @@ ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
                             )
 
 add_executable(plasma-login-greeter ${LOGIN_GREETER_SRCS})
-target_link_libraries(plasma-login-greeter
+
+ecm_add_qml_module(plasma-login-greeter URI "org.kde.plasma.login" GENERATE_PLUGIN_SOURCE)
+ecm_target_qml_sources(plasma-login-greeter
+    SOURCES
+    qml/Main.qml
+    qml/Login.qml
+    qml/SessionButton.qml
+    qml/KeyboardButton.qml
+
+    RESOURCES
+    qml/faces/.face.icon
+)
+
+target_link_libraries(plasma-login-greeter PRIVATE
     settings
     Qt::Quick
     Qt::DBus
@@ -33,7 +44,8 @@ target_link_libraries(plasma-login-greeter
     LayerShellQt::Interface
     PW::KWorkspace
 )
-target_sources(plasma-login-greeter PRIVATE ${RESOURCE_FILES})
+
+ecm_finalize_qml_module(plasma-login-greeter)
 
 install(TARGETS plasma-login-greeter DESTINATION ${KDE_INSTALL_LIBEXECDIR})
 
