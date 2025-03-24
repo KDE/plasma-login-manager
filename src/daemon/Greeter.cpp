@@ -119,7 +119,7 @@ namespace PLASMALOGIN {
             qDebug() << "Greeter starting...";
 
             // start greeter
-            m_auth->setUser(QStringLiteral("plasmalogin"));
+            m_auth->setUser(QStringLiteral("sddm")); //FIXME
             m_auth->setDisplayServerCommand(m_displayServerCmd);
             m_auth->setGreeter(true);
             m_auth->setSession(greeterCommand);

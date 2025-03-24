@@ -159,7 +159,7 @@ namespace PLASMALOGIN {
 
             const auto info = reply.value();
             for(const SessionInfo &s : reply.value()) {
-                if (s.userName == QLatin1String("plasmalogin")) {
+                if (s.userName == QLatin1String("sddm")) {
                     OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), s.sessionPath.path(), QDBusConnection::systemBus());
                     if (session.service() == QLatin1String("plasmalogin-greeter") && session.seat().name == name) {
                         session.Activate();

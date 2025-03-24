@@ -219,7 +219,7 @@ namespace PLASMALOGIN {
 
         QString service = QStringLiteral("plasmalogin");
 
-        if (user == QStringLiteral("plasmalogin") && m_greeter)
+        if (user == QStringLiteral("sddm") && m_greeter)
             service = QStringLiteral("plasmalogin-greeter");
         else if (m_autologin)
             service = QStringLiteral("plasmalogin-autologin");

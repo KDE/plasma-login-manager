@@ -97,7 +97,7 @@ namespace PLASMALOGIN {
             env.insert(QProcessEnvironment::systemEnvironment());
             // for plasmalogin itself, we don't want to set LANG from capabilities.
             // instead, honour plasmalogin_lang variable from rc script
-            if (qobject_cast<HelperApp*>(parent())->user() == QStringLiteral("plasmalogin"))
+            if (qobject_cast<HelperApp*>(parent())->user() == QStringLiteral("sddm"))
                 env.insert(QStringLiteral("LANG"), savedLang);
             // finally, restore original helper environment
             QProcessEnvironment::systemEnvironment().clear();
