@@ -28,16 +28,6 @@ bool PlasmaLoginSettingsDefaults::defaultRelogin()
     return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("AutoLogin")).readEntry("Relogin", false);
 }
 
-QString PlasmaLoginSettingsDefaults::defaultHaltCommand()
-{
-    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("General")).readEntry("HaltCommand");
-}
-
-QString PlasmaLoginSettingsDefaults::defaultRebootCommand()
-{
-    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("General")).readEntry("RebootCommand");
-}
-
 bool PlasmaLoginSettingsDefaults::defaultShowClock()
 {
     return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("Greeter")).readEntry("ShowClock", true);

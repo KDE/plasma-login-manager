@@ -10,7 +10,6 @@ SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
-import QtQuick.Dialogs
 
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
@@ -213,80 +212,6 @@ KCM.SimpleKCM {
                     configObject: kcm.settings
                     settingName: "Relogin"
                     extraEnabledConditions: autologinBox.checked
-                }
-            }
-            Item {
-                Kirigami.FormData.isSection: true
-            }
-            RowLayout {
-                Kirigami.FormData.label: i18nc("@label:textbox", "Halt Command:")
-                Layout.fillWidth: true
-                spacing: Kirigami.Units.smallSpacing
-
-                Kirigami.ActionTextField {
-                    id: haltField
-                    Layout.fillWidth: true
-                    text: kcm.settings.haltCommand
-                    readOnly: false
-                    onTextChanged: kcm.settings.haltCommand = text
-                    rightActions: [ Kirigami.Action {
-                        icon.name: haltField.LayoutMirroring.enabled ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl"
-                        visible: haltField.text.length > 0
-                        onTriggered: kcm.settings.haltCommand = ""
-                    }]
-                    KCM.SettingStateBinding {
-                        configObject: kcm.settings
-                        settingName: "HaltCommand"
-                    }
-                }
-                QQC2.Button {
-                    id: haltButton
-                    icon.name: "document-open-folder"
-                    enabled: haltField.enabled
-                    function selectFile() {
-                        fileDialog.handler = (url => kcm.settings.haltCommand = kcm.toLocalFile(url))
-                        fileDialog.open()
-                    }
-                    onClicked: selectFile()
-                }
-            }
-            RowLayout {
-                Layout.fillWidth: true
-                Kirigami.FormData.label: i18nc("@label:textbox", "Reboot Command:")
-                spacing: Kirigami.Units.smallSpacing
-
-                Kirigami.ActionTextField {
-                    id: rebootField
-                    Layout.fillWidth: true
-                    text: kcm.settings.rebootCommand
-                    readOnly: false
-                    onTextChanged: kcm.settings.rebootCommand = text
-                    rightActions: [ Kirigami.Action {
-                        icon.name: rebootField.LayoutMirroring.enabled ? "edit-clear-locationbar-ltr" : "edit-clear-locationbar-rtl"
-                        visible: rebootField.text.length > 0
-                        onTriggered: kcm.settings.rebootCommand = ""
-                    }]
-                    KCM.SettingStateBinding {
-                        configObject: kcm.settings
-                        settingName: "RebootCommand"
-                    }
-                }
-                QQC2.Button {
-                    id: rebootButton
-                    icon.name: "document-open-folder"
-                    enabled: rebootField.enabled
-                    function selectFile() {
-                        fileDialog.handler = (url => kcm.settings.rebootCommand = kcm.toLocalFile(url))
-                        fileDialog.open()
-                    }
-                    onClicked: selectFile()
-                }
-            }
-            FileDialog {
-                id: fileDialog
-                property var handler
-                onAccepted: {
-                    handler(fileUrl)
                 }
             }
         }

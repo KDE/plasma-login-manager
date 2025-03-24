@@ -70,8 +70,6 @@ void PlasmaLoginKcm::save()
     args[QStringLiteral("Autologin/User")] = PlasmaLoginSettings::getInstance().user();
     args[QStringLiteral("Autologin/Session")] = PlasmaLoginSettings::getInstance().session();
     args[QStringLiteral("Autologin/Relogin")] = PlasmaLoginSettings::getInstance().relogin();
-    args[QStringLiteral("General/HaltCommand")] = PlasmaLoginSettings::getInstance().haltCommand();
-    args[QStringLiteral("General/RebootCommand")] = PlasmaLoginSettings::getInstance().rebootCommand();
     args[QStringLiteral("Greeter/ShowClock")] = PlasmaLoginSettings::getInstance().showClock();
     args[QStringLiteral("Greeter/WallpaperPluginId")] = PlasmaLoginSettings::getInstance().wallpaperPluginId();
     // TODO: Save relevant wallpaper group?

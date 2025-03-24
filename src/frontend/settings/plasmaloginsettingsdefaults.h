@@ -19,8 +19,6 @@ protected:
     static QString defaultUser();
     static QString defaultSession();
     static bool defaultRelogin();
-    static QString defaultHaltCommand();
-    static QString defaultRebootCommand();
     static bool defaultShowClock();
     static QString defaultWallpaperPluginId();
 };

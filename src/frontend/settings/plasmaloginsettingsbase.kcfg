@@ -15,14 +15,6 @@
       -<default code="true">defaultRelogin()</default>
     </entry>
   </group>
-  <group name="General">
-    <entry name="HaltCommand" type="String">
-      <default code="true">defaultHaltCommand()</default>
-    </entry>
-    <entry name="RebootCommand" type="String">
-      <default code="true">defaultRebootCommand()</default>
-    </entry>
-  </group>
   <group name="Greeter">
     <entry name="ShowClock" type="Bool">
       <default code="true">defaultShowClock()</default>
