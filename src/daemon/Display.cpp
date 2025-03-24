@@ -113,21 +113,23 @@ namespace PLASMALOGIN {
         m_socketServer(new SocketServer(this)),
         m_greeter(new Greeter(this))
     {
+
+        qDebug() << "Starting" << m_displayServerType;
         // Create display server
         switch (m_displayServerType) {
-        case X11DisplayServerType:
-            if (seat()->canTTY()) {
-                m_terminalId = VirtualTerminal::setUpNewVt();
-            }
-            m_displayServer = new XorgDisplayServer(this);
-            break;
-        case X11UserDisplayServerType:
-            if (seat()->canTTY()) {
-                m_terminalId = fetchAvailableVt();
-            }
-            m_displayServer = new XorgUserDisplayServer(this);
-            m_greeter->setDisplayServerCommand(XorgUserDisplayServer::command(this));
-            break;
+        // case X11DisplayServerType:
+        //     if (seat()->canTTY()) {
+        //         m_terminalId = VirtualTerminal::setUpNewVt();
+        //     }
+        //     m_displayServer = new XorgDisplayServer(this);
+        //     break;
+        // case X11UserDisplayServerType:
+        //     if (seat()->canTTY()) {
+        //         m_terminalId = fetchAvailableVt();
+        //     }
+        //     m_displayServer = new XorgUserDisplayServer(this);
+        //     m_greeter->setDisplayServerCommand(XorgUserDisplayServer::command(this));
+        //     break;
         case WaylandDisplayServerType:
             if (seat()->canTTY()) {
                 m_terminalId = fetchAvailableVt();
