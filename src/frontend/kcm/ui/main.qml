@@ -86,7 +86,7 @@ KCM.SimpleKCM {
         Kirigami.FormLayout {
 
             RowLayout {
-                Kirigami.FormData.label: i18nc("option:check", "Automatically log in:")
+                Kirigami.FormData.label: i18nc("@option:check", "Automatically log in:")
                 spacing: Kirigami.Units.smallSpacing
 
                 QQC2.CheckBox {
@@ -98,7 +98,6 @@ KCM.SimpleKCM {
                                     (kcm.settings.user == "" && kcm.settings.defaultUser != "")
                     }
                     onToggled: {
-
                         if (checked) {
                             kcm.settings.user = autologinUser.currentText
                             kcm.settings.session = autologinSession.currentValue
@@ -117,15 +116,7 @@ KCM.SimpleKCM {
                 }
                 QQC2.ComboBox {
                     id: autologinUser
-                    model: ItemModels.KSortFilterProxyModel {
-                        sourceModel: UserModel {
-                            id: userModel
-                        }
-                        filterRowCallback: function(sourceRow, sourceParent) {
-                            const id = userModel.data(userModel.index(sourceRow, 0, sourceParent), UserModel.UidRole)
-                            return kcm.settings.minimumUid <= id && id <= kcm.settings.maximumUid
-                        }
-                    }
+                    model: UserModel {}
                     textRole: "display"
                     editable: true
                     onActivated: kcm.settings.user = currentText
@@ -161,9 +152,13 @@ KCM.SimpleKCM {
                         function onUserChanged() { autologinUser.updateSelectedUser(); }
                     }
                 }
+            }
+
+            RowLayout {
                 QQC2.Label {
+                    Layout.leftMargin: autologinBox.contentItem.leftPadding
                     enabled: autologinBox.checked
-                    text: i18nc("@label:listbox, the following combobox selects the session that is started automatically", "with session")
+                    text: i18nc("@label:listbox, the following combobox selects the session that is started automatically", "with session:")
                 }
                 QQC2.ComboBox {
                     id: autologinSession
@@ -187,6 +182,7 @@ KCM.SimpleKCM {
                     }
                 }
             }
+
             Kirigami.InlineMessage {
                 id: autologinMessage
 
@@ -204,6 +200,7 @@ KCM.SimpleKCM {
                     onTriggered: kcm.openKDEWallet();
                 }
             }
+
             QQC2.CheckBox {
                 text: i18nc("@option:check", "Log in again immediately after logging off")
                 checked: kcm.settings.relogin
