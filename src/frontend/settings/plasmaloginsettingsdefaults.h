@@ -16,8 +16,6 @@ public:
     PlasmaLoginSettingsDefaults(KSharedConfigPtr config, QObject *parent = nullptr);
 
 protected:
-    static unsigned int defaultMinimumUid();
-    static unsigned int defaultMaximumUid();
     static QString defaultUser();
     static QString defaultSession();
     static bool defaultRelogin();

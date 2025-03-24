@@ -218,33 +218,6 @@ KCM.SimpleKCM {
             Item {
                 Kirigami.FormData.isSection: true
             }
-            QQC2.SpinBox {
-                Kirigami.FormData.label: i18nc("@label:spinbox", "Minimum user UID:")
-                id: minSpinBox
-                from: 1000
-                to: maxSpinBox.value
-                value: kcm.settings.minimumUid
-                onValueModified: kcm.settings.minimumUid = value
-                KCM.SettingStateBinding {
-                    configObject: kcm.settings
-                    settingName: "MinimumUid"
-                }
-            }
-            QQC2.SpinBox {
-                Kirigami.FormData.label: i18nc("@label:spinbox", "Maximum user UID:")
-                id: maxSpinBox
-                from: minSpinBox.value
-                to: 60513
-                value: kcm.settings.maximumUid
-                onValueModified: kcm.settings.maximumUid = value
-                KCM.SettingStateBinding {
-                    configObject: kcm.settings
-                    settingName: "MaximumUid"
-                }
-            }
-            Item {
-                Kirigami.FormData.isSection: true
-            }
             RowLayout {
                 Kirigami.FormData.label: i18nc("@label:textbox", "Halt Command:")
                 Layout.fillWidth: true

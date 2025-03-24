@@ -26,6 +26,9 @@ public:
 
     ~PlasmaLoginSettings() override;
 
+    unsigned int minimumUid() const;
+    unsigned int maximumUid() const;
+
     QList<WallpaperInfo> availableWallpaperPlugins() const;
 
     PlasmaLoginSettings(PlasmaLoginSettings const &) = delete;
@@ -35,5 +38,10 @@ protected:
     PlasmaLoginSettings(KSharedConfig::Ptr config, QObject *parent = nullptr);
 
 private:
+    void getUids();
+    void getWallpaperPlugins();
+
+    unsigned int m_minimumUid;
+    unsigned int m_maximumUid;
     QList<WallpaperInfo> m_availableWallpaperPlugins;
 };

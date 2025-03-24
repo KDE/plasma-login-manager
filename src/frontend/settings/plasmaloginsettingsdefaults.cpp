@@ -13,16 +13,6 @@ PlasmaLoginSettingsDefaults::PlasmaLoginSettingsDefaults(KSharedConfigPtr config
 {
 }
 
-unsigned int PlasmaLoginSettingsDefaults::defaultMinimumUid()
-{
-    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("Users")).readEntry("MinimumUid", 1000);
-}
-
-unsigned int PlasmaLoginSettingsDefaults::defaultMaximumUid()
-{
-    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("Users")).readEntry("MaximumUid", 60000);
-}
-
 QString PlasmaLoginSettingsDefaults::defaultUser()
 {
     return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("AutoLogin")).readEntry("User");
