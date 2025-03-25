@@ -1,21 +1,27 @@
+## Plasma Login
 
+> [!important]
+> [plasma-login](https://invent.kde.org/davidedmundson/plasma-login) and [plasma-login-manager](https://invent.kde.org/davidedmundson/plasma-login-manager) are in a prototype state and are not considered ready for real-world usage.
 
-A small binary that shows a plasma wallpaper on every screen
-The app that shows the prompt and user-selection stuff on a transparent background
+Plasma Login provides the frontend for Plasma's login experience, including:
 
-# Prompt
+ - Login greeter
+ - Login wallpaper
+ - System Settings module (KCM)
 
-This is a placeholder using greetd + some code from QtGreetD.
+It requires [plasma-login-manager](https://invent.kde.org/davidedmundson/plasma-login-manager) which provides the backend.
+ 
+### Getting started
 
-I'm not very convinced this is the exact path we want. 
-  Greetd misses core features
-  and these Qt bindings are not great - they're blocking.
+To try Plasma Login, you can build both repositories and install them on your system.
 
-We can continue to use SDDM as a base, but I am convinced we need to make that stripped down to have the same architecture of starting a sesssion and having some fixed IPC instead of the current state where it tries to do half the things for us. 
+> [!caution]
+> It is not recommended to install this on your system — you should use a virtual machine instead.
 
-# This repo contains
+You will need to:
 
+- Build and install both, e.g. `cmake -S . -B build -DBUILD_WITH_QT6=ON && sudo make install -C build`
+- Disable `sddm` systemd service and enable `plasmalogin`
+- Reboot…
 
-# My config.tml
-
-command = "/opt/kde6/lib/libexec/plasma-dbus-run-session-if-needed /opt/kde6/lib/libexec/startplasma-dev.sh -login-wayland"
+…and be prepared to review logs to work around subtle issues.
