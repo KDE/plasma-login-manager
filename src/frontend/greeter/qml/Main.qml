@@ -99,7 +99,7 @@ Item {
         BreezeComponents.Clock {
             id: clock
             property Item shadow: clockShadow
-            visible: y > 0
+            visible: y > 0 && Settings.showClock
             anchors.horizontalCenter: parent.horizontalCenter
             y: (userListComponent.userList.y + mainStack.y)/2 - height/2
             Layout.alignment: Qt.AlignBaseline
