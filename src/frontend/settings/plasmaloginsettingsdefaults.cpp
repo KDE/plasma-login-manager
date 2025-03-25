@@ -15,12 +15,12 @@ PlasmaLoginSettingsDefaults::PlasmaLoginSettingsDefaults(KSharedConfigPtr config
 
 QString PlasmaLoginSettingsDefaults::defaultUser()
 {
-    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("AutoLogin")).readEntry("User");
+    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("AutoLogin")).readEntry("User", "");
 }
 
 QString PlasmaLoginSettingsDefaults::defaultSession()
 {
-    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("AutoLogin")).readEntry("Session");
+    return KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE), KConfig::CascadeConfig)->group(QStringLiteral("AutoLogin")).readEntry("Session", "");
 }
 
 bool PlasmaLoginSettingsDefaults::defaultRelogin()

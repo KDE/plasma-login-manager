@@ -16,8 +16,8 @@ public:
     PlasmaLoginSettingsDefaults(KSharedConfigPtr config, QObject *parent = nullptr);
 
 protected:
-    static QString defaultUser();
-    static QString defaultSession();
+    Q_INVOKABLE static QString defaultUser();
+    Q_INVOKABLE static QString defaultSession();
     static bool defaultRelogin();
     static bool defaultShowClock();
     static QString defaultWallpaperPluginId();

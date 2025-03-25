@@ -94,8 +94,8 @@ KCM.SimpleKCM {
                     text: i18nc("@label:listbox, the following combobox selects the user to log in automatically", "as user:")
                     checked: kcm.settings.user != ""
                     KCM.SettingHighlighter {
-                        highlight: (kcm.settings.user != "" && kcm.settings.defaultUser == "") ||
-                                    (kcm.settings.user == "" && kcm.settings.defaultUser != "")
+                        highlight: (kcm.settings.user != "" && kcm.settings.defaultUser() == "") ||
+                                    (kcm.settings.user == "" && kcm.settings.defaultUser() != "")
                     }
                     onToggled: {
                         if (checked) {
@@ -155,9 +155,10 @@ KCM.SimpleKCM {
             }
 
             RowLayout {
+                spacing: Kirigami.Units.smallSpacing
+
                 QQC2.Label {
                     Layout.leftMargin: autologinBox.contentItem.leftPadding
-                    enabled: autologinBox.checked
                     text: i18nc("@label:listbox, the following combobox selects the session that is started automatically", "with session:")
                 }
                 QQC2.ComboBox {
