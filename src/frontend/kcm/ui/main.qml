@@ -116,6 +116,7 @@ KCM.SimpleKCM {
                 }
                 QQC2.ComboBox {
                     id: autologinUser
+                    implicitWidth: Kirigami.Units.gridUnit * 12
                     model: UserModel {}
                     textRole: "display"
                     editable: true
@@ -163,6 +164,7 @@ KCM.SimpleKCM {
                 }
                 QQC2.ComboBox {
                     id: autologinSession
+                    implicitWidth: Kirigami.Units.gridUnit * 12
                     model: SessionModel {}
                     textRole: "display"
                     valueRole: "path"
