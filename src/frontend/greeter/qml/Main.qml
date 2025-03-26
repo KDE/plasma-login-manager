@@ -126,29 +126,21 @@ Item {
                 id: userListComponent
                 userListModel: PlasmaLogin.UserModel
                 loginScreenUiVisible: loginScreenRoot.uiVisible
-                //userListCurrentIndex: PlasmaLogin.UserModel.lastIndex >= 0 ? PlasmaLogin.UserModel.lastIndex : 0
-                userListCurrentIndex: 0 // TODO: State config!
-                //lastUserName: PlasmaLogin.UserModel.lastUser
-                lastUserName: "" // TODO: State config!
-                showUserList: {
-                    return userListModel.count <= 7;
-                    /*
-                    if (!userListModel.hasOwnProperty("count")
-                        || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {
-                        return false
-                    }
+                userListCurrentIndex: {
+                    // indexOfData will return -1 if passed an empty string, which these are by default
+                    let preselectedUserIndex = PlasmaLogin.UserModel.indexOfData(PlasmaLogin.Settings.preselectedUser, PlasmaLogin.UserModel.NameRole);
+                    let lastLoggedInUserIndex = PlasmaLogin.UserModel.indexOfData(PlasmaLogin.StateConfig.lastLoggedInUser, PlasmaLogin.UserModel.NameRole);
 
-                    if (userListModel.count === 0 ) {
-                        return false
+                    if (preselectedUserIndex != -1) {
+                        return preselectedUserIndex;
+                    } else if (lastLoggedInUserIndex != -1) {
+                        return lastLoggedInUserIndex;
+                    } else {
+                        return 0;
                     }
-
-                    if (userListModel.hasOwnProperty("containsAllUsers") && !userListModel.containsAllUsers) {
-                        return false
-                    }
-
-                    return userListModel.count <= userListModel.disableAvatarsThreshold
-                    */
                 }
+                lastUserName: "" // Unused — we probably want empty when showing a text box i.e. for corporate use with >7 users
+                showUserList: userListModel.count <= 7
 
                 notificationMessage: {
                     const parts = [];
@@ -188,7 +180,7 @@ Item {
                         visible: !userListComponent.showUsernamePrompt
                     }]
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName, sessionButton.currentSessionPath)
             }
 
             readonly property real zoomFactor: 1.5
@@ -276,7 +268,7 @@ Item {
                     }
                 }
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName, sessionButton.currentSessionPath)
 
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
@@ -363,8 +355,16 @@ Item {
         }
     }
 
-    function handleLoginRequest(username, password, sessionType, sessionFileName) {
+    // Used to save in onLoginSucceeded
+    property string lastLoggedInSession
+    property string lastLoggedInUser
+
+    function handleLoginRequest(username, password, sessionType, sessionFileName, sessionPath) {
         root.notificationMessage = "";
+
+        root.lastLoggedInUser = username;
+        root.lastLoggedInSession = sessionPath;
+
         PlasmaLogin.Authenticator.login(username, password, sessionType, sessionFileName);
     }
 
@@ -384,6 +384,10 @@ Item {
         function onLoginSucceeded() {
             mainStack.opacity = 0;
             footer.opacity = 0;
+
+            PlasmaLogin.StateConfig.lastLoggedInUser = root.lastLoggedInUser;
+            PlasmaLogin.StateConfig.lastLoggedInSession = root.lastLoggedInSession;
+            PlasmaLogin.StateConfig.save();
         }
     }
 

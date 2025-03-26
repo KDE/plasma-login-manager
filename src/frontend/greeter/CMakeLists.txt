@@ -3,7 +3,9 @@ remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY=0)
 remove_definitions(-DQT_USE_QSTRINGBUILDER)
 
-set(LOGIN_GREETER_SRCS main.cpp
+set(LOGIN_GREETER_SRCS
+    main.cpp
+    stateconfig.cpp
     backend/GreeterProxy.cpp
     backend/SocketWriter.cpp
     mockbackend/MockGreeterProxy.cpp
@@ -30,6 +32,8 @@ ecm_target_qml_sources(plasma-login-greeter
     RESOURCES
     qml/faces/.face.icon
 )
+
+kconfig_add_kcfg_files(plasma-login-greeter GENERATE_MOC stateconfig.kcfgc)
 
 target_link_libraries(plasma-login-greeter PRIVATE
     settings

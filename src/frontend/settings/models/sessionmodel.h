@@ -49,6 +49,8 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
+    Q_INVOKABLE int indexOfData(const QVariant &data, int role = Qt::DisplayRole) const;
+
 private:
     void populate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths);
     void addSession(const QString path, const Session::Type type);

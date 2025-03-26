@@ -13,6 +13,7 @@
 #include "backend/GreeterProxy.h"
 #include "mockbackend/MockGreeterProxy.h"
 
+#include "stateconfig.h"
 #include "plasmaloginsettings.h"
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
@@ -121,6 +122,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "UserModel", new UserModel);
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Settings", &PlasmaLoginSettings::getInstance());
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "StateConfig", StateConfig::self());
 
     LoginGreeter greeter;
     return app.exec();

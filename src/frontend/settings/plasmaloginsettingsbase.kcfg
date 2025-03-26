@@ -16,6 +16,12 @@
     </entry>
   </group>
   <group name="Greeter">
+    <entry name="PreselectedUser" type="String">
+      <default code="true">defaultPreselectedUser()</default>
+    </entry>
+    <entry name="PreselectedSession" type="String">
+      <default code="true">defaultPreselectedSession()</default>
+    </entry>
     <entry name="ShowClock" type="Bool">
       <default code="true">defaultShowClock()</default>
     </entry>

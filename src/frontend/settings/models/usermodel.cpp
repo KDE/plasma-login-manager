@@ -66,6 +66,21 @@ QHash<int, QByteArray> UserModel::roleNames() const
     return roles;
 }
 
+int UserModel::indexOfData(const QVariant &data, int role) const
+{
+    if (data.isNull() || data.toString().isEmpty()) {
+        return -1;
+    }
+
+    for (int i = 0; i < m_users.count(); ++i) {
+        if (UserModel::data(index(i, 0), role) == data) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void UserModel::populate()
 {
     beginResetModel();

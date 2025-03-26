@@ -85,6 +85,11 @@ KCM.SimpleKCM {
 
         Kirigami.FormLayout {
 
+            Item {
+                Kirigami.FormData.label: i18nc("@title:group", "Auto-login")
+                Kirigami.FormData.isSection: true
+            }
+
             RowLayout {
                 Kirigami.FormData.label: i18nc("@option:check", "Automatically log in:")
                 spacing: Kirigami.Units.smallSpacing
@@ -212,6 +217,144 @@ KCM.SimpleKCM {
                     configObject: kcm.settings
                     settingName: "Relogin"
                     extraEnabledConditions: autologinBox.checked
+                }
+            }
+
+            Item {
+                Kirigami.FormData.label: i18nc("@title:group", "Defaults")
+                Kirigami.FormData.isSection: true
+            }
+
+            QQC2.RadioButton {
+                Kirigami.FormData.label: i18nc("@label", "Default user:")
+
+                text: i18nc("@option:radio", "Last logged-in user")
+                checked: kcm.settings.preselectedUser == ""
+                onToggled: {
+                    if (checked) {
+                        kcm.settings.preselectedUser = "";
+                    }
+                }
+
+                KCM.SettingHighlighter {
+                    highlight: kcm.settings.preselectedUser != kcm.settings.defaultPreselectedUser
+                }
+            }
+
+            RowLayout {
+                spacing: 0
+
+                QQC2.RadioButton {
+                    id: customPreselectedUserRadioButton
+
+                    checked: kcm.settings.preselectedUser != ""
+                    onToggled: {
+                        if (checked) {
+                            kcm.settings.preselectedUser = customPreselectedUserComboBox.currentText
+                        }
+                    }
+
+                    KCM.SettingHighlighter {
+                        highlight: kcm.settings.preselectedUser != kcm.settings.defaultPreselectedUser
+                    }
+                }
+
+                QQC2.ComboBox {
+                    id: customPreselectedUserComboBox
+
+                    implicitWidth: Kirigami.Units.gridUnit * 12
+                    model: UserModel {}
+                    textRole: "display"
+                    editable: true
+                    onActivated: kcm.settings.preselectedUser = currentText
+                    onEditTextChanged: kcm.settings.preselectedUser = editText;
+
+                    Component.onCompleted: updateSelectedUser()
+                    Connections {
+                        target: kcm.settings
+                        function onPreselectedUserChanged() { customPreselectedUserComboBox.updateSelectedUser(); }
+                    }
+
+                    function updateSelectedUser() {
+                        const index = find(kcm.settings.preselectedUser);
+                        if (index != -1) {
+                            currentIndex = index;
+                        }
+                        editText = kcm.settings.preselectedUser;
+                    }
+
+                    KCM.SettingStateBinding {
+                        visible: customPreselectedUserRadioButton.checked
+                        configObject: kcm.settings
+                        settingName: "PreselectedUser"
+                        extraEnabledConditions: customPreselectedUserRadioButton.checked
+                    }
+                }
+            }
+
+            Item {
+                Kirigami.FormData.isSection: true
+            }
+
+            QQC2.RadioButton {
+                Kirigami.FormData.label: i18nc("@label", "Default session:")
+
+                text: i18nc("@option:radio", "Last logged-in session")
+                checked: kcm.settings.preselectedSession == ""
+                onToggled: {
+                    if (checked) {
+                        kcm.settings.preselectedSession = "";
+                    }
+                }
+
+                KCM.SettingHighlighter {
+                    highlight: kcm.settings.preselectedSession != kcm.settings.defaultPreselectedSession
+                }
+            }
+
+            RowLayout {
+                spacing: 0
+
+                QQC2.RadioButton {
+                    id: customPreselectedSessionRadioButton
+
+                    checked: kcm.settings.preselectedSession != ""
+                    onToggled: {
+                        if (checked) {
+                            kcm.settings.preselectedSession = customPreselectedSessionComboBox.valueAt(0);
+                        }
+                    }
+
+                    KCM.SettingHighlighter {
+                        highlight: kcm.settings.preselectedSession != kcm.settings.defaultPreselectedSession
+                    }
+                }
+
+                QQC2.ComboBox {
+                    id: customPreselectedSessionComboBox
+
+                    implicitWidth: Kirigami.Units.gridUnit * 12
+                    model: SessionModel {}
+                    textRole: "display"
+                    valueRole: "path"
+                    onActivated: kcm.settings.preselectedSession = currentValue
+
+                    Component.onCompleted: updateCurrentIndex()
+                    Connections {
+                        target: kcm.settings
+                        function onPreselectedSessionChanged() { customPreselectedSessionComboBox.updateCurrentIndex(); }
+                    }
+
+                    function updateCurrentIndex() {
+                        currentIndex = indexOfValue(kcm.settings.preselectedSession);
+                    }
+
+                    KCM.SettingStateBinding {
+                        visible: customPreselectedSessionRadioButton.checked
+                        configObject: kcm.settings
+                        settingName: "PreselectedSession"
+                        extraEnabledConditions: customPreselectedSessionRadioButton.checked
+                    }
                 }
             }
         }

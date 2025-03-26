@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: none
+# SPDX-License-Identifier: CC0-1.0
+File=stateconfig.kcfg
+ClassName=StateConfig
+Mutators=true
+GenerateProperties=true
+Singleton=true

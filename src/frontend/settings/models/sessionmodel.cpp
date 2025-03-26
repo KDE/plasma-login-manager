@@ -125,6 +125,21 @@ QHash<int, QByteArray> SessionModel::roleNames() const
     return roles;
 }
 
+int SessionModel::indexOfData(const QVariant &data, int role) const
+{
+    if (data.isNull() || data.toString().isEmpty()) {
+        return -1;
+    }
+
+    for (int i = 0; i < m_sessions.count(); ++i) {
+        if (SessionModel::data(index(i, 0), role) == data) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void SessionModel::populate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths)
 {
     beginResetModel();
