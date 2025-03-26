@@ -12,13 +12,25 @@ class PlasmaLoginSettingsDefaults : public KConfigSkeleton
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString defaultUser READ defaultUser CONSTANT)
+    Q_PROPERTY(QString defaultSession READ defaultSession CONSTANT)
+    Q_PROPERTY(bool defaultRelogin READ defaultRelogin CONSTANT)
+    Q_PROPERTY(bool defaultShowClock READ defaultShowClock CONSTANT)
+    Q_PROPERTY(QString defaultWallpaperPluginId READ defaultWallpaperPluginId CONSTANT)
+
 public:
     PlasmaLoginSettingsDefaults(KSharedConfigPtr config, QObject *parent = nullptr);
 
-protected:
-    Q_INVOKABLE static QString defaultUser();
-    Q_INVOKABLE static QString defaultSession();
+    static QString defaultUser();
+    static QString defaultSession();
     static bool defaultRelogin();
     static bool defaultShowClock();
     static QString defaultWallpaperPluginId();
+
+private:
+    static QString s_defaultUser;
+    static QString s_defaultSession;
+    static bool s_defaultRelogin;
+    static bool s_defaultShowClock;
+    static QString s_defaultWallpaperPluginId;
 };

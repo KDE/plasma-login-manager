@@ -94,8 +94,8 @@ KCM.SimpleKCM {
                     text: i18nc("@label:listbox, the following combobox selects the user to log in automatically", "as user:")
                     checked: kcm.settings.user != ""
                     KCM.SettingHighlighter {
-                        highlight: (kcm.settings.user != "" && kcm.settings.defaultUser() == "") ||
-                                    (kcm.settings.user == "" && kcm.settings.defaultUser() != "")
+                        highlight: (kcm.settings.user != "" && kcm.settings.defaultUser == "") ||
+                                    (kcm.settings.user == "" && kcm.settings.defaultUser != "")
                     }
                     onToggled: {
                         if (checked) {
