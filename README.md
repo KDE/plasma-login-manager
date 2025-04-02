@@ -1,12 +1,24 @@
 ## Plasma Login
 
 > [!important]
-> [plasma-login](https://invent.kde.org/davidedmundson/plasma-login) and [plasma-login-manager](https://invent.kde.org/davidedmundson/plasma-login-manager) are in a prototype state and are not considered ready for real-world usage.
+> Plasma Login is in a prototype state and is not considered ready for real-world usage.
 
-Plasma Login Manager provides the backend for Plasma's login experience. It is a fork of [SDDM](https://github.com/sddm/sddm).
+Plasma Login provides a display manager for KDE Plasma, forked from [SDDM](https://github.com/sddm/sddm) and with an new frontend providing a greeter, wallpaper plugin integration and System Settings module (KCM).
 
-It requires [plasma-login](https://invent.kde.org/davidedmundson/plasma-login) which provides the frontend.
- 
+### What we want
+
+ - Great out-of-box experience in multi-monitor and high DPI and HDR
+ - Keyboard layout switching
+ - Virtual keyboards
+ - Easy Chinese/Japanese/Korean/Vietnamese (CJK) input
+ - Screen readers for blind people (which then means volume control)
+ - Remote (VNC/RDP) support from startup
+ - Deeper Plasma integration including:
+    - Display and keyboard brightness control
+    - Full power management
+    - Pairing trusted bluetooth devices
+    - Login to known Wi-Fi for remote LDAP
+
 ### Getting started
 
 To try Plasma Login, you can build both repositories and install them on your system.
@@ -17,17 +29,10 @@ To try Plasma Login, you can build both repositories and install them on your sy
 You will need to:
 
 - On Arch Linux, install `base-devel`, `git`, `cmake` and `extra-cmake-modules`
-- Clone git repositories:
+- Clone, build and install:
 
 ```bash
-git clone https://invent.kde.org/davidedmundson/plasma-login.git
 git clone https://invent.kde.org/davidedmundson/plasma-login-manager.git
-```
-
-- Build and install both repositories:
-
-```bash
-cmake -S plasma-login -B plasma-login/build && sudo make install -C plasma-login/build
 cmake -S plasma-login-manager -B plasma-login-manager/build && sudo make install -C plasma-login-manager/build
 ```
 
@@ -47,3 +52,7 @@ sudo cp /etc/pam.d/sddm-greeter /etc/pam.d/plasmalogin-greeter
 ```
 
 - …and finally reboot.
+
+### Configuration
+
+Plasma Login is configured by users through `/etc/plasmalogin.conf`, which overrides distro-provided defaults at `/usr/lib/plasma-login/defaults.conf`. In managed scenarios, the latter file can be modified to set a default wallpaper or login session, with the settings module disabled via Kiosk.
