@@ -16,6 +16,9 @@
 #include "plasmaloginsettings.h"
 #include "wallpaperintegration.h"
 
+class UserModel;
+class SessionModel;
+
 class PlasmaLoginKcm : public KQuickManagedConfigModule
 {
     Q_OBJECT
@@ -28,6 +31,8 @@ public:
     Q_PROPERTY(WallpaperIntegration *wallpaperIntegration READ wallpaperIntegration NOTIFY currentWallpaperChanged)
     Q_PROPERTY(QString currentWallpaper READ currentWallpaper NOTIFY currentWallpaperChanged)
     Q_PROPERTY(bool isDefaultsWallpaper READ isDefaultsWallpaper NOTIFY isDefaultsWallpaperChanged)
+    Q_PROPERTY(UserModel *userModel READ userModel CONSTANT)
+    Q_PROPERTY(SessionModel *sessionModel READ sessionModel CONSTANT)
 
     // TODO: Why not use directly? Could expose in PlasmaLoginSettings as Q_INVOKABLE
     Q_INVOKABLE QList<WallpaperInfo> availableWallpaperPlugins()
@@ -45,6 +50,8 @@ public:
     WallpaperIntegration *wallpaperIntegration() const;
     QString currentWallpaper() const;
     bool isDefaultsWallpaper() const;
+    UserModel *userModel() const;
+    SessionModel *sessionModel() const;
 
 public Q_SLOTS:
     void load() override;

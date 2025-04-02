@@ -39,8 +39,8 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     qmlRegisterAnonymousType<WallpaperInfo>(url, 1);
     qmlRegisterAnonymousType<WallpaperIntegration>(url, 1);
     qmlRegisterAnonymousType<KConfigPropertyMap>(url, 1);
-    qmlRegisterType<UserModel>(url, 1, 0, "UserModel");
-    qmlRegisterType<SessionModel>(url, 1, 0, "SessionModel");
+    qmlRegisterAnonymousType<UserModel>(url, 1);
+    qmlRegisterAnonymousType<SessionModel>(url, 1);
     qmlProtectModule(url, 1);
 
     // Our modules will be checking the Plasmoid attached object when running from Plasma, let it load the module
@@ -163,6 +163,18 @@ QUrl PlasmaLoginKcm::wallpaperConfigFile() const
 WallpaperIntegration *PlasmaLoginKcm::wallpaperIntegration() const
 {
     return m_wallpaperSettings->wallpaperIntegration();
+}
+
+UserModel *PlasmaLoginKcm::userModel() const
+{
+    static UserModel userModel;
+    return &userModel;
+}
+
+SessionModel *PlasmaLoginKcm::sessionModel() const
+{
+    static SessionModel sessionModel;
+    return &sessionModel;
 }
 
 bool PlasmaLoginKcm::KDEWalletAvailable()

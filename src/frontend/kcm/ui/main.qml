@@ -122,7 +122,7 @@ KCM.SimpleKCM {
                 QQC2.ComboBox {
                     id: autologinUser
                     implicitWidth: Kirigami.Units.gridUnit * 12
-                    model: UserModel {}
+                    model: kcm.userModel
                     textRole: "display"
                     editable: true
                     onActivated: kcm.settings.user = currentText
@@ -170,7 +170,7 @@ KCM.SimpleKCM {
                 QQC2.ComboBox {
                     id: autologinSession
                     implicitWidth: Kirigami.Units.gridUnit * 12
-                    model: SessionModel {}
+                    model: kcm.sessionModel
                     textRole: "display"
                     valueRole: "path"
                     onActivated: kcm.settings.session = currentValue
@@ -263,7 +263,7 @@ KCM.SimpleKCM {
                     id: customPreselectedUserComboBox
 
                     implicitWidth: Kirigami.Units.gridUnit * 12
-                    model: UserModel {}
+                    model: kcm.userModel
                     textRole: "display"
                     editable: true
                     onActivated: kcm.settings.preselectedUser = currentText
@@ -334,7 +334,7 @@ KCM.SimpleKCM {
                     id: customPreselectedSessionComboBox
 
                     implicitWidth: Kirigami.Units.gridUnit * 12
-                    model: SessionModel {}
+                    model: kcm.sessionModel
                     textRole: "display"
                     valueRole: "path"
                     onActivated: kcm.settings.preselectedSession = currentValue
