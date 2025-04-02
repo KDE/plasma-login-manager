@@ -290,97 +290,22 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
-    QSharedPointer<KConfig> plasmaLoginConfig = openConfig(QLatin1String(PLASMALOGIN_CONFIG_FILE));
-
-    QMap<QString, QVariant>::const_iterator iterator;
-    for (iterator = args.constBegin(); iterator != args.constEnd(); ++iterator) {
-        QStringList configFields = iterator.key().split(QLatin1Char('/'));
-        QString groupName = configFields[0];
-        QString keyName = configFields[1];
-
-        plasmaLoginConfig->group(groupName).writeEntry(keyName, iterator.value());
+    QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        return ActionReply::HelperErrorReply();
     }
 
-    plasmaLoginConfig->sync();
+    QTextStream out(&file);
+    out << args[QStringLiteral("config")].toString();
+    out.flush();
+    file.close();
 
-    return ActionReply::SuccessReply();
-
-    /*
-    ActionReply reply = ActionReply::HelperErrorReply();
-    QSharedPointer<KConfig> sddmConfig = openConfig(QString{QLatin1String(PLASMALOGIN_CONFIG_DIR "/") + QStringLiteral("kde_settings.conf")});
-    QSharedPointer<KConfig> sddmOldConfig = openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE));
-    QSharedPointer<KConfig> themeConfig;
-    QString themeConfigFile = args[QStringLiteral("theme.conf.user")].toString();
-
-    if (!themeConfigFile.isEmpty()) {
-        themeConfig = openConfig(themeConfigFile);
-    }
-
-    QMap<QString, QVariant>::const_iterator iterator;
-
-    for (iterator = args.constBegin(); iterator != args.constEnd(); ++iterator) {
-        if (iterator.key() == QLatin1String("kde_settings.conf") || iterator.key() == QLatin1String("theme.conf.user")) {
-            continue;
-        }
-
-        QStringList configFields = iterator.key().split(QLatin1Char('/'));
-        if (configFields.size() != 3) {
-            continue;
-        }
-
-        QString fileName = configFields[0];
-        QString groupName = configFields[1];
-        QString keyName = configFields[2];
-
-        // if there is an identical keyName in "sddm.conf" we want to delete it so SDDM doesn't read from the old file
-        // hierarchically SDDM prefers "etc/sddm.conf" to "/etc/sddm.conf.d/some_file.conf"
-
-        if (fileName == QLatin1String("kde_settings.conf")) {
-            sddmConfig->group(groupName).writeEntry(keyName, iterator.value());
-            sddmOldConfig->group(groupName).deleteEntry(keyName);
-        } else if (fileName == QLatin1String("theme.conf.user") && !themeConfig.isNull()) {
-            QFileInfo themeConfigFileInfo(themeConfigFile);
-            QDir configRootDirectory = themeConfigFileInfo.absoluteDir();
-
-            if (keyName == QLatin1String("background")) {
-                QFileInfo newBackgroundFileInfo(iterator.value().toString());
-                QString previousBackground = themeConfig->group(groupName).readEntry(keyName);
-
-                bool backgroundChanged = newBackgroundFileInfo.fileName() != previousBackground;
-                if (backgroundChanged) {
-                    if (!previousBackground.isEmpty()) {
-                        QString previousBackgroundPath = configRootDirectory.filePath(previousBackground);
-                        if (QFile::remove(previousBackgroundPath)) {
-                            qDebug() << "Removed previous background " << previousBackgroundPath;
-                        }
-                    }
-
-                    if (newBackgroundFileInfo.exists()) {
-                        QString newBackgroundPath = configRootDirectory.filePath(newBackgroundFileInfo.fileName());
-                        qDebug() << "Copying background from " << newBackgroundFileInfo.absoluteFilePath() << " to " << newBackgroundPath;
-                        if (QFile::copy(newBackgroundFileInfo.absoluteFilePath(), newBackgroundPath)) {
-                            QFile::setPermissions(newBackgroundPath, QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
-                            themeConfig->group(groupName).writeEntry(keyName, newBackgroundFileInfo.fileName());
-                        }
-                    } else {
-                        themeConfig->group(groupName).deleteEntry(keyName);
-                    }
-                }
-            } else {
-                themeConfig->group(groupName).writeEntry(keyName, iterator.value());
-            }
-        }
-    }
-
-    sddmOldConfig->sync();
-    sddmConfig->sync();
-
-    if (!themeConfig.isNull()) {
-        themeConfig->sync();
+    // Ensure permissions on the config file are appropriate
+    if (!(file.permissions() & QFile::ReadOwner & QFile::WriteOwner & QFile::ReadGroup & QFile::ReadOther)) {
+        file.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
     }
 
     return ActionReply::SuccessReply();
-    */
 }
 
 KAUTH_HELPER_MAIN("org.kde.kcontrol.kcmplasmalogin", PlasmaLoginAuthHelper)
