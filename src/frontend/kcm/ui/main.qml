@@ -105,7 +105,7 @@ KCM.SimpleKCM {
                     onToggled: {
                         if (checked) {
                             kcm.settings.user = autologinUser.currentText
-                            kcm.settings.session = autologinSession.currentValue
+                            kcm.settings.session = autologinSession.valueAt(0)
                         } else {
                             kcm.settings.user = ""
                             kcm.settings.session = ""
@@ -182,7 +182,7 @@ KCM.SimpleKCM {
                     }
                     Component.onCompleted: updateCurrentIndex()
                     function updateCurrentIndex() {
-                        currentIndex = Math.max(indexOfValue(kcm.settings.session), 0);
+                        currentIndex = indexOfValue(kcm.settings.session);
                     }
                     Connections { // Needed for "Reset" and "Default" buttons to work
                         target: kcm.settings
