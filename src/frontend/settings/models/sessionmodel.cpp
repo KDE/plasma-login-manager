@@ -17,8 +17,8 @@ SessionModel::SessionModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     // NOTE: /usr/local/share is listed first, then /usr/share, so sessions in the former take precedence
-    const QStringList xSessionPaths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, "xsessions", QStandardPaths::LocateDirectory);
-    const QStringList waylandSessionPaths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, "wayland-sessions", QStandardPaths::LocateDirectory);
+    const QStringList xSessionPaths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("xsessions"), QStandardPaths::LocateDirectory);
+    const QStringList waylandSessionPaths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("wayland-sessions"), QStandardPaths::LocateDirectory);
 
     // NOTE: SDDM checks for the existence of /dev/dri before including wayland sessions
     // This is not duplicated here — if wayland isn't going to work, then neither is the greeter
@@ -167,7 +167,7 @@ void SessionModel::populate(const QStringList &xSessionPaths, const QStringList 
                 }
 
                 if (!isDuplicate) {
-                    sessions.append(sessionPath + "/" + session);
+                    sessions.append(sessionPath + QStringLiteral("/") + session);
                 }
             }
         }

@@ -112,7 +112,7 @@ void UserModel::populate()
         if (icon.isEmpty()) {
             icon = QStringLiteral("file:///usr/share/sddm/themes/breeze/faces/.face.icon");
         } else {
-            icon.prepend("file://");
+            icon.prepend(QStringLiteral("file://"));
         }
 
         m_users << User(user.loginName(), user.property(KUser::UserProperty::FullName).toString(), icon, user.homeDir(), needsPassword, uid, gid);

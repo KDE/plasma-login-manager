@@ -46,19 +46,19 @@ void PlasmaLoginSettings::getUids()
     m_minimumUid = std::numeric_limits<unsigned int>::min();
     m_maximumUid = std::numeric_limits<unsigned int>::max();
 
-    QFile loginDefs("/etc/login.defs");
+    QFile loginDefs(QStringLiteral("/etc/login.defs"));
     if (!loginDefs.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to determine min/max uid";
         return;
     }
 
     QTextStream in(&loginDefs);
-    const QStringList keys = {"UID_MIN", "UID_MAX"};
+    const QStringList keys = {QStringLiteral("UID_MIN"), QStringLiteral("UID_MAX")};
 
     while (!in.atEnd()) {
-        QString line = in.readLine().split('#').first().simplified();
+        QString line = in.readLine().split(QLatin1Char('#')).first().simplified();
         if (!line.isEmpty()) {
-            QStringList lineParts = line.split(' ', Qt::SkipEmptyParts);
+            QStringList lineParts = line.split(QLatin1Char(' '), Qt::SkipEmptyParts);
 
             if (lineParts.size() != 2 || !keys.contains(lineParts[0])) {
                 continue;
@@ -67,7 +67,7 @@ void PlasmaLoginSettings::getUids()
             bool ok;
             unsigned int value = lineParts[1].toUInt(&ok);
             if (ok) {
-                if (lineParts[0] == "UID_MIN") {
+                if (lineParts[0] == QStringLiteral("UID_MIN")) {
                     m_minimumUid = value;
                 } else {
                     m_maximumUid = value;
