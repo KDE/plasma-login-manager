@@ -12,7 +12,7 @@
       <default code="true">defaultSession()</default>
     </entry>
     <entry name="Relogin" type="Bool">
-      -<default code="true">defaultRelogin()</default>
+      <default code="true">defaultRelogin()</default>
     </entry>
   </group>
   <group name="Greeter">
