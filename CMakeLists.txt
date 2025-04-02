@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 project(PLASMALOGIN)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
 
 # Set version
 set(PLASMALOGIN_VERSION_MAJOR 0)
@@ -20,12 +19,35 @@ option(ENABLE_JOURNALD "Enable logging to journald" ON)
 option(NO_SYSTEMD "Disable systemd support" OFF)
 option(USE_ELOGIND "Use elogind instead of logind" OFF)
 
-set(CMAKE_CXX_STANDARD 17)
+# Version settings
+set(PROJECT_DEP_VERSION "6.3.0")
+set(QT_MIN_VERSION "6.7.0")
+set(KF6_MIN_VERSION "6.10.0")
+set(KDE_COMPILERSETTINGS_LEVEL "5.82")
+
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 message("${CMAKE_MODULE_PATH}")
+
+# Include KDE CMake modules
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMSetupVersion)
+include(ECMGenerateHeaders)
+include(ECMMarkNonGuiExecutable)
+include(CMakePackageConfigHelpers)
+include(FeatureSummary)
+include(GenerateExportHeader)
+include(KDEClangFormat)
+include(KDEGitCommitHooks)
+include(ECMDeprecationSettings)
+include(ECMQtDeclareLoggingCategory)
+include(ECMConfiguredInstall)
+include(ECMQmlModule)
 
 # Definitions
 add_definitions(-Wall -Wextra -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_FOREACH)
@@ -57,7 +79,10 @@ endif()
 set(QT_MAJOR_VERSION 6)
 
 find_package(Qt${QT_MAJOR_VERSION} CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest)
-find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config Package WindowSystem I18n DBusAddons KCMUtils Auth KIO)
+find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
+find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)
+find_package(LibKWorkspace ${PROJECT_DEP_VERSION} REQUIRED)
 
 # Standard installation paths
 include(GNUInstallDirs)
