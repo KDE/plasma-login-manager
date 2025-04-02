@@ -2,5 +2,3 @@
 
 #define PLASMALOGIN_CONFIG_FILE         "@PLASMALOGIN_CONFIG_FILE@"
 #define PLASMALOGIN_SYSTEM_CONFIG_FILE  "@PLASMALOGIN_SYSTEM_CONFIG_FILE@"
-#define XSESSIONS_DIR                   "@XSESSIONS_DIR@" // TODO: Remove, use new SessionModel
-#define WAYLAND_SESSIONS_DIR            "@WAYLAND_SESSIONS_DIR@" // TODO: Remove, use new SessionModel
