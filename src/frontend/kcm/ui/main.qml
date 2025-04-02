@@ -227,7 +227,11 @@ KCM.SimpleKCM {
 
             QQC2.RadioButton {
                 Kirigami.FormData.label: i18nc("@label", "Default user:")
+                QQC2.ButtonGroup.group: QQC2.ButtonGroup {
+                    id: preselectedUserGroup
+                }
 
+                autoExclusive: false
                 text: i18nc("@option:radio", "Last logged-in user")
                 checked: kcm.settings.preselectedUser == ""
                 onToggled: {
@@ -246,7 +250,9 @@ KCM.SimpleKCM {
 
                 QQC2.RadioButton {
                     id: customPreselectedUserRadioButton
+                    QQC2.ButtonGroup.group: preselectedUserGroup
 
+                    autoExclusive: false
                     checked: kcm.settings.preselectedUser != ""
                     onToggled: {
                         if (checked) {
@@ -298,7 +304,11 @@ KCM.SimpleKCM {
 
             QQC2.RadioButton {
                 Kirigami.FormData.label: i18nc("@label", "Default session:")
+                QQC2.ButtonGroup.group: QQC2.ButtonGroup {
+                    id: preselectedSessionGroup
+                }
 
+                autoExclusive: false
                 text: i18nc("@option:radio", "Last logged-in session")
                 checked: kcm.settings.preselectedSession == ""
                 onToggled: {
@@ -317,7 +327,9 @@ KCM.SimpleKCM {
 
                 QQC2.RadioButton {
                     id: customPreselectedSessionRadioButton
+                    QQC2.ButtonGroup.group: preselectedSessionGroup
 
+                    autoExclusive: false
                     checked: kcm.settings.preselectedSession != ""
                     onToggled: {
                         if (checked) {
