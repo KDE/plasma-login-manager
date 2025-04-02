@@ -290,20 +290,56 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
+    QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        return ActionReply::HelperErrorReply();
+    }
+
+    // TODO: No worky.
+
+    QTextStream out(&file);
+    out << args[QStringLiteral("config")].toString();
+    out.flush();
+    file.close();
+
+    // Ensure permissions on the config file are appropriate
+    if (!(file.permissions() & QFile::ReadOwner & QFile::WriteOwner & QFile::ReadGroup & QFile::ReadOther)) {
+        file.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
+    }
+
+    return ActionReply::SuccessReply();
+
+    /*
     QSharedPointer<KConfig> plasmaLoginConfig = openConfig(QLatin1String(PLASMALOGIN_CONFIG_FILE));
 
+    // Clean-up any old wallpaper plugin config
+    KConfigGroup wallpaperGroup = plasmaLoginConfig->group(QLatin1String("Greeter")).group(QLatin1String("Wallpaper"));
+    for (const QString &groupName : wallpaperGroup.groupList()) {
+        wallpaperGroup.deleteGroup(groupName);
+    }
+
+    // Save config
     QMap<QString, QVariant>::const_iterator iterator;
     for (iterator = args.constBegin(); iterator != args.constEnd(); ++iterator) {
-        QStringList configFields = iterator.key().split(QLatin1Char('/'));
-        QString groupName = configFields[0];
-        QString keyName = configFields[1];
+        if (!iterator.value().isValid()) {
+            return ActionReply::HelperErrorReply();
+        }
 
-        plasmaLoginConfig->group(groupName).writeEntry(keyName, iterator.value());
+        QStringList configFields = iterator.key().split(QLatin1Char('/'));
+        const QString keyName = configFields.takeLast();
+
+        KConfigGroup configGroup = plasmaLoginConfig->group(configFields.takeFirst());
+        while (!configFields.isEmpty()) {
+            configGroup = configGroup.group(configFields.takeFirst());
+        }
+
+        configGroup.writeEntry(keyName, iterator.value());
     }
 
     plasmaLoginConfig->sync();
 
     return ActionReply::SuccessReply();
+    */
 
     /*
     ActionReply reply = ActionReply::HelperErrorReply();

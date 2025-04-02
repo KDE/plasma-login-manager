@@ -7,7 +7,10 @@
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <QFile>
 #include <QList>
+#include <QTemporaryDir>
+#include <QTextStream>
 
 #include <KAuth/ExecuteJob>
 #include <KIO/ApplicationLauncherJob>
@@ -65,14 +68,60 @@ void PlasmaLoginKcm::load()
 
 void PlasmaLoginKcm::save()
 {
-
+    /*
     QVariantMap args;
     args[QStringLiteral("Autologin/User")] = PlasmaLoginSettings::getInstance().user();
     args[QStringLiteral("Autologin/Session")] = PlasmaLoginSettings::getInstance().session();
     args[QStringLiteral("Autologin/Relogin")] = PlasmaLoginSettings::getInstance().relogin();
     args[QStringLiteral("Greeter/ShowClock")] = PlasmaLoginSettings::getInstance().showClock();
     args[QStringLiteral("Greeter/WallpaperPluginId")] = PlasmaLoginSettings::getInstance().wallpaperPluginId();
-    // TODO: Save relevant wallpaper group?
+
+    for (const QString &wallpaperKey : wallpaperConfiguration()->keys()) {
+        const QVariant value = wallpaperConfiguration()->value(wallpaperKey);
+        args[QStringLiteral("Greeter/Wallpaper/%1/General/%2").arg(PlasmaLoginSettings::getInstance().wallpaperPluginId()).arg(wallpaperKey)] = value;
+    }
+    */
+
+    QTemporaryDir tempDir;
+    if (!tempDir.isValid()) {
+        Q_EMIT errorOccurred(QStringLiteral("Unable to save config to temporary directory"));
+        return;
+    }
+
+    const QString tempFileName = tempDir.path() + QLatin1String("/plasma-login.conf");
+    KConfig tempConfig(tempFileName, KConfig::SimpleConfig);
+
+    // Write our config
+    for (const auto &item : PlasmaLoginSettings::getInstance().items()) {
+        if (!item->isDefault()) {
+            // Write this to the new config
+            tempConfig.group(item->group()).writeEntry(item->key(), item->property());
+        }
+    }
+
+    // Write wallpaper config
+    const QString wallpaperPluginId = PlasmaLoginSettings::getInstance().wallpaperPluginId();
+    for (const QString &wallpaperKey : wallpaperConfiguration()->keys()) {
+        const QVariant value = wallpaperConfiguration()->value(wallpaperKey);
+        tempConfig.group(QLatin1String("Greeter"))
+                  .group(QLatin1String("Wallpaper"))
+                  .group(wallpaperPluginId)
+                  .group(QLatin1String("General"))
+                  .writeEntry(wallpaperKey, value);
+    }
+
+    tempConfig.sync();
+
+    // Open our temporary saved config
+    QFile tempFile(tempFileName);
+    if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Q_EMIT errorOccurred(QStringLiteral("Unable to open config saved to temporary directory"));
+        return;
+    }
+
+    QVariantMap args;
+    QTextStream in(&tempFile);
+    args[QStringLiteral("config")] = in.readAll();
 
     KAuth::Action saveAction(authActionName());
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
