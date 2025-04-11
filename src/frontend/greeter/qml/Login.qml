@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileContributor: David Edmundson
+ *
+ * SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 import org.kde.breeze.components
 
 import QtQuick 2.15
