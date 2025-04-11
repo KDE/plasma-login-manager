@@ -132,12 +132,89 @@ void PlasmaLoginKcm::save()
 
 void PlasmaLoginKcm::synchronizeSettings()
 {
-    // TODO: Go to KAuth
+    // define paths
+    const QString fontconfigPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("fontconfig"), QStandardPaths::LocateDirectory);
+    const QString kdeglobalsPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kdeglobals"));
+    const QString plasmarcPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("plasmarc"));
+    const QString kcminputrcPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kcminputrc"));
+    const QString kwinoutputconfigPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kwinoutputconfig.json"));
+
+    // send values and paths to helper, debug if it fails
+    QVariantMap args;
+
+    if (!fontconfigPath.isEmpty()) {
+        args[QStringLiteral("fontconfig")] = fontconfigPath;
+    } else {
+        qDebug() << "Cannot find fontconfig folder.";
+    }
+
+    if (!kdeglobalsPath.isEmpty()) {
+        args[QStringLiteral("kdeglobals")] = kdeglobalsPath;
+    } else {
+        qDebug() << "Cannot find kdeglobals file.";
+    }
+
+    if (!plasmarcPath.isEmpty()) {
+        args[QStringLiteral("plasmarc")] = plasmarcPath;
+    } else {
+        qDebug() << "Cannot find plasmarc file.";
+    }
+
+    if (!kcminputrcPath.isEmpty()) {
+        args[QStringLiteral("kcminputrc")] = kcminputrcPath;
+    } else {
+        qDebug() << "Cannot find kcminputrc file.";
+    }
+
+    if (!kwinoutputconfigPath.isEmpty()) {
+        args[QStringLiteral("kwinoutputconfig")] = kwinoutputconfigPath;
+    } else {
+        qDebug() << "Cannot find kwinoutputconfiguration.json file";
+    }
+
+    KAuth::Action syncAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.sync"));
+     syncAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
+     syncAction.setArguments(args);
+
+     auto job = syncAction.execute();
+     connect(job, &KJob::result, this, [this, job] {
+         if (job->error()) {
+             qDebug() << "Synchronization failed";
+             qDebug() << job->errorString();
+             qDebug() << job->errorText();
+             if (!job->errorText().isEmpty()) {
+                 Q_EMIT errorOccurred(job->errorText());
+             }
+         } else {
+             qDebug() << "Synchronization successful";
+         }
+
+         Q_EMIT syncAttempted();
+     });
+     job->start();
 }
 
 void PlasmaLoginKcm::resetSynchronizedSettings()
 {
-    // TODO: Go to KAuth
+    KAuth::Action syncAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.reset"));
+    syncAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
+
+    auto job = syncAction.execute();
+    connect(job, &KJob::result, this, [this, job] {
+        if (job->error()) {
+            qDebug() << "Synchronization failed";
+            qDebug() << job->errorString();
+            qDebug() << job->errorText();
+            if (!job->errorText().isEmpty()) {
+                Q_EMIT errorOccurred(job->errorText());
+            }
+        } else {
+            qDebug() << "Synchronization successful";
+        }
+
+        Q_EMIT syncAttempted();
+    });
+    job->start();
 }
 
 void PlasmaLoginKcm::defaults()
