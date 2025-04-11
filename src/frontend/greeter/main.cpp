@@ -12,6 +12,7 @@
 
 #include <KLocalizedString>
 #include <kworkspace6/sessionmanagement.h>
+#include <KWindowEffects>
 #include <KWindowSystem>
 #include <LayerShellQt/Window>
 #include <PlasmaQuick/QuickViewSharedEngine>
@@ -23,6 +24,7 @@
 #include "plasmaloginsettings.h"
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
+#include "windoweffectsproxy.h"
 
 class LoginGreeter : public QObject
 {
@@ -51,7 +53,7 @@ private:
         auto *window = new PlasmaQuick::QuickViewSharedEngine();
         window->QObject::setParent(this);
         window->setScreen(screen);
-        window->setColor(s_testMode ? Qt::black : Qt::transparent);
+        window->setColor(Qt::transparent);
 
         window->setGeometry(screen->geometry());
         connect(screen, &QScreen::geometryChanged, this, [window]() {
@@ -129,6 +131,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Settings", &PlasmaLoginSettings::getInstance());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "StateConfig", StateConfig::self());
+    qmlRegisterType<WindowEffectsProxy>("org.kde.plasma.login", 0, 1, "WindowEffectsProxy"); // TODO: Should be working with declarative type reg
 
     LoginGreeter greeter;
     return app.exec();

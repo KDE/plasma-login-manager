@@ -85,6 +85,99 @@ Item {
             }
         }
 
+        state: uiVisible ? "on" : "off"
+        states: [
+            State {
+                name: "on"
+                PropertyChanges {
+                    target: mainStack
+                    opacity: 1
+                }
+                PropertyChanges {
+                    target: footer
+                    opacity: 1
+                }
+                PropertyChanges {
+                    target: clock.shadow
+                    opacity: 0
+                }
+                PropertyChanges {
+                    target: clock
+                    opacity: 1
+                }
+            },
+            State {
+                name: "off"
+                PropertyChanges {
+                    target: mainStack
+                    opacity: 0
+                }
+                PropertyChanges {
+                    target: footer
+                    opacity: 0
+                }
+                PropertyChanges {
+                    target: clock.shadow
+                    opacity: 0 //wallpaperFader.alwaysShowClock ? 1 : 0
+                }
+                PropertyChanges {
+                    target: clock
+                    opacity: 0 //wallpaperFader.alwaysShowClock ? 1 : 0
+                }
+            }
+        ]
+        transitions: [
+            Transition {
+                from: "off"
+                to: "on"
+                //Note: can't use animators as they don't play well with parallelanimations
+                NumberAnimation {
+                    targets: [mainStack, footer, clock]
+                    property: "opacity"
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+            },
+            Transition {
+                from: "on"
+                to: "off"
+                NumberAnimation {
+                    targets: [mainStack, footer, clock]
+                    property: "opacity"
+                    duration: Kirigami.Units.veryLongDuration
+                    easing.type: Easing.InOutQuad
+                }
+            }
+        ]
+
+        onWindowChanged: (window) => { windowEffects.window = window; }
+        PlasmaLogin.WindowEffectsProxy {
+            id: windowEffects
+
+            readonly property bool lightColorScheme: Math.max(Kirigami.Theme.backgroundColor.r, Kirigami.Theme.backgroundColor.g, Kirigami.Theme.backgroundColor.b) > 0.5
+            property real wallpaperFactor: loginScreenRoot.uiVisible ? 1 : 0
+            Behavior on wallpaperFactor {
+                NumberAnimation {
+                    duration: Kirigami.Units.veryLongDuration * 2
+                    easing.type: Easing.InOutQuad
+                }
+            }
+
+            onWindowChanged: update()
+            onWallpaperFactorChanged: update()
+
+            function update() {
+                let radius = 50 * wallpaperFactor;
+                windowEffects.setBlurBehind(radius);
+
+                let lightColorScheme = (Math.max(Kirigami.Theme.backgroundColor.r, Kirigami.Theme.backgroundColor.g, Kirigami.Theme.backgroundColor.b) > 0.5);
+                let contrast = 0.8 * wallpaperFactor + (1 - wallpaperFactor);
+                let intensity = (lightColorScheme ? 1.6 : 0.7) * wallpaperFactor + (1 - wallpaperFactor);
+                let saturation = 1.5 * wallpaperFactor + (1 - wallpaperFactor);
+                windowEffects.setBackgroundContrast(contrast, intensity, saturation);
+            }
+        }
+
         DropShadow {
             id: clockShadow
             anchors.fill: clock

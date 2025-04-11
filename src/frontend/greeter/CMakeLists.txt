@@ -6,6 +6,7 @@ remove_definitions(-DQT_USE_QSTRINGBUILDER)
 set(LOGIN_GREETER_SRCS
     main.cpp
     stateconfig.cpp
+    windoweffectsproxy.cpp
     backend/GreeterProxy.cpp
     backend/SocketWriter.cpp
     mockbackend/MockGreeterProxy.cpp
