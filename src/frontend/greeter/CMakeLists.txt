@@ -11,6 +11,8 @@ set(LOGIN_GREETER_SRCS
     mockbackend/MockGreeterProxy.cpp
 )
 
+add_definitions(-DTRANSLATION_DOMAIN="plasma_login")
+
 ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
                                 IDENTIFIER LOGOUT_GREETER
                                 CATEGORY_NAME kde.login_greeter

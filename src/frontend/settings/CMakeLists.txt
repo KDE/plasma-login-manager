@@ -3,6 +3,9 @@ set(PLASMALOGIN_SYSTEM_CONFIG_FILE  "${CMAKE_INSTALL_PREFIX}/lib/plasma-login/de
 
 configure_file(config.h.in config.h IMMEDIATE @ONLY)
 
+# Covered by greeter/Messages.sh as we only have one string in here
+add_definitions(-DTRANSLATION_DOMAIN="plasma_login")
+
 add_library(settings STATIC
     config.h
     plasmaloginsettings.cpp
