@@ -1,5 +1,3 @@
-add_definitions(-DTRANSLATION_DOMAIN=\"kcm_plasmalogin\")
-
 kcmutils_add_qml_kcm(kcm_plasmalogin)
 add_definitions(-DTRANSLATION_DOMAIN="kcm_plasma_login")
 
