@@ -53,7 +53,6 @@
 #include "config.h"
 
 static int s_ttyFailures = 0;
-#define STRINGIFY(x) #x
 
 namespace PLASMALOGIN {
     bool isTtyInUse(const QString &desiredTty) {
@@ -76,7 +75,7 @@ namespace PLASMALOGIN {
     }
 
     int fetchAvailableVt() {
-        if (!isTtyInUse(QStringLiteral("tty" STRINGIFY(PLASMALOGIN_INITIAL_VT)))) {
+        if (!isTtyInUse(QStringLiteral("tty%1").arg(PLASMALOGIN_INITIAL_VT))) {
             return PLASMALOGIN_INITIAL_VT;
         }
         const auto vt = VirtualTerminal::currentVt();
