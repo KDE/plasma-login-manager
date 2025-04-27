@@ -1,19 +1,82 @@
 [Domain]
 Name=PlasmaLogin
+Name[ca]=PlasmaLogin
+Name[ca@valencia]=PlasmaLogin
+Name[es]=Inicio de sesión de Plasma
+Name[he]=כניסה לפלזמה
+Name[nl]=PlasmaAanmelden
+Name[sl]=PlasmaLogin
+Name[tr]=Plasma’ya Oturum Aç
+Name[uk]=Вхід до Плазми
+Name[x-test]=xxPlasmaLoginxx
 Icon=kauth-example
 URL=https://invent.kde.org/davidedmundson/plasma-login
 
 [org.kde.kcontrol.kcmplasmalogin.save]
 Name=Save Settings
+Name[ca]=Desa la configuració
+Name[ca@valencia]=Guarda la configuració
+Name[es]=Guardar preferencias
+Name[he]=שמירת ההגדרות
+Name[nl]=Instellingen opslaan
+Name[sl]=Shrani nastavitve
+Name[tr]=Ayarları Kaydet
+Name[uk]=Зберегти параметри
+Name[x-test]=xxSave Settingsxx
 Description=Save Settings in Plasma Login
+Description[ca]=Desa la configuració al Plasma Login
+Description[ca@valencia]=Guarda la configuració en Plasma Login
+Description[es]=Guardar preferencias en el inicio de sesión de Plasma
+Description[he]=שמירת ההגדרות לכניסה אל פלזמה
+Description[nl]=Instellingen opslaan in Plasma aanmelden
+Description[sl]=Shrani nastavitve v Plasma Login
+Description[tr]=Plasma’ya Oturum Aç ayarlarını kaydedin
+Description[uk]=Зберегти параметри входу до Плазми
+Description[x-test]=xxSave Settings in Plasma Loginxx
 Policy=auth_admin
 
 [org.kde.kcontrol.kcmplasmalogin.sync]
 Name=Synchronize Settings
+Name[ca]=Sincronitza la configuració
+Name[ca@valencia]=Sincronitza la configuració
+Name[es]=Sincronizar preferencias
+Name[he]=סנכרון הגדרות
+Name[nl]=Instellingen synchroniseren
+Name[sl]=Sinhroniziraj nastavitve
+Name[tr]=Ayarları Eşzamanla
+Name[uk]=Синхронізувати параметри
+Name[x-test]=xxSynchronize Settingsxx
 Description=Synchronize user settings with Plasma Login settings
+Description[ca]=Sincronitza la configuració de l'usuari amb la configuració del Plasma Login
+Description[ca@valencia]=Sincronitza la configuració de l'usuari amb la configuració de Plasma Login
+Description[es]=Sincronizar las preferencias del usuario con las del inicio de sesión de Plasma
+Description[he]=סנכרון הגדרות משתמש עם הגדרות כניסה אל פלזמה
+Description[nl]=Gebruikersinstellingen synchroniseren met Plasma aanmeldinstellingen
+Description[sl]=Sinhroniziraj uporabniške nastavitve z nastavitvami v Plasma Loginu
+Description[tr]=Kullanıcı ayarlarını Plasma’ya Oturum Aç ayarlarıyla eşzamanlayın
+Description[uk]=Синхронізувати параметри користувача із параметрами входу до Плазми
+Description[x-test]=xxSynchronize user settings with Plasma Login settingsxx
 Policy=auth_admin
 
 [org.kde.kcontrol.kcmplasmalogin.reset]
 Name=Reset Settings
+Name[ca]=Reinicia la configuració
+Name[ca@valencia]=Reinicia la configuració
+Name[es]=Reiniciar preferencias
+Name[he]=איפוס ההגדרות
+Name[nl]=Instellingen resetten
+Name[sl]=Ponastavi nastavitve
+Name[tr]=Ayarları Sıfırla
+Name[uk]=Скинути параметри
+Name[x-test]=xxReset Settingsxx
 Description=Reset Plasma Login settings to factory default state
+Description[ca]=Reinicia la configuració del Plasma Login a l'estat predeterminat inicial
+Description[ca@valencia]=Reinicia la configuració de Plasma Login a l'estat predeterminat inicial
+Description[es]=Reiniciar las preferencias de inicio de sesión de Plasma al estado predeterminado
+Description[he]=איפוס הגדרות מסך הכניסה אל פלזמה למצב ההתחלתי
+Description[nl]=Reset Plasma aanmeldinstellingen naar de standaard bedrijfsstatus
+Description[sl]=Ponastavi nastavitve v Plasma Loginu na tovarniško privzeto stanje
+Description[tr]=Plasma’ya Oturum Aç ayarlarını öntanımlı durumuna sıfırlayın
+Description[uk]=Відновити типові параметри входу до Плазми
+Description[x-test]=xxReset Plasma Login settings to factory default statexx
 Policy=auth_admin
