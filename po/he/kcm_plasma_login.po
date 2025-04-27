@@ -1,0 +1,178 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2025 Yaron Shahrabani <sh.yaron@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-04-26 13:39+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.12.3\n"
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "מראה"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "שעון"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "סוג תמונת רקע:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "החלת הגדרות פלזמה…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "הגדרות מראה…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "החלת הגדרות פלזמה"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"הגדרה זו תגרום למסך הכניסה אל פלזמה לשקף את ההתאמות שלך להגדרות הפלזמה הבאות:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration (Wayland only)</item></list></para>"
+msgstr ""
+"<para><list><item>סכמת צבעים</item><item>ערכת סמנים וגדלים</item><item>גופן "
+"ועיבוד גופנים</item><item>העדפת NumLock</item><item>ערכת עיצוב של פלזמה</"
+"item><item>נקודות לאינץ׳ בקנה מידה</item><item>הגדרות מסך (Wayland בלבד)</"
+"item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"נא לשים לב שיש להתקין את קובצי ערכת העיצוב באופן כללי כדי שישפיע על מסך "
+"הכניסה אל פלזמה."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "החלה"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "איפוס להגדרות ברירת מחדל"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "כניסה אוטומטית"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "כניסה אוטומטית:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "כמשתמש:"
+
+#: ui/main.qml:168
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "עם ההפעלה:"
+
+#: ui/main.qml:201
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"כניסה אוטומטית לא תומכת בשחרור הארנקים של KDE אוטומטית, לכן הוא יבקש ממך "
+"לשחרר אותו עם כל כניסה מההתחלה.<nl/><nl/>כדי להימנע מזה, אפשר לשנות שלארנק "
+"תהיה סיסמה ריקה. ראוי לשים לב שאבטחת הארנק תיפגע ושמומלץ לבצע את זה בסביבות "
+"מהימנות בלבד."
+
+#: ui/main.qml:206
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "פתיחת הגדרות הארנקים של KDE"
+
+#: ui/main.qml:213
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "להיכנס שוב אוטומטית מיידית לאחר היציאה מהמערכת"
+
+#: ui/main.qml:224
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "ברירות מחדל"
+
+#: ui/main.qml:229
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "משתמש ברירת מחדל:"
+
+#: ui/main.qml:235
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "המשתמש האחרון שנכנס למערכת"
+
+#: ui/main.qml:306
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "הפעלת ברירת מחדל:"
+
+#: ui/main.qml:312
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "ההפעלה האחרונה שנכנסה למערכת"

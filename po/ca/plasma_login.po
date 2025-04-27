@@ -1,0 +1,88 @@
+# Translation of plasma_login.po to Catalan
+# Copyright (C) 2025 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# Josep M. Ferrer <txemaq@gmail.com>, 2025.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-04-26 10:10+0200\n"
+"Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
+"Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 22.12.3\n"
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr "Commuta la disposició"
+
+#: qml/Login.qml:91
+#, kde-format
+msgid "Username"
+msgstr "Nom d'usuari"
+
+#: qml/Login.qml:108
+#, kde-format
+msgid "Password"
+msgstr "Contrasenya"
+
+#: qml/Login.qml:152 qml/Login.qml:158
+#, kde-format
+msgid "Log In"
+msgstr "Inici de sessió"
+
+#: qml/Main.qml:154
+#, kde-format
+msgid "Caps Lock is on"
+msgstr "El bloqueig de majúscules està activat"
+
+#: qml/Main.qml:166 qml/Main.qml:283
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr "Suspèn"
+
+#: qml/Main.qml:172 qml/Main.qml:289
+#, kde-format
+msgid "Restart"
+msgstr "Reinicia"
+
+#: qml/Main.qml:178 qml/Main.qml:295
+#, kde-format
+msgid "Shut Down"
+msgstr "Atura"
+
+#: qml/Main.qml:184
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr "Altres…"
+
+#: qml/Main.qml:272
+#, kde-format
+msgid "Type in Username and Password"
+msgstr "Introduïu el nom d'usuari i la contrasenya"
+
+#: qml/Main.qml:301
+#, kde-format
+msgid "List Users"
+msgstr "Llista d'usuaris"
+
+#: qml/Main.qml:381
+#, kde-format
+msgid "Login Failed"
+msgstr "Ha fallat l'inici de la sessió"
+
+#: qml/SessionButton.qml:24
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr "Sessió d'escriptori: %1"

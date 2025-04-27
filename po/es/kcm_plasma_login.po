@@ -1,0 +1,182 @@
+# Spanish translations for kcm_plasma_login.po package.
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+# Automatically generated, 2025.
+#
+# SPDX-FileCopyrightText: 2025 Eloy Cuadra <ecuadra@eloihr.net>
+msgid ""
+msgstr ""
+"Project-Id-Version: kcm_plasma_login\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-04-26 17:43+0100\n"
+"Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
+"Language-Team: Spanish <kde-l10n-es@kde.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 25.04.0\n"
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Aspecto visual"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Reloj"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Tipo de fondo del escritorio:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Aplicar las preferencias de Plasma…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Configurar aspecto visual…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Aplicar las preferencias de Plasma"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Esto hará que la pantalla de inicio de sesión de Plasma refleje su "
+"personalización de las siguientes preferencias de Plasma:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration (Wayland only)</item></list></para>"
+msgstr ""
+"<para><list><item>Esquema de color</item><item>Tema y tamaño del cursor</"
+"item><item>Tipo de letra y representación</item><item>Preferencia de bloqueo "
+"numérico</item><item>Tema de Plasma</item><item>Escalado de DPI</"
+"item><item>Configuración de la pantalla (solo Wayland)</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"Tenga en cuenta que los archivos de temas se deben instalar de forma global "
+"para que se reflejen en la pantalla de inicio de sesión de Plasma."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Aplicar"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Volver a las preferencias predeterminadas"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Inicio de sesión automático"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Iniciar sesión automáticamente:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "como usuario:"
+
+#: ui/main.qml:168
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "con la sesión:"
+
+#: ui/main.qml:201
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"El inicio de sesión automático no permite desbloquear la cartera de KDE de "
+"forma automática, por lo que se le solicitará que la desbloquee cada vez que "
+"inicie sesión.<nl/><nl/>Para evitarlo, puede hacer que la cartera tenga una "
+"contraseña en blanco. Tenga en cuenta que esto no es seguro y que solo "
+"debería hacerlo en un entorno de confianza."
+
+#: ui/main.qml:206
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "Abrir las preferencias de la cartera de KDE"
+
+#: ui/main.qml:213
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Iniciar sesión de nuevo inmediatamente tras cerrar una sesión"
+
+#: ui/main.qml:224
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Predeterminados"
+
+#: ui/main.qml:229
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Usuario predeterminado:"
+
+#: ui/main.qml:235
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Último usuario que haya iniciado sesión"
+
+#: ui/main.qml:306
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Sesión predeterminada:"
+
+#: ui/main.qml:312
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Última sesión que se haya usado"

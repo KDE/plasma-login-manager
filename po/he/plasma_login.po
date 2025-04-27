@@ -1,0 +1,86 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2025 Yaron Shahrabani <sh.yaron@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-04-26 13:35+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.12.3\n"
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr "החלפת פריסה"
+
+#: qml/Login.qml:91
+#, kde-format
+msgid "Username"
+msgstr "שם משתמש"
+
+#: qml/Login.qml:108
+#, kde-format
+msgid "Password"
+msgstr "סיסמה"
+
+#: qml/Login.qml:152 qml/Login.qml:158
+#, kde-format
+msgid "Log In"
+msgstr "כניסה"
+
+#: qml/Main.qml:154
+#, kde-format
+msgid "Caps Lock is on"
+msgstr "Caps Lock דולק"
+
+#: qml/Main.qml:166 qml/Main.qml:283
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr "שינה"
+
+#: qml/Main.qml:172 qml/Main.qml:289
+#, kde-format
+msgid "Restart"
+msgstr "הפעלה מחדש"
+
+#: qml/Main.qml:178 qml/Main.qml:295
+#, kde-format
+msgid "Shut Down"
+msgstr "כיבוי"
+
+#: qml/Main.qml:184
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr "אחר…"
+
+#: qml/Main.qml:272
+#, kde-format
+msgid "Type in Username and Password"
+msgstr "נא להקליד שם משתמש וסיסמה"
+
+#: qml/Main.qml:301
+#, kde-format
+msgid "List Users"
+msgstr "הצגת משתמשים"
+
+#: qml/Main.qml:381
+#, kde-format
+msgid "Login Failed"
+msgstr "הכניסה נכשלה"
+
+#: qml/SessionButton.qml:24
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr "הפעלת שולחן עבודה: %1"

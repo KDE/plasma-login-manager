@@ -1,0 +1,86 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2025 Freek de Kruijf <freekdekruijf@kde.nl>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-04-26 16:46+0200\n"
+"Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 25.04.0\n"
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr "Indeling omschakelen"
+
+#: qml/Login.qml:91
+#, kde-format
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: qml/Login.qml:108
+#, kde-format
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: qml/Login.qml:152 qml/Login.qml:158
+#, kde-format
+msgid "Log In"
+msgstr "Aanmelden"
+
+#: qml/Main.qml:154
+#, kde-format
+msgid "Caps Lock is on"
+msgstr "Caps Lock staat aan"
+
+#: qml/Main.qml:166 qml/Main.qml:283
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr "Slapen"
+
+#: qml/Main.qml:172 qml/Main.qml:289
+#, kde-format
+msgid "Restart"
+msgstr "Herstarten"
+
+#: qml/Main.qml:178 qml/Main.qml:295
+#, kde-format
+msgid "Shut Down"
+msgstr "Systeem afsluiten"
+
+#: qml/Main.qml:184
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr "Overig…"
+
+#: qml/Main.qml:272
+#, kde-format
+msgid "Type in Username and Password"
+msgstr "Voer gebruikersnaam en wachtwoord in"
+
+#: qml/Main.qml:301
+#, kde-format
+msgid "List Users"
+msgstr "Lijst van gebruiker maken"
+
+#: qml/Main.qml:381
+#, kde-format
+msgid "Login Failed"
+msgstr "Aanmelden mislukt"
+
+#: qml/SessionButton.qml:24
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr "Bureaubladsessie: %1"
