@@ -1,87 +1,81 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR This file is copyright:
-# This file is distributed under the same license as the plasma-login-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:43+0000\n"
-"PO-Revision-Date: 2025-04-27 05:45+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
-"Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
-"Language: ka\n"
+"PO-Revision-Date: 2025-04-28 05:31+0200\n"
+"Last-Translator: KDE Francophone <kde-francophone@kde.org>\n"
+"Language-Team: KDE Francophone <kde-francophone@kde.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr "განლაგების გადართვა"
+msgstr ""
 
 #: qml/Login.qml:91
 #, kde-format
 msgid "Username"
-msgstr "მომხმარებლის სახელი"
+msgstr ""
 
 #: qml/Login.qml:108
 #, kde-format
 msgid "Password"
-msgstr "პაროლი"
+msgstr ""
 
 #: qml/Login.qml:152 qml/Login.qml:158
 #, kde-format
 msgid "Log In"
-msgstr "შესვლა"
+msgstr ""
 
 #: qml/Main.qml:154
 #, kde-format
 msgid "Caps Lock is on"
-msgstr "CapsLock ჩართულია"
+msgstr ""
 
 #: qml/Main.qml:166 qml/Main.qml:283
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr "ძილი"
+msgstr ""
 
 #: qml/Main.qml:172 qml/Main.qml:289
 #, kde-format
 msgid "Restart"
-msgstr "გადატვირთვა"
+msgstr ""
 
 #: qml/Main.qml:178 qml/Main.qml:295
 #, kde-format
 msgid "Shut Down"
-msgstr "გამორთვა"
+msgstr ""
 
 #: qml/Main.qml:184
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr "სხვა…"
+msgstr ""
 
 #: qml/Main.qml:272
 #, kde-format
 msgid "Type in Username and Password"
-msgstr "შეიყვანეთ მომხმარებელი და პაროლი"
+msgstr ""
 
 #: qml/Main.qml:301
 #, kde-format
 msgid "List Users"
-msgstr "მომხმარებლების სია"
+msgstr ""
 
 #: qml/Main.qml:381
 #, kde-format
 msgid "Login Failed"
-msgstr "შესვლა ჩავარდა"
+msgstr ""
 
 #: qml/SessionButton.qml:24
 #, kde-format
 msgid "Desktop Session: %1"
-msgstr "სამუშაო მაგიდის სესია: %1"
+msgstr ""
