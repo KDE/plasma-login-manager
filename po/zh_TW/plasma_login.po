@@ -1,82 +1,86 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
 #
+# SPDX-FileCopyrightText: 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:43+0000\n"
-"PO-Revision-Date: 2025-04-28 05:31+0200\n"
-"Last-Translator: KDE Francophone <kde-francophone@kde.org>\n"
-"Language-Team: KDE Francophone <kde-francophone@kde.org>\n"
-"Language: fr\n"
+"PO-Revision-Date: 2025-04-30 02:25+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr ""
+msgstr "切換佈局"
 
 #: qml/Login.qml:91
 #, kde-format
 msgid "Username"
-msgstr ""
+msgstr "使用者名稱"
 
 #: qml/Login.qml:108
 #, kde-format
 msgid "Password"
-msgstr ""
+msgstr "密碼"
 
 #: qml/Login.qml:152 qml/Login.qml:158
 #, kde-format
 msgid "Log In"
-msgstr ""
+msgstr "登入"
 
 #: qml/Main.qml:154
 #, kde-format
 msgid "Caps Lock is on"
-msgstr ""
+msgstr "大寫鎖定已開啟"
 
 #: qml/Main.qml:166 qml/Main.qml:283
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr ""
+msgstr "睡眠"
 
 #: qml/Main.qml:172 qml/Main.qml:289
 #, kde-format
 msgid "Restart"
-msgstr ""
+msgstr "重新啟動"
 
 #: qml/Main.qml:178 qml/Main.qml:295
 #, kde-format
 msgid "Shut Down"
-msgstr ""
+msgstr "關機"
 
 #: qml/Main.qml:184
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr ""
+msgstr "其他…"
 
 #: qml/Main.qml:272
 #, kde-format
 msgid "Type in Username and Password"
-msgstr ""
+msgstr "輸入使用者名稱與密碼"
 
 #: qml/Main.qml:301
 #, kde-format
 msgid "List Users"
-msgstr ""
+msgstr "列出使用者"
 
 #: qml/Main.qml:381
 #, kde-format
 msgid "Login Failed"
-msgstr ""
+msgstr "登入失敗"
 
 #: qml/SessionButton.qml:24
 #, kde-format
 msgid "Desktop Session: %1"
-msgstr ""
+msgstr "桌面工作階段：%1"

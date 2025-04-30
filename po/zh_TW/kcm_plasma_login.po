@@ -1,58 +1,62 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
 #
+# SPDX-FileCopyrightText: 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:43+0000\n"
-"PO-Revision-Date: 2025-04-28 05:31+0200\n"
-"Last-Translator: KDE Francophone <kde-francophone@kde.org>\n"
-"Language-Team: KDE Francophone <kde-francophone@kde.org>\n"
-"Language: fr\n"
+"PO-Revision-Date: 2025-04-30 02:27+0900\n"
+"Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
+"Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 25.07.70\n"
 
 #: ui/Appearance.qml:23
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
-msgstr ""
+msgstr "外觀"
 
 #: ui/Appearance.qml:35
 #, kde-format
 msgid "Clock"
-msgstr ""
+msgstr "時鐘"
 
 #: ui/Appearance.qml:52
 #, kde-format
 msgid "Wallpaper type:"
-msgstr ""
+msgstr "桌布類型："
 
 #: ui/main.qml:28
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply Plasma Settings…"
-msgstr ""
+msgstr "套用 Plasma 設定…"
 
 #: ui/main.qml:33
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Appearance…"
-msgstr ""
+msgstr "設定外觀…"
 
 #: ui/main.qml:64
 #, kde-format
 msgctxt "@title:window"
 msgid "Apply Plasma Settings"
-msgstr ""
+msgstr "套用 Plasma 設定"
 
 #: ui/main.qml:65
 #, kde-format
 msgid ""
 "This will make the Plasma login screen reflect your customizations to the "
 "following Plasma settings:"
-msgstr ""
+msgstr "這將會使 Plasma 登入畫面反映您對以下 Plasma 設定的自訂："
 
 #: ui/main.qml:66
 #, kde-kuit-format
@@ -63,6 +67,9 @@ msgid ""
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
 "configuration (Wayland only)</item></list></para>"
 msgstr ""
+"<para><list><item>配色方案</item><item>游標主題與大小</item><item>字型與字型"
+"繪製</item><item>NumLock 狀態偏好</item><item>Plasma 主題</item><item>縮放 "
+"DPI</item><item>螢幕配置（僅 Wayland）</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
@@ -70,30 +77,32 @@ msgid ""
 "Please note that theme files must be installed globally to be reflected on "
 "the Plasma login screen."
 msgstr ""
+"請注意，主題必須要以全域安裝（不能只安裝在目前使用者）才能套用在 Plasma 登入"
+"畫面上。"
 
 #: ui/main.qml:71
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply"
-msgstr ""
+msgstr "套用"
 
 #: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset to Default Settings"
-msgstr ""
+msgstr "重設為預設設定"
 
 #: ui/main.qml:89
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
-msgstr ""
+msgstr "自動登入"
 
 #: ui/main.qml:94
 #, kde-format
 msgctxt "@option:check"
 msgid "Automatically log in:"
-msgstr ""
+msgstr "自動登入："
 
 #: ui/main.qml:99
 #, kde-format
@@ -101,7 +110,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the user to log in "
 "automatically"
 msgid "as user:"
-msgstr ""
+msgstr "登入使用者："
 
 #: ui/main.qml:168
 #, kde-format
@@ -109,7 +118,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
 "automatically"
 msgid "with session:"
-msgstr ""
+msgstr "，使用工作階段："
 
 #: ui/main.qml:201
 #, kde-kuit-format
@@ -120,44 +129,47 @@ msgid ""
 "this, you can change the wallet to have a blank password. Note that this is "
 "insecure and should only be done in a trusted environment."
 msgstr ""
+"自動登入不支援自動解鎖 KDE 錢包，因此每次登入後它都會要求解鎖。<nl/><nl/>將錢"
+"包密碼改為空白可以防止它每次登入都要求解鎖。但請注意這是不安全的，並請只在可"
+"信任的環境中這樣做。"
 
 #: ui/main.qml:206
 #, kde-format
 msgid "Open KDE Wallet Settings"
-msgstr ""
+msgstr "開啟 KDE 錢包設定"
 
 #: ui/main.qml:213
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
-msgstr ""
+msgstr "登出後馬上重新登入"
 
 #: ui/main.qml:224
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
-msgstr ""
+msgstr "預設值"
 
 #: ui/main.qml:229
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
-msgstr ""
+msgstr "預設使用者："
 
 #: ui/main.qml:235
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
-msgstr ""
+msgstr "上次登入的使用者"
 
 #: ui/main.qml:306
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
-msgstr ""
+msgstr "預設工作階段："
 
 #: ui/main.qml:312
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
-msgstr ""
+msgstr "上次使用的工作階段"
