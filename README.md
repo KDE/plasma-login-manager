@@ -32,7 +32,7 @@ You will need to:
 - Clone, build and install:
 
 ```bash
-git clone https://invent.kde.org/davidedmundson/plasma-login-manager.git
+git clone https://invent.kde.org/plasma/plasma-login-manager.git
 cmake -S plasma-login-manager -B plasma-login-manager/build && sudo make install -C plasma-login-manager/build
 ```
 
