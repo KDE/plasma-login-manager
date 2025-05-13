@@ -1,65 +1,63 @@
-# Copyright (C) 2025 This file is copyright:
-# This file is distributed under the same license as the plasma-login-manager package.
-#
-# SPDX-FileCopyrightText: 2025 giovanni <g.sora@tiscali.it>
-# giovanni <g.sora@tiscali.it>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: plasma-login-manager\n"
+"Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:43+0000\n"
-"PO-Revision-Date: 2025-05-12 15:34+0200\n"
-"Last-Translator: giovanni <g.sora@tiscali.it>\n"
-"Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
-"Language: ia\n"
+"PO-Revision-Date: 2025-05-12 14:58\n"
+"Last-Translator: \n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: kdeorg\n"
+"X-Crowdin-Project-ID: 269464\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /kf6-trunk/messages/plasma-login-manager/kcm_plasma_login."
+"pot\n"
+"X-Crowdin-File-ID: 57398\n"
 
 #: ui/Appearance.qml:23
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
-msgstr "Apparentia"
+msgstr "外观"
 
 #: ui/Appearance.qml:35
 #, kde-format
 msgid "Clock"
-msgstr "Clock (Horologio)"
+msgstr "时钟"
 
 #: ui/Appearance.qml:52
 #, kde-format
 msgid "Wallpaper type:"
-msgstr "Typo de Tapete de papiro:"
+msgstr "壁纸类型："
 
 #: ui/main.qml:28
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply Plasma Settings…"
-msgstr "Applica preferentias de Plasma…"
+msgstr "应用 Plasma 设置…"
 
 #: ui/main.qml:33
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Appearance…"
-msgstr "Configura apparentia…"
+msgstr "配置外观…"
 
 #: ui/main.qml:64
 #, kde-format
 msgctxt "@title:window"
 msgid "Apply Plasma Settings"
-msgstr "Applica preferentias de Plasma"
+msgstr "应用 Plasma 设置"
 
 #: ui/main.qml:65
 #, kde-format
 msgid ""
 "This will make the Plasma login screen reflect your customizations to the "
 "following Plasma settings:"
-msgstr ""
-"Isto facera que le schermo de accesso de Plasma reflecte tu personalisation "
-"al sequente preferentias de Plasma:"
+msgstr "这将让 Plasma 登录屏幕使用您对下列 Plasma 设置的自定义选项："
 
 #: ui/main.qml:66
 #, kde-kuit-format
@@ -70,43 +68,40 @@ msgid ""
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
 "configuration (Wayland only)</item></list></para>"
 msgstr ""
-"<para><list><item>Schema de color,</item><item>Thema de cursor e grandor</"
-"item><item>Font e Rendition de font,</item><item>Preferentia de NumLock </"
-"item><item>Thema de Plasma,</item><item>Scalar DPI</item><item> "
-"Configuration de schermo (solmente de Wayland)</item></list></para>"
+"<para><list><item>配色方案</item><item>光标方案和大小</item><item>字体和字体"
+"渲染方式</item><item>数字键锁定设置</item><item>Plasma 主题</item><item>缩放 "
+"DPI</item><item>屏幕配置 (仅适用于 Wayland)</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
 msgid ""
 "Please note that theme files must be installed globally to be reflected on "
 "the Plasma login screen."
-msgstr ""
-"Pro favor, tu nota que files de thema debe esser installate globalmente per "
-"esser reflectite sur le schermo de accesso de Plasma."
+msgstr "提示：主题文件必须安装到系统全局才能被 Plasma 登录屏幕使用。"
 
 #: ui/main.qml:71
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply"
-msgstr "Applica"
+msgstr "应用"
 
 #: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset to Default Settings"
-msgstr "Refixa a Preferentias Predefinite"
+msgstr "重置为默认设置"
 
 #: ui/main.qml:89
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
-msgstr "Accesso de identification automatic"
+msgstr "自动登录"
 
 #: ui/main.qml:94
 #, kde-format
 msgctxt "@option:check"
 msgid "Automatically log in:"
-msgstr "Authenticar se automaticamente:"
+msgstr "自动登录："
 
 #: ui/main.qml:99
 #, kde-format
@@ -114,7 +109,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the user to log in "
 "automatically"
 msgid "as user:"
-msgstr "como usator:"
+msgstr "作为用户："
 
 #: ui/main.qml:168
 #, kde-format
@@ -122,7 +117,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
 "automatically"
 msgid "with session:"
-msgstr "con session:"
+msgstr "跟随会话："
 
 #: ui/main.qml:201
 #, kde-kuit-format
@@ -133,49 +128,47 @@ msgid ""
 "this, you can change the wallet to have a blank password. Note that this is "
 "insecure and should only be done in a trusted environment."
 msgstr ""
-"Auto-login (accesso automatic) non supporta que tu Portafolio de KDE "
-"(Wallet) disbloca automaticamente, assi illo te demandera que tu disbloca lo "
-"cata vice que tu accede.  <nl/><nl/>Per evitar isto, tu pote cambiar le "
-"portafolio con haber un contrasigno vacue.Tu Nota que isto es insecure e "
-"deberea solmente es facite in un ambiente de confidentia."
+"自动登录不支持自动解锁 KDE 密码库，您必须在每次登录之后手动解锁它。<nl/><nl/>"
+"为避免这种情况，可将密码库的密码设为空密码。请注意：空密码不安全，请只在可信"
+"任的环境中如此设置。"
 
 #: ui/main.qml:206
 #, kde-format
 msgid "Open KDE Wallet Settings"
-msgstr "Aperi preferentias de KDE Wallet"
+msgstr "打开 KDE 密码库设置"
 
 #: ui/main.qml:213
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
-msgstr "Authenticar se de novo postea clauder session"
+msgstr "注销后立即重新登录"
 
 #: ui/main.qml:224
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
-msgstr "Predefinite"
+msgstr "默认值"
 
 #: ui/main.qml:229
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
-msgstr "Usator predefinite:"
+msgstr "默认用户："
 
 #: ui/main.qml:235
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
-msgstr "Ultime usator accedite"
+msgstr "最近登录的用户"
 
 #: ui/main.qml:306
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
-msgstr "Session Predefinite:"
+msgstr "默认会话："
 
 #: ui/main.qml:312
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
-msgstr "Ultime session accedite"
+msgstr "最近登录的会话"
