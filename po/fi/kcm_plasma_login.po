@@ -1,0 +1,179 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+# SPDX-FileCopyrightText: 2025 Tommi Nieminen <translator@legisign.org>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-05-12 23:15+0300\n"
+"Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
+"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.08.5\n"
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Ulkoasu"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Kello"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Taustakuvan tyyppi:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Ota Plasma-asetukset käyttöön…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Ulkoasuasetukset…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Ota Plasma-asetukset käyttöön"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Tämä saa Plasman kirjautumisnäytön heijastamaan seuraavien Plasma-asetusten "
+"mukautuksia:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration (Wayland only)</item></list></para>"
+msgstr ""
+"<para><list><item>väriteema</item><item>osoitinteema ja osoittimen koko</"
+"item><item>fontti ja sen hahmonnus</item><item>numerolukkoasetus</"
+"item><item>Plasma-teema</item><item>näytön mittakaava</"
+"item><item>näyttöasetukset (vain Wayland)</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"Huomaa, että teematiedostot on asennettava järjestelmänlaajuisesti, jotta "
+"Plasman kirjautumisnäyttö voi heijastella niitä."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Käytä"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Palaa oletusasetuksiin"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Automaattikirjautuminen"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Kirjaudu automaattisesti ajassa:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "käyttäjänä:"
+
+#: ui/main.qml:168
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "istuntoon:"
+
+#: ui/main.qml:201
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"Automaattikirjautuminen ei automaattisesti tue KDE:n lompakkosi avaamista, "
+"joten sitä kysytään aina kirjautuessasi.<nl/><nl/>    Tämän voi välttää "
+"asettamalla lompakolla tyhjän salasanan. Huomaa, ettei tämä ole turvallista, "
+"joten niin pitäisi tehdä vain luotettavassa ympäristössä."
+
+#: ui/main.qml:206
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "Avaa KDE:n lompakon asetukset"
+
+#: ui/main.qml:213
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Kirjaudu heti takaisin uloskirjautumisen jälkeen"
+
+#: ui/main.qml:224
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Oletukset"
+
+#: ui/main.qml:229
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Oletuskäyttäjä:"
+
+#: ui/main.qml:235
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Viimeksi kirjautunut käyttäjä"
+
+#: ui/main.qml:306
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Oletusistunto:"
+
+#: ui/main.qml:312
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Viimeksi käytetty istunto"
