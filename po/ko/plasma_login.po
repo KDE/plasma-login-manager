@@ -1,0 +1,86 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+# SPDX-FileCopyrightText: 2025 Shinjo Park <kde@peremen.name>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-06-10 22:28+0200\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 24.12.3\n"
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr "레이아웃 변경"
+
+#: qml/Login.qml:91
+#, kde-format
+msgid "Username"
+msgstr "사용자 이름"
+
+#: qml/Login.qml:108
+#, kde-format
+msgid "Password"
+msgstr "암호"
+
+#: qml/Login.qml:152 qml/Login.qml:158
+#, kde-format
+msgid "Log In"
+msgstr "로그인"
+
+#: qml/Main.qml:154
+#, kde-format
+msgid "Caps Lock is on"
+msgstr "Caps Lock이 켜져 있음"
+
+#: qml/Main.qml:166 qml/Main.qml:283
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr "대기 모드"
+
+#: qml/Main.qml:172 qml/Main.qml:289
+#, kde-format
+msgid "Restart"
+msgstr "다시 시작"
+
+#: qml/Main.qml:178 qml/Main.qml:295
+#, kde-format
+msgid "Shut Down"
+msgstr "컴퓨터 끄기"
+
+#: qml/Main.qml:184
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr "기타…"
+
+#: qml/Main.qml:272
+#, kde-format
+msgid "Type in Username and Password"
+msgstr "사용자 이름과 암호 입력"
+
+#: qml/Main.qml:301
+#, kde-format
+msgid "List Users"
+msgstr "사용자 목록"
+
+#: qml/Main.qml:381
+#, kde-format
+msgid "Login Failed"
+msgstr "로그인 실패"
+
+#: qml/SessionButton.qml:24
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr "데스크톱 세션: %1"

@@ -1,0 +1,174 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+# SPDX-FileCopyrightText: 2025 Shinjo Park <kde@peremen.name>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"PO-Revision-Date: 2025-06-10 22:27+0200\n"
+"Last-Translator: Shinjo Park <kde@peremen.name>\n"
+"Language-Team: Korean <kde-kr@kde.org>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Lokalize 24.12.3\n"
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "모양"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "시계"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "배경 그림 종류:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Plasma 설정 적용…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "모양 설정…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Plasma 설정 적용"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr "다음 사용자 정의 Plasma 설정을 Plasma 로그인 화면에도 적용합니다:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration (Wayland only)</item></list></para>"
+msgstr ""
+"<para><list><item>색 구성표</item><item>커서 테마와 크기</item><item>글꼴과 "
+"글꼴 렌더링</item><item>NumLock 설정</item><item>Plasma 테마</item><item>DPI "
+"크기 조정</item><item>화면 설정(Wayland만)</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr "Plasma 로그인 화면에 적용하려면 테마를 전역적으로 설치해야 합니다."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "적용"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "기본 설정으로 복원"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "자동 로그인"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "자동 로그인:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "사용자로:"
+
+#: ui/main.qml:168
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "다음 세션 사용:"
+
+#: ui/main.qml:201
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"자동 로그인 시에는 KDE 지갑이 자동으로 열리지 않습니다. 로그인할 때마다 잠금 "
+"해제 여부를 물어 볼 것입니다.<nl/><nl/>문제를 해결하려면 지갑 암호를 빈 암호"
+"로 지정하십시오. 보안상 안전하지 않은 선택이며 신뢰할 수 있는 환경에서만 사용"
+"하십시오."
+
+#: ui/main.qml:206
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "KDE 지갑 설정 열기"
+
+#: ui/main.qml:213
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "로그아웃 후 즉시 다시 로그인"
+
+#: ui/main.qml:224
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "기본값"
+
+#: ui/main.qml:229
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "기본 사용자:"
+
+#: ui/main.qml:235
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "마지막으로 로그인한 사용자"
+
+#: ui/main.qml:306
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "기본 세션:"
+
+#: ui/main.qml:312
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "마지막으로 로그인한 세션"
