@@ -2,6 +2,7 @@
 # German translation for plasma-login-manager.
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
+# SPDX-FileCopyrightText: 2025 Alois Spitzbart <spitz234@hotmail.com>
 # Automatically generated, 2025.
 #
 msgid ""
@@ -9,79 +10,80 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-04-26 00:43+0000\n"
-"PO-Revision-Date: 2025-04-27 13:55+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2025-06-06 21:34+0200\n"
+"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 25.04.1\n"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr ""
+msgstr "Belegung wechseln"
 
 #: qml/Login.qml:91
 #, kde-format
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: qml/Login.qml:108
 #, kde-format
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: qml/Login.qml:152 qml/Login.qml:158
 #, kde-format
 msgid "Log In"
-msgstr ""
+msgstr "Anmelden"
 
 #: qml/Main.qml:154
 #, kde-format
 msgid "Caps Lock is on"
-msgstr ""
+msgstr "Feststelltaste ist aktiviert"
 
 #: qml/Main.qml:166 qml/Main.qml:283
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr ""
+msgstr "Standby-Modus"
 
 #: qml/Main.qml:172 qml/Main.qml:289
 #, kde-format
 msgid "Restart"
-msgstr ""
+msgstr "Neu starten"
 
 #: qml/Main.qml:178 qml/Main.qml:295
 #, kde-format
 msgid "Shut Down"
-msgstr ""
+msgstr "Herunterfahren"
 
 #: qml/Main.qml:184
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr ""
+msgstr "Weitere …"
 
 #: qml/Main.qml:272
 #, kde-format
 msgid "Type in Username and Password"
-msgstr ""
+msgstr "Benutzernamen und Passwort eingeben"
 
 #: qml/Main.qml:301
 #, kde-format
 msgid "List Users"
-msgstr ""
+msgstr "Benutzer anzeigen"
 
 #: qml/Main.qml:381
 #, kde-format
 msgid "Login Failed"
-msgstr ""
+msgstr "Anmeldung fehlgeschlagen"
 
 #: qml/SessionButton.qml:24
 #, kde-format
 msgid "Desktop Session: %1"
-msgstr ""
+msgstr "Arbeitsflächen-Sitzung: %1"
