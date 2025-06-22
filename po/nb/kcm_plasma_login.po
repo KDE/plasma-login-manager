@@ -1,6 +1,5 @@
 # Translation of kcm_plasma_login to Norwegian Bokmål
 #
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
