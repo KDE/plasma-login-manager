@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 
 project(PLASMALOGIN)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
 # Set version
 set(PLASMALOGIN_VERSION_MAJOR 0)
 set(PLASMALOGIN_VERSION_MINOR 21)
@@ -30,7 +26,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-message("${CMAKE_MODULE_PATH}")
 
 # Include KDE CMake modules
 include(KDEInstallDirs)
@@ -49,36 +44,7 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMConfiguredInstall)
 include(ECMQmlModule)
 
-# Definitions
-add_definitions(-Wall -Wextra -DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_FOREACH)
-
-# Default build type
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-endif()
-
-# Handle build type
-if(CMAKE_BUILD_TYPE MATCHES [Dd]ebug)
-    message(STATUS "Debug build")
-    add_definitions(-DDEBUG)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
-else()
-    message(STATUS "Release build")
-    add_definitions(-DNDEBUG)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
-endif()
-
-# Default absolute paths
-if(NOT DEFINED CMAKE_INSTALL_SYSCONFDIR)
-    set(CMAKE_INSTALL_SYSCONFDIR "/etc")
-endif()
-if(NOT DEFINED CMAKE_INSTALL_LOCALSTATEDIR)
-    set(CMAKE_INSTALL_LOCALSTATEDIR "/var")
-endif()
-
-set(QT_MAJOR_VERSION 6)
-
-find_package(Qt${QT_MAJOR_VERSION} CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest)
+find_package(Qt6 CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest)
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config Package WindowSystem I18n DBusAddons KCMUtils Auth KIO)
 find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)
@@ -188,7 +154,7 @@ set(ACCOUNTSSERVICE_DATA_DIR    "/var/lib/AccountsService"                      
 set(SYSTEM_CONFIG_DIR           "${CMAKE_INSTALL_PREFIX}/lib/plasmalogin/plasmalogin.conf.d"      CACHE PATH      "Path of the system plasmalogin config directory")
 set(LOG_FILE                    "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/log/plasmalogin.log"  CACHE PATH      "Path of the plasmalogin log file")
 set(DBUS_CONFIG_FILENAME        "org.freedesktop.DisplayManager.conf"               CACHE STRING    "Name of the plasmalogin config file")
-set(COMPONENTS_TRANSLATION_DIR  "${DATA_INSTALL_DIR}/translations-qt${QT_MAJOR_VERSION}" CACHE PATH      "Components translations directory")
+set(COMPONENTS_TRANSLATION_DIR  "${DATA_INSTALL_DIR}/translations-qt6" CACHE PATH      "Components translations directory")
 set(PLASMALOGIN_INITIAL_VT             "1"                                                 CACHE STRING    "Initial tty to use")
 
 
@@ -228,7 +194,6 @@ add_subdirectory(data)
 add_subdirectory(services)
 add_subdirectory(src)
 
-enable_testing()
 add_subdirectory(test)
 
 # Display feature summary
