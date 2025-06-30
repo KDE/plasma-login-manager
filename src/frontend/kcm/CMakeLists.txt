@@ -1,5 +1,5 @@
 kcmutils_add_qml_kcm(kcm_plasmalogin)
-add_definitions(-DTRANSLATION_DOMAIN="kcm_plasma_login")
+add_definitions(-DTRANSLATION_DOMAIN="kcm_plasmalogin")
 
 target_sources(kcm_plasmalogin PRIVATE
     kcm.cpp kcm.h
