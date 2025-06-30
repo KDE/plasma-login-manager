@@ -193,6 +193,8 @@ add_subdirectory(src)
 
 add_subdirectory(test)
 
+ki18n_install(po)
+
 # Display feature summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
