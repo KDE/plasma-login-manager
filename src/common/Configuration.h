@@ -27,16 +27,11 @@ namespace PLASMALOGIN
         enum NumState { NUM_NONE, NUM_SET_ON, NUM_SET_OFF };
 
         //  Name                   Type         Default value                                   Description
-        Entry(Numlock,             NumState,    NUM_NONE,                                       _S("Initial NumLock state. Can be on, off or none.\n"
-                                                                                                   "If property is set to none, numlock won't be changed\n"
-                                                                                                   "NOTE: Currently ignored if autologin is enabled."));
         Entry(Namespaces,          QStringList, QStringList(),                                  _S("Comma-separated list of Linux namespaces for user session to enter"));
-
         // TODO: Not absolutely sure if everything belongs here. Xsessions, VT and probably some more seem universal
         Section(X11,
             Entry(ServerPath,          QString,     _S("/usr/bin/X"),                           _S("Path to X server binary"));
             Entry(ServerArguments,     QString,     _S("-nolisten tcp"),                        _S("Arguments passed to the X server invocation"));
-            Entry(XephyrPath,          QString,     _S("/usr/bin/Xephyr"),                      _S("Path to Xephyr binary"));
             Entry(SessionCommand,      QString,     _S(SESSION_COMMAND),                        _S("Path to a script to execute when starting the desktop session"));
             Entry(SessionLogFile,      QString,     _S(".local/share/plasmalogin/xorg-session.log"),   _S("Path to the user session log file"));
             Entry(DisplayCommand,      QString,     _S(DATA_INSTALL_DIR "/scripts/Xsetup"),     _S("Path to a script to execute when starting the display server"));
@@ -50,11 +45,6 @@ namespace PLASMALOGIN
 
         Section(Users,
             Entry(DefaultPath,         QString,     _S("/usr/local/bin:/usr/bin:/bin"),         _S("Default $PATH for logged in users"));
-            Entry(MinimumUid,          int,         UID_MIN,                                    _S("Minimum user id for displayed users"));
-            Entry(MaximumUid,          int,         UID_MAX,                                    _S("Maximum user id for displayed users"));
-            Entry(HideUsers,           QStringList, QStringList(),                              _S("Comma-separated list of users that should not be listed"));
-            Entry(HideShells,          QStringList, QStringList(),                              _S("Comma-separated list of shells.\n"
-                                                                                                   "Users with these shells as their default won't be listed"));
             Entry(RememberLastUser,    bool,        true,                                       _S("Remember the last successfully logged in user"));
             Entry(RememberLastSession, bool,        true,                                       _S("Remember the session of the last successfully logged in user"));
 
