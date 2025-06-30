@@ -12,7 +12,7 @@ import org.kde.plasma.workspace.components as WorkspaceComponents
 
 PlasmaComponents.ToolButton {
     focusPolicy: Qt.TabFocus
-    Accessible.description: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to change keyboard layout", "Switch layout")
+    Accessible.description: i18ndc("plasma_login", "Button to change keyboard layout", "Switch layout")
     icon.name: "input-keyboard"
 
     WorkspaceComponents.KeyboardLayoutSwitcher {

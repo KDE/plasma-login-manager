@@ -151,7 +151,7 @@ Item {
                 notificationMessage: {
                     const parts = [];
                     if (capsLockState.locked) {
-                        parts.push(i18nd("plasma-desktop-sddm-theme", "Caps Lock is on"));
+                        parts.push(i18nd("plasma_login", "Caps Lock is on"));
                     }
                     if (root.notificationMessage) {
                         parts.push(root.notificationMessage);
@@ -163,25 +163,25 @@ Item {
                 actionItems: [
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
-                        text: i18ndc("plasma-desktop-sddm-theme", "Suspend to RAM", "Sleep")
+                        text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
                         enabled: PlasmaLogin.SessionManagement.canSuspend
                         onClicked: PlasmaLogin.SessionManagement.suspend()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
-                        text: i18nd("plasma-desktop-sddm-theme", "Restart")
+                        text: i18nd("plasma_login", "Restart")
                         enabled: PlasmaLogin.SessionManagement.canReboot
                         onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
-                        text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
+                        text: i18nd("plasma_login", "Shut Down")
                         enabled: PlasmaLogin.SessionManagement.canShutdown
                         onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-prompt"
-                        text: i18ndc("plasma-desktop-sddm-theme", "For switching to a username and password prompt", "Other…")
+                        text: i18ndc("plasma_login", "For switching to a username and password prompt", "Other…")
                         onClicked: mainStack.push(userPromptComponent)
                         visible: !userListComponent.showUsernamePrompt
                     }]
@@ -269,7 +269,7 @@ Item {
                     }
                     Component.onCompleted: {
                         // as we can't bind inside ListElement
-                        setProperty(0, "name", i18nd("plasma-desktop-sddm-theme", "Type in Username and Password"));
+                        setProperty(0, "name", i18nd("plasma_login", "Type in Username and Password"));
                         setProperty(0, "icon", Qt.resolvedUrl("faces/.face.icon"))
                     }
                 }
@@ -280,25 +280,25 @@ Item {
                 actionItems: [
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
-                        text: i18ndc("plasma-desktop-sddm-theme", "Suspend to RAM", "Sleep")
+                        text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
                         enabled: PlasmaLogin.SessionManagement.canSuspend
                         onClicked: PlasmaLogin.SessionManagement.suspend()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
-                        text: i18nd("plasma-desktop-sddm-theme", "Restart")
+                        text: i18nd("plasma_login", "Restart")
                         enabled: PlasmaLogin.SessionManagement.canReboot
                         onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
-                        text: i18nd("plasma-desktop-sddm-theme", "Shut Down")
+                        text: i18nd("plasma_login", "Shut Down")
                         enabled: PlasmaLogin.SessionManagement.canShutdown
                         onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-list"
-                        text: i18nd("plasma-desktop-sddm-theme", "List Users")
+                        text: i18nd("plasma_login", "List Users")
                         onClicked: mainStack.pop()
                     }
                 ]
@@ -378,7 +378,7 @@ Item {
         target: PlasmaLogin.Authenticator
 
         function onLoginFailed() {
-            notificationMessage = i18nd("plasma-desktop-sddm-theme", "Login Failed");
+            notificationMessage = i18nd("plasma_login", "Login Failed");
 
             footer.enabled = true;
             mainStack.enabled = true;

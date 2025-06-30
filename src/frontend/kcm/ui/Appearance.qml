@@ -33,7 +33,7 @@ Kirigami.Page {
 
             QQC2.CheckBox {
                 Kirigami.FormData.label: i18n("Clock")
-                text: "Show clock"
+                text: i18n("Show clock")
 
                 checked: kcm.settings.showClock
                 onToggled: kcm.settings.showClock = checked
