@@ -11,21 +11,22 @@
  * argument) and as soon as it's set up to launch a client (second argument)
  */
 
-#include <unistd.h>
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QDebug>
-#include "waylandhelper.h"
-#include "MessageHandler.h"
-#include <signal.h>
 #include "Auth.h"
+#include "MessageHandler.h"
 #include "SignalHandler.h"
+#include "waylandhelper.h"
+#include <QCoreApplication>
+#include <QDebug>
+#include <QTextStream>
+#include <signal.h>
+#include <unistd.h>
 
-void WaylandHelperMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+void WaylandHelperMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
     PLASMALOGIN::messageHandler(type, context, QStringLiteral("WaylandHelper: "), msg);
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     qInstallMessageHandler(WaylandHelperMessageHandler);
     QCoreApplication app(argc, argv);

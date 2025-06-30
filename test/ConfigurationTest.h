@@ -25,26 +25,19 @@
 #define TEST_STRINGLIST_1 {QStringLiteral("String1"), QStringLiteral("String2")}
 #define TEST_BOOL_1 true
 
-Config (TestConfig, CONF_FILE, CONF_DIR, SYS_CONF_DIR,
-    enum CustomType {
-        FOO,
-        BAR,
-        BAZ
-    };
-    Entry(    String,         QString,         _S(TEST_STRING_1_PLAIN), _S("Test String Description"));
-    Entry(       Int,             int,                      TEST_INT_1, _S("Test Integer Description"));
-    Entry(StringList,     QStringList,  QStringList(TEST_STRINGLIST_1), _S("Test StringList Description"));
-    Entry(   Boolean,            bool,                     TEST_BOOL_1, _S("Test Boolean Description"));
-    Entry(    Custom,      CustomType,                             FOO, _S("Custom type imitating NumState"));
-    Section(Section,
-        Entry(    String,         QString,         _S(TEST_STRING_1_PLAIN), _S("Test String Description"));
-        Entry(       Int,             int,                      TEST_INT_1, _S("Test Integer Description"));
-        Entry(StringList,     QStringList,  QStringList(TEST_STRINGLIST_1), _S("Test StringList Description"));
-        Entry(   Boolean,            bool,                     TEST_BOOL_1, _S("Test Boolean Description"));
-    );
-);
+Config(TestConfig, CONF_FILE, CONF_DIR, SYS_CONF_DIR, enum CustomType{FOO, BAR, BAZ};
+       Entry(String, QString, _S(TEST_STRING_1_PLAIN), _S("Test String Description"));
+       Entry(Int, int, TEST_INT_1, _S("Test Integer Description"));
+       Entry(StringList, QStringList, QStringList(TEST_STRINGLIST_1), _S("Test StringList Description"));
+       Entry(Boolean, bool, TEST_BOOL_1, _S("Test Boolean Description"));
+       Entry(Custom, CustomType, FOO, _S("Custom type imitating NumState"));
+       Section(Section, Entry(String, QString, _S(TEST_STRING_1_PLAIN), _S("Test String Description"));
+               Entry(Int, int, TEST_INT_1, _S("Test Integer Description"));
+               Entry(StringList, QStringList, QStringList(TEST_STRINGLIST_1), _S("Test StringList Description"));
+               Entry(Boolean, bool, TEST_BOOL_1, _S("Test Boolean Description"));););
 
-inline QTextStream& operator>>(QTextStream &str, TestConfig::CustomType &state) {
+inline QTextStream &operator>>(QTextStream &str, TestConfig::CustomType &state)
+{
     QString text = str.readLine().trimmed();
     if (text.compare(QLatin1String("foo"), Qt::CaseInsensitive) == 0)
         state = TestConfig::FOO;
@@ -55,7 +48,8 @@ inline QTextStream& operator>>(QTextStream &str, TestConfig::CustomType &state) 
     return str;
 }
 
-inline QTextStream& operator<<(QTextStream &str, const TestConfig::CustomType &state) {
+inline QTextStream &operator<<(QTextStream &str, const TestConfig::CustomType &state)
+{
     if (state == TestConfig::FOO)
         str << "foo";
     else if (state == TestConfig::BAR)

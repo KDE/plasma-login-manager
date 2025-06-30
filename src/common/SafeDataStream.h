@@ -9,21 +9,23 @@
 #ifndef SAFEDATASTREAM_H
 #define SAFEDATASTREAM_H
 
-#include <QtCore/QDataStream>
 #include <QByteArray>
+#include <QtCore/QDataStream>
 
-namespace PLASMALOGIN {
-    class SafeDataStream : public QDataStream {
-    public:
-        SafeDataStream(QIODevice* device);
-        void send();
-        void receive();
-        void reset();
+namespace PLASMALOGIN
+{
+class SafeDataStream : public QDataStream
+{
+public:
+    SafeDataStream(QIODevice *device);
+    void send();
+    void receive();
+    void reset();
 
-    private:
-        QByteArray m_data { };
-        QIODevice *m_device { nullptr };
-    };
+private:
+    QByteArray m_data{};
+    QIODevice *m_device{nullptr};
+};
 }
 
 #endif // SAFEDATASTREAM_H

@@ -5,8 +5,8 @@
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "wallpapersettings.h"
 #include "plasmaloginsettings.h"
+#include "wallpapersettings.h"
 
 #include "plasmalogindata.h"
 

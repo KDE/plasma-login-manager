@@ -11,37 +11,38 @@
 
 #include <QtCore/QObject>
 
-namespace PLASMALOGIN {
-    class HelperApp;
-    class Backend : public QObject
-    {
-        Q_OBJECT
-    public:
-        /**
-        * Requests allocation of a new backend instance.
-        * The method chooses the most suitable one for the current system.
-        */
-        static Backend *get(HelperApp *parent);
+namespace PLASMALOGIN
+{
+class HelperApp;
+class Backend : public QObject
+{
+    Q_OBJECT
+public:
+    /**
+     * Requests allocation of a new backend instance.
+     * The method chooses the most suitable one for the current system.
+     */
+    static Backend *get(HelperApp *parent);
 
-        void setAutologin(bool on = true);
-        void setDisplayServer(bool on = true);
-        void setGreeter(bool on = true);
+    void setAutologin(bool on = true);
+    void setDisplayServer(bool on = true);
+    void setGreeter(bool on = true);
 
-    public slots:
-        virtual bool start(const QString &user = QString()) = 0;
-        virtual bool authenticate() = 0;
-        virtual bool openSession();
-        virtual bool closeSession();
+public slots:
+    virtual bool start(const QString &user = QString()) = 0;
+    virtual bool authenticate() = 0;
+    virtual bool openSession();
+    virtual bool closeSession();
 
-        virtual QString userName() = 0;
+    virtual QString userName() = 0;
 
-    protected:
-        Backend(HelperApp *parent);
-        HelperApp *m_app;
-        bool m_autologin { false };
-        bool m_displayServer = false;
-        bool m_greeter { false };
-    };
+protected:
+    Backend(HelperApp *parent);
+    HelperApp *m_app;
+    bool m_autologin{false};
+    bool m_displayServer = false;
+    bool m_greeter{false};
+};
 }
 
 #endif // BACKEND_H

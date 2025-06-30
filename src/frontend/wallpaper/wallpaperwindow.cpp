@@ -6,9 +6,9 @@
 
 #include <QTimer>
 
-#include <KWindowSystem>
 #include <KPackage/Package>
 #include <KPackage/PackageLoader>
+#include <KWindowSystem>
 
 #include <LayerShellQt/Window>
 

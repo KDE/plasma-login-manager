@@ -1,18 +1,18 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
 #include "DaemonApp.h"
 
@@ -31,81 +31,90 @@
 
 #include <iostream>
 
-namespace PLASMALOGIN {
-    DaemonApp *DaemonApp::self = nullptr;
+namespace PLASMALOGIN
+{
+DaemonApp *DaemonApp::self = nullptr;
 
-    DaemonApp::DaemonApp(int &argc, char **argv) : QCoreApplication(argc, argv) {
-        // point instance to this
-        self = this;
+DaemonApp::DaemonApp(int &argc, char **argv)
+    : QCoreApplication(argc, argv)
+{
+    // point instance to this
+    self = this;
 
-        qInstallMessageHandler(PLASMALOGIN::DaemonMessageHandler);
+    qInstallMessageHandler(PLASMALOGIN::DaemonMessageHandler);
 
-        // log message
-        qDebug() << "Initializing...";
+    // log message
+    qDebug() << "Initializing...";
 
-        // set testing parameter
-        m_testing = (arguments().indexOf(QStringLiteral("--test-mode")) != -1);
+    // set testing parameter
+    m_testing = (arguments().indexOf(QStringLiteral("--test-mode")) != -1);
 
-        bool consoleKitServiceActivatable = false;
-        QDBusReply<QStringList> activatableNamesReply = QDBusConnection::systemBus().interface()->activatableServiceNames();
-        if (activatableNamesReply.isValid()) {
-            consoleKitServiceActivatable = activatableNamesReply.value().contains(QStringLiteral("org.freedesktop.ConsoleKit"));
+    bool consoleKitServiceActivatable = false;
+    QDBusReply<QStringList> activatableNamesReply = QDBusConnection::systemBus().interface()->activatableServiceNames();
+    if (activatableNamesReply.isValid()) {
+        consoleKitServiceActivatable = activatableNamesReply.value().contains(QStringLiteral("org.freedesktop.ConsoleKit"));
+    }
+
+    // If ConsoleKit isn't started by the OS init system (FreeBSD, for instance),
+    // we start it ourselves during the plasmalogin startup
+    if (consoleKitServiceActivatable) {
+        QDBusReply<bool> registeredReply = QDBusConnection::systemBus().interface()->isServiceRegistered(QStringLiteral("org.freedesktop.ConsoleKit"));
+        if (registeredReply.isValid() && registeredReply.value() == false) {
+            QDBusConnection::systemBus().interface()->startService(QStringLiteral("org.freedesktop.ConsoleKit"));
         }
-
-        // If ConsoleKit isn't started by the OS init system (FreeBSD, for instance),
-        // we start it ourselves during the plasmalogin startup
-        if (consoleKitServiceActivatable) {
-            QDBusReply<bool> registeredReply = QDBusConnection::systemBus().interface()->isServiceRegistered(QStringLiteral("org.freedesktop.ConsoleKit"));
-            if (registeredReply.isValid() && registeredReply.value() == false) {
-                QDBusConnection::systemBus().interface()->startService(QStringLiteral("org.freedesktop.ConsoleKit"));
-            }
-        }
-
-        // create display manager
-        m_displayManager = new DisplayManager(this);
-
-        // create seat manager
-        m_seatManager = new SeatManager(this);
-
-        // connect with display manager
-        connect(m_seatManager, &SeatManager::seatCreated, m_displayManager, &DisplayManager::AddSeat);
-        connect(m_seatManager, &SeatManager::seatRemoved, m_displayManager, &DisplayManager::RemoveSeat);
-
-        // create signal handler
-        m_signalHandler = new SignalHandler(this);
-
-        // quit when SIGINT, SIGTERM received
-        connect(m_signalHandler, &SignalHandler::sigintReceived, this, &DaemonApp::quit);
-        connect(m_signalHandler, &SignalHandler::sigtermReceived, this, &DaemonApp::quit);
-        // log message
-        qDebug() << "Starting...";
-
-        // initialize seats only after signals are connected
-        m_seatManager->initialize();
     }
 
-    QString DaemonApp::hostName() const {
-        return QHostInfo::localHostName();
-    }
+    // create display manager
+    m_displayManager = new DisplayManager(this);
 
-    DisplayManager *DaemonApp::displayManager() const {
-        return m_displayManager;
-    }
+    // create seat manager
+    m_seatManager = new SeatManager(this);
 
-    SeatManager *DaemonApp::seatManager() const {
-        return m_seatManager;
-    }
+    // connect with display manager
+    connect(m_seatManager, &SeatManager::seatCreated, m_displayManager, &DisplayManager::AddSeat);
+    connect(m_seatManager, &SeatManager::seatRemoved, m_displayManager, &DisplayManager::RemoveSeat);
 
-    SignalHandler *DaemonApp::signalHandler() const {
-        return m_signalHandler;
-    }
+    // create signal handler
+    m_signalHandler = new SignalHandler(this);
 
-    int DaemonApp::newSessionId() {
-        return m_lastSessionId++;
-    }
+    // quit when SIGINT, SIGTERM received
+    connect(m_signalHandler, &SignalHandler::sigintReceived, this, &DaemonApp::quit);
+    connect(m_signalHandler, &SignalHandler::sigtermReceived, this, &DaemonApp::quit);
+    // log message
+    qDebug() << "Starting...";
+
+    // initialize seats only after signals are connected
+    m_seatManager->initialize();
 }
 
-int main(int argc, char **argv) {
+QString DaemonApp::hostName() const
+{
+    return QHostInfo::localHostName();
+}
+
+DisplayManager *DaemonApp::displayManager() const
+{
+    return m_displayManager;
+}
+
+SeatManager *DaemonApp::seatManager() const
+{
+    return m_seatManager;
+}
+
+SignalHandler *DaemonApp::signalHandler() const
+{
+    return m_signalHandler;
+}
+
+int DaemonApp::newSessionId()
+{
+    return m_lastSessionId++;
+}
+}
+
+int main(int argc, char **argv)
+{
     QStringList arguments;
 
     for (int i = 0; i < argc; i++)

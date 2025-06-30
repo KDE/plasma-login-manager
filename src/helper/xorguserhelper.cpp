@@ -1,18 +1,18 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2021 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2021 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
 #include <QCoreApplication>
 #include <QFile>
@@ -25,7 +25,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-namespace PLASMALOGIN {
+namespace PLASMALOGIN
+{
 
 XOrgUserHelper::XOrgUserHelper(QObject *parent)
     : QObject(parent)
@@ -78,9 +79,7 @@ void XOrgUserHelper::stop()
     }
 }
 
-bool XOrgUserHelper::startProcess(const QString &cmd,
-                                  const QProcessEnvironment &env,
-                                  QProcess **p)
+bool XOrgUserHelper::startProcess(const QString &cmd, const QProcessEnvironment &env, QProcess **p)
 {
     auto args = QProcess::splitCommand(cmd);
     const auto program = args.takeFirst();
@@ -96,17 +95,14 @@ bool XOrgUserHelper::startProcess(const QString &cmd,
     connect(process, &QProcess::readyReadStandardOutput, this, [process] {
         qInfo() << process->readAllStandardOutput();
     });
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-            process, [](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), process, [](int exitCode, QProcess::ExitStatus exitStatus) {
         if (exitCode != 0 || exitStatus != QProcess::NormalExit)
             QCoreApplication::instance()->quit();
     });
 
     process->start(program, args);
     if (!process->waitForStarted(10000)) {
-        qWarning("Failed to start \"%s\": %s",
-                 qPrintable(cmd),
-                 qPrintable(process->errorString()));
+        qWarning("Failed to start \"%s\": %s", qPrintable(cmd), qPrintable(process->errorString()));
         return false;
     }
 
@@ -140,9 +136,7 @@ bool XOrgUserHelper::startServer(const QString &cmd)
     serverEnv.insert(QStringLiteral("XORG_RUN_AS_USER_OK"), QStringLiteral("1"));
 
     // Append xauth and display fd to the command
-    auto args = QStringList()
-            << QStringLiteral("-auth") << m_xauth.authPath()
-            << QStringLiteral("-displayfd") << QString::number(pipeFds[1]);
+    auto args = QStringList() << QStringLiteral("-auth") << m_xauth.authPath() << QStringLiteral("-displayfd") << QString::number(pipeFds[1]);
 
     // Append VT from environment
     args << QStringLiteral("vt%1").arg(serverEnv.value(QStringLiteral("XDG_VTNR")));
@@ -176,7 +170,7 @@ bool XOrgUserHelper::startServer(const QString &cmd)
         return false;
     }
     displayNumber.prepend(QByteArray(":"));
-    displayNumber.remove(displayNumber.size() -1, 1); // trim trailing whitespace
+    displayNumber.remove(displayNumber.size() - 1, 1); // trim trailing whitespace
     m_display = QString::fromLocal8Bit(displayNumber);
     qDebug("X11 display: %s", qPrintable(m_display));
     Q_EMIT displayChanged(m_display);

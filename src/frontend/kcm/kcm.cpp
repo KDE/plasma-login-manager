@@ -13,17 +13,17 @@
 #include <QTextStream>
 
 #include <KAuth/ExecuteJob>
-#include <KIO/ApplicationLauncherJob>
 #include <KConfigLoader>
 #include <KConfigPropertyMap>
+#include <KIO/ApplicationLauncherJob>
 #include <KLocalizedString>
 #include <KPluginFactory>
 #include <KService>
 
-#include "wallpapersettings.h"
-#include "plasmalogindata.h"
-#include "models/usermodel.h"
 #include "models/sessionmodel.h"
+#include "models/usermodel.h"
+#include "plasmalogindata.h"
+#include "wallpapersettings.h"
 
 #include "kcm.h"
 
@@ -50,10 +50,7 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     constexpr const char *uri = "org.kde.plasma.plasmoid";
     qmlRegisterUncreatableType<QObject>(uri, 2, 0, "PlasmoidPlaceholder", QStringLiteral("Do not create objects of type Plasmoid"));
 
-    connect(&PlasmaLoginSettings::getInstance(),
-            &PlasmaLoginSettings::WallpaperPluginIdChanged,
-            m_wallpaperSettings,
-            &WallpaperSettings::loadWallpaperConfig);
+    connect(&PlasmaLoginSettings::getInstance(), &PlasmaLoginSettings::WallpaperPluginIdChanged, m_wallpaperSettings, &WallpaperSettings::loadWallpaperConfig);
     connect(m_wallpaperSettings, &WallpaperSettings::currentWallpaperChanged, this, &PlasmaLoginKcm::currentWallpaperChanged);
 }
 
@@ -94,10 +91,10 @@ void PlasmaLoginKcm::save()
     for (const QString &wallpaperKey : wallpaperConfiguration()->keys()) {
         const QVariant value = wallpaperConfiguration()->value(wallpaperKey);
         tempConfig.group(QLatin1String("Greeter"))
-                  .group(QLatin1String("Wallpaper"))
-                  .group(wallpaperPluginId)
-                  .group(QLatin1String("General"))
-                  .writeEntry(wallpaperKey, value);
+            .group(QLatin1String("Wallpaper"))
+            .group(wallpaperPluginId)
+            .group(QLatin1String("General"))
+            .writeEntry(wallpaperKey, value);
     }
 
     tempConfig.sync();

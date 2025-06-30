@@ -7,11 +7,11 @@
 #include "startplasma.h"
 #include <KConfig>
 #include <KConfigGroup>
-#include <QDebug>
-#include <QDBusConnection>
-#include <QDBusReply>
-#include <QDBusInterface>
 #include <QDBusArgument>
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusReply>
+#include <QDebug>
 
 #include <QCoreApplication>
 #include <qdbusservicewatcher.h>
@@ -69,11 +69,11 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    //DAVE useless??
-    // We import systemd environment after we sync the dbus environment here.
-    // Otherwise it may leads to some unwanted order of applying environment
-    // variables (e.g. LANG and LC_*)
-    // importSystemdEnvrionment();
+    // DAVE useless??
+    //  We import systemd environment after we sync the dbus environment here.
+    //  Otherwise it may leads to some unwanted order of applying environment
+    //  variables (e.g. LANG and LC_*)
+    //  importSystemdEnvrionment();
 
     {
         auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
@@ -84,7 +84,6 @@ int main(int argc, char **argv)
         QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
         if (!reply.isValid()) {
             qWarning() << "Could not start systemd managed Plasma session:" << reply.error().name() << reply.error().message();
-
         }
     }
 
@@ -102,7 +101,6 @@ int main(int argc, char **argv)
         QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
         if (!reply.isValid()) {
             qWarning() << "Could not stop systemd managed Plasma session:" << reply.error().name() << reply.error().message();
-
         }
     }
 
@@ -119,10 +117,8 @@ int main(int argc, char **argv)
         QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
         if (!reply.isValid()) {
             qWarning() << "Could not close up systemd managed Plasma session:" << reply.error().name() << reply.error().message();
-
         }
     }
-
 
     return 0;
 }

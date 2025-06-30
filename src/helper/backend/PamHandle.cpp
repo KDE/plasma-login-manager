@@ -10,167 +10,183 @@
 
 #include <QtCore/QDebug>
 
-namespace PLASMALOGIN {
-    bool PamHandle::putEnv(const QProcessEnvironment& env) {
-        const auto envs = env.toStringList();
-        for (const QString& s : envs) {
-            m_result = pam_putenv(m_handle, qPrintable(s));
-            if (m_result != PAM_SUCCESS) {
-                qWarning() << "[PAM] putEnv:" << pam_strerror(m_handle, m_result);
-                return false;
-            }
+namespace PLASMALOGIN
+{
+bool PamHandle::putEnv(const QProcessEnvironment &env)
+{
+    const auto envs = env.toStringList();
+    for (const QString &s : envs) {
+        m_result = pam_putenv(m_handle, qPrintable(s));
+        if (m_result != PAM_SUCCESS) {
+            qWarning() << "[PAM] putEnv:" << pam_strerror(m_handle, m_result);
+            return false;
         }
-        return true;
     }
+    return true;
+}
 
-    QProcessEnvironment PamHandle::getEnv() {
-        QProcessEnvironment env;
-        // get pam environment
-        char **envlist = pam_getenvlist(m_handle);
-        if (envlist == NULL) {
-            qWarning() << "[PAM] getEnv: Returned NULL";
-            return env;
-        }
-
-        // copy it to the env map
-        for (int i = 0; envlist[i] != nullptr; ++i) {
-            QString s = QString::fromLocal8Bit(envlist[i]);
-
-            // find equal sign
-            int index = s.indexOf(QLatin1Char('='));
-
-            // add to the hash
-            if (index != -1)
-                env.insert(s.left(index), s.mid(index + 1));
-
-            free(envlist[i]);
-        }
-        free(envlist);
+QProcessEnvironment PamHandle::getEnv()
+{
+    QProcessEnvironment env;
+    // get pam environment
+    char **envlist = pam_getenvlist(m_handle);
+    if (envlist == NULL) {
+        qWarning() << "[PAM] getEnv: Returned NULL";
         return env;
     }
 
-    bool PamHandle::chAuthTok(int flags) {
-        m_result = pam_chauthtok(m_handle, flags | m_silent);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] chAuthTok:" << pam_strerror(m_handle, m_result);
-        }
-        return m_result == PAM_SUCCESS;
-    }
+    // copy it to the env map
+    for (int i = 0; envlist[i] != nullptr; ++i) {
+        QString s = QString::fromLocal8Bit(envlist[i]);
 
-    bool PamHandle::acctMgmt(int flags) {
-        m_result = pam_acct_mgmt(m_handle, flags | m_silent);
-        if (m_result == PAM_NEW_AUTHTOK_REQD) {
-            // TODO see if this should really return the value or just true regardless of the outcome
-            return chAuthTok(PAM_CHANGE_EXPIRED_AUTHTOK);
-        }
-        else if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] acctMgmt:" << pam_strerror(m_handle, m_result);
-            return false;
-        }
-        return true;
-    }
+        // find equal sign
+        int index = s.indexOf(QLatin1Char('='));
 
-    bool PamHandle::authenticate(int flags) {
-        qDebug() << "[PAM] Authenticating...";
-        m_result = pam_authenticate(m_handle, flags | m_silent);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] authenticate:" << pam_strerror(m_handle, m_result);
-        }
-        qDebug() << "[PAM] returning.";
-        return m_result == PAM_SUCCESS;
-    }
+        // add to the hash
+        if (index != -1)
+            env.insert(s.left(index), s.mid(index + 1));
 
-    bool PamHandle::setCred(int flags) {
-        m_result = pam_setcred(m_handle, flags | m_silent);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] setCred:" << pam_strerror(m_handle, m_result);
-        }
-        return m_result == PAM_SUCCESS;
+        free(envlist[i]);
     }
+    free(envlist);
+    return env;
+}
 
-    bool PamHandle::openSession() {
-        m_result = pam_open_session(m_handle, m_silent);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] openSession:" << pam_strerror(m_handle, m_result);
-        }
-        m_open = m_result == PAM_SUCCESS;
-        return m_open;
+bool PamHandle::chAuthTok(int flags)
+{
+    m_result = pam_chauthtok(m_handle, flags | m_silent);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] chAuthTok:" << pam_strerror(m_handle, m_result);
     }
+    return m_result == PAM_SUCCESS;
+}
 
-    bool PamHandle::closeSession() {
-        m_result = pam_close_session(m_handle, m_silent);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] closeSession:" << pam_strerror(m_handle, m_result);
-        }
-        return m_result == PAM_SUCCESS;
+bool PamHandle::acctMgmt(int flags)
+{
+    m_result = pam_acct_mgmt(m_handle, flags | m_silent);
+    if (m_result == PAM_NEW_AUTHTOK_REQD) {
+        // TODO see if this should really return the value or just true regardless of the outcome
+        return chAuthTok(PAM_CHANGE_EXPIRED_AUTHTOK);
+    } else if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] acctMgmt:" << pam_strerror(m_handle, m_result);
+        return false;
     }
+    return true;
+}
 
-    bool PamHandle::isOpen() const {
-        return m_open;
+bool PamHandle::authenticate(int flags)
+{
+    qDebug() << "[PAM] Authenticating...";
+    m_result = pam_authenticate(m_handle, flags | m_silent);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] authenticate:" << pam_strerror(m_handle, m_result);
     }
+    qDebug() << "[PAM] returning.";
+    return m_result == PAM_SUCCESS;
+}
 
-    bool PamHandle::setItem(int item_type, const void* item) {
-        m_result = pam_set_item(m_handle, item_type, item);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] setItem:" << pam_strerror(m_handle, m_result);
-        }
-        return m_result == PAM_SUCCESS;
+bool PamHandle::setCred(int flags)
+{
+    m_result = pam_setcred(m_handle, flags | m_silent);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] setCred:" << pam_strerror(m_handle, m_result);
     }
+    return m_result == PAM_SUCCESS;
+}
 
-    const void* PamHandle::getItem(int item_type) {
-        const void *item;
-        m_result = pam_get_item(m_handle, item_type, &item);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] getItem:" << pam_strerror(m_handle, m_result);
-        }
-        return item;
+bool PamHandle::openSession()
+{
+    m_result = pam_open_session(m_handle, m_silent);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] openSession:" << pam_strerror(m_handle, m_result);
     }
+    m_open = m_result == PAM_SUCCESS;
+    return m_open;
+}
 
-    int PamHandle::converse(int n, const struct pam_message **msg, struct pam_response **resp, void *data) {
-        qDebug() << "[PAM] Preparing to converse...";
-        PamBackend *c = static_cast<PamBackend *>(data);
-        return c->converse(n, msg, resp);
+bool PamHandle::closeSession()
+{
+    m_result = pam_close_session(m_handle, m_silent);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] closeSession:" << pam_strerror(m_handle, m_result);
     }
+    return m_result == PAM_SUCCESS;
+}
 
-    bool PamHandle::start(const QString &service, const QString &user) {
-        if (user.isEmpty())
-            m_result = pam_start(qPrintable(service), NULL, &m_conv, &m_handle);
-        else
-            m_result = pam_start(qPrintable(service), qPrintable(user), &m_conv, &m_handle);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] start" << pam_strerror(m_handle, m_result);
-            return false;
-        }
-        else {
-            qDebug() << "[PAM] Starting...";
-        }
-        return true;
-    }
+bool PamHandle::isOpen() const
+{
+    return m_open;
+}
 
-    bool PamHandle::end(int flags) {
-        if (!m_handle)
-            return false;
-        m_result = pam_end(m_handle, m_silent | flags);
-        if (m_result != PAM_SUCCESS) {
-            qWarning() << "[PAM] end:" << pam_strerror(m_handle, m_result);
-            return false;
-        }
-        else {
-            qDebug() << "[PAM] Ended.";
-        }
-        m_handle = NULL;
-        return true;
+bool PamHandle::setItem(int item_type, const void *item)
+{
+    m_result = pam_set_item(m_handle, item_type, item);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] setItem:" << pam_strerror(m_handle, m_result);
     }
+    return m_result == PAM_SUCCESS;
+}
 
-    QString PamHandle::errorString() {
-        return QString::fromLocal8Bit(pam_strerror(m_handle, m_result));
+const void *PamHandle::getItem(int item_type)
+{
+    const void *item;
+    m_result = pam_get_item(m_handle, item_type, &item);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] getItem:" << pam_strerror(m_handle, m_result);
     }
+    return item;
+}
 
-    PamHandle::PamHandle(PamBackend *parent) : m_conv{&PamHandle::converse, parent} { // create context
-    }
+int PamHandle::converse(int n, const struct pam_message **msg, struct pam_response **resp, void *data)
+{
+    qDebug() << "[PAM] Preparing to converse...";
+    PamBackend *c = static_cast<PamBackend *>(data);
+    return c->converse(n, msg, resp);
+}
 
-    PamHandle::~PamHandle() {
-        // stop service
-        end();
+bool PamHandle::start(const QString &service, const QString &user)
+{
+    if (user.isEmpty())
+        m_result = pam_start(qPrintable(service), NULL, &m_conv, &m_handle);
+    else
+        m_result = pam_start(qPrintable(service), qPrintable(user), &m_conv, &m_handle);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] start" << pam_strerror(m_handle, m_result);
+        return false;
+    } else {
+        qDebug() << "[PAM] Starting...";
     }
+    return true;
+}
+
+bool PamHandle::end(int flags)
+{
+    if (!m_handle)
+        return false;
+    m_result = pam_end(m_handle, m_silent | flags);
+    if (m_result != PAM_SUCCESS) {
+        qWarning() << "[PAM] end:" << pam_strerror(m_handle, m_result);
+        return false;
+    } else {
+        qDebug() << "[PAM] Ended.";
+    }
+    m_handle = NULL;
+    return true;
+}
+
+QString PamHandle::errorString()
+{
+    return QString::fromLocal8Bit(pam_strerror(m_handle, m_result));
+}
+
+PamHandle::PamHandle(PamBackend *parent)
+    : m_conv{&PamHandle::converse, parent}
+{ // create context
+}
+
+PamHandle::~PamHandle()
+{
+    // stop service
+    end();
+}
 }

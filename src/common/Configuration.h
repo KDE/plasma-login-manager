@@ -9,17 +9,19 @@
 #ifndef PLASMALOGIN_CONFIGURATION_H
 #define PLASMALOGIN_CONFIGURATION_H
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
-#include <QtCore/QStringList>
 #include <QtCore/QDir>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QTextStream>
 #include <pwd.h>
 
 #include "Constants.h"
 
 #include "ConfigReader.h"
 
-namespace PLASMALOGIN {
+namespace PLASMALOGIN
+{
+// clang-format off
     //     Name        File         Sections and/or Entries (but anything else too, it's a class) - Entries in a Config are assumed to be in the General section
     Config(MainConfig, QStringLiteral(CONFIG_FILE), QStringLiteral(CONFIG_DIR), QStringLiteral(SYSTEM_CONFIG_DIR),
         enum NumState { NUM_NONE, NUM_SET_ON, NUM_SET_OFF };
@@ -74,30 +76,33 @@ namespace PLASMALOGIN {
                                                                                                    "This user will be preselected when the login screen appears"));
         );
     );
+// clang-format on
 
-    extern MainConfig mainConfig;
-    extern StateConfig stateConfig;
+extern MainConfig mainConfig;
+extern StateConfig stateConfig;
 
-    inline QTextStream& operator>>(QTextStream &str, MainConfig::NumState &state) {
-        QString text = str.readLine().trimmed();
-        if (text.compare(QLatin1String("on"), Qt::CaseInsensitive) == 0)
-            state = MainConfig::NUM_SET_ON;
-        else if (text.compare(QLatin1String("off"), Qt::CaseInsensitive) == 0)
-            state = MainConfig::NUM_SET_OFF;
-        else
-            state = MainConfig::NUM_NONE;
-        return str;
-    }
+inline QTextStream &operator>>(QTextStream &str, MainConfig::NumState &state)
+{
+    QString text = str.readLine().trimmed();
+    if (text.compare(QLatin1String("on"), Qt::CaseInsensitive) == 0)
+        state = MainConfig::NUM_SET_ON;
+    else if (text.compare(QLatin1String("off"), Qt::CaseInsensitive) == 0)
+        state = MainConfig::NUM_SET_OFF;
+    else
+        state = MainConfig::NUM_NONE;
+    return str;
+}
 
-    inline QTextStream& operator<<(QTextStream &str, const MainConfig::NumState &state) {
-        if (state == MainConfig::NUM_SET_ON)
-            str << "on";
-        else if (state == MainConfig::NUM_SET_OFF)
-            str << "off";
-        else
-            str << "none";
-        return str;
-    }
+inline QTextStream &operator<<(QTextStream &str, const MainConfig::NumState &state)
+{
+    if (state == MainConfig::NUM_SET_ON)
+        str << "on";
+    else if (state == MainConfig::NUM_SET_OFF)
+        str << "off";
+    else
+        str << "none";
+    return str;
+}
 }
 
 #endif // PLASMALOGIN_CONFIGURATION_H

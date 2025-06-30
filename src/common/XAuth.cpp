@@ -1,32 +1,32 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2023 Fabian Vogt <fvogt@suse.de>
-* SPDX-FileCopyrightText: 2021 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-* SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2023 Fabian Vogt <fvogt@suse.de>
+ * SPDX-FileCopyrightText: 2021 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
-#include <limits.h>
 #include <QDebug>
 #include <QDir>
 #include <QScopeGuard>
 #include <QString>
 #include <QStringView>
+#include <X11/Xauth.h>
+#include <limits.h>
 #include <random>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <X11/Xauth.h>
 
 #ifdef __FreeBSD__
 #define HOST_NAME_MAX _POSIX_HOST_NAME_MAX
@@ -36,7 +36,8 @@
 #include "Constants.h"
 #include "XAuth.h"
 
-namespace PLASMALOGIN {
+namespace PLASMALOGIN
+{
 
 XAuth::XAuth()
 {
@@ -80,7 +81,7 @@ void XAuth::setup()
 
     // Set path
     m_authFile.setFileTemplate(m_authDir + QStringLiteral("/xauth_XXXXXX"));
-    if(!m_authFile.open()) {
+    if (!m_authFile.open()) {
         qFatal("Failed to create xauth file");
     }
 
@@ -95,7 +96,7 @@ void XAuth::setup()
     m_cookie.reserve(16);
 
     // Create a random hexadecimal number
-    for(int i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++)
         m_cookie.append(dis(gen));
 }
 
@@ -109,13 +110,11 @@ bool XAuth::addCookie(const QString &display)
     return XAuth::writeCookieToFile(display, authPath(), m_cookie);
 }
 
-bool XAuth::writeCookieToFile(const QString &display, const QString &fileName,
-                              QByteArray cookie)
+bool XAuth::writeCookieToFile(const QString &display, const QString &fileName, QByteArray cookie)
 {
-
     qDebug() << "Writing cookie to" << fileName;
 
-    if(display.size() < 2 || display[0] != QLatin1Char(':') || cookie.size() != 16) {
+    if (display.size() < 2 || display[0] != QLatin1Char(':') || cookie.size() != 16) {
         qWarning().nospace() << "Unexpected DISPLAY='" << display << "' or cookie.size() = " << cookie.size();
         return false;
     }
@@ -124,7 +123,7 @@ bool XAuth::writeCookieToFile(const QString &display, const QString &fileName,
     const int oldumask = umask(077);
 
     // Truncate the file. We don't support merging like the xauth tool does.
-    FILE * const authFp = fopen(qPrintable(fileName), "wb");
+    FILE *const authFp = fopen(qPrintable(fileName), "wb");
     auto error = errno;
     umask(oldumask);
     if (authFp == nullptr) {
@@ -132,7 +131,9 @@ bool XAuth::writeCookieToFile(const QString &display, const QString &fileName,
         return false;
     }
 
-    auto fileCloser = qScopeGuard([authFp]{ fclose(authFp); });
+    auto fileCloser = qScopeGuard([authFp] {
+        fclose(authFp);
+    });
     char localhost[HOST_NAME_MAX + 1] = "";
     if (gethostname(localhost, sizeof(localhost)) < 0)
         strcpy(localhost, "localhost");

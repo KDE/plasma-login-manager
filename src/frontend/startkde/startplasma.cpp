@@ -15,16 +15,16 @@
 #include <ranges>
 
 #include "debug.h"
+#include <QCoreApplication>
 #include <QDir>
 #include <QEventLoop>
 #include <QProcess>
 #include <QStandardPaths>
 #include <QTextStream>
-#include <QCoreApplication>
 
 #include <QDBusConnectionInterface>
-#include <QDBusServiceWatcher>
 #include <QDBusMetaType>
+#include <QDBusServiceWatcher>
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -103,7 +103,7 @@ int runSync(const QString &program, const QStringList &args, const QStringList &
     QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, &p, [&p] {
         gentleTermination(&p);
     });
-        qCDebug(PLASMA_STARTUP) << "started..." << program << args;
+    qCDebug(PLASMA_STARTUP) << "started..." << program << args;
     p.waitForFinished(-1);
     if (p.exitCode()) {
         qCWarning(PLASMA_STARTUP) << program << args << "exited with code" << p.exitCode();
@@ -378,7 +378,6 @@ void setupPlasmaEnvironment()
     const QString extraConfigDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1String("/kdedefaults");
     QDir().mkpath(extraConfigDir);
     qputenv("XDG_CONFIG_DIRS", QByteArray(QFile::encodeName(extraConfigDir) + ':' + currentConfigDirs));
-
 }
 
 void cleanupPlasmaEnvironment(const std::optional<QProcessEnvironment> &oldSystemdEnvironment)
@@ -549,4 +548,3 @@ bool useSystemdBoot()
     // only enable our systemd boot if that exists, unless the user has forced the systemd boot above
     return hasSystemdService(QStringLiteral("xdg-desktop-autostart.target"));
 }
-

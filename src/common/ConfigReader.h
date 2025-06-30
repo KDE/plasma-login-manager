@@ -21,12 +21,12 @@
 #ifndef CONFIGREADER_H
 #define CONFIGREADER_H
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
-#include <QtCore/QStringList>
-#include <QtCore/QDebug>
 #include <QtCore/QDateTime>
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QTextStream>
 
 #define IMPLICIT_SECTION "General"
 #define UNUSED_VARIABLE_COMMENT "# Unused variable"
@@ -37,177 +37,213 @@
 #define _S(x) QStringLiteral(x)
 
 // config wrapper
-#define Config(name, file, dir, sysDir, ...) \
-    class name : public PLASMALOGIN::ConfigBase, public PLASMALOGIN::ConfigSection { \
-    public: \
-        name() : PLASMALOGIN::ConfigBase(file, dir, sysDir), PLASMALOGIN::ConfigSection(this, QStringLiteral(IMPLICIT_SECTION)) { \
-            load(); \
-        } \
-        void save() { PLASMALOGIN::ConfigBase::save(nullptr, nullptr); } \
-        void save(PLASMALOGIN::ConfigEntryBase *) const = delete; \
-        QString toConfigFull() const { \
-            return PLASMALOGIN::ConfigBase::toConfigFull(); \
-        } \
-        __VA_ARGS__ \
+#define Config(name, file, dir, sysDir, ...)                                                                                                                   \
+    class name : public PLASMALOGIN::ConfigBase, public PLASMALOGIN::ConfigSection                                                                             \
+    {                                                                                                                                                          \
+    public:                                                                                                                                                    \
+        name()                                                                                                                                                 \
+            : PLASMALOGIN::ConfigBase(file, dir, sysDir)                                                                                                       \
+            , PLASMALOGIN::ConfigSection(this, QStringLiteral(IMPLICIT_SECTION))                                                                               \
+        {                                                                                                                                                      \
+            load();                                                                                                                                            \
+        }                                                                                                                                                      \
+        void save()                                                                                                                                            \
+        {                                                                                                                                                      \
+            PLASMALOGIN::ConfigBase::save(nullptr, nullptr);                                                                                                   \
+        }                                                                                                                                                      \
+        void save(PLASMALOGIN::ConfigEntryBase *) const = delete;                                                                                              \
+        QString toConfigFull() const                                                                                                                           \
+        {                                                                                                                                                      \
+            return PLASMALOGIN::ConfigBase::toConfigFull();                                                                                                    \
+        }                                                                                                                                                      \
+        __VA_ARGS__                                                                                                                                            \
     }
 // entry wrapper
-#define Entry(name, type, default, description, ...) \
-    PLASMALOGIN::ConfigEntry<type> name { this, QStringLiteral(#name), default, description, __VA_ARGS__ }
+#define Entry(name, type, default, description, ...)                                                                                                           \
+    PLASMALOGIN::ConfigEntry<type> name                                                                                                                        \
+    {                                                                                                                                                          \
+        this, QStringLiteral(#name), default, description, __VA_ARGS__                                                                                         \
+    }
 // section wrapper
-#define Section(name, ...) \
-    class name : public PLASMALOGIN::ConfigSection { \
-    public: \
-        name (PLASMALOGIN::ConfigBase *_parent, const QString &_name) : PLASMALOGIN::ConfigSection(_parent, _name) { } \
-        __VA_ARGS__ \
-    } name { this, QStringLiteral(#name) };
+#define Section(name, ...)                                                                                                                                     \
+    class name : public PLASMALOGIN::ConfigSection{                                                                                                            \
+        public : name(PLASMALOGIN::ConfigBase * _parent, const QString &_name) : PLASMALOGIN::ConfigSection(_parent, _name){} __VA_ARGS__                      \
+    } name                                                                                                                                                     \
+    {                                                                                                                                                          \
+        this, QStringLiteral(#name)                                                                                                                            \
+    };
 
 QTextStream &operator>>(QTextStream &str, QStringList &list);
 QTextStream &operator<<(QTextStream &str, const QStringList &list);
 QTextStream &operator>>(QTextStream &str, bool &val);
 QTextStream &operator<<(QTextStream &str, const bool &val);
 
-namespace PLASMALOGIN {
-    template<class> class ConfigEntry;
-    class ConfigSection;
-    class ConfigBase;
+namespace PLASMALOGIN
+{
+template<class>
+class ConfigEntry;
+class ConfigSection;
+class ConfigBase;
 
-    class ConfigEntryBase {
-    public:
-        virtual const QString &name() const = 0;
-        virtual QString value() const = 0;
-        virtual void setValue(const QString &str) = 0;
-        virtual QString toConfigShort() const = 0;
-        virtual QString toConfigFull() const = 0;
-        virtual bool matchesDefault() const = 0;
-        virtual bool isDefault() const = 0;
-        virtual bool setDefault() = 0;
-    };
+class ConfigEntryBase
+{
+public:
+    virtual const QString &name() const = 0;
+    virtual QString value() const = 0;
+    virtual void setValue(const QString &str) = 0;
+    virtual QString toConfigShort() const = 0;
+    virtual QString toConfigFull() const = 0;
+    virtual bool matchesDefault() const = 0;
+    virtual bool isDefault() const = 0;
+    virtual bool setDefault() = 0;
+};
 
-    class ConfigSection {
-    public:
-        ConfigSection(ConfigBase *parent, const QString &name);
-        ConfigEntryBase *entry(const QString &name);
-        const ConfigEntryBase *entry(const QString &name) const;
-        void save(ConfigEntryBase *entry);
-        void clear();
-        const QString &name() const;
-        QString toConfigShort() const;
-        QString toConfigFull() const;
-        const QMap<QString, ConfigEntryBase*> &entries() const;
-    private:
-        template<class T> friend class ConfigEntryPrivate;
-        QMap<QString, ConfigEntryBase*> m_entries {};
+class ConfigSection
+{
+public:
+    ConfigSection(ConfigBase *parent, const QString &name);
+    ConfigEntryBase *entry(const QString &name);
+    const ConfigEntryBase *entry(const QString &name) const;
+    void save(ConfigEntryBase *entry);
+    void clear();
+    const QString &name() const;
+    QString toConfigShort() const;
+    QString toConfigFull() const;
+    const QMap<QString, ConfigEntryBase *> &entries() const;
 
-        ConfigBase *m_parent { nullptr };
-        QString m_name { };
-        template<class T> friend class ConfigEntry;
-    };
+private:
+    template<class T>
+    friend class ConfigEntryPrivate;
+    QMap<QString, ConfigEntryBase *> m_entries{};
 
-    template <class T>
-    class ConfigEntry : public ConfigEntryBase {
-    public:
-        ConfigEntry(ConfigSection *parent, const QString &name, const T &value, const QString &description) : ConfigEntryBase(),
-            m_name(name),
-            m_description(description),
-            m_default(value),
-            m_value(value),
-            m_isDefault(true),
-            m_parent(parent) {
-            m_parent->m_entries[name] = this;
-        }
+    ConfigBase *m_parent{nullptr};
+    QString m_name{};
+    template<class T>
+    friend class ConfigEntry;
+};
 
-        T get() const {
-            return m_value;
-        }
+template<class T>
+class ConfigEntry : public ConfigEntryBase
+{
+public:
+    ConfigEntry(ConfigSection *parent, const QString &name, const T &value, const QString &description)
+        : ConfigEntryBase()
+        , m_name(name)
+        , m_description(description)
+        , m_default(value)
+        , m_value(value)
+        , m_isDefault(true)
+        , m_parent(parent)
+    {
+        m_parent->m_entries[name] = this;
+    }
 
-        void set(const T val) {
-            m_value = val;
-            m_isDefault = false;
-        }
+    T get() const
+    {
+        return m_value;
+    }
 
-        bool matchesDefault() const {
-            return m_value == m_default;
-        }
+    void set(const T val)
+    {
+        m_value = val;
+        m_isDefault = false;
+    }
 
-        bool isDefault() const {
-            return m_isDefault;
-        }
+    bool matchesDefault() const
+    {
+        return m_value == m_default;
+    }
 
-        bool setDefault() {
-            m_isDefault = true;
-            if (m_value == m_default)
-                return false;
-            m_value = m_default;
-            return true;
-        }
+    bool isDefault() const
+    {
+        return m_isDefault;
+    }
 
-        void save() {
-            m_parent->save(this);
-        }
+    bool setDefault()
+    {
+        m_isDefault = true;
+        if (m_value == m_default)
+            return false;
+        m_value = m_default;
+        return true;
+    }
 
-        const QString &name() const {
-            return m_name;
-        }
+    void save()
+    {
+        m_parent->save(this);
+    }
 
-        QString value() const {
-            QString str;
-            QTextStream out(&str);
-            out << m_value;
-            return str;
-        }
+    const QString &name() const
+    {
+        return m_name;
+    }
 
-        // specialised for QString
-        void setValue(const QString &str) {
-            m_isDefault = false;
-            QTextStream in(qPrintable(str));
-            in >> m_value;
-        }
+    QString value() const
+    {
+        QString str;
+        QTextStream out(&str);
+        out << m_value;
+        return str;
+    }
 
-        QString toConfigShort() const {
-            return QStringLiteral("%1=%2").arg(m_name).arg(value());
-        }
+    // specialised for QString
+    void setValue(const QString &str)
+    {
+        m_isDefault = false;
+        QTextStream in(qPrintable(str));
+        in >> m_value;
+    }
 
-        QString toConfigFull() const {
-            QString str;
-            for (const QString &line : m_description.split(QLatin1Char('\n')))
-                str.append(QStringLiteral("# %1\n").arg(line));
-            str.append(QStringLiteral("%1=%2\n\n").arg(m_name).arg(value()));
-            return str;
-        }
-    private:
-        const QString m_name;
-        const QString m_description;
-        T m_default;
-        T m_value;
-        bool m_isDefault;
-        ConfigSection *m_parent;
-    };
+    QString toConfigShort() const
+    {
+        return QStringLiteral("%1=%2").arg(m_name).arg(value());
+    }
 
-    // Base has to be separate from the Config itself - order of initialization
-    class ConfigBase {
-    public:
-        ConfigBase(const QString &configPath, const QString &configDir=QString(), const QString &sysConfigDir=QString());
+    QString toConfigFull() const
+    {
+        QString str;
+        for (const QString &line : m_description.split(QLatin1Char('\n')))
+            str.append(QStringLiteral("# %1\n").arg(line));
+        str.append(QStringLiteral("%1=%2\n\n").arg(m_name).arg(value()));
+        return str;
+    }
 
-        void load();
-        void save(const ConfigSection *section = nullptr, const ConfigEntryBase *entry = nullptr);
-        void wipe();
-        bool hasUnused() const;
-        QString toConfigFull() const;
-    protected:
-        bool m_unusedVariables { false };
-        bool m_unusedSections { false };
+private:
+    const QString m_name;
+    const QString m_description;
+    T m_default;
+    T m_value;
+    bool m_isDefault;
+    ConfigSection *m_parent;
+};
 
-        QString m_path {};
-        QString m_configDir;
-        QString m_sysConfigDir;
-        QMap<QString, ConfigSection*> m_sections;
-        friend class ConfigSection;
-    private:
-        QDateTime dirLatestModifiedTime(const QString &directory);
-        void loadInternal(const QString &filepath);
-        QDateTime m_fileModificationTime;
-    };
+// Base has to be separate from the Config itself - order of initialization
+class ConfigBase
+{
+public:
+    ConfigBase(const QString &configPath, const QString &configDir = QString(), const QString &sysConfigDir = QString());
+
+    void load();
+    void save(const ConfigSection *section = nullptr, const ConfigEntryBase *entry = nullptr);
+    void wipe();
+    bool hasUnused() const;
+    QString toConfigFull() const;
+
+protected:
+    bool m_unusedVariables{false};
+    bool m_unusedSections{false};
+
+    QString m_path{};
+    QString m_configDir;
+    QString m_sysConfigDir;
+    QMap<QString, ConfigSection *> m_sections;
+    friend class ConfigSection;
+
+private:
+    QDateTime dirLatestModifiedTime(const QString &directory);
+    void loadInternal(const QString &filepath);
+    QDateTime m_fileModificationTime;
+};
 }
-
 
 #endif // CONFIGREADER_H

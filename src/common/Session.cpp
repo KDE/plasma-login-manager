@@ -4,7 +4,8 @@
 #include <KConfigGroup>
 #include <QFile>
 
-namespace PLASMALOGIN {
+namespace PLASMALOGIN
+{
 
 Session Session::create(Type type, const QString &name)
 {
@@ -28,9 +29,10 @@ Session Session::create(Type type, const QString &name)
     }
 }
 
-Session::Session():
-    Session(WaylandSession, KSharedConfigPtr())
-{}
+Session::Session()
+    : Session(WaylandSession, KSharedConfigPtr())
+{
+}
 
 Session::Session(Type type, KSharedConfigPtr desktopFile)
     : m_type(type)
@@ -43,11 +45,13 @@ bool Session::isValid() const
     return m_desktopFile;
 }
 
-Session::Type Session::type() const {
+Session::Type Session::type() const
+{
     return m_type;
 }
 
-QString Session::name() const {
+QString Session::name() const
+{
     Q_ASSERT(isValid());
     if (!isValid()) {
         return QString();
@@ -75,7 +79,7 @@ QString Session::desktopSession() const
 
 QString Session::xdgSessionType() const
 {
-    switch(m_type) {
+    switch (m_type) {
     case WaylandSession:
         return QStringLiteral("wayland");
     case X11Session:

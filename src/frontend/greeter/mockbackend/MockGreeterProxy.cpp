@@ -29,11 +29,14 @@ void MockGreeterProxy::login(const QString &user, const QString &password, const
         break;
     }
 
-    qDebug().nospace() << "Login " << (success ? "success" : "failure") << " with user " << user << ", password " << password << ", session " << sessionTypeName << " " << sessionFileName;
+    qDebug().nospace() << "Login " << (success ? "success" : "failure") << " with user " << user << ", password " << password << ", session " << sessionTypeName
+                       << " " << sessionFileName;
 
     if (success) {
         QTimer::singleShot(100, this, &MockGreeterProxy::loginSucceeded);
-        QTimer::singleShot(800, []() { QCoreApplication::quit(); });
+        QTimer::singleShot(800, []() {
+            QCoreApplication::quit();
+        });
     } else {
         QTimer::singleShot(100, this, &MockGreeterProxy::loginFailed);
     }

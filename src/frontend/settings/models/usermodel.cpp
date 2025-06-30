@@ -33,21 +33,21 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
     User user = m_users[index.row()];
 
     switch (role) {
-        case UserModel::NameRole:
-            return user.name;
-        case Qt::DisplayRole:
-        case UserModel::RealNameRole:
-            return user.realName;
-        case UserModel::IconRole:
-            return user.icon;
-        case UserModel::HomeDirRole:
-            return user.homeDir;
-        case UserModel::NeedsPasswordRole:
-            return user.needsPassword;
-        case UserModel::UidRole:
-            return user.uid;
-        case UserModel::GidRole:
-            return user.gid;
+    case UserModel::NameRole:
+        return user.name;
+    case Qt::DisplayRole:
+    case UserModel::RealNameRole:
+        return user.realName;
+    case UserModel::IconRole:
+        return user.icon;
+    case UserModel::HomeDirRole:
+        return user.homeDir;
+    case UserModel::NeedsPasswordRole:
+        return user.needsPassword;
+    case UserModel::UidRole:
+        return user.uid;
+    case UserModel::GidRole:
+        return user.gid;
     }
 
     return {};

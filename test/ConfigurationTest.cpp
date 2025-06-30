@@ -9,17 +9,22 @@
 #include "ConfigurationTest.h"
 #include <QtCore/QFile>
 
-#include <QtTest/QtTest>
-#include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtTest/QtTest>
 
 QTEST_MAIN(ConfigurationTest);
 
-void ConfigurationTest::initTestCase() { }
+void ConfigurationTest::initTestCase()
+{
+}
 
-void ConfigurationTest::cleanupTestCase() { }
+void ConfigurationTest::cleanupTestCase()
+{
+}
 
-void ConfigurationTest::init() {
+void ConfigurationTest::init()
+{
     QFile::remove(CONF_FILE);
     QDir(CONF_DIR).removeRecursively();
     QDir().mkdir(CONF_DIR);
@@ -29,7 +34,8 @@ void ConfigurationTest::init() {
     config = new TestConfig;
 }
 
-void ConfigurationTest::cleanup() {
+void ConfigurationTest::cleanup()
+{
     QFile::remove(CONF_FILE);
     QDir(CONF_DIR).removeRecursively();
     QDir(SYS_CONF_DIR).removeRecursively();
@@ -39,7 +45,8 @@ void ConfigurationTest::cleanup() {
     config = nullptr;
 }
 
-void ConfigurationTest::Basic() {
+void ConfigurationTest::Basic()
+{
     QVERIFY(config->String.get() == TEST_STRING_1);
     QVERIFY(config->Int.get() == TEST_INT_1);
     QVERIFY(config->StringList.get() == QStringList(TEST_STRINGLIST_1));
@@ -54,7 +61,8 @@ void ConfigurationTest::Basic() {
     QVERIFY(QFile::exists(CONF_FILE));
 }
 
-void ConfigurationTest::Sections() {
+void ConfigurationTest::Sections()
+{
     QVERIFY(config->Section.String.get() == TEST_STRING_1);
     QVERIFY(config->Section.Int.get() == TEST_INT_1);
     QVERIFY(config->Section.StringList.get() == QStringList(TEST_STRINGLIST_1));
@@ -69,7 +77,8 @@ void ConfigurationTest::Sections() {
     QVERIFY(QFile::exists(CONF_FILE));
 }
 
-void ConfigurationTest::Unused() {
+void ConfigurationTest::Unused()
+{
     QFile confFile(CONF_FILE);
     QFile confCopy(CONF_FILE_COPY);
     confFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
@@ -95,7 +104,8 @@ void ConfigurationTest::Unused() {
     QVERIFY(contents.contains("BadSectionValue"));
 }
 
-void ConfigurationTest::LineChanges() {
+void ConfigurationTest::LineChanges()
+{
     QFile confFile(CONF_FILE);
     QFile confCopy(CONF_FILE_COPY);
     // put some junk there to make it a bit harder to parse
@@ -111,8 +121,8 @@ void ConfigurationTest::LineChanges() {
     QVERIFY(confFile.size() == confCopy.size());
 }
 
-void ConfigurationTest::CustomEnum() {
-
+void ConfigurationTest::CustomEnum()
+{
     QTest::qWait(2000);
     QFile confFile(CONF_FILE);
     confFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
@@ -130,7 +140,8 @@ void ConfigurationTest::CustomEnum() {
     QVERIFY(!contents.contains("foo"));
 }
 
-void ConfigurationTest::RightOnInit() {
+void ConfigurationTest::RightOnInit()
+{
     delete config;
     QFile confFile(CONF_FILE);
     confFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
@@ -148,28 +159,28 @@ void ConfigurationTest::RightOnInit() {
     QVERIFY(config->Custom.get() == TestConfig::BAZ);
 }
 
-
-void ConfigurationTest::RightOnInitDir() {
+void ConfigurationTest::RightOnInitDir()
+{
     delete config;
 
-    QFile confFileA(SYS_CONF_DIR+QStringLiteral("/0001A"));
+    QFile confFileA(SYS_CONF_DIR + QStringLiteral("/0001A"));
     confFileA.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    confFileA.write("Custom=Foo\n"); //overriden by B
+    confFileA.write("Custom=Foo\n"); // overriden by B
     confFileA.write("Boolean=false\n");
     confFileA.close();
 
-    QFile confFileB(CONF_DIR+QStringLiteral("/0001A"));
+    QFile confFileB(CONF_DIR + QStringLiteral("/0001A"));
     confFileB.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    confFileB.write("String=a\n"); //overriden by C
+    confFileB.write("String=a\n"); // overriden by C
     confFileB.write("Custom=Bar\n");
     confFileB.write("StringList=a,b,c\n");
-    confFileB.write("Int=1111111\n"); //this is set in this config file but overriden in CONF_FILE
+    confFileB.write("Int=1111111\n"); // this is set in this config file but overriden in CONF_FILE
     confFileB.close();
 
-    QFile confFileC(CONF_DIR+QStringLiteral("/0001B"));
+    QFile confFileC(CONF_DIR + QStringLiteral("/0001B"));
     confFileC.open(QIODevice::WriteOnly | QIODevice::Truncate);
     confFileC.write("String=b\n");
-    confFileC.write("Int=1111111\n"); //overriden in CONF_FILE
+    confFileC.write("Int=1111111\n"); // overriden in CONF_FILE
     confFileC.close();
 
     QFile confFileMain(CONF_FILE);
@@ -192,7 +203,7 @@ void ConfigurationTest::FileChanged()
 
     QTest::qWait(2000);
 
-    //test from no file to a file
+    // test from no file to a file
     QFile confFile(CONF_FILE);
     confFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
     confFile.write("String=a\n");
@@ -201,8 +212,8 @@ void ConfigurationTest::FileChanged()
     config->load();
     QVERIFY(config->String.get() == QStringLiteral("a"));
 
-    //test file changed
-    //wait 2 seconds so timestamp is definitely 1 second apart
+    // test file changed
+    // wait 2 seconds so timestamp is definitely 1 second apart
     QTest::qWait(2000);
 
     confFile.open(QIODevice::WriteOnly | QIODevice::Truncate);
@@ -214,19 +225,19 @@ void ConfigurationTest::FileChanged()
 
     QTest::qWait(2000);
 
-    //add file to conf dir
-    QFile confFileA(CONF_DIR+QStringLiteral("/0001A"));
+    // add file to conf dir
+    QFile confFileA(CONF_DIR + QStringLiteral("/0001A"));
     confFileA.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    confFileA.write("Int=1111111\n"); //this is set in this config file but overriden in CONF_FILE
+    confFileA.write("Int=1111111\n"); // this is set in this config file but overriden in CONF_FILE
     confFileA.close();
     config->load();
-    QVERIFY(config->Int.get() ==1111111);
+    QVERIFY(config->Int.get() == 1111111);
 
     QTest::qWait(2000);
-    //modify existing file in conf dir
+    // modify existing file in conf dir
 
     confFileA.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    confFileA.write("Int=222222\n"); //this is set in this config file but overriden in CONF_FILE
+    confFileA.write("Int=222222\n"); // this is set in this config file but overriden in CONF_FILE
     confFileA.close();
     config->load();
     QVERIFY(config->Int.get() == 222222);

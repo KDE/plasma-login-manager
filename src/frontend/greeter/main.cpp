@@ -11,18 +11,18 @@
 #include <QScreen>
 
 #include <KLocalizedString>
-#include <kworkspace6/sessionmanagement.h>
 #include <KWindowSystem>
 #include <LayerShellQt/Window>
 #include <PlasmaQuick/QuickViewSharedEngine>
+#include <kworkspace6/sessionmanagement.h>
 
 #include "backend/GreeterProxy.h"
 #include "mockbackend/MockGreeterProxy.h"
 
-#include "stateconfig.h"
-#include "plasmaloginsettings.h"
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
+#include "plasmaloginsettings.h"
+#include "stateconfig.h"
 
 class LoginGreeter : public QObject
 {

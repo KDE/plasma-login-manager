@@ -9,7 +9,8 @@
 #include "Configuration.h"
 #include "Constants.h"
 
-namespace PLASMALOGIN {
-    MainConfig mainConfig;
-    StateConfig stateConfig;
+namespace PLASMALOGIN
+{
+MainConfig mainConfig;
+StateConfig stateConfig;
 }

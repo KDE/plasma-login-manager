@@ -11,10 +11,9 @@
 // #include <ksplashinterface.h>
 #include <optional>
 
-#include <QTextStream>
-#include <QString>
 #include <QProcessEnvironment>
-
+#include <QString>
+#include <QTextStream>
 
 extern QTextStream out;
 
@@ -40,7 +39,6 @@ bool startPlasmaSession(bool wayland);
 
 void stopSystemdSession();
 void waitForKonqi();
-
 
 void gentleTermination(QProcess *process);
 

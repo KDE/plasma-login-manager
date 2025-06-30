@@ -1,19 +1,19 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2014 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-* SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2014 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
 #include "Seat.h"
 
@@ -26,120 +26,131 @@
 #include <QFile>
 #include <QTimer>
 
+#include <Login1Manager.h>
+#include <Login1Seat.h>
+#include <Login1Session.h>
 #include <functional>
 #include <optional>
 #include <unistd.h>
-#include <Login1Manager.h>
-#include <Login1Session.h>
-#include <Login1Seat.h>
 
-namespace PLASMALOGIN {
-    Seat::Seat(const QString &name, QObject *parent) : QObject(parent), m_name(name) {
+namespace PLASMALOGIN
+{
+Seat::Seat(const QString &name, QObject *parent)
+    : QObject(parent)
+    , m_name(name)
+{
+    createDisplay();
+}
+
+const QString &Seat::name() const
+{
+    return m_name;
+}
+
+void Seat::createDisplay()
+{
+    // reload config if needed
+    mainConfig.load();
+
+    // create a new display
+    qDebug() << "Adding new display...";
+    Display *display = new Display(this);
+
+    // restart display on stop
+    connect(display, &Display::stopped, this, &Seat::displayStopped);
+    connect(display, &Display::displayServerFailed, this, [this, display] {
+        removeDisplay(display);
+        qWarning() << "Failed to launch a display server";
+        QCoreApplication::instance()->exit(12);
+    });
+
+    // add display to the list
+    m_displays << display;
+
+    // start the display
+    startDisplay(display);
+}
+
+void Seat::startDisplay(Display *display, int tryNr)
+{
+    if (display->start())
+        return;
+
+    // It's possible that the system isn't ready yet (driver not loaded,
+    // device not enumerated, ...). It's not possible to tell when that changes,
+    // so try a few times with a delay in between.
+    qWarning() << "Attempt" << tryNr << "starting the Display server on vt" << display->terminalId() << "failed";
+
+    if (tryNr >= 3) {
+        qCritical() << "Could not start Display server on vt" << display->terminalId();
+        return;
+    }
+
+    QTimer::singleShot(2000, display, [=] {
+        startDisplay(display, tryNr + 1);
+    });
+}
+
+void Seat::removeDisplay(Display *display)
+{
+    qDebug() << "Removing display" << display << "...";
+
+    // remove display from list
+    m_displays.removeAll(display);
+
+    // stop the display
+    display->blockSignals(true);
+    display->stop();
+    display->blockSignals(false);
+
+    // delete display
+    display->deleteLater();
+}
+
+void Seat::displayStopped()
+{
+    Display *display = qobject_cast<Display *>(sender());
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    std::optional<int> nextVt;
+    auto reusing = display->reuseSessionId();
+    if (manager.isValid() && !reusing.isEmpty()) {
+        auto sessionPath = manager.GetSession(reusing);
+        OrgFreedesktopLogin1SessionInterface sessionIface(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
+        nextVt = QStringView(sessionIface.tTY()).mid(3).toInt(); // we need to convert ttyN to N
+    }
+
+    // remove display
+    removeDisplay(display);
+
+    // restart otherwise
+    if (m_displays.isEmpty()) {
         createDisplay();
     }
-
-    const QString &Seat::name() const {
-        return m_name;
+    // If there is still a session running on some display,
+    // switch to last display in display vector.
+    // Set vt_auto to true, so let the kernel handle the
+    // vt switch automatically (VT_AUTO).
+    else if (!nextVt) {
+        int disp = m_displays.last()->terminalId();
+        if (disp != -1)
+            nextVt = disp;
     }
 
-    void Seat::createDisplay() {
-        //reload config if needed
-        mainConfig.load();
+    if (nextVt) {
+        VirtualTerminal::jumpToVt(*nextVt, true);
+    }
+}
 
-        // create a new display
-        qDebug() << "Adding new display...";
-        Display *display = new Display(this);
-
-        // restart display on stop
-        connect(display, &Display::stopped, this, &Seat::displayStopped);
-        connect(display, &Display::displayServerFailed, this, [this, display] {
-            removeDisplay(display);
-            qWarning() << "Failed to launch a display server";
-            QCoreApplication::instance()->exit(12);
-        });
-
-        // add display to the list
-        m_displays << display;
-
-        // start the display
-        startDisplay(display);
+bool Seat::canTTY()
+{
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    if (manager.isValid()) {
+        auto seatPath = manager.GetSeat(m_name);
+        OrgFreedesktopLogin1SeatInterface seatIface(Logind::serviceName(), seatPath.value().path(), QDBusConnection::systemBus());
+        if (seatIface.property("CanTTY").isValid())
+            return seatIface.canTTY();
     }
 
-    void Seat::startDisplay(Display *display, int tryNr) {
-        if (display->start())
-            return;
-
-        // It's possible that the system isn't ready yet (driver not loaded,
-        // device not enumerated, ...). It's not possible to tell when that changes,
-        // so try a few times with a delay in between.
-        qWarning() << "Attempt" << tryNr << "starting the Display server on vt" << display->terminalId() << "failed";
-
-        if(tryNr >= 3) {
-            qCritical() << "Could not start Display server on vt" << display->terminalId();
-            return;
-        }
-
-        QTimer::singleShot(2000, display, [=] { startDisplay(display, tryNr + 1); });
-    }
-
-    void Seat::removeDisplay(Display* display) {
-        qDebug() << "Removing display" << display << "...";
-
-
-        // remove display from list
-        m_displays.removeAll(display);
-
-        // stop the display
-        display->blockSignals(true);
-        display->stop();
-        display->blockSignals(false);
-
-        // delete display
-        display->deleteLater();
-    }
-
-    void Seat::displayStopped() {
-        Display *display = qobject_cast<Display *>(sender());
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        std::optional<int> nextVt;
-        auto reusing = display->reuseSessionId();
-        if (manager.isValid() && !reusing.isEmpty()) {
-            auto sessionPath = manager.GetSession(reusing);
-            OrgFreedesktopLogin1SessionInterface sessionIface(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
-            nextVt = QStringView(sessionIface.tTY()).mid(3).toInt(); // we need to convert ttyN to N
-        }
-
-        // remove display
-        removeDisplay(display);
-
-        // restart otherwise
-        if (m_displays.isEmpty()) {
-            createDisplay();
-        }
-        // If there is still a session running on some display,
-        // switch to last display in display vector.
-        // Set vt_auto to true, so let the kernel handle the
-        // vt switch automatically (VT_AUTO).
-        else if (!nextVt) {
-            int disp = m_displays.last()->terminalId();
-            if (disp != -1)
-                nextVt = disp;
-        }
-
-        if (nextVt) {
-            VirtualTerminal::jumpToVt(*nextVt, true);
-        }
-    }
-
-    bool Seat::canTTY() {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        if (manager.isValid()) {
-            auto seatPath = manager.GetSeat(m_name);
-            OrgFreedesktopLogin1SeatInterface seatIface(Logind::serviceName(), seatPath.value().path(), QDBusConnection::systemBus());
-            if (seatIface.property("CanTTY").isValid())
-                return seatIface.canTTY();
-        }
-
-        return m_name.compare(QStringLiteral("seat0"), Qt::CaseInsensitive) == 0 && access(VirtualTerminal::defaultVtPath, F_OK) == 0;
-    }
+    return m_name.compare(QStringLiteral("seat0"), Qt::CaseInsensitive) == 0 && access(VirtualTerminal::defaultVtPath, F_OK) == 0;
+}
 }

@@ -22,51 +22,62 @@
 #include "Auth.h"
 #include "AuthMessages.h"
 
-namespace PLASMALOGIN {
-    class AuthPrompt::Private : public Prompt {
-    public:
-        Private(const Prompt *p) {
-            // initializers are too mainstream i guess
-            type = p->type;
-            hidden = p->hidden;
-            message = p->message;
-            response = p->response;
-        }
-    };
-
-    AuthPrompt::AuthPrompt(const Prompt *prompt, AuthRequest *parent)
-            : QObject(parent)
-            , d(new Private(prompt)) {
+namespace PLASMALOGIN
+{
+class AuthPrompt::Private : public Prompt
+{
+public:
+    Private(const Prompt *p)
+    {
+        // initializers are too mainstream i guess
+        type = p->type;
+        hidden = p->hidden;
+        message = p->message;
+        response = p->response;
     }
+};
 
-    AuthPrompt::~AuthPrompt() {
-        delete d;
-    }
+AuthPrompt::AuthPrompt(const Prompt *prompt, AuthRequest *parent)
+    : QObject(parent)
+    , d(new Private(prompt))
+{
+}
 
-    AuthPrompt::Type AuthPrompt::type() const {
-        return d->type;
-    }
+AuthPrompt::~AuthPrompt()
+{
+    delete d;
+}
 
-    QString AuthPrompt::message() const {
-        return d->message;
-    }
+AuthPrompt::Type AuthPrompt::type() const
+{
+    return d->type;
+}
 
-    QByteArray AuthPrompt::response() const {
-        return d->response;
-    }
+QString AuthPrompt::message() const
+{
+    return d->message;
+}
 
-    QByteArray AuthPrompt::responseFake() {
-        return QByteArray();
-    }
+QByteArray AuthPrompt::response() const
+{
+    return d->response;
+}
 
-    void AuthPrompt::setResponse(const QByteArray &r) {
-        if (r != d->response) {
-            d->response = r;
-            Q_EMIT responseChanged();
-        }
-    }
+QByteArray AuthPrompt::responseFake()
+{
+    return QByteArray();
+}
 
-    bool AuthPrompt::hidden() const {
-        return d->hidden;
+void AuthPrompt::setResponse(const QByteArray &r)
+{
+    if (r != d->response) {
+        d->response = r;
+        Q_EMIT responseChanged();
     }
+}
+
+bool AuthPrompt::hidden() const
+{
+    return d->hidden;
+}
 }

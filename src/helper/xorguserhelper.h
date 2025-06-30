@@ -1,18 +1,18 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2021 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2021 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
 #ifndef XORGUSERHELPER_H
 #define XORGUSERHELPER_H
@@ -21,7 +21,8 @@
 
 #include "XAuth.h"
 
-namespace PLASMALOGIN {
+namespace PLASMALOGIN
+{
 
 class XOrgUserHelper : public QObject
 {
@@ -46,8 +47,7 @@ private:
     XAuth m_xauth;
     QProcess *m_serverProcess = nullptr;
 
-    bool startProcess(const QString &cmd, const QProcessEnvironment &env,
-                      QProcess **p = nullptr);
+    bool startProcess(const QString &cmd, const QProcessEnvironment &env, QProcess **p = nullptr);
     bool startServer(const QString &cmd);
     void startDisplayCommand();
     void displayFinished();

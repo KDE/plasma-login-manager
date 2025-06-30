@@ -1,18 +1,18 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
 #ifndef SDDM_GREETERPROXY_H
 #define SDDM_GREETERPROXY_H
@@ -23,41 +23,43 @@
 
 class QLocalSocket;
 
-namespace PLASMALOGIN {
-    class SessionModel;
+namespace PLASMALOGIN
+{
+class SessionModel;
 
-    class GreeterProxyPrivate;
-    class GreeterProxy : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(GreeterProxy)
+class GreeterProxyPrivate;
+class GreeterProxy : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(GreeterProxy)
 
-    public:
-        explicit GreeterProxy(QObject *parent = 0);
-        ~GreeterProxy();
+public:
+    explicit GreeterProxy(QObject *parent = 0);
+    ~GreeterProxy();
 
-        bool isConnected() const;
+    bool isConnected() const;
 
-        void setSessionModel(SessionModel *model);
+    void setSessionModel(SessionModel *model);
 
-    public slots:
-        void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
+public slots:
+    void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
 
-    private slots:
-        void connected();
-        void disconnected();
-        void readyRead();
-        void error();
+private slots:
+    void connected();
+    void disconnected();
+    void readyRead();
+    void error();
 
-    signals:
-        void informationMessage(const QString &message);
+signals:
+    void informationMessage(const QString &message);
 
-        void socketDisconnected();
-        void loginFailed();
-        void loginSucceeded();
+    void socketDisconnected();
+    void loginFailed();
+    void loginSucceeded();
 
-    private:
-        GreeterProxyPrivate *d { nullptr };
-    };
+private:
+    GreeterProxyPrivate *d{nullptr};
+};
 }
 
 #endif // SDDM_GREETERPROXY_H

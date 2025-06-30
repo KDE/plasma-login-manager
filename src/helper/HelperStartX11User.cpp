@@ -11,21 +11,22 @@
  * argument) and as soon as it's set up to launch a client (second argument)
  */
 
-#include <unistd.h>
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QProcess>
-#include <QDebug>
-#include "xorguserhelper.h"
 #include "MessageHandler.h"
-#include <signal.h>
 #include "SignalHandler.h"
+#include "xorguserhelper.h"
+#include <QCoreApplication>
+#include <QDebug>
+#include <QProcess>
+#include <QTextStream>
+#include <signal.h>
+#include <unistd.h>
 
-void X11UserHelperMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+void X11UserHelperMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
     PLASMALOGIN::messageHandler(type, context, QStringLiteral("X11UserHelper: "), msg);
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     qInstallMessageHandler(X11UserHelperMessageHandler);
     QCoreApplication app(argc, argv);

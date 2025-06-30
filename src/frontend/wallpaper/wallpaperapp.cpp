@@ -6,14 +6,13 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-
-#include <KWindowSystem>
 #include <KPackage/PackageLoader>
+#include <KWindowSystem>
 
 #include <LayerShellQt/Shell>
 
-#include "wallpaperintegration.h"
 #include "plasmaloginsettings.h"
+#include "wallpaperintegration.h"
 
 #include "wallpaperwindow.h"
 

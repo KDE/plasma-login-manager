@@ -1,19 +1,19 @@
 /***************************************************************************
-* SPDX-FileCopyrightText: 2014 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
-* SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
-*
-* SPDX-License-Identifier: GPL-2.0-or-later
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the
-* Free Software Foundation, Inc.,
-* 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-***************************************************************************/
+ * SPDX-FileCopyrightText: 2014 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the
+ * Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ***************************************************************************/
 
 #ifndef PLASMALOGIN_MESSAGEHANDLER_H
 #define PLASMALOGIN_MESSAGEHANDLER_H
@@ -21,9 +21,9 @@
 #include "Constants.h"
 
 #include <QDateTime>
-#include <QStandardPaths>
-#include <QFile>
 #include <QDir>
+#include <QFile>
+#include <QStandardPaths>
 
 #include <stdio.h>
 #include <unistd.h>
@@ -32,120 +32,125 @@
 #include <systemd/sd-journal.h>
 #endif
 
-namespace PLASMALOGIN {
+namespace PLASMALOGIN
+{
 #ifdef HAVE_JOURNALD
-    static void journaldLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
-        int priority = LOG_INFO;
-        switch (type) {
-            case QtDebugMsg:
-                priority = LOG_DEBUG;
-            break;
-            case QtInfoMsg:
-                priority = LOG_INFO;
-            break;
-            case QtWarningMsg:
-                priority = LOG_WARNING;
-            break;
-            case QtCriticalMsg:
-                priority = LOG_CRIT;
-            break;
-            case QtFatalMsg:
-                priority = LOG_ALERT;
-            break;
-        }
-
-        char fileBuffer[PATH_MAX + sizeof("CODE_FILE=")];
-        snprintf(fileBuffer, sizeof(fileBuffer), "CODE_FILE=%s", context.file ? context.file : "unknown");
-
-        char lineBuffer[32];
-        snprintf(lineBuffer, sizeof(lineBuffer), "CODE_LINE=%d", context.line);
-
-        sd_journal_print_with_location(priority, fileBuffer, lineBuffer,
-                                       context.function ? context.function : "unknown",
-                                       "%s", qPrintable(msg));
+static void journaldLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    int priority = LOG_INFO;
+    switch (type) {
+    case QtDebugMsg:
+        priority = LOG_DEBUG;
+        break;
+    case QtInfoMsg:
+        priority = LOG_INFO;
+        break;
+    case QtWarningMsg:
+        priority = LOG_WARNING;
+        break;
+    case QtCriticalMsg:
+        priority = LOG_CRIT;
+        break;
+    case QtFatalMsg:
+        priority = LOG_ALERT;
+        break;
     }
+
+    char fileBuffer[PATH_MAX + sizeof("CODE_FILE=")];
+    snprintf(fileBuffer, sizeof(fileBuffer), "CODE_FILE=%s", context.file ? context.file : "unknown");
+
+    char lineBuffer[32];
+    snprintf(lineBuffer, sizeof(lineBuffer), "CODE_LINE=%d", context.line);
+
+    sd_journal_print_with_location(priority, fileBuffer, lineBuffer, context.function ? context.function : "unknown", "%s", qPrintable(msg));
+}
 #endif
 
-    static void standardLogger(QtMsgType type, const QString &msg) {
-        static QFile file(QStringLiteral(LOG_FILE));
+static void standardLogger(QtMsgType type, const QString &msg)
+{
+    static QFile file(QStringLiteral(LOG_FILE));
 
-        // Try to open the log file if we're not outputting to a terminal
-        if (!file.isOpen() && !isatty(STDERR_FILENO)) {
+    // Try to open the log file if we're not outputting to a terminal
+    if (!file.isOpen() && !isatty(STDERR_FILENO)) {
+        if (!file.open(QFile::Append | QFile::WriteOnly))
+            file.open(QFile::Truncate | QFile::WriteOnly);
+
+        // If we can't open the file, create it in a writable location
+        // It will look spmething like ~/.local/share/$appname/plasmalogin.log
+        // or for the plasmalogin user /var/lib/plasmalogin/.local/share/$appname/plasmalogin.log
+        if (!file.isOpen()) {
+            QDir().mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+            file.setFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/plasmalogin.log"));
             if (!file.open(QFile::Append | QFile::WriteOnly))
                 file.open(QFile::Truncate | QFile::WriteOnly);
-
-            // If we can't open the file, create it in a writable location
-            // It will look spmething like ~/.local/share/$appname/plasmalogin.log
-            // or for the plasmalogin user /var/lib/plasmalogin/.local/share/$appname/plasmalogin.log
-            if (!file.isOpen()) {
-                QDir().mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-                file.setFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/plasmalogin.log"));
-                if (!file.open(QFile::Append | QFile::WriteOnly))
-                    file.open(QFile::Truncate | QFile::WriteOnly);
-            }
-        }
-
-        // create timestamp
-        QString timestamp = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm:ss.zzz"));
-
-        // set log priority
-        QString logPriority = QStringLiteral("(II)");
-        switch (type) {
-            case QtDebugMsg:
-            break;
-            case QtWarningMsg:
-                logPriority = QStringLiteral("(WW)");
-            break;
-            case QtCriticalMsg:
-            case QtFatalMsg:
-                logPriority = QStringLiteral("(EE)");
-            break;
-	    default:
-	    break;
-        }
-
-        // prepare log message
-        QString logMessage = QStringLiteral("[%1] %2 %3\n").arg(timestamp).arg(logPriority).arg(msg);
-
-        // log message
-        if (file.isOpen()) {
-            file.write(logMessage.toLocal8Bit());
-            file.flush();
-        } else {
-            fputs(qPrintable(logMessage), stderr);
-            fflush(stderr);
         }
     }
 
-    static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &prefix, const QString &msg) {
+    // create timestamp
+    QString timestamp = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm:ss.zzz"));
+
+    // set log priority
+    QString logPriority = QStringLiteral("(II)");
+    switch (type) {
+    case QtDebugMsg:
+        break;
+    case QtWarningMsg:
+        logPriority = QStringLiteral("(WW)");
+        break;
+    case QtCriticalMsg:
+    case QtFatalMsg:
+        logPriority = QStringLiteral("(EE)");
+        break;
+    default:
+        break;
+    }
+
+    // prepare log message
+    QString logMessage = QStringLiteral("[%1] %2 %3\n").arg(timestamp).arg(logPriority).arg(msg);
+
+    // log message
+    if (file.isOpen()) {
+        file.write(logMessage.toLocal8Bit());
+        file.flush();
+    } else {
+        fputs(qPrintable(logMessage), stderr);
+        fflush(stderr);
+    }
+}
+
+static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &prefix, const QString &msg)
+{
 #ifdef HAVE_JOURNALD
-        // don't log to journald if running interactively, this is likely
-        // the case when running plasmalogin in test mode
-        static bool isInteractive = isatty(STDERR_FILENO) && qgetenv("USER") != "plasmalogin";
-        if (!isInteractive) {
-            // log to journald
-            journaldLogger(type, context, msg);
-            return;
-        }
+    // don't log to journald if running interactively, this is likely
+    // the case when running plasmalogin in test mode
+    static bool isInteractive = isatty(STDERR_FILENO) && qgetenv("USER") != "plasmalogin";
+    if (!isInteractive) {
+        // log to journald
+        journaldLogger(type, context, msg);
+        return;
+    }
 #endif
-        // prepend program name
-        QString logMessage = prefix + msg;
+    // prepend program name
+    QString logMessage = prefix + msg;
 
-        // log to file or stderr
-        standardLogger(type, logMessage);
-    }
+    // log to file or stderr
+    standardLogger(type, logMessage);
+}
 
-    void DaemonMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
-        messageHandler(type, context, QStringLiteral("DAEMON: "), msg);
-    }
+void DaemonMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    messageHandler(type, context, QStringLiteral("DAEMON: "), msg);
+}
 
-    void HelperMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
-        messageHandler(type, context, QStringLiteral("HELPER: "), msg);
-    }
+void HelperMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    messageHandler(type, context, QStringLiteral("HELPER: "), msg);
+}
 
-    void GreeterMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
-        messageHandler(type, context, QStringLiteral("GREETER: "), msg);
-    }
+void GreeterMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    messageHandler(type, context, QStringLiteral("GREETER: "), msg);
+}
 }
 
 #endif // PLASMALOGIN_MESSAGEHANDLER_H

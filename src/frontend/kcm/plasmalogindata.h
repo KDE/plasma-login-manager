@@ -10,6 +10,7 @@
 #include <QObject>
 
 #include "kcmoduledata.h"
+#include "wallpapersettings.h"
 
 class PlasmaLoginData : public KCModuleData
 {
