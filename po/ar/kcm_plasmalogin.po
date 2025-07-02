@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"POT-Creation-Date: 2025-07-02 07:07+0000\n"
 "PO-Revision-Date: 2025-04-29 15:40+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -28,6 +28,11 @@ msgstr "المظهر"
 #, kde-format
 msgid "Clock"
 msgstr "الساعة"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr ""
 
 #: ui/Appearance.qml:52
 #, kde-format

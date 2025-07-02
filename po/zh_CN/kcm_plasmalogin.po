@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"POT-Creation-Date: 2025-07-02 07:07+0000\n"
 "PO-Revision-Date: 2025-05-12 14:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -28,6 +28,11 @@ msgstr "外观"
 #, kde-format
 msgid "Clock"
 msgstr "时钟"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr ""
 
 #: ui/Appearance.qml:52
 #, kde-format
