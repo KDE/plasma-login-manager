@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"POT-Creation-Date: 2025-07-02 10:14+0000\n"
 "PO-Revision-Date: 2025-04-27 08:10+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -14,6 +14,42 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Generator: Poedit 3.6\n"
+
+#: ../settings/models/sessionmodel.cpp:77
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (X11) (%2)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:82
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (Wayland) (%2)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:89
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (X11)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:91
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (Wayland)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:94
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the sessionn"
+msgid "%1 (%2)"
+msgstr ""
 
 #: qml/KeyboardButton.qml:15
 #, kde-format

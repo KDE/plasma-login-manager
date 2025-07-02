@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-04-26 00:43+0000\n"
+"POT-Creation-Date: 2025-07-02 10:14+0000\n"
 "PO-Revision-Date: 2025-05-12 14:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -16,6 +16,42 @@ msgstr ""
 "X-Crowdin-Language: zh-CN\n"
 "X-Crowdin-File: /kf6-trunk/messages/plasma-login-manager/plasma_login.pot\n"
 "X-Crowdin-File-ID: 57418\n"
+
+#: ../settings/models/sessionmodel.cpp:77
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (X11) (%2)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:82
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (Wayland) (%2)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:89
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (X11)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:91
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (Wayland)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:94
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the sessionn"
+msgid "%1 (%2)"
+msgstr ""
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
