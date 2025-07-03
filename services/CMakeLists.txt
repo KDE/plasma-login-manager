@@ -8,7 +8,7 @@ if(SYSTEMD_FOUND)
     configure_file(plasmalogin-sysuser.conf.in plasmalogin-sysuser.conf)
     install(
         FILES "${CMAKE_CURRENT_BINARY_DIR}/plasmalogin-sysuser.conf"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/sysusers.d"
+        DESTINATION "lib/sysusers.d"
         RENAME plasmalogin.conf
     )
 endif()
