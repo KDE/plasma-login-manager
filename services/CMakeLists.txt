@@ -18,7 +18,7 @@ if(DEFINED SYSTEMD_TMPFILES_DIR)
     configure_file(plasmalogin-tmpfiles.conf.in plasmalogin-tmpfiles.conf)
     install(
         FILES "${CMAKE_CURRENT_BINARY_DIR}/plasmalogin-tmpfiles.conf"
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/tmpfiles.d"
+        DESTINATION "lib/tmpfiles.d"
         RENAME plasmalogin.conf
     )
 endif()
