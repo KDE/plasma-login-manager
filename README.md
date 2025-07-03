@@ -36,6 +36,12 @@ git clone https://invent.kde.org/plasma/plasma-login-manager.git
 cmake -S plasma-login-manager -B plasma-login-manager/build && sudo make install -C plasma-login-manager/build
 ```
 
+- Trigger the system user to be created:
+
+```bash
+sudo systemd-sysusers
+```
+
 - Disable SDDM and enable Plasma Login:
 
 ```bash
