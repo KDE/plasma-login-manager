@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-02 07:07+0000\n"
-"PO-Revision-Date: 2025-04-26 15:58+0300\n"
+"PO-Revision-Date: 2025-07-03 08:25+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -32,7 +32,7 @@ msgstr "Годинник"
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr ""
+msgstr "Показувати годинник"
 
 #: ui/Appearance.qml:52
 #, kde-format

@@ -1,4 +1,4 @@
-# Spanish translations for kcm_plasma_login.po package.
+# Spanish translations for kcm_plasmalogin.po package.
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 # Automatically generated, 2025.
@@ -6,10 +6,10 @@
 # SPDX-FileCopyrightText: 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
-"Project-Id-Version: kcm_plasma_login\n"
+"Project-Id-Version: kcm_plasmalogin\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-02 07:07+0000\n"
-"PO-Revision-Date: 2025-04-26 17:43+0100\n"
+"PO-Revision-Date: 2025-07-02 12:33+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 25.04.2\n"
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -33,7 +33,7 @@ msgstr "Reloj"
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr ""
+msgstr "Mostrar el reloj"
 
 #: ui/Appearance.qml:52
 #, kde-format
