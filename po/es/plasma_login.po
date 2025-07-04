@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: plasma_login\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-02 10:14+0000\n"
-"PO-Revision-Date: 2025-04-26 18:35+0100\n"
+"PO-Revision-Date: 2025-07-03 12:31+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 25.04.2\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -25,7 +25,7 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (X11) (%2)"
-msgstr ""
+msgstr "%1 (X11) (%2)"
 
 #: ../settings/models/sessionmodel.cpp:82
 #, kde-format
@@ -33,19 +33,19 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (Wayland) (%2)"
-msgstr ""
+msgstr "%1 (Wayland) (%2)"
 
 #: ../settings/models/sessionmodel.cpp:89
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (X11)"
-msgstr ""
+msgstr "%1 (X11)"
 
 #: ../settings/models/sessionmodel.cpp:91
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (Wayland)"
-msgstr ""
+msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
 #, kde-format
@@ -53,7 +53,7 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the sessionn"
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
