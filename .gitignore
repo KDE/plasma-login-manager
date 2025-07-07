@@ -1,3 +1,13 @@
-/build/
-*~
-*.user
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: none
+
+.cache/
+.idea/
+.vscode/
+
+.clang-format
+.qmlls.ini
+
+build*/
+
+compile_commands.json
