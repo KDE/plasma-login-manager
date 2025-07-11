@@ -50,19 +50,8 @@ find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LibKWorkspace ${PROJECT_DEP_VERSION} REQUIRED)
 
-# Standard installation paths
-include(GNUInstallDirs)
-
 # PAM
 find_package(PAM REQUIRED)
-
-find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-
-# Macros
-include(FeatureSummary)
 
 # PKG-CONFIG
 find_package(PkgConfig)
