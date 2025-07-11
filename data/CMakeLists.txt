@@ -15,7 +15,3 @@ install(FILES
         GROUP_READ GROUP_EXECUTE
         WORLD_READ WORLD_EXECUTE
 )
-
-if(BUILD_MAN_PAGES)
-    add_subdirectory(man)
-endif()

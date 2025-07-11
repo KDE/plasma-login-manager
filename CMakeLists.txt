@@ -10,7 +10,6 @@ set(PLASMALOGIN_VERSION_STRING "${PLASMALOGIN_VERSION_MAJOR}.${PLASMALOGIN_VERSI
 add_compile_definitions("PLASMALOGIN_VERSION=\"${PLASMALOGIN_VERSION_STRING}\"")
 
 # Options
-option(BUILD_MAN_PAGES "Build man pages" OFF)
 option(ENABLE_JOURNALD "Enable logging to journald" ON)
 option(NO_SYSTEMD "Disable systemd support" OFF)
 option(USE_ELOGIND "Use elogind instead of logind" OFF)
