@@ -73,12 +73,6 @@ pkg_check_modules(LIBXAU REQUIRED "xau")
 # XCB
 find_package(XCB MODULE REQUIRED COMPONENTS AUX XCB CURSOR RANDR IMAGE)
 
-# # XKB
-# find_package(XKB REQUIRED)
-
-
-
-
 # systemd
 if(NOT NO_SYSTEMD AND NOT USE_ELOGIND)
     pkg_check_modules(SYSTEMD "systemd")
