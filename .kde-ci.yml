@@ -18,4 +18,4 @@ Dependencies:
     'plasma/plasma-workspace': '@same'
 
 Options:
-    cmake-options: "-DUID_MIN=1000 -DUID_MAX=60000"
+ cmake-options: "-DUID_MIN=1000 -DUID_MAX=60000"
