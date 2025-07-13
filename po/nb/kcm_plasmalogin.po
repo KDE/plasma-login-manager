@@ -1,4 +1,4 @@
-# Translation of kcm_plasma_login to Norwegian Bokmål
+# Translation of kcm_plasmalogin to Norwegian Bokmål
 #
 msgid ""
 msgstr ""
