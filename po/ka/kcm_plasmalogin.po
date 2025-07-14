@@ -99,7 +99,7 @@ msgstr "გადატარება"
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset to Default Settings"
-msgstr "ნაგულისხმებ მნიშვნელობაზე დაბრუნება"
+msgstr "ნაგულისხმევ მნიშვნელობაზე დაბრუნება"
 
 #: ui/main.qml:89
 #, kde-format

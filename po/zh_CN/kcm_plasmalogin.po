@@ -32,7 +32,7 @@ msgstr "时钟"
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr ""
+msgstr "显示时钟"
 
 #: ui/Appearance.qml:52
 #, kde-format
