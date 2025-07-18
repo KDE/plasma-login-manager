@@ -47,11 +47,7 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
     endif()
 endif()
 
-if(PAM_FOUND)
-    target_link_libraries(plasmalogin-helper ${PAM_LIBRARIES})
-else()
-    target_link_libraries(plasmalogin-helper crypt)
-endif()
+target_link_libraries(plasmalogin-helper ${PAM_LIBRARIES})
 
 if (UTMPS_FOUND)
     target_include_directories(plasmalogin-helper SYSTEM PRIVATE ${UTMPS_INCLUDE_DIR})
