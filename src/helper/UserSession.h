@@ -33,12 +33,6 @@ public:
     void setPath(const QString &path);
     QString path() const;
 
-    /*!
-     \brief Gets m_cachedProcessId
-     \return  The cached process ID
-    */
-    qint64 cachedProcessId();
-
 Q_SIGNALS:
     void finished(int exitCode);
 
@@ -57,11 +51,6 @@ private:
 
     QString m_path{};
     QString m_displayServerCmd;
-
-    /*!
-     Needed for getting the PID of a finished UserSession and calling HelperApp::utmpLogout
-    */
-    qint64 m_cachedProcessId = -1;
 };
 }
 

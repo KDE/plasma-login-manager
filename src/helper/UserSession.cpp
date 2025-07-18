@@ -48,8 +48,6 @@ bool UserSession::start()
 
     bool isWaylandGreeter = false;
 
-    qDebug() << "DAVE" << env.value(QStringLiteral("XDG_SESSION_TYPE"));
-
     if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("x11")) {
         QString command;
         if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
@@ -84,7 +82,6 @@ bool UserSession::start()
     }
 
     const bool started = waitForStarted();
-    m_cachedProcessId = processId();
     if (started) {
         return true;
     } else if (isWaylandGreeter) {
@@ -325,10 +322,4 @@ void UserSession::setupChildProcess()
         }
     }
 }
-
-qint64 UserSession::cachedProcessId()
-{
-    return m_cachedProcessId;
-}
-
 }
