@@ -37,8 +37,6 @@ public:
     explicit GreeterProxy(QObject *parent = 0);
     ~GreeterProxy();
 
-    bool isConnected() const;
-
     void setSessionModel(SessionModel *model);
 
 public slots:

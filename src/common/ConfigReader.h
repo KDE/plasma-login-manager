@@ -228,7 +228,6 @@ protected:
     friend class ConfigSection;
 
 private:
-    QDateTime dirLatestModifiedTime(const QString &directory);
     void loadInternal(const QString &filepath);
     QDateTime m_fileModificationTime;
 };

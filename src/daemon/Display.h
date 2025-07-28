@@ -73,8 +73,6 @@ signals:
     void loginSucceeded(QLocalSocket *socket);
 
 private:
-    bool findSessionEntry(const QStringList &dirPaths, const QString &name) const;
-
     bool startAuth(const QString &user, const QString &password, const Session &session);
 
     void startSocketServerAndGreeter();
