@@ -58,7 +58,7 @@ msgstr "%1 (%2)"
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr "بدّل التّخطيط"
+msgstr "بدّل التخطيط"
 
 #: qml/Login.qml:91
 #, kde-format

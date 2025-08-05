@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-07-02 07:07+0000\n"
-"PO-Revision-Date: 2025-07-03 09:56+0400\n"
+"PO-Revision-Date: 2025-08-04 14:11+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -98,19 +98,19 @@ msgstr "طبّق"
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset to Default Settings"
-msgstr "أعد ضبط الإعدادات المبدئية"
+msgstr "صفّر إلى الإعدادات المبدئية"
 
 #: ui/main.qml:89
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
-msgstr "ولوج آلي"
+msgstr "ولوج آليّ"
 
 #: ui/main.qml:94
 #, kde-format
 msgctxt "@option:check"
 msgid "Automatically log in:"
-msgstr "لولوج آلي في:"
+msgstr "لولوج آليّ في:"
 
 #: ui/main.qml:99
 #, kde-format
@@ -137,9 +137,9 @@ msgid ""
 "this, you can change the wallet to have a blank password. Note that this is "
 "insecure and should only be done in a trusted environment."
 msgstr ""
-"لا يدعم الولوج التلقائي فتح محفظة كِيدِي آليا، لذلك سيطلب منك إلغاء قفلها في "
-"كل مرة تقوم فيها بالولوج.     <nl/><nl/> لتتفادى هذا يمكنك تغيير المحفظة "
-"لتكون دون كلمة سر. لاحظ أن هذا غير آمن ويجب أن يكون في بيئة آمنة."
+"لا يدعم الولوج الآليّ فتح محفظة كِيدِي آليّا، لذلك سيطلب منك إلغاء قفلها في كل "
+"مرة تقوم فيها بالولوج.     <nl/><nl/> لتتفادى هذا يمكنك تغيير المحفظة لتكون "
+"دون كلمة سر. لاحظ أن هذا غير آمن ويجب أن يكون في بيئة آمنة."
 
 #: ui/main.qml:206
 #, kde-format
