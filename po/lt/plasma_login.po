@@ -1,0 +1,123 @@
+# Lithuanian translations for plasma-login-manager package.
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+# Automatically generated, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-07-02 10:14+0000\n"
+"PO-Revision-Date: 2025-07-02 10:14+0000\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../settings/models/sessionmodel.cpp:77
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (X11) (%2)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:82
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (Wayland) (%2)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:89
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (X11)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:91
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (Wayland)"
+msgstr ""
+
+#: ../settings/models/sessionmodel.cpp:94
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the sessionn"
+msgid "%1 (%2)"
+msgstr ""
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr ""
+
+#: qml/Login.qml:91
+#, kde-format
+msgid "Username"
+msgstr ""
+
+#: qml/Login.qml:108
+#, kde-format
+msgid "Password"
+msgstr ""
+
+#: qml/Login.qml:152 qml/Login.qml:158
+#, kde-format
+msgid "Log In"
+msgstr ""
+
+#: qml/Main.qml:154
+#, kde-format
+msgid "Caps Lock is on"
+msgstr ""
+
+#: qml/Main.qml:166 qml/Main.qml:283
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr ""
+
+#: qml/Main.qml:172 qml/Main.qml:289
+#, kde-format
+msgid "Restart"
+msgstr ""
+
+#: qml/Main.qml:178 qml/Main.qml:295
+#, kde-format
+msgid "Shut Down"
+msgstr ""
+
+#: qml/Main.qml:184
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr ""
+
+#: qml/Main.qml:272
+#, kde-format
+msgid "Type in Username and Password"
+msgstr ""
+
+#: qml/Main.qml:301
+#, kde-format
+msgid "List Users"
+msgstr ""
+
+#: qml/Main.qml:381
+#, kde-format
+msgid "Login Failed"
+msgstr ""
+
+#: qml/SessionButton.qml:24
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr ""
