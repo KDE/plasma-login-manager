@@ -28,7 +28,6 @@
         "Description[sv]": "Anpassa inloggningshanterare",
         "Description[tr]": "Oturum açma yöneticisini yapılandırın",
         "Description[uk]": "Налаштування керування входом до системи",
-        "Description[x-test]": "xxConfigure Login Managerxx",
         "Description[zh_CN]": "配置登录管理器",
         "Description[zh_TW]": "設定登入管理器",
         "Icon": "preferences-system-login",
@@ -59,7 +58,6 @@
         "Name[sv]": "Inloggningsfönster",
         "Name[tr]": "Oturum Açma Ekranı",
         "Name[uk]": "Вікно входу",
-        "Name[x-test]": "xxLogin Screenxx",
         "Name[zh_CN]": "登录屏幕",
         "Name[zh_TW]": "登入畫面"
     },
@@ -90,7 +88,6 @@
     "X-KDE-Keywords[sv]": "skärmhanterare,teman,inloggningstema,inloggningsfönster,inloggningsskal,visuell inloggning,inloggningsutseende,behörighetskontrollskärm,session,förvald session,förvald användare,användarens uid,logga in som,behörighetskontroll som",
     "X-KDE-Keywords[tr]": "görüntü yöneticisi,ekran yöneticisi,temalar,oturum açma teması,oturum açma ekranı,oturum açma ekranı teması,oturum açma görseli,oturum açma görünümü,kimlik doğrulama ekranı,oturum,öntanımlı oturum,varsayılan oturum,saptanmış oturum,kullanıcı uid,farklı oturum aç,başkası olarak oturum aç",
     "X-KDE-Keywords[uk]": "display manager,themes,login theme,login screen,login skin,login visual,login look,authentication screen,session,default session,default user,user uid,login as,authenticate as,керування дисплеєм,теми,тема входу,екран входу,оболонка входу,візуалізація входу,вигляд входу,вікно розпізнавання,сеанс,типовий сеанс,типовий користувач,ідентифікатор користувача,вхід від імені,розпізнавання",
-    "X-KDE-Keywords[x-test]": "xxdisplay managerxx,xxthemesxx,xxlogin themexx,xxlogin screenxx,xxlogin skinxx,xxlogin visualxx,xxlogin lookxx,xxauthentication screenxx,xxsessionxx,xxdefault sessionxx,xxdefault userxx,xxuser uidxx,xxlogin asxx,xx authenticate asxx",
     "X-KDE-Keywords[zh_CN]": "display manager,themes,login theme,login screen,login skin,login visual,login look,authentication screen,session,default session,default user,user uid,login as,authenticate as,xianshiguanliqi,zhuti,denglu,dengluzhuti,denglupingmu,dengluhuamian,denglujiemian,denglupifu,denglushijuexiaoguo,dengluwaiguan,zhuxiao,jinru,shenfenyanzhengpingmu,huihua,huihualeixing,morenhuihua,morenyonghu,yonghu UID,denglushenfen,renzhengshenfen,显示管理器,主题,登录,登录主题,登录屏幕,登录画面,登录界面,登录皮肤,登录视觉效果,登录外观,身份验证屏幕,会话,会话类型,默认会话,默认用户,用户 UID,登录身份,认证身份",
     "X-KDE-Keywords[zh_TW]": "顯示管理器,登入畫面,主題,登入主題,登入視覺,登入外觀,登入畫面外觀,認證畫面,工作階段,作業階段,預設作業階段,預設工作階段,使用者 UID,預設使用者,登入為,認證為",
     "X-KDE-System-Settings-Parent-Category": "security-privacy",
