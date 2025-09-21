@@ -7,7 +7,6 @@
  */
 
 #include "Configuration.h"
-#include "Constants.h"
 
 namespace PLASMALOGIN
 {

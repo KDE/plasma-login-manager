@@ -15,7 +15,6 @@
  ***************************************************************************/
 
 #include <QDebug>
-#include <QString>
 
 #include "VirtualTerminal.h"
 

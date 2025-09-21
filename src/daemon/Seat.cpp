@@ -19,7 +19,6 @@
 
 #include "Configuration.h"
 #include "DaemonApp.h"
-#include "Display.h"
 #include "VirtualTerminal.h"
 
 #include <QDebug>

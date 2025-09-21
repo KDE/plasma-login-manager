@@ -10,7 +10,6 @@
 #include <QtCore/QFile>
 
 #include <QtCore/QBuffer>
-#include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QMap>

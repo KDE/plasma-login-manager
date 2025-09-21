@@ -20,7 +20,6 @@
 #include <QEventLoop>
 #include <QProcess>
 #include <QStandardPaths>
-#include <QTextStream>
 
 #include <QDBusConnectionInterface>
 #include <QDBusMetaType>

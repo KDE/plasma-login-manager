@@ -19,7 +19,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QScopeGuard>
-#include <QString>
 #include <QStringView>
 #include <X11/Xauth.h>
 #include <limits.h>

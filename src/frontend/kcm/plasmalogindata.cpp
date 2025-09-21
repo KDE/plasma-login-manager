@@ -6,7 +6,6 @@
  */
 
 #include "plasmaloginsettings.h"
-#include "wallpapersettings.h"
 
 #include "plasmalogindata.h"
 

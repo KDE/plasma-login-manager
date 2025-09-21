@@ -1,6 +1,5 @@
 #include "LogindDBusTypes.h"
 
-#include <QDBusArgument>
 #include <QDBusMetaType>
 
 #include <QDBusConnection>
