@@ -26,272 +26,137 @@
 #include <KLocalizedString>
 #include <KUser>
 
-static QSharedPointer<KConfig> openConfig(const QString &filePath)
-{
-    // if the sddm.conf.d folder doesn't exist we fail to set the right permissions for kde_settings.conf
-    QFileInfo fileLocation(filePath);
-    QDir dir(fileLocation.absolutePath());
-    if (!dir.exists()) {
-        QDir().mkpath(dir.path());
-    }
-    QFile file(filePath);
-    if (!file.exists()) {
-        // If we are creating the config file, ensure it is world-readable: if
-        // we don't do that, KConfig will create a file which is only readable
-        // by root
-        file.open(QIODevice::WriteOnly);
-        file.close();
-        file.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
-    }
-    // in case the file has already been created with wrong permissions
-    else if (!(file.permissions() & QFile::ReadOwner & QFile::WriteOwner & QFile::ReadGroup & QFile::ReadOther)) {
-        file.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
-    }
+static const QFile::Permissions standardPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther;
 
-    return QSharedPointer<KConfig>(new KConfig(file.fileName(), KConfig::SimpleConfig));
-}
-
-static QString SddmUserCheck()
+/*
+ * Return the plasmalogin user path
+ */
+static std::optional<QString> plasmaloginUserHomeDir()
 {
-    // check for sddm user; return empty string if user not present
-    // we have to check with QString and isEmpty() instead of QDir and exists() because
-    // QDir returns "." and true for exists() in the case of a non-existent user;
-    const QString sddmHomeDirPath = KUser("sddm").homeDir();
-    if (sddmHomeDirPath.isEmpty()) {
-        qDebug() << "Cannot proceed, user 'sddm' does not exist. Please check your SDDM install.";
-        return QString();
+    // we have to check with QString and isEmpty() instead of QDir and exists()
+    // because QDir returns "." and true for exists() in the case of a
+    // non-existent user
+    const QString plasmaloginHomeDirPath = KUser("plasmalogin").homeDir();
+    if (plasmaloginHomeDirPath.isEmpty()) {
+        return std::nullopt;
     } else {
-        return sddmHomeDirPath;
+        return plasmaloginHomeDirPath;
     }
 }
 
-void PlasmaLoginAuthHelper::copyDirectoryRecursively(const QString &source, const QString &destination, QSet<QString> &done)
+/*
+ * Ensure correct ownership of the provided file or directory
+ */
+static void chownPath(const QString &path)
 {
-    if (done.contains(source)) {
-        return;
-    }
-    done.insert(source);
-
-    const QDir sourceDir(source);
-    const auto entries = sourceDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
-    for (const auto &entry : entries) {
-        const QString destinationPath = destination + QLatin1Char('/') + entry.fileName();
-        if (entry.isFile()) {
-            copyFile(entry.absoluteFilePath(), destinationPath);
-        } else {
-            QDir().mkpath(destinationPath);
-            copyDirectoryRecursively(entry.absoluteFilePath(), destinationPath, done);
-        }
-    }
-}
-
-void PlasmaLoginAuthHelper::copyFile(const QString &source, const QString &destination)
-{
-    KUser sddmUser(QStringLiteral("sddm"));
-
-    if (QFile::exists(destination)) {
-        QFile::remove(destination);
-    }
-
-    if (!QFile::copy(source, destination)) {
-        qWarning() << "Could not copy" << source << "to" << destination;
-    }
-    const char *destinationConverted = destination.toLocal8Bit().data();
-    if (chown(destinationConverted, sddmUser.userId().nativeId(), sddmUser.groupId().nativeId())) {
-        return;
-    }
+    static const KUser plasmaloginUser("plasmalogin");
+    chown(path.toLocal8Bit().data(), plasmaloginUser.userId().nativeId(), plasmaloginUser.groupId().nativeId());
 }
 
 ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
 {
-    Q_UNUSED(args);
-    return ActionReply::HelperErrorReply();
-
-    /*
-    // abort if user not present
-    const QString sddmHomeDirPath = SddmUserCheck();
-    if (sddmHomeDirPath.isEmpty()) {
+    QString homeDir;
+    if (auto opt = plasmaloginUserHomeDir()) {
+        homeDir = *opt;
+    } else {
         return ActionReply::HelperErrorReply();
     }
 
     // In plasma-framework, ThemePrivate::useCache documents the requirement to
-    // clear the cache when colors change while the app that uses them isn't running;
-    // that condition applies to the SDDM greeter here, so clear the cache if it
-    // exists to make sure SDDM has a fresh state
-    QDir sddmCacheLocation(sddmHomeDirPath + QStringLiteral("/.cache"));
-    if (sddmCacheLocation.exists()) {
-        sddmCacheLocation.removeRecursively();
+    // clear the cache when colors change while the app that uses them isn't
+    // running; that condition applies to the greeter here, so clear the cache
+    // if it exists to make sure plasma login has a fresh state
+    QDir cacheLocation(homeDir + QStringLiteral("/.cache"));
+    if (cacheLocation.exists()) {
+        cacheLocation.removeRecursively();
     }
 
-    // create SDDM config directory if it does not exist
-    QDir sddmConfigLocation(sddmHomeDirPath + QStringLiteral("/.config"));
-    if (!sddmConfigLocation.exists()) {
-        QDir().mkpath(sddmConfigLocation.path());
+    QDir homeLocation(homeDir);
+
+    // Create config location if it does not exist
+    QDir configLocation(homeDir + QStringLiteral("/.config"));
+    if (!configLocation.exists()) {
+        homeLocation.mkdir(QStringLiteral(".config"), standardPermissions);
+        chownPath(configLocation.path());
     }
 
-    // copy fontconfig (font, font rendering)
-    if (!args[QStringLiteral("fontconfig")].isNull()) {
-        QDir fontconfigSource(args[QStringLiteral("fontconfig")].toString());
-        QStringList sourceFileEntries = fontconfigSource.entryList(QDir::Files);
-        QStringList sourceDirEntries = fontconfigSource.entryList(QDir::AllDirs);
-        QDir fontconfigDestination(sddmConfigLocation.path() + QStringLiteral("/fontconfig"));
+    // Create fontconfig location if it does not exist
+    QDir fontConfigLocation(homeDir + QStringLiteral("/.config/fontconfig"));
+    if (!fontConfigLocation.exists()) {
+        configLocation.mkdir(QStringLiteral("fontconfig"), standardPermissions);
+        chownPath(fontConfigLocation.path());
+    }
 
-        if (!fontconfigDestination.exists()) {
-            QDir().mkpath(fontconfigDestination.path());
+    auto createConfigFile = [&args, &homeDir](const QString &name) {
+        // Don't create config for any file we weren't given - and remove any
+        // existing config as it does not exist in the user's config folder
+        if (!args.keys().contains(name)) {
+            QFile(homeDir + QStringLiteral("/.config/")).remove();
+            return;
         }
 
-        if (sourceDirEntries.count() != 0) {
-            for (int i = 0; i < sourceDirEntries.count(); i++) {
-                QString directoriesSource = fontconfigSource.path() + QDir::separator() + sourceDirEntries[i];
-                QString directoriesDestination = fontconfigDestination.path() + QDir::separator() + sourceDirEntries[i];
-                fontconfigSource.mkpath(directoriesDestination);
-                copyFile(directoriesSource, directoriesDestination);
-            }
+        const QString content = args.value(name).toString();
+        QFile file(homeDir + QStringLiteral("/.config/") + name);
+        if (file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate, standardPermissions)) {
+            QTextStream out(&file);
+            out << content;
+            chownPath(file.fileName());
         }
+    };
 
-        if (sourceFileEntries.count() != 0) {
-            for (int i = 0; i < sourceFileEntries.count(); i++) {
-                QString filesSource = fontconfigSource.path() + QDir::separator() + sourceFileEntries[i];
-                QString filesDestination = fontconfigDestination.path() + QDir::separator() + sourceFileEntries[i];
-                copyFile(filesSource, filesDestination);
-            }
-        }
-    }
+    createConfigFile(QStringLiteral("kdeglobals"));
 
-    // copy kdeglobals (color scheme)
-    if (!args[QStringLiteral("kdeglobals")].isNull()) {
-        QDir kdeglobalsSource(args[QStringLiteral("kdeglobals")].toString());
-        QDir kdeglobalsDestination(sddmConfigLocation.path() + QStringLiteral("/kdeglobals"));
-        copyFile(kdeglobalsSource.path(), kdeglobalsDestination.path());
-    }
+    createConfigFile(QStringLiteral("plasmarc"));
 
-    // copy plasmarc (icons, UI style)
-    if (!args[QStringLiteral("plasmarc")].isNull()) {
-        QDir plasmarcSource(args[QStringLiteral("plasmarc")].toString());
-        QDir plasmarcDestination(sddmConfigLocation.path() + QStringLiteral("/plasmarc"));
-        copyFile(plasmarcSource.path(), plasmarcDestination.path());
-    }
+    createConfigFile(QStringLiteral("kcminputrc"));
 
-    // If SDDM is set up to use Wayland with KWin, NumLock is controlled by this
-    if (!args[QStringLiteral("kcminputrc")].isNull()) {
-        QDir kcminputrcSource(args[QStringLiteral("kcminputrc")].toString());
-        QDir kcminputrcDestination(sddmConfigLocation.path() + QStringLiteral("/kcminputrc"));
-        copyFile(kcminputrcSource.path(), kcminputrcDestination.path());
-    }
+    createConfigFile(QStringLiteral("kwinoutputconfig.json"));
 
-    // copy kscreen config
-    if (!args[QStringLiteral("kscreen-config")].isNull()) {
-        const QString destinationDir = sddmHomeDirPath + QStringLiteral("/.local/share/kscreen/");
-        QSet<QString> done;
-        copyDirectoryRecursively(args[QStringLiteral("kscreen-config")].toString(), destinationDir, done);
-    }
-
-    // copy KWin config
-    if (!args[QStringLiteral("kwinoutputconfig")].isNull()) {
-        QDir source(args[QStringLiteral("kwinoutputconfig")].toString());
-        QDir destination(sddmConfigLocation.path() + QStringLiteral("/kwinoutputconfig.json"));
-        copyFile(source.path(), destination.path());
-    }
-
-    // write cursor theme, NumLock preference, and scaling DPI to config file
-    ActionReply reply = ActionReply::HelperErrorReply();
-    QSharedPointer<KConfig> sddmConfig = openConfig(args[QStringLiteral("kde_settings.conf")].toString());
-    QSharedPointer<KConfig> sddmOldConfig = openConfig(args[QStringLiteral("sddm.conf")].toString());
-
-    QMap<QString, QVariant>::const_iterator iterator;
-
-    for (iterator = args.constBegin(); iterator != args.constEnd(); ++iterator) {
-        if (iterator.key() == QLatin1String("kde_settings.conf")) {
-            continue;
-        }
-
-        QStringList configFields = iterator.key().split(QLatin1Char('/'));
-        if (configFields.size() != 3) {
-            continue;
-        }
-
-        QSharedPointer<KConfig> config;
-        QString fileName = configFields[0];
-        QString groupName = configFields[1];
-        QString keyName = configFields[2];
-
-        if (fileName == QLatin1String("kde_settings.conf")) {
-            if (iterator.value().isValid()) {
-                sddmConfig->group(groupName).writeEntry(keyName, iterator.value());
-            } else {
-                sddmConfig->group(groupName).deleteEntry(keyName);
-            }
-            sddmOldConfig->group(groupName).deleteEntry(keyName);
-        }
-    }
-
-    sddmOldConfig->sync();
-    sddmConfig->sync();
+    createConfigFile(QStringLiteral("fontconfig/fonts.conf"));
 
     return ActionReply::SuccessReply();
-    */
 }
 
 ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
 {
     Q_UNUSED(args);
-    return ActionReply::HelperErrorReply();
 
-    /*
-    // abort if user not present
-    const QString sddmHomeDirPath = SddmUserCheck();
-    if (sddmHomeDirPath.isEmpty()) {
+    QString homeDir;
+    if (auto opt = plasmaloginUserHomeDir()) {
+        homeDir = *opt;
+    } else {
         return ActionReply::HelperErrorReply();
     }
 
-    QDir sddmConfigLocation(sddmHomeDirPath + QStringLiteral("/.config"));
-    QDir fontconfigDir(args[QStringLiteral("sddmUserConfig")].toString() + QStringLiteral("/fontconfig"));
-
-    fontconfigDir.removeRecursively();
-    QFile::remove(sddmConfigLocation.path() + QStringLiteral("/kdeglobals"));
-    QFile::remove(sddmConfigLocation.path() + QStringLiteral("/plasmarc"));
-
-    QDir(sddmHomeDirPath + QStringLiteral("/.local/share/kscreen/")).removeRecursively();
-
-    // remove cursor theme, NumLock preference, and scaling DPI from config file
-    ActionReply reply = ActionReply::HelperErrorReply();
-    QSharedPointer<KConfig> sddmConfig = openConfig(args[QStringLiteral("kde_settings.conf")].toString());
-    QSharedPointer<KConfig> sddmOldConfig = openConfig(args[QStringLiteral("sddm.conf")].toString());
-
-    QMap<QString, QVariant>::const_iterator iterator;
-
-    for (iterator = args.constBegin(); iterator != args.constEnd(); ++iterator) {
-        if (iterator.key() == QLatin1String("kde_settings.conf")) {
-            continue;
-        }
-
-        QStringList configFields = iterator.key().split(QLatin1Char('/'));
-        if (configFields.size() != 3) {
-            continue;
-        }
-
-        QSharedPointer<KConfig> config;
-        QString fileName = configFields[0];
-        QString groupName = configFields[1];
-        QString keyName = configFields[2];
-
-        if (fileName == QLatin1String("kde_settings.conf")) {
-            sddmConfig->group(groupName).deleteEntry(keyName);
-            sddmOldConfig->group(groupName).deleteEntry(keyName);
-        }
+    QDir cacheLocation(homeDir + QStringLiteral("/.cache"));
+    if (cacheLocation.exists()) {
+        cacheLocation.removeRecursively();
     }
 
-    sddmOldConfig->sync();
-    sddmConfig->sync();
+    QDir fontConfigDir(homeDir + QStringLiteral("/.config/fontconfig"));
+    if (fontConfigDir.exists()) {
+        fontConfigDir.removeRecursively();
+    }
+
+    QFile kdeglobalsFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("kdeglobals"));
+    kdeglobalsFile.remove();
+
+    QFile plasmarcFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("/plasmarc"));
+    plasmarcFile.remove();
+
+    QFile kcminputrcFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("/kcminputrc"));
+    kcminputrcFile.remove();
+
+    QFile kwinoutputconfigFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("/kwinoutputconfig.json"));
+    kwinoutputconfigFile.remove();
 
     return ActionReply::SuccessReply();
-    */
 }
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
     QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate, standardPermissions)) {
         return ActionReply::HelperErrorReply();
     }
 
@@ -301,8 +166,8 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
     file.close();
 
     // Ensure permissions on the config file are appropriate
-    if (!(file.permissions() & QFile::ReadOwner & QFile::WriteOwner & QFile::ReadGroup & QFile::ReadOther)) {
-        file.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther);
+    if (file.permissions() != standardPermissions) {
+        file.setPermissions(standardPermissions);
     }
 
     return ActionReply::SuccessReply();

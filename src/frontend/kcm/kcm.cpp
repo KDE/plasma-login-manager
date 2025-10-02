@@ -16,9 +16,12 @@
 #include <KConfigLoader>
 #include <KConfigPropertyMap>
 #include <KIO/ApplicationLauncherJob>
+#include <KLazyLocalizedString>
 #include <KLocalizedString>
 #include <KPluginFactory>
 #include <KService>
+#include <KUser>
+#include <kauth/action.h>
 
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
@@ -71,7 +74,7 @@ void PlasmaLoginKcm::save()
 
     QTemporaryDir tempDir;
     if (!tempDir.isValid()) {
-        Q_EMIT errorOccurred(QStringLiteral("Unable to save config to temporary directory"));
+        Q_EMIT errorOccurred(QString::fromUtf8(kli18n("Unable to save settings because a temporary directory could not be created.").untranslatedText()));
         return;
     }
 
@@ -102,7 +105,7 @@ void PlasmaLoginKcm::save()
     // Open our temporary saved config
     QFile tempFile(tempFileName);
     if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        Q_EMIT errorOccurred(QStringLiteral("Unable to open config saved to temporary directory"));
+        Q_EMIT errorOccurred(QString::fromUtf8(kli18n("Unable to save settings because the config could not be opened.").untranslatedText()));
         return;
     }
 
@@ -129,12 +132,75 @@ void PlasmaLoginKcm::save()
 
 void PlasmaLoginKcm::synchronizeSettings()
 {
-    // TODO: Go to KAuth
+    if (KUser("plasmalogin").homeDir().isEmpty()) {
+        Q_EMIT errorOccurred(QString::fromUtf8(
+            kli18n("Unable to synchronise Plasma settings because the 'plasmalogin' user does not exist. Please check your Plasma Login install.")
+                .untranslatedText()));
+        return;
+    }
+
+    QVariantMap args;
+
+    auto addConfigFile = [&args](const QString &path, const QString &key) {
+        if (path.isEmpty()) {
+            return;
+        }
+
+        QFile file(path);
+        if (file.open(QFile::ReadOnly | QFile::Text)) {
+            QTextStream in(&file);
+            args[key] = in.readAll();
+        }
+    };
+
+    addConfigFile(QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kdeglobals")), QStringLiteral("kdeglobals"));
+
+    addConfigFile(QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("plasmarc")), QStringLiteral("plasmarc"));
+
+    addConfigFile(QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kcminputrc")), QStringLiteral("kcminputrc"));
+
+    addConfigFile(QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kwinoutputconfig.json")),
+                  QStringLiteral("kwinoutputconfig.json"));
+
+    const QString fontconfigPath = QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("fontconfig"), QStandardPaths::LocateDirectory);
+    if (!fontconfigPath.isEmpty()) {
+        addConfigFile(fontconfigPath + QStringLiteral("/fonts.conf"), QStringLiteral("fontconfig/fonts.conf"));
+    }
+
+    KAuth::Action syncAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.sync"));
+    syncAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
+    syncAction.setArguments(args);
+
+    auto job = syncAction.execute();
+    connect(job, &KJob::result, this, [this, job] {
+        if (job->error()) {
+            Q_EMIT errorOccurred(job->errorString());
+        }
+        Q_EMIT syncAttempted();
+    });
+    job->start();
 }
 
 void PlasmaLoginKcm::resetSynchronizedSettings()
 {
-    // TODO: Go to KAuth
+    if (KUser("plasmalogin").homeDir().isEmpty()) {
+        Q_EMIT errorOccurred(
+            QString::fromUtf8(kli18n("Unable to reset Plasma settings because the 'plasmalogin' user does not exist. Please check your Plasma Login install.")
+                                  .untranslatedText()));
+        return;
+    }
+
+    KAuth::Action resetAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.reset"));
+    resetAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
+
+    auto job = resetAction.execute();
+    connect(job, &KJob::result, this, [this, job] {
+        if (job->error()) {
+            Q_EMIT errorOccurred(job->errorString());
+        }
+        Q_EMIT syncAttempted();
+    });
+    job->start();
 }
 
 void PlasmaLoginKcm::defaults()
