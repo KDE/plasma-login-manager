@@ -65,7 +65,7 @@ LogindSeat::LogindSeat(const QString &name, const QDBusObjectPath &objectPath)
 
     QDBusPendingReply<QVariant> reply = QDBusConnection::systemBus().asyncCall(canGraphicalMsg);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [=]() {
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, reply, watcher]() {
         watcher->deleteLater();
         if (!reply.isValid())
             return;
@@ -114,7 +114,7 @@ void SeatManager::initialize()
     QDBusPendingReply<NamedSeatPathList> reply = QDBusConnection::systemBus().asyncCall(listSeatsMsg);
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [=]() {
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, watcher, reply]() {
         watcher->deleteLater();
         const auto seats = reply.value();
         for (const NamedSeatPath &seat : seats) {
@@ -207,7 +207,7 @@ void PLASMALOGIN::SeatManager::logindSecureAttentionKey(const QString &name, con
 void PLASMALOGIN::SeatManager::logindSeatAdded(const QString &name, const QDBusObjectPath &objectPath)
 {
     auto logindSeat = new LogindSeat(name, objectPath);
-    connect(logindSeat, &LogindSeat::canGraphicalChanged, this, [=]() {
+    connect(logindSeat, &LogindSeat::canGraphicalChanged, this, [this, logindSeat]() {
         if (logindSeat->canGraphical()) {
             createSeat(logindSeat->name());
         } else {

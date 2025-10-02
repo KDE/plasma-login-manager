@@ -85,7 +85,7 @@ void Seat::startDisplay(Display *display, int tryNr)
         return;
     }
 
-    QTimer::singleShot(2000, display, [=] {
+    QTimer::singleShot(2000, display, [this, display, tryNr] {
         startDisplay(display, tryNr + 1);
     });
 }

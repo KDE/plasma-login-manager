@@ -30,15 +30,15 @@ public:
     explicit WaylandDisplayServer(Display *parent);
     ~WaylandDisplayServer();
 
-    QString sessionType() const;
+    QString sessionType() const override;
 
     void setDisplayName(const QString &displayName);
 
 public Q_SLOTS:
-    bool start();
-    void stop();
-    void finished();
-    void setupDisplay();
+    bool start() override;
+    void stop() override;
+    void finished() override;
+    void setupDisplay() override;
 };
 
 } // namespace PLASMALOGIN
