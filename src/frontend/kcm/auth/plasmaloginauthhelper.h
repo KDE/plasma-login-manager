@@ -18,11 +18,18 @@ class PlasmaLoginAuthHelper : public QObject
     Q_OBJECT
 
 public Q_SLOTS:
+    /*
+     * Copy the user's Plasma configuration (e.g. Displays, fonts, colors) to the plasmalogin user
+     */
     ActionReply sync(const QVariantMap &args);
-    ActionReply reset(const QVariantMap &args);
-    ActionReply save(const QVariantMap &args);
 
-public:
-    static void copyFile(const QString &source, const QString &destination);
-    static void copyDirectoryRecursively(const QString &source, const QString &destination, QSet<QString> &done);
+    /*
+     * Remove any Plasma configuration copied to the plasmalogin user
+     */
+    ActionReply reset(const QVariantMap &args);
+
+    /*
+     * Update the PLASMALOGIN_CONFIG_FILE with the user's specified settings
+     */
+    ActionReply save(const QVariantMap &args);
 };

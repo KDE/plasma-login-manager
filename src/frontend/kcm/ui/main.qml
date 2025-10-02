@@ -63,7 +63,7 @@ KCM.SimpleKCM {
 
         title: i18nc("@title:window", "Apply Plasma Settings")
         subtitle: i18n("This will make the Plasma login screen reflect your customizations to the following Plasma settings:") +
-                xi18nc("@info", "<para><list><item>Color scheme</item><item>Cursor theme and size</item><item>Font and font rendering</item><item>NumLock preference</item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen configuration (Wayland only)</item></list></para>") +
+                xi18nc("@info", "<para><list><item>Color scheme</item><item>Cursor theme and size</item><item>Font and font rendering</item><item>NumLock preference</item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen configuration</item></list></para>") +
                 i18n("Please note that theme files must be installed globally to be reflected on the Plasma login screen.")
 
         customFooterActions: [
