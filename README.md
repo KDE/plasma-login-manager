@@ -24,7 +24,7 @@ Plasma Login provides a display manager for KDE Plasma, forked from [SDDM](https
 To try Plasma Login, you can build both repositories and install them on your system.
 
 > [!caution]
-> It is not recommended to install this on your system — you should use a virtual machine instead. Installing this on real hardware will leave behind files not trivially uninstallable and could leave your system in a non-function state.
+> It is not recommended to install this on your system — you should use a virtual machine instead. Installing this on real hardware will leave behind files not trivially uninstallable and could leave your system in a non-functional state.
 
 You will need to:
 
