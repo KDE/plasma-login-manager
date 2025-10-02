@@ -76,6 +76,7 @@ class ConfigBase;
 class ConfigEntryBase
 {
 public:
+    virtual ~ConfigEntryBase() = default;
     virtual const QString &name() const = 0;
     virtual QString value() const = 0;
     virtual void setValue(const QString &str) = 0;
@@ -137,17 +138,17 @@ public:
         m_isDefault = false;
     }
 
-    bool matchesDefault() const
+    bool matchesDefault() const override
     {
         return m_value == m_default;
     }
 
-    bool isDefault() const
+    bool isDefault() const override
     {
         return m_isDefault;
     }
 
-    bool setDefault()
+    bool setDefault() override
     {
         m_isDefault = true;
         if (m_value == m_default)
@@ -161,12 +162,12 @@ public:
         m_parent->save(this);
     }
 
-    const QString &name() const
+    const QString &name() const override
     {
         return m_name;
     }
 
-    QString value() const
+    QString value() const override
     {
         QString str;
         QTextStream out(&str);
@@ -175,19 +176,19 @@ public:
     }
 
     // specialised for QString
-    void setValue(const QString &str)
+    void setValue(const QString &str) override
     {
         m_isDefault = false;
         QTextStream in(qPrintable(str));
         in >> m_value;
     }
 
-    QString toConfigShort() const
+    QString toConfigShort() const override
     {
         return QStringLiteral("%1=%2").arg(m_name).arg(value());
     }
 
-    QString toConfigFull() const
+    QString toConfigFull() const override
     {
         QString str;
         for (const QString &line : m_description.split(QLatin1Char('\n')))
