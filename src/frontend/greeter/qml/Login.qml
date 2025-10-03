@@ -41,6 +41,7 @@ SessionManagementScreen {
         // Don't startLogin() here, because the signal is connected to the
         // Escape key as well, for which it wouldn't make sense to trigger
         // login.
+        passwordBox.clear();
         focusFirstVisibleFormControl();
     }
 
@@ -69,7 +70,7 @@ SessionManagementScreen {
 
         footer.enabled = false
         mainStack.enabled = false
-        userListComponent.userList.opacity = 0.5
+        userListComponent.userList.opacity = 0.75
 
         // This is partly because it looks nicer, but more importantly it
         // works round a Qt bug that can trigger if the app is closed with a

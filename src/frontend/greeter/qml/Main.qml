@@ -91,9 +91,11 @@ Item {
             source: clock
             visible: !softwareRendering && clock.visible
             radius: 7
+            verticalOffset: 0.8
             samples: 15
-            spread: 0.3
-            color: "black" // shadows should always be black
+            spread: 0.2
+            color: Qt.rgba(0, 0, 0, 0.7)
+            opacity: loginScreenRoot.uiVisible ? 0 : 1
             Behavior on opacity {
                 OpacityAnimator {
                     duration: Kirigami.Units.veryLongDuration * 2
@@ -161,6 +163,12 @@ Item {
 
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
+                    BreezeComponents.ActionButton {
+                        icon.name: "system-hibernate"
+                        text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
+                        enabled: PlasmaLogin.SessionManagement.canHibernate
+                        onClicked: PlasmaLogin.SessionManagement.hibernate()
+                    },
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
