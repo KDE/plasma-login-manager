@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-02 10:14+0000\n"
+"POT-Creation-Date: 2025-10-04 00:44+0000\n"
 "PO-Revision-Date: 2025-07-03 15:53+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -59,59 +59,65 @@ msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
 msgstr "Byt layout"
 
-#: qml/Login.qml:91
+#: qml/Login.qml:92
 #, kde-format
 msgid "Username"
 msgstr "Användarnamn"
 
-#: qml/Login.qml:108
+#: qml/Login.qml:109
 #, kde-format
 msgid "Password"
 msgstr "Lösenord"
 
-#: qml/Login.qml:152 qml/Login.qml:158
+#: qml/Login.qml:153 qml/Login.qml:159
 #, kde-format
 msgid "Log In"
 msgstr "Logga in"
 
-#: qml/Main.qml:154
+#: qml/Main.qml:156
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock aktiverad"
 
-#: qml/Main.qml:166 qml/Main.qml:283
+#: qml/Main.qml:168
+#, kde-format
+msgctxt "Suspend to disk"
+msgid "Hibernate"
+msgstr ""
+
+#: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Viloläge"
 
-#: qml/Main.qml:172 qml/Main.qml:289
+#: qml/Main.qml:180 qml/Main.qml:297
 #, kde-format
 msgid "Restart"
 msgstr "Starta om"
 
-#: qml/Main.qml:178 qml/Main.qml:295
+#: qml/Main.qml:186 qml/Main.qml:303
 #, kde-format
 msgid "Shut Down"
 msgstr "Stäng av"
 
-#: qml/Main.qml:184
+#: qml/Main.qml:192
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Annan…"
 
-#: qml/Main.qml:272
+#: qml/Main.qml:280
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Skriv in användarnamn och lösenord"
 
-#: qml/Main.qml:301
+#: qml/Main.qml:309
 #, kde-format
 msgid "List Users"
 msgstr "Lista användare"
 
-#: qml/Main.qml:381
+#: qml/Main.qml:389
 #, kde-format
 msgid "Login Failed"
 msgstr "Inloggning misslyckades"

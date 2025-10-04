@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-02 10:14+0000\n"
+"POT-Creation-Date: 2025-10-04 00:44+0000\n"
 "PO-Revision-Date: 2025-07-03 23:47+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -59,59 +59,65 @@ msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
 msgstr "切換佈局"
 
-#: qml/Login.qml:91
+#: qml/Login.qml:92
 #, kde-format
 msgid "Username"
 msgstr "使用者名稱"
 
-#: qml/Login.qml:108
+#: qml/Login.qml:109
 #, kde-format
 msgid "Password"
 msgstr "密碼"
 
-#: qml/Login.qml:152 qml/Login.qml:158
+#: qml/Login.qml:153 qml/Login.qml:159
 #, kde-format
 msgid "Log In"
 msgstr "登入"
 
-#: qml/Main.qml:154
+#: qml/Main.qml:156
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "大寫鎖定已開啟"
 
-#: qml/Main.qml:166 qml/Main.qml:283
+#: qml/Main.qml:168
+#, kde-format
+msgctxt "Suspend to disk"
+msgid "Hibernate"
+msgstr ""
+
+#: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "睡眠"
 
-#: qml/Main.qml:172 qml/Main.qml:289
+#: qml/Main.qml:180 qml/Main.qml:297
 #, kde-format
 msgid "Restart"
 msgstr "重新啟動"
 
-#: qml/Main.qml:178 qml/Main.qml:295
+#: qml/Main.qml:186 qml/Main.qml:303
 #, kde-format
 msgid "Shut Down"
 msgstr "關機"
 
-#: qml/Main.qml:184
+#: qml/Main.qml:192
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "其他…"
 
-#: qml/Main.qml:272
+#: qml/Main.qml:280
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "輸入使用者名稱與密碼"
 
-#: qml/Main.qml:301
+#: qml/Main.qml:309
 #, kde-format
 msgid "List Users"
 msgstr "列出使用者"
 
-#: qml/Main.qml:381
+#: qml/Main.qml:389
 #, kde-format
 msgid "Login Failed"
 msgstr "登入失敗"
