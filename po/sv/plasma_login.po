@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-04 00:44+0000\n"
-"PO-Revision-Date: 2025-07-03 15:53+0200\n"
+"PO-Revision-Date: 2025-10-05 08:50+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.04.1\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -83,7 +83,7 @@ msgstr "Caps Lock aktiverad"
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr ""
+msgstr "Dvala"
 
 #: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
