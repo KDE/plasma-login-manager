@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-04 00:44+0000\n"
-"PO-Revision-Date: 2025-07-21 01:15+0200\n"
+"PO-Revision-Date: 2025-10-09 01:20+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -83,7 +83,7 @@ msgstr "Caps Lock이 켜져 있음"
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr ""
+msgstr "최대 절전 모드"
 
 #: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
