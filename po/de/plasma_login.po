@@ -3,8 +3,6 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 # SPDX-FileCopyrightText: 2025 Alois Spitzbart <spitz234@hotmail.com>
-# Automatically generated, 2025.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
