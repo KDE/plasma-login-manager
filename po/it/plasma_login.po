@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-04 00:44+0000\n"
-"PO-Revision-Date: 2025-07-05 21:48+0200\n"
+"PO-Revision-Date: 2025-10-06 11:57+0200\n"
 "Last-Translator: Valter Mura <valtermura@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.2\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -83,7 +83,7 @@ msgstr "Blocco maiuscole è attivo"
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr ""
+msgstr "Iberna"
 
 #: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
