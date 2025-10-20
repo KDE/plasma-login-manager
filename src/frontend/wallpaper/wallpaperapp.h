@@ -18,8 +18,6 @@ namespace PlasmaQuick
 class QuickViewSharedEngine;
 }
 
-class WallpaperIntegration;
-
 class WallpaperWindow;
 
 class WallpaperApp : public QGuiApplication

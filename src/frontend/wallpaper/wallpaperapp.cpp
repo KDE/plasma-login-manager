@@ -6,37 +6,27 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include <QFile>
+#include <QQmlContext>
+#include <QQuickItem>
+
+#include <KConfigLoader>
+#include <KConfigPropertyMap>
 #include <KPackage/PackageLoader>
 #include <KWindowSystem>
 
 #include <LayerShellQt/Shell>
 
 #include "plasmaloginsettings.h"
-#include "wallpaperintegration.h"
 
 #include "wallpaperwindow.h"
 
 #include "wallpaperapp.h"
 
-class WallpaperItem : public WallpaperIntegration
-{
-    Q_OBJECT
-public:
-    explicit WallpaperItem(QQuickItem *parent = nullptr)
-        : WallpaperIntegration(parent)
-    {
-        setConfig(PlasmaLoginSettings::getInstance().sharedConfig());
-        setPluginName(PlasmaLoginSettings::getInstance().wallpaperPluginId());
-        init();
-    }
-};
-
 WallpaperApp::WallpaperApp(int &argc, char **argv)
     : QGuiApplication(argc, argv)
 {
     LayerShellQt::Shell::useLayerShell();
-
-    qmlRegisterType<WallpaperItem>("org.kde.plasma.plasmoid", 2, 0, "WallpaperItem");
 
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
     m_wallpaperPackage.setPath(PlasmaLoginSettings::getInstance().wallpaperPluginId());
@@ -79,7 +69,30 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
         return;
     }
 
+    const QString xmlPath = m_wallpaperPackage.filePath(QByteArrayLiteral("config"), QStringLiteral("main.xml"));
+
+    const KConfigGroup cfg = PlasmaLoginSettings::getInstance()
+                                 .sharedConfig()
+                                 ->group(QStringLiteral("Greeter"))
+                                 .group(QStringLiteral("Wallpaper"))
+                                 .group(PlasmaLoginSettings::getInstance().wallpaperPluginId());
+
+    KConfigLoader *configLoader;
+    if (xmlPath.isEmpty()) {
+        configLoader = new KConfigLoader(cfg, nullptr, this);
+    } else {
+        QFile file(xmlPath);
+        configLoader = new KConfigLoader(cfg, &file, this);
+    }
+
+    KConfigPropertyMap *config = new KConfigPropertyMap(configLoader, this);
+    // potd (picture of the day) is using a kded to monitor changes and
+    // cache data for the lockscreen. Let's notify it.
+    config->setNotify(true);
+
     window->setSource(QUrl::fromLocalFile(m_wallpaperPackage.filePath("mainscript")));
+    window->rootObject()->setProperty("configuration", QVariant::fromValue(config));
+    window->rootObject()->setProperty("pluginName", PlasmaLoginSettings::getInstance().wallpaperPluginId());
 }
 
 #include "wallpaperapp.moc"
