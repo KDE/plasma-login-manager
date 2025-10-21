@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-02 07:07+0000\n"
+"POT-Creation-Date: 2025-10-21 00:44+0000\n"
 "PO-Revision-Date: 2025-07-03 23:46+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -16,6 +16,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 25.07.70\n"
+
+#: kcm.cpp:77
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+
+#: kcm.cpp:108
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+
+#: kcm.cpp:137
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+
+#: kcm.cpp:188
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -64,13 +85,19 @@ msgid ""
 msgstr "這將會使 Plasma 登入畫面反映您對以下 Plasma 設定的自訂："
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Font and font rendering</item><item>NumLock preference</"
+#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+#| "configuration (Wayland only)</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
 "item><item>Font and font rendering</item><item>NumLock preference</"
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-"configuration (Wayland only)</item></list></para>"
+"configuration</item></list></para>"
 msgstr ""
 "<para><list><item>配色方案</item><item>游標主題與大小</item><item>字型與字型"
 "繪製</item><item>NumLock 狀態偏好</item><item>Plasma 主題</item><item>縮放 "

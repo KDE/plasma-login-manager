@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-02 07:07+0000\n"
+"POT-Creation-Date: 2025-10-21 00:44+0000\n"
 "PO-Revision-Date: 2025-07-03 10:41+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -14,6 +14,27 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Generator: Poedit 3.6\n"
+
+#: kcm.cpp:77
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+
+#: kcm.cpp:108
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+
+#: kcm.cpp:137
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+
+#: kcm.cpp:188
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -64,13 +85,19 @@ msgstr ""
 "Plasme:"
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Font and font rendering</item><item>NumLock preference</"
+#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+#| "configuration (Wayland only)</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
 "item><item>Font and font rendering</item><item>NumLock preference</"
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-"configuration (Wayland only)</item></list></para>"
+"configuration</item></list></para>"
 msgstr ""
 "<para><list><item>Barva shema</item><item>Tema kazalke in velikost</"
 "item><item>Pisava in upodobitve pisave</item><item>Prednost NumLock</"

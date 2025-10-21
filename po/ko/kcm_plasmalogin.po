@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-02 07:07+0000\n"
+"POT-Creation-Date: 2025-10-21 00:44+0000\n"
 "PO-Revision-Date: 2025-07-21 01:14+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -16,6 +16,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 24.12.3\n"
+
+#: kcm.cpp:77
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+
+#: kcm.cpp:108
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+
+#: kcm.cpp:137
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+
+#: kcm.cpp:188
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -64,13 +85,19 @@ msgid ""
 msgstr "다음 사용자 정의 Plasma 설정을 Plasma 로그인 화면에도 적용합니다:"
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Font and font rendering</item><item>NumLock preference</"
+#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+#| "configuration (Wayland only)</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
 "item><item>Font and font rendering</item><item>NumLock preference</"
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-"configuration (Wayland only)</item></list></para>"
+"configuration</item></list></para>"
 msgstr ""
 "<para><list><item>색 구성표</item><item>커서 테마와 크기</item><item>글꼴과 "
 "글꼴 렌더링</item><item>NumLock 설정</item><item>Plasma 테마</item><item>DPI "

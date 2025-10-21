@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-07-02 07:07+0000\n"
+"POT-Creation-Date: 2025-10-21 00:44+0000\n"
 "PO-Revision-Date: 2025-07-12 11:12+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -19,6 +19,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 25.04.3\n"
+
+#: kcm.cpp:77
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+
+#: kcm.cpp:108
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+
+#: kcm.cpp:137
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+
+#: kcm.cpp:188
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -69,13 +90,19 @@ msgstr ""
 "dituzun pertsonalizazioak islatzea eragingo du:"
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Font and font rendering</item><item>NumLock preference</"
+#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+#| "configuration (Wayland only)</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
 "item><item>Font and font rendering</item><item>NumLock preference</"
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-"configuration (Wayland only)</item></list></para>"
+"configuration</item></list></para>"
 msgstr ""
 "<para><list><item>Kolore-antolaera</item><item>kurtsore-gaia eta neurria</"
 "item><item>letra-tipoa eta letra-tipoak errendatzea</item><item>ZkGiltz "
