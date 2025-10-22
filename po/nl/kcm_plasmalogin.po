@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-21 00:44+0000\n"
-"PO-Revision-Date: 2025-07-03 13:51+0200\n"
+"PO-Revision-Date: 2025-10-22 00:28+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,28 +15,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.04.2\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
+"Opslaan van instellingen kan niet omdat een tijdelijke map niet aangemaakt "
+"kan worden."
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
+"Opslaan van instellingen kan niet omdat de configuratie niet geopend kan "
+"worden."
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Kan Plasma instellingen niet synchroniseren omdat de gebruiker 'plasmalogin' "
+"niet bestaat. Controleer het installeren van uw Plasma aanmelden."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Kan Plasma instellingen niet resetten omdat de gebruiker 'plasmalogin' niet "
+"bestaat. Controleer het installeren van uw Plasma aanmelden."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -87,13 +95,7 @@ msgstr ""
 "Plasma-instellingen:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -104,7 +106,7 @@ msgstr ""
 "<para><list><item>Kleurenschema</item><item>Cursorthema en grootte</"
 "item><item>Lettertype en renderen ervan</item><item>NumLock voorkeur</"
 "item><item>Plasma-thema,</item><item>DPI-schaling,</item><item>Scherm "
-"configuratie (alleen Wayland)</item></list></para>"
+"configuratie</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
