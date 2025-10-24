@@ -29,7 +29,6 @@ public:
 
     UserSession *session();
     const QString &user() const;
-    const QByteArray &cookie() const;
 
 public slots:
     Request request(const Request &request);
@@ -51,8 +50,6 @@ private:
     UserSession *m_session{nullptr};
     QLocalSocket *m_socket{nullptr};
     QString m_user{};
-    // TODO: get rid of this in a nice clean way along the way with moving to user session X server
-    QByteArray m_cookie{};
 
 };
 }

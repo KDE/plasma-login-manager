@@ -204,10 +204,9 @@ QProcessEnvironment HelperApp::authenticated(const QString &user)
     if (user.isEmpty())
         return env;
     str.receive();
-    str >> m >> env >> m_cookie;
+    str >> m >> env;
     if (m != AUTHENTICATED) {
         env = QProcessEnvironment();
-        m_cookie = {};
         qCritical() << "Received a wrong opcode instead of AUTHENTICATED:" << m;
     }
     return env;
@@ -247,11 +246,6 @@ UserSession *HelperApp::session()
 const QString &HelperApp::user() const
 {
     return m_user;
-}
-
-const QByteArray &HelperApp::cookie() const
-{
-    return m_cookie;
 }
 
 HelperApp::~HelperApp()
