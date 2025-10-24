@@ -40,15 +40,8 @@ namespace PLASMALOGIN
 class Auth : public QObject
 {
     Q_OBJECT
-    // not setting NOTIFY for the properties - they should be set only once before calling start
-    Q_PROPERTY(bool autologin READ autologin WRITE setAutologin NOTIFY autologinChanged)
-    Q_PROPERTY(bool greeter READ isGreeter WRITE setGreeter NOTIFY greeterChanged)
-    Q_PROPERTY(bool verbose READ verbose WRITE setVerbose NOTIFY verboseChanged)
-    Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userChanged)
-    Q_PROPERTY(QString session READ session WRITE setSession NOTIFY sessionChanged)
-    Q_PROPERTY(AuthRequest *request READ request NOTIFY requestChanged)
 public:
-    explicit Auth(const QString &user = QString(), const QString &session = QString(), bool autologin = false, QObject *parent = 0, bool verbose = false);
+    explicit Auth(const QString &user = QString(), QObject *parent = 0, bool verbose = false);
     explicit Auth(QObject *parent);
     ~Auth();
 
@@ -81,8 +74,6 @@ public:
 
     static void registerTypes();
 
-    bool autologin() const;
-    bool isGreeter() const;
     bool verbose() const;
     const QString &user() const;
     const QString &session() const;
@@ -91,21 +82,6 @@ public:
      * True if an authentication or session is in progress
      */
     bool isActive() const;
-
-    /**
-     * If starting a session, you will probably want to provide some basic env variables for the session.
-     * This only inserts the variables - if the current key already had a value, it will be overwritten.
-     * User-specific data such as $HOME is generated automatically.
-     * @param env the environment
-     */
-    void insertEnvironment(const QProcessEnvironment &env);
-
-    /**
-     * Works the same as \ref insertEnvironment but only for one key-value pair
-     * @param key key
-     * @param value value
-     */
-    void insertEnvironment(const QString &key, const QString &value);
 
     /**
      * Set mode to autologin.
@@ -131,12 +107,6 @@ public:
      * @param user username
      */
     void setUser(const QString &user);
-
-    /**
-     * Set the display server command to be started before the greeter.
-     * @param command Command of the display server to be started
-     */
-    void setDisplayServerCommand(const QString &command);
 
     /**
      * Set the session to be started after authenticating.

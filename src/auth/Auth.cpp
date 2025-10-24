@@ -56,11 +56,7 @@ public:
     AuthRequest *request{nullptr};
     QProcess *child{nullptr};
     QLocalSocket *socket{nullptr};
-    QString displayServerCmd;
-    QString sessionPath{};
     QString user{};
-    bool autologin{false};
-    bool greeter{false};
     QProcessEnvironment environment{};
     qint64 id{0};
     static qint64 lastId;
@@ -245,13 +241,11 @@ void Auth::Private::requestFinished()
     request->setRequest();
 }
 
-Auth::Auth(const QString &user, const QString &session, bool autologin, QObject *parent, bool verbose)
+Auth::Auth(const QString &user, QObject *parent, bool verbose)
     : QObject(parent)
     , d(new Private(this))
 {
     setUser(user);
-    setAutologin(autologin);
-    setSession(session);
     setVerbose(verbose);
 }
 
@@ -269,24 +263,6 @@ Auth::~Auth()
 
 void Auth::registerTypes()
 {
-    qmlRegisterAnonymousType<AuthPrompt>("Auth", 1);
-    qmlRegisterAnonymousType<AuthRequest>("Auth", 1);
-    qmlRegisterType<Auth>("Auth", 1, 0, "Auth");
-}
-
-bool Auth::autologin() const
-{
-    return d->autologin;
-}
-
-bool Auth::isGreeter() const
-{
-    return d->greeter;
-}
-
-const QString &Auth::session() const
-{
-    return d->sessionPath;
 }
 
 const QString &Auth::user() const
@@ -309,53 +285,11 @@ bool Auth::isActive() const
     return d->child->state() != QProcess::NotRunning;
 }
 
-void Auth::insertEnvironment(const QProcessEnvironment &env)
-{
-    d->environment.insert(env);
-}
-
-void Auth::insertEnvironment(const QString &key, const QString &value)
-{
-    d->environment.insert(key, value);
-}
-
 void Auth::setUser(const QString &user)
 {
     if (user != d->user) {
         d->user = user;
         Q_EMIT userChanged();
-    }
-}
-
-void Auth::setAutologin(bool on)
-{
-    if (on != d->autologin) {
-        d->autologin = on;
-        Q_EMIT autologinChanged();
-    }
-}
-
-void Auth::setGreeter(bool on)
-{
-    if (on != d->greeter) {
-        d->greeter = on;
-        Q_EMIT greeterChanged();
-    }
-}
-
-void Auth::setDisplayServerCommand(const QString &command)
-{
-    if (d->displayServerCmd != command) {
-        d->displayServerCmd = command;
-        Q_EMIT displayServerCommandChanged();
-    }
-}
-
-void Auth::setSession(const QString &path)
-{
-    if (path != d->sessionPath) {
-        d->sessionPath = path;
-        Q_EMIT sessionChanged();
     }
 }
 
@@ -376,21 +310,10 @@ void Auth::start()
     QStringList args;
     args << QStringLiteral("--socket") << SocketServer::instance()->fullServerName();
     args << QStringLiteral("--id") << QString::number(d->id);
-    if (!d->sessionPath.isEmpty()) {
-        args << QStringLiteral("--start") << d->sessionPath;
-    }
     if (!d->user.isEmpty()) {
         args << QStringLiteral("--user") << d->user;
     }
-    if (d->autologin) {
-        args << QStringLiteral("--autologin");
-    }
-    if (!d->displayServerCmd.isEmpty()) {
-        args << QStringLiteral("--display-server") << d->displayServerCmd;
-    }
-    if (d->greeter) {
-        args << QStringLiteral("--greeter");
-    }
+
     d->child->start(QStringLiteral("%1/plasmalogin-helper").arg(QStringLiteral(LIBEXEC_INSTALL_DIR)), args);
 }
 
