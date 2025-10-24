@@ -366,7 +366,7 @@ void Auth::start()
         {QStringLiteral("Environment"), d->environment.toStringList()},
 
         // Working directory
-        {QStringLiteral("WorkingDirectory"), QStringLiteral("/home/david")},
+        // {QStringLiteral("WorkingDirectory"), QStringLiteral("/home/david")},
 
         // TTY settings
         {QStringLiteral("TTYPath"), QStringLiteral("/dev/tty1")},
