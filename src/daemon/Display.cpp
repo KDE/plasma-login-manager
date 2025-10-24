@@ -23,6 +23,7 @@
 #include "Greeter.h"
 #include "MainConfigLoader.h"
 #include "Seat.h"
+#include "SessionRunner.h"
 #include "SocketServer.h"
 #include "Utils.h"
 
@@ -100,11 +101,7 @@ Display::Display(Seat *parent)
     qDebug("Using VT %d", m_terminalId);
 
     // respond to authentication requests
-    m_auth->setVerbose(true);
     connect(m_auth, &Auth::requestChanged, this, &Display::slotRequestChanged);
-    connect(m_auth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
-    connect(m_auth, &Auth::sessionStarted, this, &Display::slotSessionStarted);
-    connect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
     connect(m_auth, &Auth::error, this, &Display::slotAuthError);
 
@@ -172,7 +169,6 @@ Display::Display(Seat *parent)
 
 Display::~Display()
 {
-    disconnect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     stop();
 }
 
@@ -201,13 +197,47 @@ bool Display::start()
 
     // Handle autologin early, unless it needs the display server to be up
     // (rootful X + X11 autologin session).
+    // Dave ^ wtf is this, kill this first
+
     if (m_autologinSession.isValid()) {
-        m_auth->setAutologin(true);
-        if (startAuth(m_autologinUser, QString(), m_autologinSession)) {
-            return true;
-        } else {
+        if (m_autologinSession.xdgSessionType().isEmpty()) {
+            qCritical() << "Failed to find XDG session type for autologin session" << m_autologinSession.fileName();
             return handleAutologinFailure();
         }
+        if (m_autologinSession.exec().isEmpty()) {
+            qCritical() << "Failed to find command for autologin session" << m_autologinSession.fileName();
+            return handleAutologinFailure();
+        }
+
+        m_reuseSessionId = QString();
+        m_sessionName = m_autologinSession.fileName();
+        m_sessionTerminalId = m_terminalId;
+
+        QProcessEnvironment env;
+        env.insert(QStringLiteral("PATH"), PlasmaLogin::config()->defaultPath());
+        env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(seat()->name()));
+        env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
+        env.insert(QStringLiteral("DESKTOP_SESSION"), m_autologinSession.desktopSession());
+        if (!m_autologinSession.desktopNames().isEmpty()) {
+            env.insert(QStringLiteral("XDG_CURRENT_DESKTOP"), m_autologinSession.desktopNames());
+        }
+        env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("user"));
+        env.insert(QStringLiteral("XDG_SESSION_TYPE"), m_autologinSession.xdgSessionType());
+        env.insert(QStringLiteral("XDG_SEAT"), seat()->name());
+        if (m_sessionTerminalId > 0) {
+            env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_sessionTerminalId));
+        }
+        env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), m_autologinSession.desktopNames());
+
+        qDebug() << "Autologin session" << m_sessionName << "selected, command:" << m_autologinSession.exec() << "for VT" << m_sessionTerminalId
+                 << m_autologinSession.xdgSessionType();
+
+        SessionRunner session;
+        session.setUser(m_autologinUser);
+        session.setExecutable(m_autologinSession.exec());
+        session.insertEnvironment(env);
+        session.start();
+        return true;
     }
 
     // no reason for this to be queued, other than porting
@@ -237,7 +267,7 @@ void Display::startSocketServerAndGreeter()
 bool Display::handleAutologinFailure()
 {
     qWarning() << "Autologin failed!";
-    m_auth->setAutologin(false);
+    // m_auth->setAutologin(false);
     // For late autologin handling only the greeter needs to be started.
 
     QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
@@ -368,38 +398,35 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_auth->setUser(user);
     if (m_reuseSessionId.isNull()) {
-        m_auth->setSession(session.exec());
+        // m_auth->setSession(session.exec());
     }
-    m_auth->insertEnvironment(env);
     m_auth->start();
+    QString exec = session.exec();
 
+    // Dave - this is silly and probably unsafe, we need one "auth" per login attempt
+
+    connect(m_auth, &Auth::authentication, this, [this, env, exec](QString user, bool success) {
+        qDebug() << "auth done" << user << success;
+        if (success) {
+            // if (!m_reuseSessionId.isNull()) {
+            //     -            OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+            //     -            manager.UnlockSession(m_reuseSessionId);
+            //     -            manager.ActivateSession(m_reuseSessionId);
+            //     -        }
+
+            qDebug() << "STARTING";
+            SessionRunner session;
+            session.setUser(user);
+            session.setExecutable(exec);
+            session.insertEnvironment(env);
+            session.start();
+
+            return;
+        } else if (m_socket) {
+            emit loginFailed(m_socket);
+        }
+    });
     return true;
-}
-
-void Display::slotAuthenticationFinished(const QString &user, bool success)
-{
-    if (m_auth->autologin() && !success) {
-        handleAutologinFailure();
-        return;
-    }
-
-    if (success) {
-        qDebug() << "Authentication for user " << user << " successful";
-
-        if (!m_reuseSessionId.isNull()) {
-            OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-            manager.UnlockSession(m_reuseSessionId);
-            manager.ActivateSession(m_reuseSessionId);
-        }
-
-        if (m_socket) {
-            emit loginSucceeded(m_socket);
-        }
-    } else if (m_socket) {
-        qDebug() << "Authentication for user " << user << " failed";
-        emit loginFailed(m_socket);
-    }
-    m_socket = nullptr;
 }
 
 void Display::slotAuthInfo(const QString &message, Auth::Info info)

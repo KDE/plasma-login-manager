@@ -34,23 +34,16 @@ public slots:
     Request request(const Request &request);
     void info(const QString &message, Auth::Info type);
     void error(const QString &message, Auth::Error type);
-    QProcessEnvironment authenticated(const QString &user);
-    void displayServerStarted(const QString &displayName);
-    void sessionOpened(bool success);
 
 private slots:
     void setUp();
     void doAuth();
 
-    void sessionFinished(int status);
-
 private:
+    QString m_user;
     qint64 m_id{-1};
     PamBackend *m_backend{nullptr};
-    UserSession *m_session{nullptr};
     QLocalSocket *m_socket{nullptr};
-    QString m_user{};
-
 };
 }
 
