@@ -346,6 +346,7 @@ void Auth::start()
     //     args << QStringLiteral("--greeter");
 
     QString executable = d->sessionPath;
+    args.push_front(executable);
     qDebug() << "launching " << d->sessionPath;
 
     qDBusRegisterMetaType<QVariantMultiItem>();
