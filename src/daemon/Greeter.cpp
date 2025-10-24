@@ -22,7 +22,6 @@
 #include "Display.h"
 #include "DisplayManager.h"
 #include "Seat.h"
-#include "WaylandDisplayServer.h"
 #include "XorgUserDisplayServer.h"
 
 #include <QStandardPaths>
@@ -73,15 +72,12 @@ bool Greeter::start()
     }
 
     Q_ASSERT(m_display);
-    auto *displayServer = m_display->displayServer();
-
     {
         // authentication
         m_auth = new Auth(this);
         m_auth->setVerbose(true);
         connect(m_auth, &Auth::requestChanged, this, &Greeter::onRequestChanged);
         connect(m_auth, &Auth::sessionStarted, this, &Greeter::onSessionStarted);
-        connect(m_auth, &Auth::displayServerReady, this, &Greeter::onDisplayServerReady);
         connect(m_auth, &Auth::finished, this, &Greeter::onHelperFinished);
         connect(m_auth, &Auth::info, this, &Greeter::authInfo);
         connect(m_auth, &Auth::error, this, &Greeter::authError);
@@ -190,15 +186,6 @@ void Greeter::onSessionStarted(bool success)
         qDebug() << "Greeter session started successfully";
     else
         qDebug() << "Greeter session failed to start";
-}
-
-void Greeter::onDisplayServerReady(const QString &displayName)
-{
-    auto *displayServer = m_display->displayServer();
-
-    auto *wayland = qobject_cast<WaylandDisplayServer *>(displayServer);
-    if (wayland)
-        wayland->setDisplayName(displayName);
 }
 
 void Greeter::onHelperFinished(Auth::HelperExitStatus status)
