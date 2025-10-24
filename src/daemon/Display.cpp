@@ -49,7 +49,6 @@
 #include "Login1Manager.h"
 #include "Login1Session.h"
 #include "VirtualTerminal.h"
-#include "WaylandDisplayServer.h"
 #include "config.h"
 
 static int s_ttyFailures = 0;
@@ -98,8 +97,6 @@ Display::Display(Seat *parent)
     if (seat()->canTTY()) {
         m_terminalId = fetchAvailableVt();
     }
-    m_displayServer = new WaylandDisplayServer(this);
-
     qDebug("Using VT %d", m_terminalId);
 
     // respond to authentication requests
@@ -110,10 +107,6 @@ Display::Display(Seat *parent)
     connect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
     connect(m_auth, &Auth::error, this, &Display::slotAuthError);
-
-    // restart display after display server ended
-    connect(m_displayServer, &DisplayServer::started, this, &Display::displayServerStarted);
-    connect(m_displayServer, &DisplayServer::stopped, this, &Display::stop);
 
     // connect login signal
     connect(m_socketServer, &SocketServer::login, this, &Display::login);
@@ -162,24 +155,14 @@ Display::~Display()
     stop();
 }
 
-DisplayServer *Display::displayServer() const
-{
-    return m_displayServer;
-}
-
 int Display::terminalId() const
 {
     return m_auth->isActive() ? m_sessionTerminalId : m_terminalId;
 }
 
-const QString &Display::name() const
-{
-    return m_displayServer->display();
-}
-
 QString Display::sessionType() const
 {
-    return m_displayServer->sessionType();
+    return "wayland";
 }
 
 Seat *Display::seat() const
@@ -203,13 +186,16 @@ bool Display::start()
         else
             return handleAutologinFailure();
     }
-    return m_displayServer->start();
+
+    // no reason for this to be queued, other than porting
+    QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
+    return true;
 }
 
 void Display::startSocketServerAndGreeter()
 {
     // start socket server
-    m_socketServer->start(m_displayServer->display());
+    m_socketServer->start(QString());
     // change the owner and group of the socket to avoid permission denied errors
     struct passwd *pw = getpwnam("plasmalogin");
     if (pw) {
@@ -230,14 +216,13 @@ bool Display::handleAutologinFailure()
     qWarning() << "Autologin failed!";
     m_auth->setAutologin(false);
     // For late autologin handling only the greeter needs to be started.
-    return m_displayServer->start();
+
+    QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
+    return true;
 }
 
 void Display::displayServerStarted()
 {
-    // setup display
-    m_displayServer->setupDisplay();
-
     // log message
     qDebug() << "Display server started.";
 
@@ -257,11 +242,6 @@ void Display::stop()
 
     // stop socket server
     m_socketServer->stop();
-
-    // stop display server
-    m_displayServer->blockSignals(true);
-    m_displayServer->stop();
-    m_displayServer->blockSignals(false);
 
     // reset flag
     m_started = false;

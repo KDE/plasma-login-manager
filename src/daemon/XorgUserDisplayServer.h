@@ -17,7 +17,7 @@
 #ifndef PLASMALOGIN_XORGUSERDISPLAYSERVER_H
 #define PLASMALOGIN_XORGUSERDISPLAYSERVER_H
 
-#include "DisplayServer.h"
+#include "Display.h"
 
 class QProcess;
 

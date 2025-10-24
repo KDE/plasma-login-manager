@@ -44,11 +44,7 @@ public:
     explicit Display(Seat *parent);
     ~Display();
 
-    DisplayServer *displayServer() const;
-
     int terminalId() const;
-
-    const QString &name() const;
 
     QString sessionType() const;
     QString reuseSessionId() const
@@ -90,7 +86,6 @@ private:
     Session m_autologinSession;
 
     Auth *m_auth{nullptr};
-    DisplayServer *m_displayServer{nullptr};
     Seat *m_seat{nullptr};
     SocketServer *m_socketServer{nullptr};
     QPointer<QLocalSocket> m_socket;

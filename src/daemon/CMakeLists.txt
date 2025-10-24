@@ -21,16 +21,12 @@ set(DAEMON_SOURCES
     DaemonApp.cpp
     Display.cpp
     DisplayManager.cpp
-    DisplayServer.cpp
     LogindDBusTypes.cpp
     Greeter.cpp
     Seat.cpp
     SeatManager.cpp
     SocketServer.cpp
     XorgUserDisplayServer.cpp
-    XorgUserDisplayServer.h
-    WaylandDisplayServer.cpp
-    WaylandDisplayServer.h
 )
 
 list(APPEND DAEMON_SOURCES ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp)
