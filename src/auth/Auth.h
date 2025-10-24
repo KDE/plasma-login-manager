@@ -44,7 +44,6 @@ class Auth : public QObject
     Q_PROPERTY(bool autologin READ autologin WRITE setAutologin NOTIFY autologinChanged)
     Q_PROPERTY(bool greeter READ isGreeter WRITE setGreeter NOTIFY greeterChanged)
     Q_PROPERTY(bool verbose READ verbose WRITE setVerbose NOTIFY verboseChanged)
-    Q_PROPERTY(QByteArray cookie READ cookie WRITE setCookie NOTIFY cookieChanged)
     Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userChanged)
     Q_PROPERTY(QString session READ session WRITE setSession NOTIFY sessionChanged)
     Q_PROPERTY(AuthRequest *request READ request NOTIFY requestChanged)
@@ -85,7 +84,6 @@ public:
     bool autologin() const;
     bool isGreeter() const;
     bool verbose() const;
-    const QByteArray &cookie() const;
     const QString &user() const;
     const QString &session() const;
     AuthRequest *request();
@@ -146,12 +144,6 @@ public:
      */
     void setSession(const QString &path);
 
-    /**
-     * Set the display server cookie, to be inserted into the user's $XAUTHORITY
-     * @param cookie cookie data
-     */
-    void setCookie(const QByteArray &cookie);
-
 public Q_SLOTS:
     /**
      * Sets up the environment and starts the authentication
@@ -167,7 +159,6 @@ Q_SIGNALS:
     void autologinChanged();
     void greeterChanged();
     void verboseChanged();
-    void cookieChanged();
     void userChanged();
     void displayServerCommandChanged();
     void sessionChanged();

@@ -59,7 +59,6 @@ public:
     QString displayServerCmd;
     QString sessionPath{};
     QString user{};
-    QByteArray cookie{};
     bool autologin{false};
     bool greeter{false};
     QProcessEnvironment environment{};
@@ -180,7 +179,7 @@ void Auth::Private::dataPending()
                 auth->setUser(user);
                 Q_EMIT auth->authentication(user, true);
                 str.reset();
-                str << AUTHENTICATED << environment << cookie;
+                str << AUTHENTICATED << environment;
                 str.send();
             } else {
                 Q_EMIT auth->authentication(user, false);
@@ -281,11 +280,6 @@ bool Auth::isGreeter() const
     return d->greeter;
 }
 
-const QByteArray &Auth::cookie() const
-{
-    return d->cookie;
-}
-
 const QString &Auth::session() const
 {
     return d->sessionPath;
@@ -319,14 +313,6 @@ void Auth::insertEnvironment(const QProcessEnvironment &env)
 void Auth::insertEnvironment(const QString &key, const QString &value)
 {
     d->environment.insert(key, value);
-}
-
-void Auth::setCookie(const QByteArray &cookie)
-{
-    if (cookie != d->cookie) {
-        d->cookie = cookie;
-        Q_EMIT cookieChanged();
-    }
 }
 
 void Auth::setUser(const QString &user)
