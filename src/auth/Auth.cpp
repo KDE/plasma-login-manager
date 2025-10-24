@@ -16,6 +16,10 @@
 #include <QtNetwork/QLocalServer>
 #include <QtNetwork/QLocalSocket>
 
+#include <QDebug>
+
+#include <QDBusArgument>
+
 #include <QtQml/QtQml>
 
 #include <memory>
@@ -48,13 +52,10 @@ public:
     void setSocket(QLocalSocket *socket);
 public slots:
     void dataPending();
-    void childExited(int exitCode, QProcess::ExitStatus exitStatus);
-    void childError(QProcess::ProcessError error);
     void requestFinished();
 
 public:
     AuthRequest *request{nullptr};
-    QProcess *child{nullptr};
     QLocalSocket *socket{nullptr};
     QString displayServerCmd;
     QString sessionPath{};
@@ -105,11 +106,10 @@ Auth::SocketServer *Auth::SocketServer::instance()
 Auth::Private::Private(Auth *parent)
     : QObject(parent)
     , request(new AuthRequest(parent))
-    , child(new QProcess(this))
     , id(lastId++)
 {
     SocketServer::instance()->helpers[id] = this;
-    QProcessEnvironment env = child->processEnvironment();
+    QProcessEnvironment env;
     bool langEmpty = true;
     QFile localeFile(QStringLiteral("/etc/locale.conf"));
     if (localeFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -128,9 +128,6 @@ Auth::Private::Private(Auth *parent)
     if (langEmpty) {
         env.insert(QStringLiteral("LANG"), QStringLiteral("C"));
     }
-    child->setProcessEnvironment(env);
-    connect(child, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Auth::Private::childExited);
-    connect(child, &QProcess::errorOccurred, this, &Auth::Private::childError);
     connect(request, &AuthRequest::finished, this, &Auth::Private::requestFinished);
     connect(request, &AuthRequest::promptsChanged, parent, &Auth::requestChanged);
 }
@@ -189,51 +186,12 @@ void Auth::Private::dataPending()
             }
             break;
         }
-        case SESSION_STATUS: {
-            bool status;
-            str >> status;
-            Q_EMIT auth->sessionStarted(status);
-            str.reset();
-            str << SESSION_STATUS;
-            str.send();
-            break;
-        }
-        case DISPLAY_SERVER_STARTED: {
-            QString displayName;
-            str >> displayName;
-            Q_EMIT auth->displayServerReady(displayName);
-            str.reset();
-            str << DISPLAY_SERVER_STARTED;
-            str.send();
-            break;
-        }
+
         default: {
             Q_EMIT auth->error(QStringLiteral("Auth: Unexpected value received: %1").arg(m), ERROR_INTERNAL);
         }
         }
     }
-}
-
-void Auth::Private::childExited(int exitCode, QProcess::ExitStatus exitStatus)
-{
-    if (exitStatus != QProcess::NormalExit) {
-        qWarning("Auth: plasmalogin-helper (%s) crashed (exit code %d)", qPrintable(child->arguments().join(QLatin1Char(' '))), HelperExitStatus(exitStatus));
-        Q_EMIT qobject_cast<Auth *>(parent())->error(child->errorString(), ERROR_INTERNAL);
-    }
-
-    if (exitCode == HELPER_SUCCESS) {
-        qDebug() << "Auth: plasmalogin-helper exited successfully";
-    } else {
-        qWarning("Auth: plasmalogin-helper exited with %d", exitCode);
-    }
-
-    Q_EMIT qobject_cast<Auth *>(parent())->finished((Auth::HelperExitStatus)exitCode);
-}
-
-void Auth::Private::childError(QProcess::ProcessError error)
-{
-    Q_UNUSED(error);
-    Q_EMIT qobject_cast<Auth *>(parent())->error(child->errorString(), ERROR_INTERNAL);
 }
 
 void Auth::Private::requestFinished()
@@ -245,16 +203,6 @@ void Auth::Private::requestFinished()
     request->setRequest();
 }
 
-Auth::Auth(const QString &user, const QString &session, bool autologin, QObject *parent, bool verbose)
-    : QObject(parent)
-    , d(new Private(this))
-{
-    setUser(user);
-    setAutologin(autologin);
-    setSession(session);
-    setVerbose(verbose);
-}
-
 Auth::Auth(QObject *parent)
     : QObject(parent)
     , d(new Private(this))
@@ -263,25 +211,11 @@ Auth::Auth(QObject *parent)
 
 Auth::~Auth()
 {
-    stop();
     delete d;
 }
 
 void Auth::registerTypes()
 {
-    qmlRegisterAnonymousType<AuthPrompt>("Auth", 1);
-    qmlRegisterAnonymousType<AuthRequest>("Auth", 1);
-    qmlRegisterType<Auth>("Auth", 1, 0, "Auth");
-}
-
-bool Auth::autologin() const
-{
-    return d->autologin;
-}
-
-bool Auth::isGreeter() const
-{
-    return d->greeter;
 }
 
 const QString &Auth::session() const
@@ -294,11 +228,6 @@ const QString &Auth::user() const
     return d->user;
 }
 
-bool Auth::verbose() const
-{
-    return d->child->processChannelMode() == QProcess::ForwardedChannels;
-}
-
 AuthRequest *Auth::request()
 {
     return d->request;
@@ -306,106 +235,23 @@ AuthRequest *Auth::request()
 
 bool Auth::isActive() const
 {
-    return d->child->state() != QProcess::NotRunning;
-}
-
-void Auth::insertEnvironment(const QProcessEnvironment &env)
-{
-    d->environment.insert(env);
-}
-
-void Auth::insertEnvironment(const QString &key, const QString &value)
-{
-    d->environment.insert(key, value);
+    return true;
+    // d->child->state() != QProcess::NotRunning;
 }
 
 void Auth::setUser(const QString &user)
 {
     if (user != d->user) {
         d->user = user;
-        Q_EMIT userChanged();
-    }
-}
-
-void Auth::setAutologin(bool on)
-{
-    if (on != d->autologin) {
-        d->autologin = on;
-        Q_EMIT autologinChanged();
-    }
-}
-
-void Auth::setGreeter(bool on)
-{
-    if (on != d->greeter) {
-        d->greeter = on;
-        Q_EMIT greeterChanged();
-    }
-}
-
-void Auth::setDisplayServerCommand(const QString &command)
-{
-    if (d->displayServerCmd != command) {
-        d->displayServerCmd = command;
-        Q_EMIT displayServerCommandChanged();
-    }
-}
-
-void Auth::setSession(const QString &path)
-{
-    if (path != d->sessionPath) {
-        d->sessionPath = path;
-        Q_EMIT sessionChanged();
-    }
-}
-
-void Auth::setVerbose(bool on)
-{
-    if (on != verbose()) {
-        if (on) {
-            d->child->setProcessChannelMode(QProcess::ForwardedChannels);
-        } else {
-            d->child->setProcessChannelMode(QProcess::SeparateChannels);
-        }
-        Q_EMIT verboseChanged();
     }
 }
 
 void Auth::start()
 {
-    QStringList args;
-    args << QStringLiteral("--socket") << SocketServer::instance()->fullServerName();
-    args << QStringLiteral("--id") << QString::number(d->id);
-    if (!d->sessionPath.isEmpty()) {
-        args << QStringLiteral("--start") << d->sessionPath;
-    }
-    if (!d->user.isEmpty()) {
-        args << QStringLiteral("--user") << d->user;
-    }
-    if (d->autologin) {
-        args << QStringLiteral("--autologin");
-    }
-    if (!d->displayServerCmd.isEmpty()) {
-        args << QStringLiteral("--display-server") << d->displayServerCmd;
-    }
-    if (d->greeter) {
-        args << QStringLiteral("--greeter");
-    }
-    d->child->start(QStringLiteral("%1/plasmalogin-helper").arg(QStringLiteral(LIBEXEC_INSTALL_DIR)), args);
 }
 
 void Auth::stop()
 {
-    if (d->child->state() == QProcess::NotRunning) {
-        return;
-    }
-
-    d->child->terminate();
-
-    // wait for finished
-    if (!d->child->waitForFinished(5000)) {
-        d->child->kill();
-    }
 }
 }
 

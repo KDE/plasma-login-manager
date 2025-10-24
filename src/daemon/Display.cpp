@@ -100,11 +100,8 @@ Display::Display(Seat *parent)
     qDebug("Using VT %d", m_terminalId);
 
     // respond to authentication requests
-    m_auth->setVerbose(true);
     connect(m_auth, &Auth::requestChanged, this, &Display::slotRequestChanged);
     connect(m_auth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
-    connect(m_auth, &Auth::sessionStarted, this, &Display::slotSessionStarted);
-    connect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
     connect(m_auth, &Auth::error, this, &Display::slotAuthError);
 
@@ -144,7 +141,6 @@ Display::Display(Seat *parent)
 
 Display::~Display()
 {
-    disconnect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     stop();
 }
 
@@ -174,7 +170,9 @@ bool Display::start()
     // Handle autologin early, unless it needs the display server to be up
     // (rootful X + X11 autologin session).
     if (m_autologinSession.isValid()) {
-        m_auth->setAutologin(true);
+        // m_auth->setAutologin(true);
+        // don't auth, run a session!
+
         if (startAuth(mainConfig.Autologin.User.get(), QString(), m_autologinSession)) {
             return true;
         } else {
@@ -209,7 +207,7 @@ void Display::startSocketServerAndGreeter()
 bool Display::handleAutologinFailure()
 {
     qWarning() << "Autologin failed!";
-    m_auth->setAutologin(false);
+    // m_auth->setAutologin(false);
     // For late autologin handling only the greeter needs to be started.
 
     QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
@@ -338,15 +336,15 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 
     if (session.xdgSessionType() == QLatin1String("x11")) {
-        m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
+        // m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
     } else {
-        m_auth->setDisplayServerCommand(QStringLiteral());
+        // m_auth->setDisplayServerCommand(QStringLiteral());
     }
     m_auth->setUser(user);
     if (m_reuseSessionId.isNull()) {
-        m_auth->setSession(session.exec());
+        // m_auth->setSession(session.exec());
     }
-    m_auth->insertEnvironment(env);
+    // m_auth->insertEnvironment(env);
     m_auth->start();
 
     return true;
@@ -354,11 +352,6 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
 void Display::slotAuthenticationFinished(const QString &user, bool success)
 {
-    if (m_auth->autologin() && !success) {
-        handleAutologinFailure();
-        return;
-    }
-
     if (success) {
         qDebug() << "Authentication for user " << user << " successful";
 
