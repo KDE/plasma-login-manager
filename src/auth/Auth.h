@@ -40,15 +40,8 @@ namespace PLASMALOGIN
 class Auth : public QObject
 {
     Q_OBJECT
-    // not setting NOTIFY for the properties - they should be set only once before calling start
-    Q_PROPERTY(bool autologin READ autologin WRITE setAutologin NOTIFY autologinChanged)
-    Q_PROPERTY(bool greeter READ isGreeter WRITE setGreeter NOTIFY greeterChanged)
-    Q_PROPERTY(bool verbose READ verbose WRITE setVerbose NOTIFY verboseChanged)
-    Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userChanged)
-    Q_PROPERTY(QString session READ session WRITE setSession NOTIFY sessionChanged)
-    Q_PROPERTY(AuthRequest *request READ request NOTIFY requestChanged)
 public:
-    explicit Auth(const QString &user = QString(), const QString &session = QString(), bool autologin = false, QObject *parent = 0, bool verbose = false);
+    explicit Auth(const QString &user = QString(), const QString &session = QString(), bool autologin = false, QObject *parent = 0);
     explicit Auth(QObject *parent);
     ~Auth();
 
@@ -83,7 +76,6 @@ public:
 
     bool autologin() const;
     bool isGreeter() const;
-    bool verbose() const;
     const QString &user() const;
     const QString &session() const;
     AuthRequest *request();
@@ -119,12 +111,6 @@ public:
      * This will bypass authentication checks
      */
     void setGreeter(bool on = true);
-
-    /**
-     * Forwards the output of the underlying authenticator to the current process
-     * @param on true if should forward the output
-     */
-    void setVerbose(bool on = true);
 
     /**
      * Sets the user which will then authenticate

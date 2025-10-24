@@ -75,7 +75,6 @@ bool Greeter::start()
     {
         // authentication
         m_auth = new Auth(this);
-        m_auth->setVerbose(true);
         connect(m_auth, &Auth::requestChanged, this, &Greeter::onRequestChanged);
         connect(m_auth, &Auth::sessionStarted, this, &Greeter::onSessionStarted);
         connect(m_auth, &Auth::finished, this, &Greeter::onHelperFinished);

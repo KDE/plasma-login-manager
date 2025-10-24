@@ -6,6 +6,11 @@ include_directories(
 )
 
 configure_file(config.h.in config.h IMMEDIATE @ONLY)
+
+set(SYSTEMD_DBUS_XMLS
+      org.freedesktop.systemd1.Manager.xml)
+set_source_files_properties(${SYSTEMD_DBUS_XMLS} PROPERTIES INCLUDE dbustypes.h)
+
 set(DAEMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/Configuration.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SafeDataStream.cpp
@@ -28,6 +33,9 @@ set(DAEMON_SOURCES
     SocketServer.cpp
     XorgUserDisplayServer.cpp
 )
+
+qt_add_dbus_interfaces(DAEMON_SOURCES ${SYSTEMD_DBUS_XMLS})
+
 
 list(APPEND DAEMON_SOURCES ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp)
 

@@ -100,7 +100,6 @@ Display::Display(Seat *parent)
     qDebug("Using VT %d", m_terminalId);
 
     // respond to authentication requests
-    m_auth->setVerbose(true);
     connect(m_auth, &Auth::requestChanged, this, &Display::slotRequestChanged);
     connect(m_auth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
     connect(m_auth, &Auth::sessionStarted, this, &Display::slotSessionStarted);
