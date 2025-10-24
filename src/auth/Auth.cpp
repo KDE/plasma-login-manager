@@ -333,21 +333,9 @@ void Auth::setSession(const QString &path)
 
 void Auth::start()
 {
-    QStringList args;
-    // args << QStringLiteral("--socket") << SocketServer::instance()->fullServerName();
-    // args << QStringLiteral("--id") << QString::number(d->id);
-    // if (!d->sessionPath.isEmpty())
-    //     args << QStringLiteral("--start") << d->sessionPath;
-    // if (d->autologin)
-    //     args << QStringLiteral("--autologin");
-    // if (!d->displayServerCmd.isEmpty())
-    //     args << QStringLiteral("--display-server") << d->displayServerCmd;
-    // if (d->greeter)
-    //     args << QStringLiteral("--greeter");
-
     QString executable = d->sessionPath;
+    QStringList args;
     args.push_front(executable);
-    qDebug() << "launching " << d->sessionPath;
 
     qDBusRegisterMetaType<QVariantMultiItem>();
     qDBusRegisterMetaType<QVariantMultiMap>();
@@ -356,58 +344,50 @@ void Auth::start()
     qDBusRegisterMetaType<ExecCommand>();
     qDBusRegisterMetaType<ExecCommandList>();
 
-    using namespace org::freedesktop;
-
     const auto systemdService = QStringLiteral("org.freedesktop.systemd1");
     const auto systemdPath = QStringLiteral("/org/freedesktop/systemd1");
 
-    // TODO on stack
-    auto m_manager = new systemd1::Manager(systemdService, systemdPath, QDBusConnection::systemBus(), this);
+    org::freedesktop::systemd1::Manager manager(systemdService, systemdPath, QDBusConnection::systemBus(), nullptr);
 
-    auto reply = m_manager->StartTransientUnit(
-        QStringLiteral("plasma-login-test1.service"),
-        QStringLiteral("replace"),
-        {
-            // Unit properties
-            {QStringLiteral("Type"), QStringLiteral("simple")},
-            // {QStringLiteral("ExitType"), QStringLiteral("cgroup")},
-            // {QStringLiteral("Slice"), QStringLiteral("app.slice")},
-            {QStringLiteral("Description"), QStringLiteral("Open-source user interface for phones, based on Plasma technologies")},
-            // {QStringLiteral("AddRef"), true},
+    QVariantMultiMap properties = {
+        // Unit properties
+        {QStringLiteral("Type"), QStringLiteral("simple")},
+        {QStringLiteral("Description"), QStringLiteral("Open-source user interface for phones, based on Plasma technologies")},
+        // {QStringLiteral("AddRef"), true},
 
-            {QStringLiteral("Conflicts"), QStringList({QStringLiteral("getty@tty1.service")})},
-            // {QStringLiteral("After"), QStringList({QStringLiteral("getty@tty1.service")})},
+        {QStringLiteral("Conflicts"), QStringList({QStringLiteral("getty@tty1.service")})},
+        // {QStringLiteral("After"), QStringList({QStringLiteral("getty@tty1.service")})},
 
-            // User context
-            {QStringLiteral("User"), QStringLiteral("david")},
-            {QStringLiteral("PAMName"), QStringLiteral("login")},
+        // User context
+        {QStringLiteral("User"), d->user},
+        {QStringLiteral("PAMName"), QStringLiteral("login")}, // should be the pam file for autologin
 
-            // Environment
-            {QStringLiteral("Environment"), d->environment.toStringList()},
+        // Environment
+        {QStringLiteral("Environment"), d->environment.toStringList()},
 
-            // Working directory
-            {QStringLiteral("WorkingDirectory"), QStringLiteral("/home/david")},
+        // Working directory
+        {QStringLiteral("WorkingDirectory"), QStringLiteral("/home/david")},
 
-            // TTY settings
-            {QStringLiteral("TTYPath"), QStringLiteral("/dev/tty1")},
-            {QStringLiteral("TTYReset"), true},
-            {QStringLiteral("TTYVHangup"), true},
-            {QStringLiteral("TTYVTDisallocate"), true},
-            {QStringLiteral("StandardInput"), QStringLiteral("tty-fail")},
-            {QStringLiteral("StandardOutput"), QStringLiteral("journal")},
-            {QStringLiteral("StandardError"), QStringLiteral("journal")},
+        // TTY settings
+        {QStringLiteral("TTYPath"), QStringLiteral("/dev/tty1")},
+        {QStringLiteral("TTYReset"), true},
+        {QStringLiteral("TTYVHangup"), true},
+        {QStringLiteral("TTYVTDisallocate"), true},
+        {QStringLiteral("StandardInput"), QStringLiteral("tty-fail")},
+        {QStringLiteral("StandardOutput"), QStringLiteral("journal")},
+        {QStringLiteral("StandardError"), QStringLiteral("journal")},
 
-            // Utmp tracking
-            {QStringLiteral("UtmpIdentifier"), QStringLiteral("tty1")},
-            {QStringLiteral("UtmpMode"), QStringLiteral("user")},
+        // Utmp tracking
+        {QStringLiteral("UtmpIdentifier"), QStringLiteral("tty1")},
+        {QStringLiteral("UtmpMode"), QStringLiteral("user")},
 
-            {QStringLiteral("Restart"), QStringLiteral("no")},
+        {QStringLiteral("Restart"), QStringLiteral("no")},
 
-            // ExecStart: [path, args, ignore-failure]
-            {QStringLiteral("ExecStart"), QVariant::fromValue(ExecCommandList{{executable, args, false}})},
-        },
-        {} // aux
-    );
+        // ExecStart: [path, args, ignore-failure]
+        {QStringLiteral("ExecStart"), QVariant::fromValue(ExecCommandList{{executable, args, false}})},
+    };
+
+    auto reply = manager.StartTransientUnit(QStringLiteral("plasma-login-test1.service"), QStringLiteral("replace"), properties, {});
 
     reply.waitForFinished();
     qDebug() << reply.error().message();
