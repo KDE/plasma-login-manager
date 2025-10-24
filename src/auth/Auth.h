@@ -75,7 +75,6 @@ public:
     static void registerTypes();
 
     bool autologin() const;
-    bool isGreeter() const;
     bool verbose() const;
     const QString &user() const;
     const QString &session() const;
@@ -106,12 +105,6 @@ public:
      * @param on true if should autologin
      */
     void setAutologin(bool on = true);
-
-    /**
-     * Set mode to greeter
-     * This will bypass authentication checks
-     */
-    void setGreeter(bool on = true);
 
     /**
      * Forwards the output of the underlying authenticator to the current process

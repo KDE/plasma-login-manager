@@ -56,6 +56,9 @@ LogindPathInternal::LogindPathInternal()
     qRegisterMetaType<UserInfoList>("UserInfoList");
     qDBusRegisterMetaType<UserInfoList>();
 
+    qRegisterMetaType<NamedUserPath>("NamedUserPath");
+    qDBusRegisterMetaType<NamedUserPath>();
+
     if (QDBusConnection::systemBus().interface()->isServiceRegistered(QStringLiteral("org.freedesktop.login1"))) {
         qDebug() << "Logind interface found";
         available = true;

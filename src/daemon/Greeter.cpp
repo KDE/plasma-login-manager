@@ -22,10 +22,10 @@
 #include "DisplayManager.h"
 #include "MainConfigLoader.h"
 #include "Seat.h"
+#include "SessionRunner.h"
 
 #include <QStandardPaths>
 #include <QtCore/QDebug>
-#include <QtCore/QProcess>
 #include <VirtualTerminal.h>
 
 namespace PLASMALOGIN
@@ -33,6 +33,7 @@ namespace PLASMALOGIN
 Greeter::Greeter(Display *parent)
     : QObject(parent)
     , m_display(parent)
+    , m_sessionRunner(new SessionRunner(this))
 {
 }
 
@@ -63,15 +64,6 @@ bool Greeter::start()
 
     Q_ASSERT(m_display);
     {
-        // authentication
-        m_auth = new Auth(this);
-        m_auth->setVerbose(true);
-        connect(m_auth, &Auth::requestChanged, this, &Greeter::onRequestChanged);
-        connect(m_auth, &Auth::sessionStarted, this, &Greeter::onSessionStarted);
-        connect(m_auth, &Auth::finished, this, &Greeter::onHelperFinished);
-        connect(m_auth, &Auth::info, this, &Greeter::authInfo);
-        connect(m_auth, &Auth::error, this, &Greeter::authError);
-
         // greeter environment
         QProcessEnvironment env;
         QProcessEnvironment sysenv = QProcessEnvironment::systemEnvironment();
@@ -107,21 +99,25 @@ bool Greeter::start()
         env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("greeter"));
         env.insert(QStringLiteral("XDG_SESSION_TYPE"), m_display->sessionType());
         env.insert(QStringLiteral("SDDM_SOCKET"), m_socket);
-
-        m_auth->insertEnvironment(env);
+        env.insert(QStringLiteral("QT_NO_XDG_DESKTOP_PORTAL"), 1);
+        m_sessionRunner->insertEnvironment(env);
 
         // log message
         qDebug() << "Greeter starting...";
 
         // start greeter
-        m_auth->setUser(QStringLiteral("plasmalogin"));
-        m_auth->setGreeter(true);
-        m_auth->setSession(greeterCommand);
-        m_auth->start();
+        m_sessionRunner->setUser(QStringLiteral("plasmalogin"));
+        m_sessionRunner->setGreeter(true);
+        m_sessionRunner->setExecutable(greeterCommand);
+        m_sessionRunner->setTty(m_display->terminalId());
+        m_started = m_sessionRunner->start();
+        if (m_started && m_display->seat()->canTTY() && m_display->terminalId() > 0) {
+            VirtualTerminal::jumpToVt(m_display->terminalId(), true);
+        }
     }
 
     // return success
-    return true;
+    return m_started;
 }
 
 void Greeter::insertEnvironmentList(QStringList names, QProcessEnvironment sourceEnv, QProcessEnvironment &targetEnv)
@@ -142,97 +138,17 @@ void Greeter::stop()
 
     // log message
     qDebug() << "Greeter stopping...";
-    m_auth->stop();
-}
-
-void Greeter::finished()
-{
-    // check flag
-    if (!m_started) {
-        return;
-    }
-
-    // reset flag
-    m_started = false;
-
-    // log message
-    qDebug() << "Greeter stopped.";
-
-    // clean up
-    if (m_process) {
-        m_process->deleteLater();
-        m_process = nullptr;
-    }
-}
-
-void Greeter::onRequestChanged()
-{
-    m_auth->request()->setFinishAutomatically(true);
-}
-
-void Greeter::onSessionStarted(bool success)
-{
-    // set flag
-    m_started = success;
-
-    // log message
-    if (success) {
-        qDebug() << "Greeter session started successfully";
-    } else {
-        qDebug() << "Greeter session failed to start";
-    }
-}
-
-void Greeter::onHelperFinished(Auth::HelperExitStatus status)
-{
-    // reset flag
-    m_started = false;
-
-    // log message
-    qDebug() << "Greeter stopped." << status;
-
-    // clean up
-    m_auth->deleteLater();
-    m_auth = nullptr;
-
-    if (status == Auth::HELPER_DISPLAYSERVER_ERROR) {
-        Q_EMIT displayServerFailed();
-    } else if (status == Auth::HELPER_TTY_ERROR) {
-        Q_EMIT ttyFailed();
-    } else if (status == Auth::HELPER_SESSION_ERROR) {
-        Q_EMIT failed();
+    if (m_sessionRunner && m_sessionRunner->isRunning()) {
+        const bool stopped = m_sessionRunner->stop();
+        Q_UNUSED(stopped);
+        m_started = false;
+        qDebug() << "Greeter stopped.";
     }
 }
 
 bool Greeter::isRunning() const
 {
-    return (m_process && m_process->state() == QProcess::Running) || (m_auth && m_auth->isActive());
-}
-
-void Greeter::onReadyReadStandardError()
-{
-    if (m_process) {
-        qDebug() << "Greeter errors:" << m_process->readAllStandardError().constData();
-    }
-}
-
-void Greeter::onReadyReadStandardOutput()
-{
-    if (m_process) {
-        qDebug() << "Greeter output:" << m_process->readAllStandardOutput().constData();
-    }
-}
-
-void Greeter::authInfo(const QString &message, Auth::Info info)
-{
-    Q_UNUSED(info);
-    qDebug() << "Information from greeter session:" << message;
-}
-
-void Greeter::authError(const QString &message, Auth::Error error)
-{
-    Q_UNUSED(error);
-    qWarning() << "Error from greeter session:" << message;
+    return m_started || (m_sessionRunner && m_sessionRunner->isRunning());
 }
 }
 

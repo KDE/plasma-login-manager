@@ -39,7 +39,6 @@ UserSession::UserSession(HelperApp *parent)
 
 bool UserSession::start()
 {
-    auto helper = qobject_cast<HelperApp *>(parent());
     QProcessEnvironment env = processEnvironment();
 
     bool isWaylandGreeter = false;
@@ -115,6 +114,8 @@ void UserSession::childModifier()
     int vtNumber = processEnvironment().value(QStringLiteral("XDG_VTNR")).toInt();
     QString ttyString = VirtualTerminal::path(vtNumber);
     int vtFd = ::open(qPrintable(ttyString), O_RDWR | O_NOCTTY);
+    qInfo() << "UserSession preparing child for" << processEnvironment().value(QStringLiteral("XDG_SESSION_CLASS")) << "session on" << ttyString
+            << "vtFd" << vtFd;
 
     // when this is true we'll take control of the tty
     bool takeControl = false;

@@ -59,7 +59,6 @@ public:
     QString sessionPath{};
     QString user{};
     bool autologin{false};
-    bool greeter{false};
     QProcessEnvironment environment{};
     qint64 id{0};
     static qint64 lastId;
@@ -282,11 +281,6 @@ bool Auth::autologin() const
     return d->autologin;
 }
 
-bool Auth::isGreeter() const
-{
-    return d->greeter;
-}
-
 const QString &Auth::session() const
 {
     return d->sessionPath;
@@ -338,14 +332,6 @@ void Auth::setAutologin(bool on)
     }
 }
 
-void Auth::setGreeter(bool on)
-{
-    if (on != d->greeter) {
-        d->greeter = on;
-        Q_EMIT greeterChanged();
-    }
-}
-
 void Auth::setSession(const QString &path)
 {
     if (path != d->sessionPath) {
@@ -379,9 +365,6 @@ void Auth::start()
     }
     if (d->autologin) {
         args << QStringLiteral("--autologin");
-    }
-    if (d->greeter) {
-        args << QStringLiteral("--greeter");
     }
     d->child->start(QStringLiteral("%1/plasmalogin-helper").arg(QStringLiteral(LIBEXEC_INSTALL_DIR)), args);
 }

@@ -18,14 +18,12 @@
 #define PLASMALOGIN_GREETER_H
 
 #include <QObject>
-
-#include "Auth.h"
-
-class QProcess;
+#include <QProcessEnvironment>
 
 namespace PLASMALOGIN
 {
 class Display;
+class SessionRunner;
 
 class Greeter : public QObject
 {
@@ -41,16 +39,6 @@ public:
 public slots:
     bool start();
     void stop();
-    void finished();
-
-private slots:
-    void onRequestChanged();
-    void onSessionStarted(bool success);
-    void onHelperFinished(Auth::HelperExitStatus status);
-    void onReadyReadStandardOutput();
-    void onReadyReadStandardError();
-    void authInfo(const QString &message, Auth::Info info);
-    void authError(const QString &message, Auth::Error error);
 
 signals:
     void ttyFailed();
@@ -62,9 +50,7 @@ private:
 
     Display *const m_display{nullptr};
     QString m_socket;
-
-    Auth *m_auth{nullptr};
-    QProcess *m_process{nullptr};
+    SessionRunner *m_sessionRunner{nullptr};
 
     static void insertEnvironmentList(QStringList names, QProcessEnvironment sourceEnv, QProcessEnvironment &targetEnv);
 };
