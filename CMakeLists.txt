@@ -58,46 +58,36 @@ find_package(PkgConfig)
 # XAU
 pkg_check_modules(LIBXAU REQUIRED "xau")
 
-# systemd
-if(NOT NO_SYSTEMD AND NOT USE_ELOGIND)
-    pkg_check_modules(SYSTEMD "systemd")
-endif()
+pkg_check_modules(SYSTEMD REQUIRED "systemd")
 
-if(SYSTEMD_FOUND)
-    add_definitions(-DHAVE_SYSTEMD)
-    set(CMAKE_AUTOMOC_MOC_OPTIONS -DHAVE_SYSTEMD)
-
-    # libsystemd-journal was merged into libsystemd in 209
-    if(${SYSTEMD_VERSION} VERSION_LESS 209)
-        pkg_check_modules(JOURNALD "libsystemd-journal")
-    else()
-        pkg_check_modules(JOURNALD "libsystemd")
-    endif()
-
-    if(ENABLE_JOURNALD)
-        if(JOURNALD_FOUND)
-            add_definitions(-DHAVE_JOURNALD)
-            set(CMAKE_AUTOMOC_MOC_OPTIONS -DHAVE_JOURNALD)
-        else()
-            message(WARNING "Disable journald support for lack of libsystemd-journal")
-        endif()
-    endif()
-
-    if (NOT DEFINED SYSTEMD_SYSTEM_UNIT_DIR)
-        pkg_get_variable(SYSTEMD_SYSTEM_UNIT_DIR systemd systemdsystemunitdir)
-    endif()
-
-    if (NOT DEFINED SYSTEMD_SYSUSERS_DIR)
-        pkg_get_variable(SYSTEMD_SYSUSERS_DIR systemd sysusersdir)
-    endif()
-
-    if (NOT DEFINED SYSTEMD_TMPFILES_DIR)
-        pkg_get_variable(SYSTEMD_TMPFILES_DIR systemd tmpfilesdir)
-    endif()
-
+# libsystemd-journal was merged into libsystemd in 209
+if(${SYSTEMD_VERSION} VERSION_LESS 209)
+    pkg_check_modules(JOURNALD "libsystemd-journal")
 else()
-    set(SYSTEMD_FOUND 0)
+    pkg_check_modules(JOURNALD "libsystemd")
 endif()
+
+if(ENABLE_JOURNALD)
+    if(JOURNALD_FOUND)
+        add_definitions(-DHAVE_JOURNALD)
+        set(CMAKE_AUTOMOC_MOC_OPTIONS -DHAVE_JOURNALD)
+    else()
+        message(WARNING "Disable journald support for lack of libsystemd-journal")
+    endif()
+endif()
+
+if (NOT DEFINED SYSTEMD_SYSTEM_UNIT_DIR)
+    pkg_get_variable(SYSTEMD_SYSTEM_UNIT_DIR systemd systemdsystemunitdir)
+endif()
+
+if (NOT DEFINED SYSTEMD_SYSUSERS_DIR)
+    pkg_get_variable(SYSTEMD_SYSUSERS_DIR systemd sysusersdir)
+endif()
+
+if (NOT DEFINED SYSTEMD_TMPFILES_DIR)
+    pkg_get_variable(SYSTEMD_TMPFILES_DIR systemd tmpfilesdir)
+endif()
+
 add_feature_info("systemd" SYSTEMD_FOUND "systemd support")
 add_feature_info("journald" JOURNALD_FOUND "journald support")
 

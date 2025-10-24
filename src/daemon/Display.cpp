@@ -358,9 +358,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     env.insert(QStringLiteral("XDG_SEAT"), seat()->name());
     if (m_sessionTerminalId > 0)
         env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_sessionTerminalId));
-#ifdef HAVE_SYSTEMD
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
-#endif
 
     if (session.xdgSessionType() == QLatin1String("x11")) {
         m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
