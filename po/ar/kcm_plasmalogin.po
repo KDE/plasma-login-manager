@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-21 00:44+0000\n"
-"PO-Revision-Date: 2025-08-04 14:11+0400\n"
+"PO-Revision-Date: 2025-10-23 08:59+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -21,23 +21,27 @@ msgstr ""
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
-msgstr ""
+msgstr "تعذر حفظ الإعدادات بسبب عدم إمكانية إنشاء دليل مؤقت."
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
-msgstr ""
+msgstr "تعذر حفظ الإعدادات بسبب تعذر فتح ملف الضبط."
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"تعذر مزامنة إعدادات بلازما لأن المستخدم ”plasmalogin“ غير موجود. يرجى التحقق "
+"من تثبيت Plasma Login."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"تعذر تصفير إعدادات بلازما لأن المستخدم ”plasmalogin“ غير موجود. يرجى التحقق "
+"من تثبيت Plasma Login."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -87,13 +91,7 @@ msgstr ""
 "سيؤدي هذا إلى جعل شاشة ولوج بلازما تعكس تخصيصاتك لإعدادات البلازما التالية:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -103,8 +101,8 @@ msgid ""
 msgstr ""
 "<para><list><item>تشكيلة الألوان</item><item>سمة المؤشر وحجمه</"
 "item><item>الخط و إظهاره</item><item>تفضيلات قفل الأرقام</item><item>سمة "
-"بلازما</item><item>تحجيم الخطوط لكل بوصة</item><item>ضبط الشاشة (ويلاند "
-"فقط)</item></list></para>"
+"بلازما</item><item>تحجيم الخطوط لكل بوصة</item><item>ضبط الشاشة</item></"
+"list></para>"
 
 #: ui/main.qml:67
 #, kde-format
