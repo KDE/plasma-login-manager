@@ -53,14 +53,11 @@ public:
     int converse(int n, const struct pam_message **msg, struct pam_response **resp);
     void setAutologin(bool on = true);
     void setGreeter(bool on = true);
+    QString userName();
 
 public slots:
     bool start(const QString &user = QString());
     bool authenticate();
-    bool openSession();
-    bool closeSession();
-
-    QString userName();
 
 private:
     HelperApp *m_app{nullptr};

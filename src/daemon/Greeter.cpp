@@ -22,6 +22,7 @@
 #include "Display.h"
 #include "DisplayManager.h"
 #include "Seat.h"
+#include "SessionRunner.h"
 
 #include <QStandardPaths>
 #include <QtCore/QDebug>
@@ -63,15 +64,7 @@ bool Greeter::start()
 
     Q_ASSERT(m_display);
     {
-        // authentication
-        m_auth = new Auth(this);
-        m_auth->setVerbose(true);
-        connect(m_auth, &Auth::requestChanged, this, &Greeter::onRequestChanged);
-        connect(m_auth, &Auth::sessionStarted, this, &Greeter::onSessionStarted);
-        connect(m_auth, &Auth::finished, this, &Greeter::onHelperFinished);
-        connect(m_auth, &Auth::info, this, &Greeter::authInfo);
-        connect(m_auth, &Auth::error, this, &Greeter::authError);
-
+        SessionRunner session;
         // greeter environment
         QProcessEnvironment env;
         QProcessEnvironment sysenv = QProcessEnvironment::systemEnvironment();
@@ -108,16 +101,16 @@ bool Greeter::start()
         env.insert(QStringLiteral("XDG_SESSION_TYPE"), m_display->sessionType());
         env.insert(QStringLiteral("SDDM_SOCKET"), m_socket);
 
-        m_auth->insertEnvironment(env);
+        session.insertEnvironment(env);
 
         // log message
         qDebug() << "Greeter starting...";
 
         // start greeter
-        m_auth->setUser(QStringLiteral("plasmalogin"));
-        m_auth->setGreeter(true);
-        m_auth->setSession(greeterCommand);
-        m_auth->start();
+        session.setUser(QStringLiteral("plasmalogin"));
+        session.setGreeter(true);
+        session.setExecutable(greeterCommand);
+        session.start();
     }
 
     // return success

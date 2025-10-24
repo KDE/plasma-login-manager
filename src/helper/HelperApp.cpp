@@ -8,12 +8,11 @@
 
 #include "HelperApp.h"
 #include "Configuration.h"
+#include "MessageHandler.h"
 #include "SafeDataStream.h"
-#include "UserSession.h"
+#include "VirtualTerminal.h"
 #include "backend/PamBackend.h"
 
-#include "MessageHandler.h"
-#include "VirtualTerminal.h"
 #include <KSignalHandler>
 
 #include <QtCore/QDebug>
@@ -34,23 +33,16 @@ namespace PLASMALOGIN
 HelperApp::HelperApp(int &argc, char **argv)
     : QCoreApplication(argc, argv)
     , m_backend(new PamBackend(this))
-    , m_session(new UserSession(this))
     , m_socket(new QLocalSocket(this))
 {
     qInstallMessageHandler(HelperMessageHandler);
-    auto sig = KSignalHandler::self();
-    sig->watchSignal(SIGTERM);
-    QObject::connect(sig, &KSignalHandler::signalReceived, m_session, [](int s) {
-        if (s == SIGTERM) {
-            QCoreApplication::instance()->exit(-1);
-        }
-    });
 
     QTimer::singleShot(0, this, SLOT(setUp()));
 }
 
 void HelperApp::setUp()
 {
+    qDebug() << "set up";
     const QStringList args = QCoreApplication::arguments();
     QString server;
     int pos;
@@ -73,15 +65,6 @@ void HelperApp::setUp()
         m_id = QString(args[pos + 1]).toLongLong();
     }
 
-    if ((pos = args.indexOf(QStringLiteral("--start"))) >= 0) {
-        if (pos >= args.length() - 1) {
-            qCritical() << "This application is not supposed to be executed manually";
-            exit(Auth::HELPER_OTHER_ERROR);
-            return;
-        }
-        m_session->setPath(args[pos + 1]);
-    }
-
     if ((pos = args.indexOf(QStringLiteral("--user"))) >= 0) {
         if (pos >= args.length() - 1) {
             qCritical() << "This application is not supposed to be executed manually";
@@ -91,29 +74,13 @@ void HelperApp::setUp()
         m_user = args[pos + 1];
     }
 
-    if ((pos = args.indexOf(QStringLiteral("--display-server"))) >= 0) {
-        if (pos >= args.length() - 1) {
-            qCritical() << "This application is not supposed to be executed manually";
-            exit(Auth::HELPER_OTHER_ERROR);
-            return;
-        }
-    }
-    if ((pos = args.indexOf(QStringLiteral("--autologin"))) >= 0) {
-        m_backend->setAutologin(true);
-    }
-
-    if ((pos = args.indexOf(QStringLiteral("--greeter"))) >= 0) {
-        m_backend->setGreeter(true);
-    }
-
-    if (server.isEmpty() || m_id <= 0) {
+    if (m_id <= 0) {
         qCritical() << "This application is not supposed to be executed manually";
         exit(Auth::HELPER_OTHER_ERROR);
         return;
     }
 
     connect(m_socket, &QLocalSocket::connected, this, &HelperApp::doAuth);
-    connect(m_session, &UserSession::finished, this, &HelperApp::sessionFinished);
     m_socket->connectToServer(server, QIODevice::ReadWrite | QIODevice::Unbuffered);
 }
 
@@ -127,41 +94,22 @@ void HelperApp::doAuth()
     }
 
     if (!m_backend->start(m_user)) {
-        authenticated(QString());
         exit(Auth::HELPER_AUTH_ERROR);
         return;
     }
 
     Q_ASSERT(getuid() == 0);
-    if (!m_backend->authenticate()) {
-        authenticated(QString());
-        exit(Auth::HELPER_AUTH_ERROR);
-        return;
-    }
-
-    m_user = m_backend->userName();
-    QProcessEnvironment env = authenticated(m_user);
-
-    if (!m_session->path().isEmpty()) {
-        env.insert(m_session->processEnvironment());
-        m_session->setProcessEnvironment(env);
-
-        if (!m_backend->openSession()) {
-            sessionOpened(false);
-            exit(Auth::HELPER_SESSION_ERROR);
-            return;
+    if (m_backend->authenticate()) {
+        str << Msg::AUTHENTICATED << m_user;
+        str.send();
+        if (str.status() != QDataStream::Ok) {
+            qCritical() << "Couldn't write initial message:" << str.status();
         }
 
-        sessionOpened(true);
-    } else {
         exit(Auth::HELPER_SUCCESS);
+        return;
     }
-    return;
-}
-
-void HelperApp::sessionFinished(int status)
-{
-    exit(status);
+    exit(Auth::HELPER_SUCCESS);
 }
 
 void HelperApp::info(const QString &message, Auth::Info type)
@@ -196,67 +144,8 @@ Request HelperApp::request(const Request &request)
     return response;
 }
 
-QProcessEnvironment HelperApp::authenticated(const QString &user)
-{
-    Msg m = Msg::MSG_UNKNOWN;
-    QProcessEnvironment env;
-    SafeDataStream str(m_socket);
-    str << Msg::AUTHENTICATED << user;
-    str.send();
-    if (user.isEmpty()) {
-        return env;
-    }
-    str.receive();
-    str >> m >> env;
-    if (m != AUTHENTICATED) {
-        env = QProcessEnvironment();
-        qCritical() << "Received a wrong opcode instead of AUTHENTICATED:" << m;
-    }
-    return env;
-}
-
-void HelperApp::sessionOpened(bool success)
-{
-    Msg m = Msg::MSG_UNKNOWN;
-    SafeDataStream str(m_socket);
-    str << Msg::SESSION_STATUS << success;
-    str.send();
-    str.receive();
-    str >> m;
-    if (m != SESSION_STATUS) {
-        qCritical() << "Received a wrong opcode instead of SESSION_STATUS:" << m;
-    }
-}
-
-void HelperApp::displayServerStarted(const QString &displayName)
-{
-    Msg m = Msg::MSG_UNKNOWN;
-    SafeDataStream str(m_socket);
-    str << Msg::DISPLAY_SERVER_STARTED << displayName;
-    str.send();
-    str.receive();
-    str >> m;
-    if (m != DISPLAY_SERVER_STARTED) {
-        qCritical() << "Received a wrong opcode instead of DISPLAY_SERVER_STARTED:" << m;
-    }
-}
-
-UserSession *HelperApp::session()
-{
-    return m_session;
-}
-
-const QString &HelperApp::user() const
-{
-    return m_user;
-}
-
 HelperApp::~HelperApp()
 {
-    Q_ASSERT(getuid() == 0);
-
-    m_session->stop();
-    m_backend->closeSession();
 }
 }
 

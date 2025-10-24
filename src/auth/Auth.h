@@ -41,7 +41,7 @@ class Auth : public QObject
 {
     Q_OBJECT
 public:
-    explicit Auth(const QString &user = QString(), const QString &session = QString(), bool autologin = false, QObject *parent = 0, bool verbose = false);
+    explicit Auth(const QString &user = QString(), QObject *parent = 0, bool verbose = false);
     explicit Auth(QObject *parent);
     ~Auth();
 
@@ -74,8 +74,6 @@ public:
 
     static void registerTypes();
 
-    bool autologin() const;
-    bool isGreeter() const;
     bool verbose() const;
     const QString &user() const;
     const QString &session() const;
@@ -85,33 +83,6 @@ public:
      */
     bool isActive() const;
 
-    /**
-     * If starting a session, you will probably want to provide some basic env variables for the session.
-     * This only inserts the variables - if the current key already had a value, it will be overwritten.
-     * User-specific data such as $HOME is generated automatically.
-     * @param env the environment
-     */
-    void insertEnvironment(const QProcessEnvironment &env);
-
-    /**
-     * Works the same as \ref insertEnvironment but only for one key-value pair
-     * @param key key
-     * @param value value
-     */
-    void insertEnvironment(const QString &key, const QString &value);
-
-    /**
-     * Set mode to autologin.
-     * Ignored if session is not started
-     * @param on true if should autologin
-     */
-    void setAutologin(bool on = true);
-
-    /**
-     * Set mode to greeter
-     * This will bypass authentication checks
-     */
-    void setGreeter(bool on = true);
 
     /**
      * Forwards the output of the underlying authenticator to the current process
@@ -125,11 +96,6 @@ public:
      */
     void setUser(const QString &user);
 
-    /**
-     * Set the session to be started after authenticating.
-     * @param path Path of the session executable to be started
-     */
-    void setSession(const QString &path);
 
 public Q_SLOTS:
     /**

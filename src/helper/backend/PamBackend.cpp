@@ -10,8 +10,6 @@
 #include "Auth.h"
 #include "HelperApp.h"
 #include "PamHandle.h"
-#include "UserSession.h"
-#include "VirtualTerminal.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QProcessEnvironment>
@@ -239,71 +237,6 @@ bool PamBackend::authenticate()
         m_app->error(m_pam->errorString(), Auth::ERROR_AUTHENTICATION);
         return false;
     }
-    return true;
-}
-
-bool PamBackend::openSession()
-{
-    if (!m_pam->setCred(PAM_ESTABLISH_CRED)) {
-        m_app->error(m_pam->errorString(), Auth::ERROR_AUTHENTICATION);
-        return false;
-    }
-
-    QProcessEnvironment sessionEnv = m_app->session()->processEnvironment();
-    const auto sessionType = sessionEnv.value(QStringLiteral("XDG_SESSION_TYPE"));
-    const auto sessionClass = sessionEnv.value(QStringLiteral("XDG_SESSION_CLASS"));
-    if (sessionEnv.contains(QStringLiteral("XDG_VTNR"))) {
-        QString tty = VirtualTerminal::path(sessionEnv.value(QStringLiteral("XDG_VTNR")).toInt());
-        m_pam->setItem(PAM_TTY, qPrintable(tty));
-    }
-    if (sessionType == QLatin1String("x11") && (sessionClass == QLatin1String("user"))) {
-        QString display = sessionEnv.value(QStringLiteral("DISPLAY"));
-        if (!display.isEmpty()) {
-#ifdef PAM_XDISPLAY
-            m_pam->setItem(PAM_XDISPLAY, qPrintable(display));
-#else
-            m_pam->setItem(PAM_TTY, qPrintable(display));
-#endif
-        }
-    }
-
-    if (!m_pam->putEnv(sessionEnv)) {
-        m_app->error(m_pam->errorString(), Auth::ERROR_INTERNAL);
-        return false;
-    }
-    if (!m_pam->openSession()) {
-        m_app->error(m_pam->errorString(), Auth::ERROR_INTERNAL);
-        return false;
-    }
-    sessionEnv.insert(m_pam->getEnv());
-    m_app->session()->setProcessEnvironment(sessionEnv);
-
-    QProcessEnvironment env = m_app->session()->processEnvironment();
-    struct passwd *pw;
-    pw = getpwnam(qPrintable(m_app->user()));
-    if (pw) {
-        env.insert(QStringLiteral("HOME"), QString::fromLocal8Bit(pw->pw_dir));
-        env.insert(QStringLiteral("PWD"), QString::fromLocal8Bit(pw->pw_dir));
-        env.insert(QStringLiteral("SHELL"), QString::fromLocal8Bit(pw->pw_shell));
-        env.insert(QStringLiteral("USER"), QString::fromLocal8Bit(pw->pw_name));
-        env.insert(QStringLiteral("LOGNAME"), QString::fromLocal8Bit(pw->pw_name));
-    }
-    if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
-        env.insert(QStringLiteral("QT_NO_XDG_DESKTOP_PORTAL"), QStringLiteral("1"));
-    }
-    m_app->session()->setProcessEnvironment(env);
-    return m_app->session()->start();
-}
-
-bool PamBackend::closeSession()
-{
-    if (m_pam->isOpen()) {
-        qDebug() << "[PAM] Closing session";
-        m_pam->closeSession();
-        m_pam->setCred(PAM_DELETE_CRED);
-        return true;
-    }
-    qWarning() << "[PAM] Asked to close the session but it wasn't previously open";
     return true;
 }
 
