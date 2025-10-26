@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-21 00:44+0000\n"
-"PO-Revision-Date: 2025-07-26 20:07+0200\n"
+"PO-Revision-Date: 2025-10-25 08:46+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
 "Language: pl\n"
@@ -16,28 +16,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 25.04.3\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
+"Nie można zapisać ustawień, bo nie można utworzyć katalogu tymczasowego."
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
-msgstr ""
+msgstr "Nie można zapisać ustawień, bo nie można otworzyć pliku ustawień."
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Nie można zsynchronizować ustawień Plazmy, bo użytkownik 'plasmalogin' nie "
+"istnieje. Upewnij się, że masz poprawnie wgrane Plasma Login."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Nie można wyzerować ustawień Plazmy, bo użytkownik 'plasmalogin' nie "
+"istnieje. Upewnij się, że masz poprawnie wgrane Plasma Login."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -88,13 +93,7 @@ msgstr ""
 "w ustawieniach Plazmy:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -103,9 +102,9 @@ msgid ""
 "configuration</item></list></para>"
 msgstr ""
 "<para><list><item>Zestaw kolorów</item><item>Zestaw wskaźników</"
-"item><item>Czcionka</item><item>wyświetlanie czcionki</item><item>ustawienie "
+"item><item>Czcionka</item><item>Wyświetlanie czcionki</item><item>Ustawienie "
 "klawisza NumLock</item><item>Wygląd Plazmy</item><item>Skalowanie DPI</"
-"item><item>Ustawienia ekranu (tylko Wayland)</item></list></para>"
+"item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
