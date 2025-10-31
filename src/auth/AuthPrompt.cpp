@@ -69,3 +69,5 @@ bool AuthPrompt::hidden() const
     return d->hidden;
 }
 }
+
+#include "moc_AuthPrompt.cpp"

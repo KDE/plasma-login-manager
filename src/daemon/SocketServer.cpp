@@ -166,3 +166,5 @@ void SocketServer::informationMessage(QLocalSocket *socket, const QString &messa
     SocketWriter(socket) << quint32(DaemonMessages::InformationMessage) << message;
 }
 }
+
+#include "moc_SocketServer.cpp"

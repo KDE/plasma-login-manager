@@ -232,3 +232,5 @@ const QString &DisplayManagerSession::User() const
     return m_user;
 }
 }
+
+#include "moc_DisplayManager.cpp"

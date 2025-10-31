@@ -219,3 +219,5 @@ void XOrgUserHelper::displayFinished()
 }
 
 } // namespace PLASMALOGIN
+
+#include "moc_xorguserhelper.cpp"

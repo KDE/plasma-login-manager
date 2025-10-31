@@ -100,3 +100,5 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
 }
 
 #include "wallpaperapp.moc"
+
+#include "moc_wallpaperapp.cpp"

@@ -111,3 +111,5 @@ bool Backend::closeSession()
     return true;
 }
 }
+
+#include "moc_Backend.cpp"

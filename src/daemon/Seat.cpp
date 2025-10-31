@@ -153,3 +153,5 @@ bool Seat::canTTY()
     return m_name.compare(QStringLiteral("seat0"), Qt::CaseInsensitive) == 0 && access(VirtualTerminal::defaultVtPath, F_OK) == 0;
 }
 }
+
+#include "moc_Seat.cpp"

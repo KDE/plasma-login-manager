@@ -324,3 +324,5 @@ void UserSession::setupChildProcess()
 }
 
 }
+
+#include "moc_UserSession.cpp"

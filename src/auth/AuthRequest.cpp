@@ -112,3 +112,5 @@ Request AuthRequest::request() const
 }
 
 #include "AuthRequest.moc"
+
+#include "moc_AuthRequest.cpp"

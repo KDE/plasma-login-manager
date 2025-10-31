@@ -193,3 +193,5 @@ void SignalHandler::handleSigCustom()
 }
 
 }
+
+#include "moc_SignalHandler.cpp"

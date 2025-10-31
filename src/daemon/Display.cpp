@@ -444,3 +444,5 @@ void Display::slotSessionStarted(bool success)
     }
 }
 }
+
+#include "moc_Display.cpp"

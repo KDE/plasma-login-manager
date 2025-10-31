@@ -399,3 +399,5 @@ void Auth::stop()
 }
 
 #include "Auth.moc"
+
+#include "moc_Auth.cpp"

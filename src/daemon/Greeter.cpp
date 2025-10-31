@@ -240,3 +240,5 @@ void Greeter::authError(const QString &message, Auth::Error error)
     qWarning() << "Error from greeter session:" << message;
 }
 }
+
+#include "moc_Greeter.cpp"

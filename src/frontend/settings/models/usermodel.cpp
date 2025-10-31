@@ -120,3 +120,5 @@ void UserModel::populate()
 
     endResetModel();
 }
+
+#include "moc_usermodel.cpp"

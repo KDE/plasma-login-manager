@@ -353,3 +353,5 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
     return PAM_SUCCESS;
 }
 }
+
+#include "moc_PamBackend.cpp"

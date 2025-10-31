@@ -228,3 +228,5 @@ void PLASMALOGIN::SeatManager::logindSeatRemoved(const QString &name, const QDBu
 }
 
 #include "SeatManager.moc"
+
+#include "moc_SeatManager.cpp"

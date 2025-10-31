@@ -63,3 +63,5 @@ QString PlasmaLoginSettingsDefaults::defaultWallpaperPluginId()
 {
     return s_defaultWallpaperPluginId;
 }
+
+#include "moc_plasmaloginsettingsdefaults.cpp"

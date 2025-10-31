@@ -41,3 +41,5 @@ void MockGreeterProxy::login(const QString &user, const QString &password, const
         QTimer::singleShot(100, this, &MockGreeterProxy::loginFailed);
     }
 }
+
+#include "moc_MockGreeterProxy.cpp"

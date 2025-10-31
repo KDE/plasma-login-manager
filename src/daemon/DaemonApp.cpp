@@ -142,3 +142,5 @@ int main(int argc, char **argv)
     // run application
     return app.exec();
 }
+
+#include "moc_DaemonApp.cpp"

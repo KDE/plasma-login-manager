@@ -262,3 +262,5 @@ int main(int argc, char **argv)
     PLASMALOGIN::HelperApp app(argc, argv);
     return app.exec();
 }
+
+#include "moc_HelperApp.cpp"

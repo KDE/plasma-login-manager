@@ -202,3 +202,5 @@ void SessionModel::addSession(const QString path, const Session::Type type)
     KDesktopFile desktop(path); // NOTE: localises for us
     m_sessions << Session(type, path, desktop.readName(), desktop.readComment());
 }
+
+#include "moc_sessionmodel.cpp"

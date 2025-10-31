@@ -123,3 +123,5 @@ void GreeterProxy::readyRead()
     }
 }
 }
+
+#include "moc_GreeterProxy.cpp"
