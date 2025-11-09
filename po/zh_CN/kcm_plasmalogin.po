@@ -21,23 +21,27 @@ msgstr ""
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
-msgstr ""
+msgstr "无法保存设置，因为无法创建临时目录。"
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
-msgstr ""
+msgstr "无法保存设置，因为无法打开配置文件。"
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"无法同步 Plasma 设置，因为用户“plasmalogin”不存在。请检查您的 Plasma 登录程序"
+"是否正确安装。"
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"无法重置 Plasma 设置，因为不存在“plasmalogin”用户。请检查您的 Plasma 登录程序"
+"是否正确安装。"
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -86,13 +90,7 @@ msgid ""
 msgstr "这将让 Plasma 登录屏幕使用您对下列 Plasma 设置的自定义选项："
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -102,7 +100,7 @@ msgid ""
 msgstr ""
 "<para><list><item>配色方案</item><item>光标方案和大小</item><item>字体和字体"
 "渲染方式</item><item>数字键锁定设置</item><item>Plasma 主题</item><item>缩放 "
-"DPI</item><item>屏幕配置 (仅适用于 Wayland)</item></list></para>"
+"DPI</item><item>屏幕配置</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
