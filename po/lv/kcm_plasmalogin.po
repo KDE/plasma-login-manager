@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-10-21 00:44+0000\n"
-"PO-Revision-Date: 2025-08-22 15:44+0300\n"
+"PO-Revision-Date: 2025-11-11 19:18+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
 "Language: lv\n"
@@ -16,28 +16,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 25.08.0\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
-msgstr ""
+msgstr "Neizdodas saglabāt iestatījumus, jo neizdevās izveidot pagaidu mapi."
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
-msgstr ""
+msgstr "Neizdevās saglabāt iestatījumus, jo nevarēja atvērt konfigurāciju."
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Neizdodas sinhronizēt „Plasma“ iestatījumus, jo „plasmalogin“ lietotājs "
+"nepastāv. Pārbaudiet „Plasma Login“ instalāciju."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Neizdodas atiestatīt „Plasma“ iestatījumus, jo „plasmalogin“ lietotājs "
+"nepastāv. Pārbaudiet „Plasma Login“ instalāciju."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -88,13 +92,7 @@ msgstr ""
 "pielāgojumus šādiem „Plasma“ iestatījumiem:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -105,7 +103,7 @@ msgstr ""
 "<para><list><item>Krāsu shēma</item><item>Kursora motīvs un izmērs</"
 "item><item>Fonti un fontu atveidošana</item><item>„NumLock“ taustiņa "
 "iestatījums</item><item>„Plasma“ motīvs</item><item>DPI mērogojums</"
-"item><item>Ekrāna konfigurācija (tikai „Wayland“)</item></list></para>"
+"item><item>Ekrāna konfigurācija</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
