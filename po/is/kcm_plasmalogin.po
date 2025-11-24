@@ -1,0 +1,204 @@
+# Copyright (C) 2025 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2025 Sveinn í Felli <sv1@fellsnet.is>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-11-17 11:54+0000\n"
+"PO-Revision-Date: 2025-11-23 18:21+0000\n"
+"Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
+"Language-Team: Icelandic\n"
+"Language: is\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 23.08.5\n"
+
+#: kcm.cpp:77
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+"Tókst ekki að vista stillingar þar sem ekki tókst að útbúa bráðabirgðamöppu."
+
+#: kcm.cpp:108
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+"Tókst ekki að vista stillingar þar sem ekki tókst að opna stillingaskrána."
+
+#: kcm.cpp:137
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"Tókst ekki að samstilla stillingar Plasma þar sem notandinn 'plasmalogin' er "
+"ekki til. Athugaðu uppsetninguna þína á Plasma Login."
+
+#: kcm.cpp:188
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"Tókst ekki að endurstilla stillingar Plasma þar sem notandinn 'plasmalogin' "
+"er ekki til. Athugaðu uppsetninguna þína á Plasma Login."
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Útlit"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Klukka"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr "Sýna &klukku"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Tegund bakgrunnsmyndar:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Virkja stillingar Plasma…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Stilla útlit…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Virkja stillingar Plasma"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Þetta mun láta innskráningarglugga Plasma endurspegla sérstillingar þínar á "
+"eftirfarandi stillingum Plasma:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration</item></list></para>"
+msgstr ""
+"<para><list><item>Litastef</item><item>Bendilþema og stærð</item><item>Letur "
+"og myndgerð leturs</item><item>Kjörstilling NumLock</item><item>Plasma-þema</"
+"item><item>Kvörðun PÁT/DPI</item><item>Skjástillingar</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Virkja"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Frumstilla á sjálfgefnar stillingar"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Sjálfvirk innskráning"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Skrá sjálfkrafa inn:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "sem notandi:"
+
+#: ui/main.qml:168
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "með setu:"
+
+#: ui/main.qml:201
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+
+#: ui/main.qml:206
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "Opna stillingar KDE-veskis"
+
+#: ui/main.qml:213
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Skrá strax aftur inn eftir að hafa skráð út"
+
+#: ui/main.qml:224
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Sjálfgefin gildi"
+
+#: ui/main.qml:229
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Sjálfgefinn notandi:"
+
+#: ui/main.qml:235
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Síðast innskráður notandi"
+
+#: ui/main.qml:306
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Sjálfgefin seta:"
+
+#: ui/main.qml:312
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Síðasta innskráða seta"
