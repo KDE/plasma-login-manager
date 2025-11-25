@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.22)
 
 project(PLASMALOGIN)
 
@@ -13,6 +13,7 @@ add_compile_definitions("PLASMALOGIN_VERSION=\"${PLASMALOGIN_VERSION_STRING}\"")
 option(ENABLE_JOURNALD "Enable logging to journald" ON)
 option(NO_SYSTEMD "Disable systemd support" OFF)
 option(USE_ELOGIND "Use elogind instead of logind" OFF)
+option(INSTALL_PAM_CONFIGURATION "Install PAM configuration files" ON)
 
 # Version settings
 set(PROJECT_DEP_VERSION "6.3.0")
@@ -102,6 +103,9 @@ if (SYSTEMD_FOUND)
 else()
     set(RUNTIME_DIR_DEFAULT "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/run/plasmalogin")
 endif()
+
+# Extra default install directories
+set(PAM_CONFIG_DIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/pam.d" CACHE PATH "Install directory for PAM configuration")
 
 # Set constants
 set(DATA_INSTALL_DIR            "${CMAKE_INSTALL_FULL_DATADIR}/plasmalogin"                CACHE PATH      "System application data install directory")

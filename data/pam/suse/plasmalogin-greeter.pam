@@ -1,0 +1,10 @@
+#%PAM-1.0
+# PAM configuration used only for the greeter session
+auth     required       pam_permit.so
+account  required       pam_permit.so
+password required       pam_deny.so
+session  required       pam_loginuid.so
+session  optional       pam_keyinit.so revoke
+# We need pam_systemd, so can't use -nologin here.
+session  substack       common-session
+

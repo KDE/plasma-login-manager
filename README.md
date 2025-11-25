@@ -49,14 +49,6 @@ sudo systemctl disable sddm
 sudo systemctl enable plasmalogin
 ```
 
-- Copy PAM files:
-
-```bash
-sudo cp /etc/pam.d/sddm /etc/pam.d/plasmalogin
-sudo cp /etc/pam.d/sddm-autologin /etc/pam.d/plasmalogin-autologin
-sudo cp /etc/pam.d/sddm-greeter /etc/pam.d/plasmalogin-greeter
-```
-
 - …and finally reboot.
 
 ### Configuration

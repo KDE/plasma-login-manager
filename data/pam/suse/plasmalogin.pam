@@ -1,0 +1,12 @@
+#%PAM-1.0
+auth     requisite      pam_nologin.so
+auth     substack       common-auth
+account  substack       common-account
+account  include        postlogin-account
+password substack       common-password
+password include        postlogin-password
+session  required       pam_loginuid.so
+session  optional       pam_keyinit.so revoke force
+session  substack       common-session
+session  include        postlogin-session
+
