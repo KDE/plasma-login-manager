@@ -105,7 +105,7 @@ else()
 endif()
 
 # Extra default install directories
-set(PAM_CONFIG_DIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/pam.d" CACHE PATH "Install directory for PAM configuration")
+set(PAM_CONFIG_DIR "${CMAKE_INSTALL_PREFIX}/lib/pam.d" CACHE PATH "Install directory for PAM configuration")
 
 # Set constants
 set(DATA_INSTALL_DIR            "${CMAKE_INSTALL_FULL_DATADIR}/plasmalogin"                CACHE PATH      "System application data install directory")
