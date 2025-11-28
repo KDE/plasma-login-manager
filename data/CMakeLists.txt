@@ -48,7 +48,7 @@ if(INSTALL_PAM_CONFIGURATION)
     endif()
 
     # Install pam files
-    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-autologin.pam DESTINATION ${PAM_CONFIG_DIR} RENAME plasmalogin-autologin)
-    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-greeter.pam DESTINATION ${PAM_CONFIG_DIR} RENAME plasmalogin-greeter)
-    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin.pam DESTINATION ${PAM_CONFIG_DIR} RENAME plasmalogin)
+    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-autologin DESTINATION ${PAM_CONFIG_DIR})
+    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-greeter DESTINATION ${PAM_CONFIG_DIR})
+    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin DESTINATION ${PAM_CONFIG_DIR})
 endif()
