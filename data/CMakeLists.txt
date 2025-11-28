@@ -38,6 +38,12 @@ if(INSTALL_PAM_CONFIGURATION)
         elseif("suse" IN_LIST OS_ID_LIST)
            message(STATUS "Installing PAM configuration for SUSE Linux-like systems.")
            set(PAM_OS_CONFIGURATION "suse" CACHE INTERNAL "Auto-detected SUSE Linux type system" FORCE)
+        elseif("kde-linux" IN_LIST OS_ID_LIST)
+           message(STATUS "Installing PAM configuration for KDE Linux-like systems.")
+           set(PAM_OS_CONFIGURATION "kde-linux" CACHE INTERNAL "Auto-detected KDE Linux type system" FORCE)
+        elseif("arch" IN_LIST OS_ID_LIST)
+           message(STATUS "Installing PAM configuration for Arch Linux-like systems.")
+           set(PAM_OS_CONFIGURATION "arch" CACHE INTERNAL "Auto-detected Arch Linux type system" FORCE)
         else()
            message(FATAL_ERROR
                "Unknown operating system detected!\n"
