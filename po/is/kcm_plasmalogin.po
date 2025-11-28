@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:54+0000\n"
-"PO-Revision-Date: 2025-11-23 18:21+0000\n"
+"PO-Revision-Date: 2025-11-27 07:31+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -89,7 +89,7 @@ msgid ""
 "This will make the Plasma login screen reflect your customizations to the "
 "following Plasma settings:"
 msgstr ""
-"Þetta mun láta innskráningarglugga Plasma endurspegla sérstillingar þínar á "
+"Þetta mun láta innskráningarskjá Plasma endurspegla sérstillingar þínar á "
 "eftirfarandi stillingum Plasma:"
 
 #: ui/main.qml:66
@@ -111,6 +111,8 @@ msgid ""
 "Please note that theme files must be installed globally to be reflected on "
 "the Plasma login screen."
 msgstr ""
+"Athugaðu að þemaskrár verða að vera settar upp fyrir allt kerfið svo þær "
+"geti haft áhrif á innskráningarskjá Plasma."
 
 #: ui/main.qml:71
 #, kde-format
@@ -161,6 +163,11 @@ msgid ""
 "this, you can change the wallet to have a blank password. Note that this is "
 "insecure and should only be done in a trusted environment."
 msgstr ""
+"Sjálfvirk innskráning styður ekki að aflæsa KDE-veskinu þínu sjálfkrafa, "
+"þannig að spurt verður um aflæsingu á því í hvert skipti sem skráð er inn. "
+"<nl/><nl/>Til að koma í veg fyrir þetta er hægt að láta veskið vera með tómt "
+"lykilorð. Slíkt er hinsvegar óöruggt og ætti ekki að gera nema í alveg "
+"öruggu umhverfi."
 
 #: ui/main.qml:206
 #, kde-format
