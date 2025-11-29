@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:54+0000\n"
-"PO-Revision-Date: 2025-09-27 14:01+0100\n"
+"PO-Revision-Date: 2025-11-27 12:33+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -84,7 +84,7 @@ msgstr "Caps Lock e activ"
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr ""
+msgstr "Hibernează"
 
 #: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
@@ -106,7 +106,7 @@ msgstr "Oprire"
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr "Altul…"
+msgstr "Altcineva…"
 
 #: qml/Main.qml:280
 #, kde-format
