@@ -91,7 +91,7 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
                 return i18nc("@item:inmenu %1 is the localised name of a desktop session", "%1 (Wayland)", session.displayName);
             }
         } else if (shouldAppendIndex) {
-            return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the sessionn", "%1 (%2)", session.displayName, index);
+            return i18nc("@item:inmenu %1 is the localised name of a desktop session, %2 is the index of the session", "%1 (%2)", session.displayName, index);
         }
 
         return session.displayName;
