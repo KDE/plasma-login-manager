@@ -199,8 +199,8 @@ void XOrgUserHelper::startDisplayCommand()
     env.insert(QStringLiteral("XAUTHORITY"), m_xauth.authPath());
 
     // Display setup script
-    auto cmd = mainConfig.X11.DisplayCommand.get();
-    qInfo("Running display setup script: %s", qPrintable(cmd));
+    auto cmd = DATA_INSTALL_DIR "/scripts/Xsetup";
+    qInfo("Running display setup script: %s", cmd);
     QProcess *displayScript = nullptr;
     if (startProcess(cmd, env, &displayScript)) {
         if (!displayScript->waitForFinished(30000)) {
@@ -212,8 +212,8 @@ void XOrgUserHelper::startDisplayCommand()
 
 void XOrgUserHelper::displayFinished()
 {
-    auto cmd = mainConfig.X11.DisplayStopCommand.get();
-    qInfo("Running display stop script: %s", qPrintable(cmd));
+    auto cmd = DATA_INSTALL_DIR "/scripts/Xstop";
+    qInfo("Running display stop script: %s", cmd);
     QProcess *displayStopScript = nullptr;
     if (startProcess(cmd, sessionEnvironment(), &displayStopScript)) {
         if (!displayStopScript->waitForFinished(5000)) {

@@ -52,7 +52,7 @@ bool UserSession::start()
         if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
             command = m_path;
         } else {
-            command = QStringLiteral("%1 \"%2\"").arg(mainConfig.X11.SessionCommand.get()).arg(m_path);
+            command = QStringLiteral("%1 \"%2\"").arg(SESSION_COMMAND).arg(m_path);
         }
 
         qInfo() << "Starting X11 session:" << m_displayServerCmd << command;
