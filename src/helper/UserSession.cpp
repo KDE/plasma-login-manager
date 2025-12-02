@@ -70,7 +70,7 @@ bool UserSession::start()
         if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
             isWaylandGreeter = true;
         }
-        setProgram(mainConfig.Wayland.SessionCommand.get());
+        setProgram(WAYLAND_SESSION_COMMAND);
         setArguments(QStringList{m_path});
         qInfo() << "Starting Wayland user session:" << program() << m_path;
         QProcess::start();

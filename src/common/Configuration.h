@@ -39,7 +39,6 @@ namespace PLASMALOGIN
         );
 
         Section(Wayland,
-            Entry(SessionCommand,      QString,     _S(WAYLAND_SESSION_COMMAND),                _S("Path to a script to execute when starting the desktop session"));
             Entry(SessionLogFile,      QString,     _S(".local/share/plasmalogin/wayland-session.log"),_S("Path to the user session log file"));
         );
 
