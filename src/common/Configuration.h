@@ -24,8 +24,6 @@ namespace PLASMALOGIN
 // clang-format off
     //     Name        File         Sections and/or Entries (but anything else too, it's a class) - Entries in a Config are assumed to be in the General section
     Config(MainConfig, QStringLiteral(CONFIG_FILE), QStringLiteral(CONFIG_DIR), QStringLiteral(SYSTEM_CONFIG_DIR),
-        enum NumState { NUM_NONE, NUM_SET_ON, NUM_SET_OFF };
-
         //  Name                   Type         Default value                                   Description
         Entry(Namespaces,          QStringList, QStringList(),                                  _S("Comma-separated list of Linux namespaces for user session to enter"));
         // TODO: Not absolutely sure if everything belongs here. Xsessions, VT and probably some more seem universal
@@ -65,29 +63,6 @@ namespace PLASMALOGIN
 
 extern MainConfig mainConfig;
 extern StateConfig stateConfig;
-
-inline QTextStream &operator>>(QTextStream &str, MainConfig::NumState &state)
-{
-    QString text = str.readLine().trimmed();
-    if (text.compare(QLatin1String("on"), Qt::CaseInsensitive) == 0)
-        state = MainConfig::NUM_SET_ON;
-    else if (text.compare(QLatin1String("off"), Qt::CaseInsensitive) == 0)
-        state = MainConfig::NUM_SET_OFF;
-    else
-        state = MainConfig::NUM_NONE;
-    return str;
-}
-
-inline QTextStream &operator<<(QTextStream &str, const MainConfig::NumState &state)
-{
-    if (state == MainConfig::NUM_SET_ON)
-        str << "on";
-    else if (state == MainConfig::NUM_SET_OFF)
-        str << "off";
-    else
-        str << "none";
-    return str;
-}
 }
 
 #endif // PLASMALOGIN_CONFIGURATION_H
