@@ -2,7 +2,6 @@ include_directories(
     "${CMAKE_SOURCE_DIR}/src/common"
     "${CMAKE_SOURCE_DIR}/src/auth"
     "${CMAKE_BINARY_DIR}/src/common"
-    ${LIBXAU_INCLUDE_DIRS}
 )
 
 configure_file(config.h.in config.h IMMEDIATE @ONLY)
@@ -12,7 +11,6 @@ set(DAEMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/ConfigReader.cpp
     ${CMAKE_SOURCE_DIR}/src/common/Session.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SocketWriter.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/XAuth.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SignalHandler.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/Auth.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthPrompt.cpp
@@ -58,7 +56,6 @@ target_link_libraries(plasmalogin
                       ${PAM_LIBRARIES}
                       KF6::ConfigCore
                       KF6::ConfigGui
-                      ${LIBXAU_LINK_LIBRARIES}
                       PkgConfig::LIBSYSTEMD)
 
 install(TARGETS plasmalogin DESTINATION "${CMAKE_INSTALL_BINDIR}")

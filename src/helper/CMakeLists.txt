@@ -3,7 +3,6 @@ include(CheckLibraryExists)
 include_directories(
     "${CMAKE_SOURCE_DIR}/src/common"
     "${CMAKE_SOURCE_DIR}/src/auth"
-    ${LIBXAU_INCLUDE_DIRS}
 )
 include_directories("${CMAKE_BINARY_DIR}/src/common")
 
@@ -11,7 +10,6 @@ set(HELPER_SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/Configuration.cpp
     ${CMAKE_SOURCE_DIR}/src/common/ConfigReader.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SafeDataStream.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/XAuth.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SignalHandler.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/Auth.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthRequest.cpp
@@ -34,8 +32,7 @@ target_link_libraries(plasmalogin-helper
                       Qt6::Network
                       Qt6::DBus
                       Qt6::Qml
-                      PkgConfig::LIBSYSTEMD
-                      ${LIBXAU_LINK_LIBRARIES})
+                      PkgConfig::LIBSYSTEMD)
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
     # On FreeBSD (possibly other BSDs as well), we want to use
     # setusercontext() to set up the login configuration from login.conf
@@ -52,12 +49,10 @@ target_link_libraries(plasmalogin-helper ${PAM_LIBRARIES})
 
 install(TARGETS plasmalogin-helper RUNTIME DESTINATION "${CMAKE_INSTALL_LIBEXECDIR}")
 
-add_executable(plasmalogin-helper-start-x11user HelperStartX11User.cpp xorguserhelper.cpp
+add_executable(plasmalogin-helper-start-x11user HelperStartX11User.cpp xorguserhelper.cpp XAuth.cpp
                                                 ${CMAKE_SOURCE_DIR}/src/common/ConfigReader.cpp
                                                 ${CMAKE_SOURCE_DIR}/src/common/Configuration.cpp
-                                                ${CMAKE_SOURCE_DIR}/src/common/XAuth.cpp
                                                 ${CMAKE_SOURCE_DIR}/src/common/SignalHandler.cpp
                                                 )
-target_link_libraries(plasmalogin-helper-start-x11user Qt6::Core
-                                                ${LIBXAU_LINK_LIBRARIES} PkgConfig::LIBSYSTEMD)
+target_link_libraries(plasmalogin-helper-start-x11user Qt6::Core PkgConfig::LIBXAU PkgConfig::LIBSYSTEMD)
 install(TARGETS plasmalogin-helper-start-x11user RUNTIME DESTINATION "${CMAKE_INSTALL_LIBEXECDIR}")

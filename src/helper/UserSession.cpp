@@ -14,7 +14,6 @@
 #include "HelperApp.h"
 #include "UserSession.h"
 #include "VirtualTerminal.h"
-#include "XAuth.h"
 
 #include <errno.h>
 #include <fcntl.h>

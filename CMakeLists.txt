@@ -54,7 +54,7 @@ find_package(PAM REQUIRED)
 find_package(PkgConfig)
 
 # XAU
-pkg_check_modules(LIBXAU REQUIRED "xau")
+pkg_check_modules(LIBXAU REQUIRED "xau" IMPORTED_TARGET)
 
 pkg_check_modules(SYSTEMD REQUIRED "systemd")
 
