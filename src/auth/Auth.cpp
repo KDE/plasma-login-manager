@@ -85,8 +85,9 @@ void Auth::SocketServer::handleNewConnection()
         str >> m >> id;
         if (m == Msg::HELLO && id && SocketServer::instance()->helpers.contains(id)) {
             helpers[id]->setSocket(socket);
-            if (socket->bytesAvailable() > 0)
+            if (socket->bytesAvailable() > 0) {
                 helpers[id]->dataPending();
+            }
         }
     }
 }
@@ -117,14 +118,16 @@ Auth::Private::Private(Auth *parent)
             QStringList parts = in.readLine().split(QLatin1Char('='));
             if (parts.size() >= 2) {
                 env.insert(parts[0], parts[1]);
-                if (parts[0] == QLatin1String("LANG"))
+                if (parts[0] == QLatin1String("LANG")) {
                     langEmpty = false;
+                }
             }
         }
         localeFile.close();
     }
-    if (langEmpty)
+    if (langEmpty) {
         env.insert(QStringLiteral("LANG"), QStringLiteral("C"));
+    }
     child->setProcessEnvironment(env);
     connect(child, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Auth::Private::childExited);
     connect(child, &QProcess::errorOccurred, this, &Auth::Private::childError);
@@ -218,10 +221,11 @@ void Auth::Private::childExited(int exitCode, QProcess::ExitStatus exitStatus)
         Q_EMIT qobject_cast<Auth *>(parent())->error(child->errorString(), ERROR_INTERNAL);
     }
 
-    if (exitCode == HELPER_SUCCESS)
+    if (exitCode == HELPER_SUCCESS) {
         qDebug() << "Auth: plasmalogin-helper exited successfully";
-    else
+    } else {
         qWarning("Auth: plasmalogin-helper exited with %d", exitCode);
+    }
 
     Q_EMIT qobject_cast<Auth *>(parent())->finished((Auth::HelperExitStatus)exitCode);
 }
@@ -358,10 +362,11 @@ void Auth::setSession(const QString &path)
 void Auth::setVerbose(bool on)
 {
     if (on != verbose()) {
-        if (on)
+        if (on) {
             d->child->setProcessChannelMode(QProcess::ForwardedChannels);
-        else
+        } else {
             d->child->setProcessChannelMode(QProcess::SeparateChannels);
+        }
         Q_EMIT verboseChanged();
     }
 }
@@ -371,16 +376,21 @@ void Auth::start()
     QStringList args;
     args << QStringLiteral("--socket") << SocketServer::instance()->fullServerName();
     args << QStringLiteral("--id") << QString::number(d->id);
-    if (!d->sessionPath.isEmpty())
+    if (!d->sessionPath.isEmpty()) {
         args << QStringLiteral("--start") << d->sessionPath;
-    if (!d->user.isEmpty())
+    }
+    if (!d->user.isEmpty()) {
         args << QStringLiteral("--user") << d->user;
-    if (d->autologin)
+    }
+    if (d->autologin) {
         args << QStringLiteral("--autologin");
-    if (!d->displayServerCmd.isEmpty())
+    }
+    if (!d->displayServerCmd.isEmpty()) {
         args << QStringLiteral("--display-server") << d->displayServerCmd;
-    if (d->greeter)
+    }
+    if (d->greeter) {
         args << QStringLiteral("--greeter");
+    }
     d->child->start(QStringLiteral("%1/plasmalogin-helper").arg(QStringLiteral(LIBEXEC_INSTALL_DIR)), args);
 }
 
@@ -393,8 +403,9 @@ void Auth::stop()
     d->child->terminate();
 
     // wait for finished
-    if (!d->child->waitForFinished(5000))
+    if (!d->child->waitForFinished(5000)) {
         d->child->kill();
+    }
 }
 }
 

@@ -54,8 +54,9 @@ bool XOrgUserHelper::start(const QString &cmd)
     m_xauth.setup();
 
     // Start server process
-    if (!startServer(cmd))
+    if (!startServer(cmd)) {
         return false;
+    }
 
     // Setup display
     startDisplayCommand();
@@ -96,8 +97,9 @@ bool XOrgUserHelper::startProcess(const QString &cmd, const QProcessEnvironment 
         qInfo() << process->readAllStandardOutput();
     });
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), process, [](int exitCode, QProcess::ExitStatus exitStatus) {
-        if (exitCode != 0 || exitStatus != QProcess::NormalExit)
+        if (exitCode != 0 || exitStatus != QProcess::NormalExit) {
             QCoreApplication::instance()->quit();
+        }
     });
 
     process->start(program, args);
@@ -106,8 +108,9 @@ bool XOrgUserHelper::startProcess(const QString &cmd, const QProcessEnvironment 
         return false;
     }
 
-    if (p)
+    if (p) {
         *p = process;
+    }
 
     return true;
 }
@@ -200,8 +203,9 @@ void XOrgUserHelper::startDisplayCommand()
     qInfo("Running display setup script: %s", qPrintable(cmd));
     QProcess *displayScript = nullptr;
     if (startProcess(cmd, env, &displayScript)) {
-        if (!displayScript->waitForFinished(30000))
+        if (!displayScript->waitForFinished(30000)) {
             displayScript->kill();
+        }
         displayScript->deleteLater();
     }
 }
@@ -212,8 +216,9 @@ void XOrgUserHelper::displayFinished()
     qInfo("Running display stop script: %s", qPrintable(cmd));
     QProcess *displayStopScript = nullptr;
     if (startProcess(cmd, sessionEnvironment(), &displayStopScript)) {
-        if (!displayStopScript->waitForFinished(5000))
+        if (!displayStopScript->waitForFinished(5000)) {
             displayStopScript->kill();
+        }
         displayStopScript->deleteLater();
     }
 }

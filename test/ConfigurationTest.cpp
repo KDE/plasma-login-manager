@@ -40,8 +40,9 @@ void ConfigurationTest::cleanup()
     QDir(CONF_DIR).removeRecursively();
     QDir(SYS_CONF_DIR).removeRecursively();
     QFile::remove(CONF_FILE_COPY);
-    if (config)
+    if (config) {
         delete config;
+    }
     config = nullptr;
 }
 

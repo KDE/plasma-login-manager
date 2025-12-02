@@ -56,8 +56,9 @@ ObjectPathList DisplayManager::Seats() const
 {
     ObjectPathList seats;
 
-    for (DisplayManagerSeat *seat : m_seats)
+    for (DisplayManagerSeat *seat : m_seats) {
         seats << ObjectPath(seat->Path());
+    }
 
     return seats;
 }
@@ -66,9 +67,11 @@ ObjectPathList DisplayManager::Sessions(DisplayManagerSeat *seat) const
 {
     ObjectPathList sessions;
 
-    for (DisplayManagerSession *session : m_sessions)
-        if (seat == nullptr || seat->Name() == session->Seat())
+    for (DisplayManagerSession *session : m_sessions) {
+        if (seat == nullptr || seat->Name() == session->Seat()) {
             sessions << ObjectPath(session->Path());
+        }
+    }
 
     return sessions;
 }

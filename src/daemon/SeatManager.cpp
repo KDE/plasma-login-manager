@@ -67,8 +67,9 @@ LogindSeat::LogindSeat(const QString &name, const QDBusObjectPath &objectPath)
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, reply, watcher]() {
         watcher->deleteLater();
-        if (!reply.isValid())
+        if (!reply.isValid()) {
             return;
+        }
 
         bool value = reply.value().toBool();
         if (value != m_canGraphical) {
@@ -157,8 +158,9 @@ void SeatManager::createSeat(const QString &name)
 void SeatManager::removeSeat(const QString &name)
 {
     // check if seat exists
-    if (!m_seats.contains(name))
+    if (!m_seats.contains(name)) {
         return;
+    }
 
     // remove from the list
     Seat *seat = m_seats.take(name);
@@ -173,8 +175,9 @@ void SeatManager::removeSeat(const QString &name)
 void SeatManager::switchToGreeter(const QString &name)
 {
     // check if seat exists
-    if (!m_seats.contains(name))
+    if (!m_seats.contains(name)) {
         return;
+    }
 
     // Switch to existing greeter session if available
     if (Logind::isAvailable()) {

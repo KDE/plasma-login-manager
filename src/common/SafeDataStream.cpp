@@ -49,12 +49,14 @@ void SafeDataStream::receive()
         qCritical() << " Auth: SafeDataStream: Could not read from the device";
         return;
     }
-    if (!m_device->bytesAvailable())
+    if (!m_device->bytesAvailable()) {
         m_device->waitForReadyRead(-1);
+    }
     m_device->read((char *)&length, sizeof(length));
 
-    if (length < 0)
+    if (length < 0) {
         return;
+    }
     reset();
 
     while (m_data.length() < length) {
@@ -62,8 +64,9 @@ void SafeDataStream::receive()
             qCritical() << " Auth: SafeDataStream: Could not read from the device";
             return;
         }
-        if (!m_device->bytesAvailable())
+        if (!m_device->bytesAvailable()) {
             m_device->waitForReadyRead(-1);
+        }
         m_data.append(m_device->read(length - m_data.length()));
     }
 }

@@ -33,11 +33,13 @@ AuthRequest::Private::Private(QObject *parent)
 void AuthRequest::Private::responseChanged()
 {
     for (const AuthPrompt *qap : std::as_const(prompts)) {
-        if (qap->response().isEmpty())
+        if (qap->response().isEmpty()) {
             return;
+        }
     }
-    if (finishAutomatically && prompts.length() > 0)
+    if (finishAutomatically && prompts.length() > 0) {
         qobject_cast<AuthRequest *>(parent())->done();
+    }
 }
 
 AuthRequest::AuthRequest(Auth *parent)
@@ -54,8 +56,9 @@ void AuthRequest::setRequest(const Request *request)
         for (const Prompt &p : std::as_const(request->prompts)) {
             AuthPrompt *qap = new AuthPrompt(&p, this);
             d->prompts << qap;
-            if (finishAutomatically())
+            if (finishAutomatically()) {
                 connect(qap, &AuthPrompt::responseChanged, d, &AuthRequest::Private::responseChanged);
+            }
         }
         d->finished = false;
     }

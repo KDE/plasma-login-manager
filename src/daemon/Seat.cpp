@@ -72,8 +72,9 @@ void Seat::createDisplay()
 
 void Seat::startDisplay(Display *display, int tryNr)
 {
-    if (display->start())
+    if (display->start()) {
         return;
+    }
 
     // It's possible that the system isn't ready yet (driver not loaded,
     // device not enumerated, ...). It's not possible to tell when that changes,
@@ -131,8 +132,9 @@ void Seat::displayStopped()
     // vt switch automatically (VT_AUTO).
     else if (!nextVt) {
         int disp = m_displays.last()->terminalId();
-        if (disp != -1)
+        if (disp != -1) {
             nextVt = disp;
+        }
     }
 
     if (nextVt) {
@@ -146,8 +148,9 @@ bool Seat::canTTY()
     if (manager.isValid()) {
         auto seatPath = manager.GetSeat(m_name);
         OrgFreedesktopLogin1SeatInterface seatIface(Logind::serviceName(), seatPath.value().path(), QDBusConnection::systemBus());
-        if (seatIface.property("CanTTY").isValid())
+        if (seatIface.property("CanTTY").isValid()) {
             return seatIface.canTTY();
+        }
     }
 
     return m_name.compare(QStringLiteral("seat0"), Qt::CaseInsensitive) == 0 && access(VirtualTerminal::defaultVtPath, F_OK) == 0;

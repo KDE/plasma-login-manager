@@ -122,8 +122,9 @@ void HelperApp::doAuth()
     SafeDataStream str(m_socket);
     str << Msg::HELLO << m_id;
     str.send();
-    if (str.status() != QDataStream::Ok)
+    if (str.status() != QDataStream::Ok) {
         qCritical() << "Couldn't write initial message:" << str.status();
+    }
 
     if (!m_backend->start(m_user)) {
         authenticated(QString());
@@ -152,8 +153,9 @@ void HelperApp::doAuth()
         }
 
         sessionOpened(true);
-    } else
+    } else {
         exit(Auth::HELPER_SUCCESS);
+    }
     return;
 }
 
@@ -201,8 +203,9 @@ QProcessEnvironment HelperApp::authenticated(const QString &user)
     SafeDataStream str(m_socket);
     str << Msg::AUTHENTICATED << user;
     str.send();
-    if (user.isEmpty())
+    if (user.isEmpty()) {
         return env;
+    }
     str.receive();
     str >> m >> env;
     if (m != AUTHENTICATED) {

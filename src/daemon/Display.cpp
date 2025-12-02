@@ -172,8 +172,9 @@ Seat *Display::seat() const
 
 bool Display::start()
 {
-    if (m_started)
+    if (m_started) {
         return true;
+    }
 
     m_started = true;
 
@@ -181,10 +182,11 @@ bool Display::start()
     // (rootful X + X11 autologin session).
     if (m_autologinSession.isValid()) {
         m_auth->setAutologin(true);
-        if (startAuth(mainConfig.Autologin.User.get(), QString(), m_autologinSession))
+        if (startAuth(mainConfig.Autologin.User.get(), QString(), m_autologinSession)) {
             return true;
-        else
+        } else {
             return handleAutologinFailure();
+        }
     }
 
     // no reason for this to be queued, other than porting
@@ -232,8 +234,9 @@ void Display::displayServerStarted()
 void Display::stop()
 {
     // check flag
-    if (!m_started)
+    if (!m_started) {
         return;
+    }
 
     // stop the greeter
     m_greeter->stop();
@@ -331,13 +334,15 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(seat()->name()));
     env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
     env.insert(QStringLiteral("DESKTOP_SESSION"), session.desktopSession());
-    if (!session.desktopNames().isEmpty())
+    if (!session.desktopNames().isEmpty()) {
         env.insert(QStringLiteral("XDG_CURRENT_DESKTOP"), session.desktopNames());
+    }
     env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("user"));
     env.insert(QStringLiteral("XDG_SESSION_TYPE"), session.xdgSessionType());
     env.insert(QStringLiteral("XDG_SEAT"), seat()->name());
-    if (m_sessionTerminalId > 0)
+    if (m_sessionTerminalId > 0) {
         env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_sessionTerminalId));
+    }
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 
     if (session.xdgSessionType() == QLatin1String("x11")) {
@@ -372,18 +377,21 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
         }
 
         // save last user and last session
-        if (mainConfig.Users.RememberLastUser.get())
+        if (mainConfig.Users.RememberLastUser.get()) {
             stateConfig.Last.User.set(m_auth->user());
-        else
+        } else {
             stateConfig.Last.User.setDefault();
-        if (mainConfig.Users.RememberLastSession.get())
+        }
+        if (mainConfig.Users.RememberLastSession.get()) {
             stateConfig.Last.Session.set(m_sessionName);
-        else
+        } else {
             stateConfig.Last.Session.setDefault();
+        }
         stateConfig.save();
 
-        if (m_socket)
+        if (m_socket) {
             emit loginSucceeded(m_socket);
+        }
     } else if (m_socket) {
         qDebug() << "Authentication for user " << user << " failed";
         emit loginFailed(m_socket);
@@ -395,8 +403,9 @@ void Display::slotAuthInfo(const QString &message, Auth::Info info)
 {
     qWarning() << "Authentication information:" << info << message;
 
-    if (!m_socket)
+    if (!m_socket) {
         return;
+    }
 
     m_socketServer->informationMessage(m_socket, message);
 }
@@ -405,12 +414,14 @@ void Display::slotAuthError(const QString &message, Auth::Error error)
 {
     qWarning() << "Authentication error:" << error << message;
 
-    if (!m_socket)
+    if (!m_socket) {
         return;
+    }
 
     m_socketServer->informationMessage(m_socket, message);
-    if (error == Auth::ERROR_AUTHENTICATION)
+    if (error == Auth::ERROR_AUTHENTICATION) {
         emit loginFailed(m_socket);
+    }
 }
 
 void Display::slotHelperFinished(Auth::HelperExitStatus status)
@@ -420,8 +431,9 @@ void Display::slotHelperFinished(Auth::HelperExitStatus status)
     // we want to avoid greeter from restarting when an authentication
     // error happens (in this case we want to show the message from the
     // greeter
-    if (status != Auth::HELPER_AUTH_ERROR)
+    if (status != Auth::HELPER_AUTH_ERROR) {
         stop();
+    }
 }
 
 void Display::slotRequestChanged()

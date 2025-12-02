@@ -94,8 +94,9 @@ void gentleTermination(QProcess *p)
 int runSync(const QString &program, const QStringList &args, const QStringList &env)
 {
     QProcess p;
-    if (!env.isEmpty())
+    if (!env.isEmpty()) {
         p.setEnvironment(QProcess::systemEnvironment() << env);
+    }
     p.setProcessChannelMode(QProcess::ForwardedChannels);
     p.start(program, args);
 
@@ -174,8 +175,9 @@ void sourceFiles(const QStringList &files)
 void createConfigDirectory()
 {
     const QString configDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
-    if (!QDir().mkpath(configDir))
+    if (!QDir().mkpath(configDir)) {
         out << "Could not create config directory XDG_CONFIG_HOME: " << configDir << '\n';
+    }
 }
 
 void runStartupConfig()

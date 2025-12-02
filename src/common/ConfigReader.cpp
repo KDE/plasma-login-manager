@@ -25,8 +25,9 @@ QTextStream &operator>>(QTextStream &str, QStringList &list)
     const auto strings = QStringView{line}.split(u',');
     for (const QStringView &s : strings) {
         QStringView trimmed = s.trimmed();
-        if (!trimmed.isEmpty())
+        if (!trimmed.isEmpty()) {
             list.append(trimmed.toString());
+        }
     }
     return str;
 }
@@ -46,10 +47,11 @@ QTextStream &operator>>(QTextStream &str, bool &val)
 
 QTextStream &operator<<(QTextStream &str, const bool &val)
 {
-    if (val)
+    if (val) {
         str << "true";
-    else
+    } else {
         str << "false";
+    }
     return str;
 }
 
@@ -72,16 +74,18 @@ ConfigSection::ConfigSection(ConfigBase *parent, const QString &name)
 ConfigEntryBase *ConfigSection::entry(const QString &name)
 {
     auto it = m_entries.find(name);
-    if (it != m_entries.end())
+    if (it != m_entries.end()) {
         return it.value();
+    }
     return nullptr;
 }
 
 const ConfigEntryBase *ConfigSection::entry(const QString &name) const
 {
     auto it = m_entries.find(name);
-    if (it != m_entries.end())
+    if (it != m_entries.end()) {
         return it.value();
+    }
     return nullptr;
 }
 
@@ -110,8 +114,9 @@ void ConfigSection::clear()
 QString ConfigSection::toConfigFull() const
 {
     QString final = QStringLiteral("[%1]\n").arg(m_name);
-    for (const ConfigEntryBase *entry : m_entries)
+    for (const ConfigEntryBase *entry : m_entries) {
         final.append(entry->toConfigFull());
+    }
     return final;
 }
 
@@ -195,8 +200,9 @@ void ConfigBase::loadInternal(const QString &filepath)
 
     QFile in(filepath);
 
-    if (!in.open(QIODevice::ReadOnly))
+    if (!in.open(QIODevice::ReadOnly)) {
         return;
+    }
     while (!in.atEnd()) {
         QString line = QString::fromUtf8(in.readLine());
         QStringView lineRef = QStringView(line).trimmed();
@@ -204,10 +210,11 @@ void ConfigBase::loadInternal(const QString &filepath)
         lineRef = lineRef.left(lineRef.indexOf(QLatin1Char('#'))).trimmed();
 
         // In version 0.14.0, these sections were renamed
-        if (currentSection == QStringLiteral("XDisplay"))
+        if (currentSection == QStringLiteral("XDisplay")) {
             currentSection = QStringLiteral("X11");
-        else if (currentSection == QStringLiteral("WaylandDisplay"))
+        } else if (currentSection == QStringLiteral("WaylandDisplay")) {
             currentSection = QStringLiteral("Wayland");
+        }
 
         // value assignment
         int separatorPosition = lineRef.indexOf(QLatin1Char('='));
@@ -216,15 +223,17 @@ void ConfigBase::loadInternal(const QString &filepath)
             QStringView value = lineRef.mid(separatorPosition + 1).trimmed();
 
             auto sectionIterator = m_sections.constFind(currentSection);
-            if (sectionIterator != m_sections.constEnd() && sectionIterator.value()->entry(name))
+            if (sectionIterator != m_sections.constEnd() && sectionIterator.value()->entry(name)) {
                 sectionIterator.value()->entry(name)->setValue(value.toString());
-            else
+            } else {
                 // if we don't have such member in the config, nag about it
                 m_unusedVariables = true;
+            }
         }
         // section start
-        else if (lineRef.startsWith(QLatin1Char('[')) && lineRef.endsWith(QLatin1Char(']')))
+        else if (lineRef.startsWith(QLatin1Char('[')) && lineRef.endsWith(QLatin1Char(']'))) {
             currentSection = lineRef.mid(1, lineRef.length() - 2).toString();
+        }
     }
 }
 
@@ -244,18 +253,22 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
      * Initialization of the map of nondefault values to be saved
      */
     if (section) {
-        if (entry && !entry->matchesDefault())
+        if (entry && !entry->matchesDefault()) {
             remainingEntries.insert(section, entry);
-        else {
-            for (const ConfigEntryBase *b : std::as_const(section->entries()))
-                if (!b->matchesDefault())
+        } else {
+            for (const ConfigEntryBase *b : std::as_const(section->entries())) {
+                if (!b->matchesDefault()) {
                     remainingEntries.insert(section, b);
+                }
+            }
         }
     } else {
         for (const ConfigSection *s : std::as_const(m_sections)) {
-            for (const ConfigEntryBase *b : std::as_const(s->entries()))
-                if (!b->matchesDefault())
+            for (const ConfigEntryBase *b : std::as_const(s->entries())) {
+                if (!b->matchesDefault()) {
                     remainingEntries.insert(s, b);
+                }
+            }
         }
     }
 
@@ -288,8 +301,9 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
         // get rid of comments first
         QStringView trimmedLine = QStringView{line}.left(line.indexOf(QLatin1Char('#'))).trimmed();
         QStringView comment;
-        if (line.indexOf(QLatin1Char('#')) >= 0)
+        if (line.indexOf(QLatin1Char('#')) >= 0) {
             comment = QStringView{line}.mid(line.indexOf(QLatin1Char('#'))).trimmed();
+        }
 
         // value assignment
         int separatorPosition = trimmedLine.indexOf(QLatin1Char('='));
@@ -303,12 +317,14 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
                     || (!entry && section && section->name() == currentSection->name()) || value != currentSection->entry(name)->value()) {
                     changed = true;
                     writeSectionData(QStringLiteral("%1=%2 %3\n").arg(name).arg(currentSection->entry(name)->value()).arg(comment.toString()));
-                } else
+                } else {
                     writeSectionData(line);
+                }
                 remainingEntries.remove(currentSection, currentSection->entry(name));
             } else {
-                if (currentSection)
+                if (currentSection) {
                     m_unusedVariables = true;
+                }
                 writeSectionData(QStringLiteral("%1 %2\n").arg(trimmedLine.toString()).arg(QStringLiteral(UNUSED_VARIABLE_COMMENT)));
             }
         }
@@ -319,8 +335,9 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
             auto sectionIterator = m_sections.constFind(name);
             if (sectionIterator != m_sections.constEnd()) {
                 currentSection = sectionIterator.value();
-                if (!sectionOrder.contains(currentSection))
+                if (!sectionOrder.contains(currentSection)) {
                     writeSectionData(line);
+                }
             } else {
                 m_unusedSections = true;
                 currentSection = nullptr;
@@ -330,8 +347,9 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
 
         // other stuff, like comments and whatnot
         else {
-            if (line != QStringLiteral(UNUSED_SECTION_COMMENT))
+            if (line != QStringLiteral(UNUSED_SECTION_COMMENT)) {
                 collectJunk(line);
+            }
         }
     }
     file.close();
@@ -339,8 +357,9 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
     for (auto it = remainingEntries.begin(); it != remainingEntries.end(); it++) {
         changed = true;
         currentSection = it.key();
-        if (!sectionOrder.contains(currentSection))
+        if (!sectionOrder.contains(currentSection)) {
             writeSectionData(currentSection->toConfigShort());
+        }
         writeSectionData(QStringLiteral("\n"));
         writeSectionData(it.value()->toConfigFull());
     }
@@ -348,8 +367,9 @@ void ConfigBase::save(const ConfigSection *section, const ConfigEntryBase *entry
     // rewrite the whole thing only if there are changes
     if (changed) {
         file.open(QIODevice::WriteOnly | QIODevice::Truncate);
-        for (const ConfigSection *s : sectionOrder)
+        for (const ConfigSection *s : sectionOrder) {
             file.write(sectionData.value(s));
+        }
 
         if (sectionData.contains(nullptr)) {
             file.write("\n");

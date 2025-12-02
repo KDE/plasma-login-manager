@@ -70,8 +70,9 @@ QByteArray XAuth::cookie() const
 
 void XAuth::setup()
 {
-    if (m_setup)
+    if (m_setup) {
         return;
+    }
 
     m_setup = true;
 
@@ -95,8 +96,9 @@ void XAuth::setup()
     m_cookie.reserve(16);
 
     // Create a random hexadecimal number
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++) {
         m_cookie.append(dis(gen));
+    }
 }
 
 bool XAuth::addCookie(const QString &display)
@@ -134,8 +136,9 @@ bool XAuth::writeCookieToFile(const QString &display, const QString &fileName, Q
         fclose(authFp);
     });
     char localhost[HOST_NAME_MAX + 1] = "";
-    if (gethostname(localhost, sizeof(localhost)) < 0)
+    if (gethostname(localhost, sizeof(localhost)) < 0) {
         strcpy(localhost, "localhost");
+    }
 
     ::Xauth auth = {};
     char cookieName[] = "MIT-MAGIC-COOKIE-1";

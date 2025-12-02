@@ -67,8 +67,9 @@ const Prompt &PamData::findPrompt(const struct pam_message *msg) const
     AuthPrompt::Type type = detectPrompt(msg);
 
     for (const Prompt &p : m_currentRequest.prompts) {
-        if (type == p.type && p.message == QString::fromLocal8Bit(msg->msg))
+        if (type == p.type && p.message == QString::fromLocal8Bit(msg->msg)) {
             return p;
+        }
     }
 
     return invalidPrompt;
@@ -79,10 +80,12 @@ Prompt &PamData::findPrompt(const struct pam_message *msg)
     AuthPrompt::Type type = detectPrompt(msg);
 
     for (Prompt &p : m_currentRequest.prompts) {
-        if (type == AuthPrompt::UNKNOWN && QString::fromLocal8Bit(msg->msg) == p.message)
+        if (type == AuthPrompt::UNKNOWN && QString::fromLocal8Bit(msg->msg) == p.message) {
             return p;
-        if (type == p.type)
+        }
+        if (type == p.type) {
             return p;
+        }
     }
 
     return invalidPrompt;
@@ -98,8 +101,9 @@ bool PamData::insertPrompt(const struct pam_message *msg, bool predict)
     // first, check if we already have stored this propmpt
     if (p.valid()) {
         // we have a response already - do nothing
-        if (m_sent)
+        if (m_sent) {
             return false;
+        }
         // we don't have a response yet - replace the message and prepare to send it
         p.message = QString::fromLocal8Bit(msg->msg);
         return true;
@@ -140,8 +144,9 @@ bool PamData::insertPrompt(const struct pam_message *msg, bool predict)
 Auth::Info PamData::handleInfo(const struct pam_message *msg, bool predict)
 {
     if ((QRegularExpression(QStringLiteral("^Changing password for [^ ]+$"))).match(QString::fromLocal8Bit(msg->msg)).hasMatch()) {
-        if (predict)
+        if (predict) {
             m_currentRequest = Request(changePassRequest);
+        }
         return Auth::INFO_PASS_CHANGE_REQUIRED;
     }
     return Auth::INFO_UNKNOWN;
@@ -154,17 +159,19 @@ QByteArray PamData::getResponse(const struct pam_message *msg)
 {
     QByteArray response = findPrompt(msg).response;
     m_currentRequest.prompts.removeOne(findPrompt(msg));
-    if (m_currentRequest.prompts.length() == 0)
+    if (m_currentRequest.prompts.length() == 0) {
         m_sent = false;
+    }
     return response;
 }
 
 const Request &PamData::getRequest() const
 {
-    if (!m_sent)
+    if (!m_sent) {
         return m_currentRequest;
-    else
+    } else {
         return invalidRequest;
+    }
 }
 
 void PamData::completeRequest(const Request &request)
@@ -205,14 +212,16 @@ bool PamBackend::start(const QString &user)
 
     QString service = QStringLiteral("plasmalogin");
 
-    if (user == QStringLiteral("plasmalogin") && m_greeter)
+    if (user == QStringLiteral("plasmalogin") && m_greeter) {
         service = QStringLiteral("plasmalogin-greeter");
-    else if (m_autologin)
+    } else if (m_autologin) {
         service = QStringLiteral("plasmalogin-autologin");
+    }
     result = m_pam->start(service, user);
 
-    if (!result)
+    if (!result) {
         m_app->error(m_pam->errorString(), Auth::ERROR_INTERNAL);
+    }
 
     return result;
 }
@@ -291,8 +300,9 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
 
     bool newRequest = false;
 
-    if (n <= 0 || n > PAM_MAX_NUM_MSG)
+    if (n <= 0 || n > PAM_MAX_NUM_MSG) {
         return PAM_CONV_ERR;
+    }
 
     for (int i = 0; i < n; i++) {
         switch (msg[i]->msg_style) {
@@ -319,8 +329,9 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
         if (sent.valid()) {
             received = m_app->request(sent);
 
-            if (!received.valid())
+            if (!received.valid()) {
                 return PAM_CONV_ERR;
+            }
 
             m_data->completeRequest(received);
         }

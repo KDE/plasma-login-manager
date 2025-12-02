@@ -34,16 +34,18 @@ SocketServer::SocketServer(QObject *parent)
 
 QString SocketServer::socketAddress() const
 {
-    if (m_server)
+    if (m_server) {
         return m_server->fullServerName();
+    }
     return QString();
 }
 
 bool SocketServer::start(const QString &displayName)
 {
     // check if the server has been created already
-    if (m_server)
+    if (m_server) {
         return false;
+    }
 
     QString socketName = QStringLiteral("plasmalogin-%1-%2").arg(displayName).arg(generateName(6));
 
@@ -78,8 +80,9 @@ bool SocketServer::start(const QString &displayName)
 void SocketServer::stop()
 {
     // check flag
-    if (!m_server)
+    if (!m_server) {
         return;
+    }
 
     // log message
     qDebug() << "Socket server stopping...";
@@ -107,8 +110,9 @@ void SocketServer::readyRead()
     QLocalSocket *socket = qobject_cast<QLocalSocket *>(sender());
 
     // check socket
-    if (!socket)
+    if (!socket) {
         return;
+    }
 
     // input stream
     QDataStream input(socket);

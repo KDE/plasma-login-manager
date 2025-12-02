@@ -123,16 +123,18 @@ static void fixVtMode(int fd, bool vt_auto)
         ok = false;
     }
 
-    if (getmodeReply.mode != VT_AUTO)
+    if (getmodeReply.mode != VT_AUTO) {
         goto out;
+    }
 
     if (ioctl(fd, KDGETMODE, &kernelDisplayMode) < 0) {
         qWarning() << "Failed to query kernel display mode:" << strerror(errno);
         ok = false;
     }
 
-    if (kernelDisplayMode == KD_TEXT)
+    if (kernelDisplayMode == KD_TEXT) {
         goto out;
+    }
 
     // VT is in the VT_AUTO + KD_GRAPHICS state, fix it
     if (vt_auto) {
@@ -153,10 +155,11 @@ out:
         return;
     }
 
-    if (modeFixed)
+    if (modeFixed) {
         qDebug() << "VT mode fixed";
-    else
+    } else {
         qDebug() << "VT mode didn't need to be fixed";
+    }
 }
 
 int currentVt()
@@ -221,8 +224,9 @@ void jumpToVt(int vt, bool vt_auto)
         }
 
         // set graphics mode to prevent flickering
-        if (ioctl(fd, KDSETMODE, KD_GRAPHICS) < 0)
+        if (ioctl(fd, KDSETMODE, KD_GRAPHICS) < 0) {
             qWarning("Failed to set graphics mode for VT %d: %s", vt, strerror(errno));
+        }
 
         // it's possible that the current VT was left in a broken
         // combination of states (KD_GRAPHICS with VT_AUTO) that we
@@ -238,27 +242,31 @@ void jumpToVt(int vt, bool vt_auto)
     // If vt_auto is true, the controlling process is already gone, so there is no
     // process which could send the VT_RELDISP 1 ioctl to release the vt.
     // Let the kernel switch vts automatically
-    if (!vt_auto)
+    if (!vt_auto) {
         handleVtSwitches(fd);
+    }
 
     do {
         errno = 0;
 
         if (ioctl(fd, VT_ACTIVATE, vt) < 0) {
-            if (errno == EINTR)
+            if (errno == EINTR) {
                 continue;
+            }
 
             qWarning("Couldn't initiate jump to VT %d: %s", vt, strerror(errno));
             break;
         }
 
-        if (ioctl(fd, VT_WAITACTIVE, vt) < 0 && errno != EINTR)
+        if (ioctl(fd, VT_WAITACTIVE, vt) < 0 && errno != EINTR) {
             qWarning("Couldn't finalize jump to VT %d: %s", vt, strerror(errno));
+        }
 
     } while (errno == EINTR);
     close(activeVtFd);
-    if (vtFd != -1)
+    if (vtFd != -1) {
         close(vtFd);
+    }
 }
 }
 }

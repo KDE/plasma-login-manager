@@ -117,8 +117,9 @@ int main(int argc, char **argv)
 {
     QStringList arguments;
 
-    for (int i = 0; i < argc; i++)
+    for (int i = 0; i < argc; i++) {
         arguments << QString::fromLocal8Bit(argv[i]);
+    }
 
     if (arguments.contains(QStringLiteral("--help")) || arguments.contains(QStringLiteral("-h"))) {
         std::cout << "Usage: plasmalogin [options]\n"

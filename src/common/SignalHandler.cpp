@@ -54,8 +54,9 @@ SignalHandler::SignalHandler(QObject *parent)
 
 void SignalHandler::initialize()
 {
-    if (::socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sigintFd))
+    if (::socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sigintFd)) {
         qCritical() << "Failed to create socket pair for SIGINT handling.";
+    }
 
     struct sigaction sigint = {};
     sigint.sa_handler = SignalHandler::intSignalHandler;
@@ -67,8 +68,9 @@ void SignalHandler::initialize()
         return;
     }
 
-    if (::socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sigtermFd))
+    if (::socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sigtermFd)) {
         qCritical() << "Failed to create socket pair for SIGTERM handling.";
+    }
 
     struct sigaction sigterm = {};
     sigterm.sa_handler = SignalHandler::termSignalHandler;
@@ -80,8 +82,9 @@ void SignalHandler::initialize()
         return;
     }
 
-    if (::socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sigcustomFd))
+    if (::socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, sigcustomFd)) {
         qCritical() << "Failed to create socket pair for custom signals handling.";
+    }
 }
 
 void SignalHandler::addCustomSignal(int signal)

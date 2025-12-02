@@ -60,8 +60,9 @@ void Greeter::setDisplayServerCommand(const QString &cmd)
 bool Greeter::start()
 {
     // check flag
-    if (m_started)
+    if (m_started) {
         return false;
+    }
 
     QString greeterCommand = QStandardPaths::findExecutable(QStringLiteral("startplasma-login-wayland"));
     // allow overriding for test setups.
@@ -111,8 +112,9 @@ bool Greeter::start()
         env.insert(QStringLiteral("XDG_SEAT"), m_display->seat()->name());
         env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(m_display->seat()->name()));
         env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
-        if (m_display->seat()->name() == QLatin1String("seat0") && m_display->terminalId() > 0)
+        if (m_display->seat()->name() == QLatin1String("seat0") && m_display->terminalId() > 0) {
             env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_display->terminalId()));
+        }
         env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("greeter"));
         env.insert(QStringLiteral("XDG_SESSION_TYPE"), m_display->sessionType());
         env.insert(QStringLiteral("SDDM_SOCKET"), m_socket);
@@ -136,16 +138,19 @@ bool Greeter::start()
 
 void Greeter::insertEnvironmentList(QStringList names, QProcessEnvironment sourceEnv, QProcessEnvironment &targetEnv)
 {
-    for (QStringList::const_iterator it = names.constBegin(); it != names.constEnd(); ++it)
-        if (sourceEnv.contains(*it))
+    for (QStringList::const_iterator it = names.constBegin(); it != names.constEnd(); ++it) {
+        if (sourceEnv.contains(*it)) {
             targetEnv.insert(*it, sourceEnv.value(*it));
+        }
+    }
 }
 
 void Greeter::stop()
 {
     // check flag
-    if (!m_started)
+    if (!m_started) {
         return;
+    }
 
     // log message
     qDebug() << "Greeter stopping...";
@@ -155,8 +160,9 @@ void Greeter::stop()
 void Greeter::finished()
 {
     // check flag
-    if (!m_started)
+    if (!m_started) {
         return;
+    }
 
     // reset flag
     m_started = false;
@@ -182,10 +188,11 @@ void Greeter::onSessionStarted(bool success)
     m_started = success;
 
     // log message
-    if (success)
+    if (success) {
         qDebug() << "Greeter session started successfully";
-    else
+    } else {
         qDebug() << "Greeter session failed to start";
+    }
 }
 
 void Greeter::onHelperFinished(Auth::HelperExitStatus status)

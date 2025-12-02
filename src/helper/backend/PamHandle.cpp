@@ -43,8 +43,9 @@ QProcessEnvironment PamHandle::getEnv()
         int index = s.indexOf(QLatin1Char('='));
 
         // add to the hash
-        if (index != -1)
+        if (index != -1) {
             env.insert(s.left(index), s.mid(index + 1));
+        }
 
         free(envlist[i]);
     }
@@ -146,10 +147,11 @@ int PamHandle::converse(int n, const struct pam_message **msg, struct pam_respon
 
 bool PamHandle::start(const QString &service, const QString &user)
 {
-    if (user.isEmpty())
+    if (user.isEmpty()) {
         m_result = pam_start(qPrintable(service), NULL, &m_conv, &m_handle);
-    else
+    } else {
         m_result = pam_start(qPrintable(service), qPrintable(user), &m_conv, &m_handle);
+    }
     if (m_result != PAM_SUCCESS) {
         qWarning() << "[PAM] start" << pam_strerror(m_handle, m_result);
         return false;
@@ -161,8 +163,9 @@ bool PamHandle::start(const QString &service, const QString &user)
 
 bool PamHandle::end(int flags)
 {
-    if (!m_handle)
+    if (!m_handle) {
         return false;
+    }
     m_result = pam_end(m_handle, m_silent | flags);
     if (m_result != PAM_SUCCESS) {
         qWarning() << "[PAM] end:" << pam_strerror(m_handle, m_result);

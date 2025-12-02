@@ -180,8 +180,9 @@ void UserSession::setupChildProcess()
             }
         }
 
-        if (vtNumber > 0)
+        if (vtNumber > 0) {
             VirtualTerminal::jumpToVt(vtNumber, x11UserSession);
+        }
     }
 
 #ifdef Q_OS_LINUX
@@ -206,8 +207,9 @@ void UserSession::setupChildProcess()
     struct passwd pw;
     struct passwd *rpw;
     long bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
-    if (bufsize == -1)
+    if (bufsize == -1) {
         bufsize = 16384;
+    }
     QScopedPointer<char, QScopedPointerPodDeleter> buffer(static_cast<char *>(malloc(bufsize)));
     if (buffer.isNull()) {
         qCritical() << "Could not allocate buffer of size" << bufsize;
@@ -215,10 +217,11 @@ void UserSession::setupChildProcess()
     }
     int err = getpwnam_r(username.constData(), &pw, buffer.data(), bufsize, &rpw);
     if (rpw == NULL) {
-        if (err == 0)
+        if (err == 0) {
             qCritical() << "getpwnam_r(" << username << ") username not found!";
-        else
+        } else {
             qCritical() << "getpwnam_r(" << username << ") failed with error: " << strerror(err);
+        }
         exit(Auth::HELPER_OTHER_ERROR);
     }
 

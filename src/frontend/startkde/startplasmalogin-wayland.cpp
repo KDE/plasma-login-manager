@@ -46,8 +46,9 @@ int main(int argc, char **argv)
 
             auto queryAndSet = [&result](const char *var, const QString &value) {
                 const auto r = result.value(value).toString();
-                if (!r.isEmpty())
+                if (!r.isEmpty()) {
                     qputenv(var, r.toUtf8());
+                }
             };
 
             queryAndSet("XKB_DEFAULT_MODEL", QStringLiteral("X11Model"));
