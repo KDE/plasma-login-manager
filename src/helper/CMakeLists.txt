@@ -6,7 +6,9 @@ include_directories(
 )
 include_directories("${CMAKE_BINARY_DIR}/src/common")
 
-set(HELPER_SOURCES
+add_executable(plasmalogin-helper)
+
+target_sources(plasmalogin-helper PRIVATE
     ${CMAKE_SOURCE_DIR}/src/common/Configuration.cpp
     ${CMAKE_SOURCE_DIR}/src/common/ConfigReader.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SafeDataStream.cpp
@@ -14,20 +16,14 @@ set(HELPER_SOURCES
     ${CMAKE_SOURCE_DIR}/src/auth/Auth.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthRequest.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthPrompt.cpp
+    ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp
     Backend.cpp
     HelperApp.cpp
     UserSession.cpp
-)
-
-list(APPEND HELPER_SOURCES ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp)
-
-set(HELPER_SOURCES
-    ${HELPER_SOURCES}
     backend/PamHandle.cpp
     backend/PamBackend.cpp
 )
 
-add_executable(plasmalogin-helper ${HELPER_SOURCES})
 target_link_libraries(plasmalogin-helper
                       Qt6::Network
                       Qt6::DBus
