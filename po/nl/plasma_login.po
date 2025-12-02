@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-01 00:45+0000\n"
-"PO-Revision-Date: 2025-10-04 13:24+0200\n"
+"PO-Revision-Date: 2025-12-01 18:35+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.08.3\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -46,11 +46,7 @@ msgid "%1 (Wayland)"
 msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inmenu %1 is the localised name of a desktop session, %2 is the "
-#| "index of the sessionn"
-#| msgid "%1 (%2)"
+#, kde-format
 msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"

@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-01 00:45+0000\n"
-"PO-Revision-Date: 2025-10-04 08:20+0200\n"
+"PO-Revision-Date: 2025-12-01 07:16+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -44,11 +44,7 @@ msgid "%1 (Wayland)"
 msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inmenu %1 is the localised name of a desktop session, %2 is the "
-#| "index of the sessionn"
-#| msgid "%1 (%2)"
+#, kde-format
 msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"

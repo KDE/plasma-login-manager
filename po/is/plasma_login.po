@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-01 00:45+0000\n"
-"PO-Revision-Date: 2025-11-23 17:21+0000\n"
+"PO-Revision-Date: 2025-12-01 16:26+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -46,11 +46,7 @@ msgid "%1 (Wayland)"
 msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inmenu %1 is the localised name of a desktop session, %2 is the "
-#| "index of the sessionn"
-#| msgid "%1 (%2)"
+#, kde-format
 msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"

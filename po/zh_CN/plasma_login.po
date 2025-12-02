@@ -46,16 +46,12 @@ msgid "%1 (Wayland)"
 msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inmenu %1 is the localised name of a desktop session, %2 is the "
-#| "index of the sessionn"
-#| msgid "%1 (%2)"
+#, kde-format
 msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (%2)"
-msgstr "%1 (%2)"
+msgstr ""
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
