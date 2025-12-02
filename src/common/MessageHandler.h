@@ -28,13 +28,10 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#ifdef HAVE_JOURNALD
 #include <systemd/sd-journal.h>
-#endif
 
 namespace PLASMALOGIN
 {
-#ifdef HAVE_JOURNALD
 static void journaldLogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     int priority = LOG_INFO;
@@ -64,7 +61,6 @@ static void journaldLogger(QtMsgType type, const QMessageLogContext &context, co
 
     sd_journal_print_with_location(priority, fileBuffer, lineBuffer, context.function ? context.function : "unknown", "%s", qPrintable(msg));
 }
-#endif
 
 static void standardLogger(QtMsgType type, const QString &msg)
 {
@@ -120,7 +116,6 @@ static void standardLogger(QtMsgType type, const QString &msg)
 
 static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &prefix, const QString &msg)
 {
-#ifdef HAVE_JOURNALD
     // don't log to journald if running interactively, this is likely
     // the case when running plasmalogin in test mode
     static bool isInteractive = isatty(STDERR_FILENO) && qgetenv("USER") != "plasmalogin";
@@ -129,7 +124,6 @@ static void messageHandler(QtMsgType type, const QMessageLogContext &context, co
         journaldLogger(type, context, msg);
         return;
     }
-#endif
     // prepend program name
     QString logMessage = prefix + msg;
 

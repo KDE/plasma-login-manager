@@ -34,6 +34,7 @@ target_link_libraries(plasmalogin-helper
                       Qt6::Network
                       Qt6::DBus
                       Qt6::Qml
+                      PkgConfig::LIBSYSTEMD
                       ${LIBXAU_LINK_LIBRARIES})
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
     # On FreeBSD (possibly other BSDs as well), we want to use
@@ -58,10 +59,5 @@ add_executable(plasmalogin-helper-start-x11user HelperStartX11User.cpp xorguserh
                                                 ${CMAKE_SOURCE_DIR}/src/common/SignalHandler.cpp
                                                 )
 target_link_libraries(plasmalogin-helper-start-x11user Qt6::Core
-                                                ${LIBXAU_LINK_LIBRARIES})
+                                                ${LIBXAU_LINK_LIBRARIES} PkgConfig::LIBSYSTEMD)
 install(TARGETS plasmalogin-helper-start-x11user RUNTIME DESTINATION "${CMAKE_INSTALL_LIBEXECDIR}")
-
-if(JOURNALD_FOUND)
-    target_link_libraries(plasmalogin-helper ${JOURNALD_LIBRARIES})
-    target_link_libraries(plasmalogin-helper-start-x11user ${JOURNALD_LIBRARIES})
-endif()

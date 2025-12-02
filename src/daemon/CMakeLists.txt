@@ -58,10 +58,7 @@ target_link_libraries(plasmalogin
                       ${PAM_LIBRARIES}
                       KF6::ConfigCore
                       KF6::ConfigGui
-                      ${LIBXAU_LINK_LIBRARIES})
-
-if(JOURNALD_FOUND)
-    target_link_libraries(plasmalogin ${JOURNALD_LIBRARIES})
-endif()
+                      ${LIBXAU_LINK_LIBRARIES}
+                      PkgConfig::LIBSYSTEMD)
 
 install(TARGETS plasmalogin DESTINATION "${CMAKE_INSTALL_BINDIR}")

@@ -10,9 +10,6 @@ set(PLASMALOGIN_VERSION_STRING "${PLASMALOGIN_VERSION_MAJOR}.${PLASMALOGIN_VERSI
 add_compile_definitions("PLASMALOGIN_VERSION=\"${PLASMALOGIN_VERSION_STRING}\"")
 
 # Options
-option(ENABLE_JOURNALD "Enable logging to journald" ON)
-option(NO_SYSTEMD "Disable systemd support" OFF)
-option(USE_ELOGIND "Use elogind instead of logind" OFF)
 option(INSTALL_PAM_CONFIGURATION "Install PAM configuration files" ON)
 
 # Version settings
@@ -61,21 +58,7 @@ pkg_check_modules(LIBXAU REQUIRED "xau")
 
 pkg_check_modules(SYSTEMD REQUIRED "systemd")
 
-# libsystemd-journal was merged into libsystemd in 209
-if(${SYSTEMD_VERSION} VERSION_LESS 209)
-    pkg_check_modules(JOURNALD "libsystemd-journal")
-else()
-    pkg_check_modules(JOURNALD "libsystemd")
-endif()
-
-if(ENABLE_JOURNALD)
-    if(JOURNALD_FOUND)
-        add_definitions(-DHAVE_JOURNALD)
-        set(CMAKE_AUTOMOC_MOC_OPTIONS -DHAVE_JOURNALD)
-    else()
-        message(WARNING "Disable journald support for lack of libsystemd-journal")
-    endif()
-endif()
+pkg_check_modules(LIBSYSTEMD REQUIRED "libsystemd" IMPORTED_TARGET)
 
 if (NOT DEFINED SYSTEMD_SYSTEM_UNIT_DIR)
     pkg_get_variable(SYSTEMD_SYSTEM_UNIT_DIR systemd systemdsystemunitdir)
@@ -89,20 +72,7 @@ if (NOT DEFINED SYSTEMD_TMPFILES_DIR)
     pkg_get_variable(SYSTEMD_TMPFILES_DIR systemd tmpfilesdir)
 endif()
 
-add_feature_info("systemd" SYSTEMD_FOUND "systemd support")
-add_feature_info("journald" JOURNALD_FOUND "journald support")
-
-# elogind
-if(NO_SYSTEMD AND USE_ELOGIND)
-    pkg_check_modules(ELOGIND "libelogind")
-endif()
-
-
-if (SYSTEMD_FOUND)
-    set(RUNTIME_DIR_DEFAULT "/run/plasmalogin")
-else()
-    set(RUNTIME_DIR_DEFAULT "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/run/plasmalogin")
-endif()
+set(RUNTIME_DIR_DEFAULT "/run/plasmalogin")
 
 # Extra default install directories
 set(PAM_CONFIG_DIR "${CMAKE_INSTALL_PREFIX}/lib/pam.d" CACHE PATH "Install directory for PAM configuration")
