@@ -382,11 +382,7 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
         } else {
             stateConfig.Last.User.setDefault();
         }
-        if (mainConfig.Users.RememberLastSession.get()) {
-            stateConfig.Last.Session.set(m_sessionName);
-        } else {
-            stateConfig.Last.Session.setDefault();
-        }
+        stateConfig.Last.Session.set(m_sessionName);
         stateConfig.save();
 
         if (m_socket) {
