@@ -29,17 +29,6 @@ target_link_libraries(plasmalogin-helper
                       Qt6::DBus
                       Qt6::Qml
                       PkgConfig::LIBSYSTEMD)
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-    # On FreeBSD (possibly other BSDs as well), we want to use
-    # setusercontext() to set up the login configuration from login.conf
-    find_library(_have_libutil util)
-    if(_have_libutil)
-        check_library_exists(${_have_libutil} setusercontext "" _have_setusercontext)
-    endif()
-    if(_have_libutil AND _have_setusercontext)
-        target_link_libraries(plasmalogin-helper ${_have_libutil})
-    endif()
-endif()
 
 target_link_libraries(plasmalogin-helper ${PAM_LIBRARIES})
 

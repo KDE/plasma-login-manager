@@ -18,20 +18,16 @@
 
 #include "VirtualTerminal.h"
 
+#include <QFileInfo>
 #include <errno.h>
 #include <fcntl.h>
-#include <signal.h>
-#include <string.h>
-#include <unistd.h>
-#ifdef __FreeBSD__
-#include <sys/consio.h>
-#else
 #include <linux/kd.h>
 #include <linux/vt.h>
-#endif
-#include <QFileInfo>
 #include <qscopeguard.h>
+#include <signal.h>
+#include <string.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 #define RELEASE_DISPLAY_SIGNAL (SIGRTMAX)
 #define ACQUIRE_DISPLAY_SIGNAL (SIGRTMAX - 1)
@@ -40,25 +36,6 @@ namespace PLASMALOGIN
 {
 namespace VirtualTerminal
 {
-#ifdef __FreeBSD__
-const char *defaultVtPath = "/dev/ttyv0";
-
-QString path(int vt)
-{
-    char c = (vt <= 10 ? '0' : 'a') + (vt - 1);
-    return QStringLiteral("/dev/ttyv%1").arg(c);
-}
-
-int getVtActive(int fd)
-{
-    int vtActive = 0;
-    if (ioctl(fd, VT_GETACTIVE, &vtActive) < 0) {
-        qCritical() << "Failed to get current VT:" << strerror(errno);
-        return -1;
-    }
-    return vtActive;
-}
-#else
 const char *defaultVtPath = "/dev/tty0";
 
 QString path(int vt)
@@ -75,7 +52,6 @@ int getVtActive(int fd)
     }
     return vtState.v_active;
 }
-#endif
 
 static void onAcquireDisplay([[maybe_unused]] int signal)
 {

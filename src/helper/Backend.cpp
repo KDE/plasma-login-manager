@@ -16,11 +16,6 @@
 
 #include <pwd.h>
 
-#if defined(Q_OS_FREEBSD)
-#include <login_cap.h>
-#include <sys/types.h>
-#endif
-
 namespace PLASMALOGIN
 {
 Backend::Backend(HelperApp *parent)
@@ -60,42 +55,6 @@ bool Backend::openSession()
         env.insert(QStringLiteral("SHELL"), QString::fromLocal8Bit(pw->pw_shell));
         env.insert(QStringLiteral("USER"), QString::fromLocal8Bit(pw->pw_name));
         env.insert(QStringLiteral("LOGNAME"), QString::fromLocal8Bit(pw->pw_name));
-#if defined(Q_OS_FREEBSD)
-        /* get additional environment variables via setclassenvironment();
-            this needs to be done here instead of in UserSession::setupChildProcess
-            as the environment for execve() is prepared here
-        */
-        login_cap_t *lc;
-
-        if (lc = login_getpwclass(pw)) {
-            // save, clear and later restore PLASMALOGIN's environment because
-            // setclassenvironment() mangles it
-            QProcessEnvironment savedEnv = QProcessEnvironment::systemEnvironment();
-            QProcessEnvironment::systemEnvironment().clear();
-            QString savedLang = env.value(QStringLiteral("LANG"));
-
-            // setclassenvironment() is the implementation inside setusercontext()
-            // so use lowest-level function there
-            setclassenvironment(lc, pw, 1); /* path variables */
-            setclassenvironment(lc, pw, 0); /* non-path variables */
-            login_close(lc);
-            if (lc = login_getuserclass(pw)) {
-                setclassenvironment(lc, pw, 1);
-                setclassenvironment(lc, pw, 0);
-                login_close(lc);
-            }
-
-            // copy all environment variables that are now set
-            env.insert(QProcessEnvironment::systemEnvironment());
-            // for plasmalogin itself, we don't want to set LANG from capabilities.
-            // instead, honour plasmalogin_lang variable from rc script
-            if (qobject_cast<HelperApp *>(parent())->user() == QStringLiteral("plasmalogin"))
-                env.insert(QStringLiteral("LANG"), savedLang);
-            // finally, restore original helper environment
-            QProcessEnvironment::systemEnvironment().clear();
-            QProcessEnvironment::systemEnvironment().insert(savedEnv);
-        }
-#endif
     }
     if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
         // Qt internally may load the xdg portal system early on, prevent this, we do not have a functional session running.
