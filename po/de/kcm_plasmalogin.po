@@ -3,41 +3,52 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 # SPDX-FileCopyrightText: 2025 Alois Spitzbart <spitz234@hotmail.com>
+# SPDX-FileCopyrightText: 2025 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:54+0000\n"
-"PO-Revision-Date: 2025-06-06 21:32+0200\n"
-"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
+"PO-Revision-Date: 2025-11-24 11:11+0100\n"
+"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.1\n"
+"X-Generator: Lokalize 25.08.3\n"
 
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
+"Die Einstellungen können nicht gespeichert werden, da ein temporärer Ordner "
+"nicht erstellt werden konnte."
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
+"Die Einstellungen können nicht gespeichert werden, da die "
+"Konfigurationsdatei nicht geöffnet werden konnte."
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Die Plasma-Einstellungen können nicht synchronisiert werden, da der Benutzer "
+"„plasmalogin“ nicht existiert. Bitte überprüfen Sie Ihre Installation von "
+"Plasma Login."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Die Plasma-Einstellungen können nicht zurückgesetzt werden, da der Benutzer "
+"„plasmalogin“ nicht existiert. Bitte überprüfen Sie Ihre Installation von "
+"Plasma Login."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -53,7 +64,7 @@ msgstr "Uhr"
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr ""
+msgstr "Uhr anzeigen"
 
 #: ui/Appearance.qml:52
 #, kde-format
@@ -64,13 +75,13 @@ msgstr "Hintergrundbild-Typ:"
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply Plasma Settings…"
-msgstr "Plasma-Einstellungen anwenden …"
+msgstr "Plasma-Einstellungen anwenden …"
 
 #: ui/main.qml:33
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Appearance…"
-msgstr "Erscheinungsbild einrichten …"
+msgstr "Erscheinungsbild einrichten …"
 
 #: ui/main.qml:64
 #, kde-format
@@ -88,13 +99,7 @@ msgstr ""
 "Plasma-Einstellungen eingerichtet:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -104,8 +109,8 @@ msgid ""
 msgstr ""
 "<para><list><item>Farbschema</item><item>Zeigerdesign und -größe</"
 "item><item>Schriftart und -rendering</item><item>Num-Lock-Taste</"
-"item><item>Plasma-Design</item><item>DPI-Skalierung</item><item>Anzeige-"
-"Einstellungen (nur Wayland)</item></list></para>"
+"item><item>Plasma-Design</item><item>DPI-Skalierung</"
+"item><item>Anzeigeeinstellungen</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
