@@ -46,7 +46,7 @@ void PlasmaLoginSettings::getUids()
     m_minimumUid = std::numeric_limits<unsigned int>::min();
     m_maximumUid = std::numeric_limits<unsigned int>::max();
 
-    QFile loginDefs(QStringLiteral("/etc/login.defs"));
+    QFile loginDefs(QStringLiteral(LOGIN_DEFS_PATH));
     if (!loginDefs.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to determine min/max uid";
         return;
