@@ -28,6 +28,14 @@ int main(int argc, char **argv)
     // Let clients try to reconnect to kwin after a restart
     qputenv("QT_WAYLAND_RECONNECT", "1");
 
+    qputenv("ATSPI_USE_A11Y_MANAGER_DEVICE", "1");
+
+    {
+        KConfig kglobalaccelrc("kglobalaccelrc");
+        kglobalaccelrc.group("General").writeEntry("useAllowList", true);
+        kglobalaccelrc.group("AllowedShortcuts").writeEntry("org.kde.screenreader.desktop", QStringList{"toggleScreenReader"});
+    }
+
     // Query whether org.freedesktop.locale1 is available. If it is, try to
     // set XKB_DEFAULT_{MODEL,LAYOUT,VARIANT,OPTIONS} accordingly.
     {
