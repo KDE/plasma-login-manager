@@ -3,6 +3,6 @@ Description=KDE Window Manager (Login Manager Version)
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/kwin_wayland --no-lockscreen --no-global-shortcuts --no-kactivities
+ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/kwin_wayland --no-lockscreen --no-kactivities
 BusName=org.kde.KWin
 Slice=session.slice
