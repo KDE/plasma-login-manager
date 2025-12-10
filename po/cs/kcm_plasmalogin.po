@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:54+0000\n"
-"PO-Revision-Date: 2025-10-02 09:36+0200\n"
+"PO-Revision-Date: 2025-12-05 10:20+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -15,28 +15,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.08.3\n"
 
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
-msgstr ""
+msgstr "Nelze uložit nastavení protože nelze vytvořit dočasný adresář."
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
-msgstr ""
+msgstr "Nelze uložit nastavení protože nastavení nelze načíst."
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Nelze synchronizovat nastavení Plasma, protože uživatel 'plasmalogin' "
+"neexistuje. Prosím, prověřte svou instalaci Plasma Login."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Nelze pokračovat. Uživatel 'sddm' neexistuje. Prosím, prověřte svou "
+"instalaci Plasma Login."
 
 #: ui/Appearance.qml:23
 #, kde-format
