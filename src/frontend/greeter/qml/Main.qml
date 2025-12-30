@@ -16,6 +16,101 @@ import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 
 import org.kde.plasma.login as PlasmaLogin
 
+Kirigami.AbstractApplicationWindow {
+
+    width: 950
+    height: 600
+
+    title: "Log in"
+
+    //flags: Qt.FramelessWindowHint
+
+    background: Rectangle {
+        color: Kirigami.Theme.backgroundColor
+    }
+
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: Kirigami.Units.gridUnit
+
+        spacing: Kirigami.Units.largeSpacing
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+
+            spacing: Kirigami.Units.smallSpacing
+
+            Kirigami.Icon {
+                source: "archlinux-logo"
+                implicitWidth: Kirigami.Units.iconSizes.huge
+                implicitHeight: Kirigami.Units.iconSizes.huge
+            }
+
+            Kirigami.Heading {
+                text: "Arch Linux"
+            }
+        }
+
+    }
+
+    footer: QQC2.ToolBar {
+        RowLayout {
+            anchors.fill: parent
+
+            SessionButton {
+                id: sessionButton
+            }
+
+            PlasmaComponents.ToolButton {
+                id: powerButton
+
+                icon.name: "system-shutdown-symbolic"
+
+                checkable: true
+                checked: powerMenu.opened
+                onToggled: {
+                    if (checked) {
+                        powerMenu.popup(powerButton, 0, 0)
+                    } else {
+                        powerMenu.dismiss()
+                    }
+                }
+
+                signal sessionChanged()
+
+                PlasmaComponents.Menu {
+                    id: powerMenu
+                    Kirigami.Theme.colorSet: Kirigami.Theme.Window
+                    Kirigami.Theme.inherit: false
+
+                    PlasmaComponents.MenuItem {
+                        icon.name: "system-suspend"
+                        text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
+                        enabled: PlasmaLogin.SessionManagement.canSuspend
+                        onTriggered: PlasmaLogin.SessionManagement.suspend()
+                    }
+
+                    PlasmaComponents.MenuItem {
+                        icon.name: "system-reboot"
+                        text: i18nd("plasma_login", "Restart")
+                        enabled: PlasmaLogin.SessionManagement.canReboot
+                        onTriggered: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
+                    }
+
+                    PlasmaComponents.MenuItem {
+                        icon.name: "system-shutdown"
+                        text: i18nd("plasma_login", "Shut Down")
+                        enabled: PlasmaLogin.SessionManagement.canShutdown
+                        onTriggered: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/*
 Item {
     id: root
     anchors.fill: parent
@@ -328,7 +423,7 @@ Item {
                 }
             }
 
-            /* Virtual keyboard btn */
+            // Virtual keyboard btn
 
             KeyboardButton {
                 id: keyboardButton
@@ -352,10 +447,6 @@ Item {
                 containmentMask: Item {
                     parent: sessionButton
                     anchors.fill: parent
-                    /*
-                    anchors.leftMargin: virtualKeyboardButton.visible || keyboardButton.visible
-                        ? 0 : -footer.anchors.margins
-                    */
                     anchors.leftMargin: 0
                     anchors.bottomMargin: -footer.anchors.margins
                 }
@@ -417,3 +508,4 @@ Item {
         onTriggered: notificationMessage = ""
     }
 }
+*/

@@ -9,6 +9,7 @@
 #include <QGuiApplication>
 #include <QObject>
 #include <QScreen>
+#include <QQmlApplicationEngine>
 
 #include <KLocalizedString>
 #include <KWindowSystem>
@@ -58,6 +59,7 @@ private:
             window->setGeometry(window->screen()->geometry());
         });
 
+        /*
         if (KWindowSystem::isPlatformWayland()) {
             if (auto layerShellWindow = LayerShellQt::Window::get(window)) {
                 layerShellWindow->setScope(QStringLiteral("plasma-login-wallpaper"));
@@ -66,8 +68,9 @@ private:
                 layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
             }
         }
+        */
 
-        window->setResizeMode(PlasmaQuick::QuickViewSharedEngine::SizeRootObjectToView);
+        window->setResizeMode(PlasmaQuick::QuickViewSharedEngine::SizeViewToRootObject);
 
         if (KWindowSystem::isPlatformX11()) {
             // X11 specific hint only on X11
@@ -118,7 +121,9 @@ int main(int argc, char *argv[])
     parser.process(app);
     LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
 
-    QQuickWindow::setDefaultAlphaBuffer(true);
+    QQmlApplicationEngine engine;
+
+    //QQuickWindow::setDefaultAlphaBuffer(true);
     if (LoginGreeter::testModeEnabled()) {
         qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new MockGreeterProxy);
     } else {
@@ -130,7 +135,11 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Settings", &PlasmaLoginSettings::getInstance());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "StateConfig", StateConfig::self());
 
-    LoginGreeter greeter;
+    engine.loadFromModule("org.kde.plasma.login", "Main");
+    if (engine.rootObjects().isEmpty()) {
+        return -1;
+    }
+
     return app.exec();
 }
 
