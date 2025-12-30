@@ -1,85 +1,81 @@
-# Copyright (C) 2025 This file is copyright:
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# SPDX-FileCopyrightText: 2025 Tommi Nieminen <translator@legisign.org>
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:54+0000\n"
-"PO-Revision-Date: 2025-11-13 18:13+0200\n"
-"Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
-"Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
-"Language: fi\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.04.0\n"
 
 #: kcm.cpp:77
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
-msgstr "Asetuksia ei voitu tallentaa, koska väliaikaiskansiota ei voitu luoda."
+msgstr ""
 
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
-msgstr "Asetuksia ei voitu tallentaa, koska asetuksia ei saatu avattua."
+msgstr ""
 
 #: kcm.cpp:137
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
-"Plasman asetuksia ei voitu tahdistaa, koska ”plasmalogin”-tunnusta ei ole. "
-"Tarkista Plasma Loginin asennus."
 
 #: kcm.cpp:188
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
-"Plasman asetuksia ei voitu palauttaa, koska ”plasmalogin”-tunnusta ei ole. "
-"Tarkista Plasma Loginin asennus."
 
 #: ui/Appearance.qml:23
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
-msgstr "Ulkoasu"
+msgstr ""
 
 #: ui/Appearance.qml:35
 #, kde-format
 msgid "Clock"
-msgstr "Kello"
+msgstr ""
 
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr "Näytä kello"
+msgstr ""
 
 #: ui/Appearance.qml:52
 #, kde-format
 msgid "Wallpaper type:"
-msgstr "Taustakuvan tyyppi:"
+msgstr ""
 
 #: ui/main.qml:28
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply Plasma Settings…"
-msgstr "Ota Plasma-asetukset käyttöön…"
+msgstr ""
 
 #: ui/main.qml:33
 #, kde-format
 msgctxt "@action:button"
 msgid "Configure Appearance…"
-msgstr "Ulkoasuasetukset…"
+msgstr ""
 
 #: ui/main.qml:64
 #, kde-format
 msgctxt "@title:window"
 msgid "Apply Plasma Settings"
-msgstr "Ota Plasma-asetukset käyttöön"
+msgstr ""
 
 #: ui/main.qml:65
 #, kde-format
@@ -87,8 +83,6 @@ msgid ""
 "This will make the Plasma login screen reflect your customizations to the "
 "following Plasma settings:"
 msgstr ""
-"Tämä saa Plasman kirjautumisnäytön heijastamaan seuraavien Plasma-asetusten "
-"mukautuksia:"
 
 #: ui/main.qml:66
 #, kde-kuit-format
@@ -99,10 +93,6 @@ msgid ""
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
 "configuration</item></list></para>"
 msgstr ""
-"<para><list><item>väriteema</item><item>osoitinteema ja osoittimen koko</"
-"item><item>fontti ja sen hahmonnus</item><item>numerolukkoasetus</"
-"item><item>Plasma-teema</item><item>näytön mittakaava</"
-"item><item>näyttöasetukset</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
@@ -110,32 +100,30 @@ msgid ""
 "Please note that theme files must be installed globally to be reflected on "
 "the Plasma login screen."
 msgstr ""
-"Huomaa, että teematiedostot on asennettava järjestelmänlaajuisesti, jotta "
-"Plasman kirjautumisnäyttö voi heijastella niitä."
 
 #: ui/main.qml:71
 #, kde-format
 msgctxt "@action:button"
 msgid "Apply"
-msgstr "Käytä"
+msgstr ""
 
 #: ui/main.qml:76
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset to Default Settings"
-msgstr "Palaa oletusasetuksiin"
+msgstr ""
 
 #: ui/main.qml:89
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
-msgstr "Automaattikirjautuminen"
+msgstr ""
 
 #: ui/main.qml:94
 #, kde-format
 msgctxt "@option:check"
 msgid "Automatically log in:"
-msgstr "Kirjaudu automaattisesti ajassa:"
+msgstr ""
 
 #: ui/main.qml:99
 #, kde-format
@@ -143,7 +131,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the user to log in "
 "automatically"
 msgid "as user:"
-msgstr "käyttäjänä:"
+msgstr ""
 
 #: ui/main.qml:168
 #, kde-format
@@ -151,7 +139,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
 "automatically"
 msgid "with session:"
-msgstr "istuntoon:"
+msgstr ""
 
 #: ui/main.qml:201
 #, kde-kuit-format
@@ -162,48 +150,44 @@ msgid ""
 "this, you can change the wallet to have a blank password. Note that this is "
 "insecure and should only be done in a trusted environment."
 msgstr ""
-"Automaattikirjautuminen ei automaattisesti tue KDE:n lompakkosi avaamista, "
-"joten sitä kysytään aina kirjautuessasi.<nl/><nl/>    Tämän voi välttää "
-"asettamalla lompakolla tyhjän salasanan. Huomaa, ettei tämä ole turvallista, "
-"joten niin pitäisi tehdä vain luotettavassa ympäristössä."
 
 #: ui/main.qml:206
 #, kde-format
 msgid "Open KDE Wallet Settings"
-msgstr "Avaa KDE:n lompakon asetukset"
+msgstr ""
 
 #: ui/main.qml:213
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
-msgstr "Kirjaudu heti takaisin uloskirjautumisen jälkeen"
+msgstr ""
 
 #: ui/main.qml:224
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
-msgstr "Oletukset"
+msgstr ""
 
 #: ui/main.qml:229
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
-msgstr "Oletuskäyttäjä:"
+msgstr ""
 
 #: ui/main.qml:235
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
-msgstr "Viimeksi kirjautunut käyttäjä"
+msgstr ""
 
 #: ui/main.qml:306
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
-msgstr "Oletusistunto:"
+msgstr ""
 
 #: ui/main.qml:312
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
-msgstr "Viimeksi käytetty istunto"
+msgstr ""
