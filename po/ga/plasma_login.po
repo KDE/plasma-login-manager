@@ -1,21 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SPDX-FileCopyrightText: 2026 Charlotte <altronic25@protonmail.com>
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-01 00:45+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-01-01 19:58+0000\n"
+"Last-Translator: Charlotte <altronic25@protonmail.com>\n"
+"Language-Team: Irish\n"
+"Language: ga\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
+"3 : 4\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -23,7 +23,7 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (X11) (%2)"
-msgstr ""
+msgstr "%1 (X11) (%2)"
 
 #: ../settings/models/sessionmodel.cpp:82
 #, kde-format
@@ -31,19 +31,19 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (Wayland) (%2)"
-msgstr ""
+msgstr "%1 (Wayland) (%2)"
 
 #: ../settings/models/sessionmodel.cpp:89
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (X11)"
-msgstr ""
+msgstr "%1 (X11)"
 
 #: ../settings/models/sessionmodel.cpp:91
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (Wayland)"
-msgstr ""
+msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
 #, kde-format
@@ -51,78 +51,78 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr ""
+msgstr "Athraigh leagan amach"
 
 #: qml/Login.qml:92
 #, kde-format
 msgid "Username"
-msgstr ""
+msgstr "Ainm Úsáideora"
 
 #: qml/Login.qml:109
 #, kde-format
 msgid "Password"
-msgstr ""
+msgstr "Focail Faire"
 
 #: qml/Login.qml:153 qml/Login.qml:159
 #, kde-format
 msgid "Log In"
-msgstr ""
+msgstr "Logáil Isteach"
 
 #: qml/Main.qml:156
 #, kde-format
 msgid "Caps Lock is on"
-msgstr ""
+msgstr "Is Caps Lock Ar"
 
 #: qml/Main.qml:168
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr ""
+msgstr "Geimhrigh"
 
 #: qml/Main.qml:174 qml/Main.qml:291
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr ""
+msgstr "Codail"
 
 #: qml/Main.qml:180 qml/Main.qml:297
 #, kde-format
 msgid "Restart"
-msgstr ""
+msgstr "Atosaigh"
 
 #: qml/Main.qml:186 qml/Main.qml:303
 #, kde-format
 msgid "Shut Down"
-msgstr ""
+msgstr "Múch"
 
 #: qml/Main.qml:192
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr ""
+msgstr "Eile..."
 
 #: qml/Main.qml:280
 #, kde-format
 msgid "Type in Username and Password"
-msgstr ""
+msgstr "Clóscríobh an Ainm Úsáideora agus Focail Faire"
 
 #: qml/Main.qml:309
 #, kde-format
 msgid "List Users"
-msgstr ""
+msgstr "Liostáil Úsáideoirí"
 
 #: qml/Main.qml:389
 #, kde-format
 msgid "Login Failed"
-msgstr ""
+msgstr "Tá Logáil Isteach ag Teipthe"
 
 #: qml/SessionButton.qml:24
 #, kde-format
 msgid "Desktop Session: %1"
-msgstr ""
+msgstr "Seisiún Deisce: %1"
