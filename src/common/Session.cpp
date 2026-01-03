@@ -1,4 +1,5 @@
 #include "Session.h"
+#include "Configuration.h"
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -42,7 +43,21 @@ Session::Session(Type type, KSharedConfigPtr desktopFile)
 
 bool Session::isValid() const
 {
-    return m_desktopFile;
+    if (!m_desktopFile) {
+        return false;
+    }
+
+    const QString tryExec = m_desktopFile->group(QStringLiteral("Desktop Entry")).readEntry(QStringLiteral("TryExec"));
+    if (!tryExec.isEmpty() && !QStandardPaths::findExecutable(tryExec).isEmpty()) {
+        return false;
+    }
+    if (m_type == X11Session) {
+        static bool xServerFound = !QStandardPaths::findExecutable(mainConfig.X11.ServerPath.get()).isEmpty();
+        if (!xServerFound) {
+            return false;
+        }
+    }
+    return true;
 }
 
 Session::Type Session::type() const
@@ -52,8 +67,8 @@ Session::Type Session::type() const
 
 QString Session::name() const
 {
-    Q_ASSERT(isValid());
-    if (!isValid()) {
+    Q_ASSERT(m_desktopFile);
+    if (!m_desktopFile) {
         return QString();
     }
     return m_desktopFile->group(QStringLiteral("Desktop Entry")).readEntry(QStringLiteral("Name"));
@@ -61,8 +76,8 @@ QString Session::name() const
 
 QString Session::fileName() const
 {
-    Q_ASSERT(isValid());
-    if (!isValid()) {
+    Q_ASSERT(m_desktopFile);
+    if (!m_desktopFile) {
         return QString();
     }
     return m_desktopFile->name();
@@ -70,8 +85,8 @@ QString Session::fileName() const
 
 QString Session::desktopSession() const
 {
-    Q_ASSERT(isValid());
-    if (!isValid()) {
+    Q_ASSERT(m_desktopFile);
+    if (!m_desktopFile) {
         return QString();
     }
     return m_desktopFile->name();
@@ -91,8 +106,8 @@ QString Session::xdgSessionType() const
 
 QString Session::exec() const
 {
-    Q_ASSERT(isValid());
-    if (!isValid()) {
+    Q_ASSERT(m_desktopFile);
+    if (!m_desktopFile) {
         return QString();
     }
     return m_desktopFile->group(QStringLiteral("Desktop Entry")).readEntry(QStringLiteral("Exec"));
@@ -100,8 +115,8 @@ QString Session::exec() const
 
 QString Session::desktopNames() const
 {
-    Q_ASSERT(isValid());
-    if (!isValid()) {
+    Q_ASSERT(m_desktopFile);
+    if (!m_desktopFile) {
         return QString();
     }
     return m_desktopFile->group(QStringLiteral("Desktop Entry")).readEntry(QStringLiteral("DesktopNames"));
