@@ -48,7 +48,7 @@ if(INSTALL_PAM_CONFIGURATION)
            message(FATAL_ERROR
                "Unknown operating system detected!\n"
                "No provided PAM configuration files exist for OS ID '${OS_ID}' or its ID_LIKE '${OS_ID_LIKE}'.\n"
-               "Please re-run with '-DINSTALL_PAM_CONFIGURATION=BOOL:OFF' and provide your own PAM configuration."
+               "Please re-run with '-DINSTALL_PAM_CONFIGURATION:BOOL=OFF' and provide your own PAM configuration."
            )
         endif()
     endif()
