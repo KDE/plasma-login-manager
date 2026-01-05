@@ -17,7 +17,6 @@ target_sources(plasmalogin-helper PRIVATE
     ${CMAKE_SOURCE_DIR}/src/auth/AuthRequest.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthPrompt.cpp
     ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp
-    Backend.cpp
     HelperApp.cpp
     UserSession.cpp
     backend/PamHandle.cpp

@@ -7,10 +7,10 @@
  */
 
 #include "HelperApp.h"
-#include "Backend.h"
 #include "Configuration.h"
 #include "SafeDataStream.h"
 #include "UserSession.h"
+#include "backend/PamBackend.h"
 
 #include "MessageHandler.h"
 #include "SignalHandler.h"
@@ -33,7 +33,7 @@ namespace PLASMALOGIN
 {
 HelperApp::HelperApp(int &argc, char **argv)
     : QCoreApplication(argc, argv)
-    , m_backend(Backend::get(this))
+    , m_backend(new PamBackend(this))
     , m_session(new UserSession(this))
     , m_socket(new QLocalSocket(this))
 {

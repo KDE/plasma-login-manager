@@ -9,7 +9,6 @@
 #if !defined(PAMBACKEND_H)
 #define PAMBACKEND_H
 
-#include "../Backend.h"
 #include "AuthMessages.h"
 #include "Constants.h"
 
@@ -19,6 +18,7 @@
 
 namespace PLASMALOGIN
 {
+class HelperApp;
 class PamHandle;
 class PamBackend;
 class PamData
@@ -44,23 +44,30 @@ private:
     Request m_currentRequest{};
 };
 
-class PamBackend : public Backend
+class PamBackend : public QObject
 {
     Q_OBJECT
 public:
     explicit PamBackend(HelperApp *parent);
     virtual ~PamBackend();
     int converse(int n, const struct pam_message **msg, struct pam_response **resp);
+    void setAutologin(bool on = true);
+    void setDisplayServer(bool on = true);
+    void setGreeter(bool on = true);
 
 public slots:
-    virtual bool start(const QString &user = QString());
-    virtual bool authenticate();
-    virtual bool openSession();
-    virtual bool closeSession();
+    bool start(const QString &user = QString());
+    bool authenticate();
+    bool openSession();
+    bool closeSession();
 
-    virtual QString userName();
+    QString userName();
 
 private:
+    HelperApp *m_app{nullptr};
+    bool m_autologin{false};
+    bool m_displayServer = false;
+    bool m_greeter{false};
     PamData *m_data{nullptr};
     PamHandle *m_pam{nullptr};
 };

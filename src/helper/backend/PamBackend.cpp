@@ -14,9 +14,11 @@
 #include "VirtualTerminal.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QProcessEnvironment>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QString>
 
+#include <pwd.h>
 #include <stdlib.h>
 
 namespace PLASMALOGIN
@@ -194,7 +196,8 @@ void PamData::completeRequest(const Request &request)
 }
 
 PamBackend::PamBackend(HelperApp *parent)
-    : Backend(parent)
+    : QObject(parent)
+    , m_app(parent)
     , m_data(new PamData())
     , m_pam(new PamHandle(this))
 {
@@ -274,7 +277,22 @@ bool PamBackend::openSession()
     }
     sessionEnv.insert(m_pam->getEnv());
     m_app->session()->setProcessEnvironment(sessionEnv);
-    return Backend::openSession();
+
+    QProcessEnvironment env = m_app->session()->processEnvironment();
+    struct passwd *pw;
+    pw = getpwnam(qPrintable(m_app->user()));
+    if (pw) {
+        env.insert(QStringLiteral("HOME"), QString::fromLocal8Bit(pw->pw_dir));
+        env.insert(QStringLiteral("PWD"), QString::fromLocal8Bit(pw->pw_dir));
+        env.insert(QStringLiteral("SHELL"), QString::fromLocal8Bit(pw->pw_shell));
+        env.insert(QStringLiteral("USER"), QString::fromLocal8Bit(pw->pw_name));
+        env.insert(QStringLiteral("LOGNAME"), QString::fromLocal8Bit(pw->pw_name));
+    }
+    if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
+        env.insert(QStringLiteral("QT_NO_XDG_DESKTOP_PORTAL"), QStringLiteral("1"));
+    }
+    m_app->session()->setProcessEnvironment(env);
+    return m_app->session()->start();
 }
 
 bool PamBackend::closeSession()
@@ -286,7 +304,7 @@ bool PamBackend::closeSession()
         return true;
     }
     qWarning() << "[PAM] Asked to close the session but it wasn't previously open";
-    return Backend::closeSession();
+    return true;
 }
 
 QString PamBackend::userName()
@@ -362,6 +380,21 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
     }
 
     return PAM_SUCCESS;
+}
+
+void PamBackend::setAutologin(bool on)
+{
+    m_autologin = on;
+}
+
+void PamBackend::setDisplayServer(bool on)
+{
+    m_displayServer = on;
+}
+
+void PamBackend::setGreeter(bool on)
+{
+    m_greeter = on;
 }
 }
 

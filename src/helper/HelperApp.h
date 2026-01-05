@@ -18,7 +18,7 @@ class QLocalSocket;
 
 namespace PLASMALOGIN
 {
-class Backend;
+class PamBackend;
 class UserSession;
 class HelperApp : public QCoreApplication
 {
@@ -46,7 +46,7 @@ private slots:
 
 private:
     qint64 m_id{-1};
-    Backend *m_backend{nullptr};
+    PamBackend *m_backend{nullptr};
     UserSession *m_session{nullptr};
     QLocalSocket *m_socket{nullptr};
     QString m_user{};
