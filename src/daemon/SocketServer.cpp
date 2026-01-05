@@ -22,6 +22,7 @@
 #include "SocketWriter.h"
 #include "Utils.h"
 
+#include <QDebug>
 #include <QLocalServer>
 #include <QLocalSocket>
 
