@@ -9,6 +9,9 @@
 #include "config.h"
 
 #include <unistd.h>
+#include <fcntl.h>          /* Definition of O_* and S_* constants */
+#include <linux/openat2.h>  /* Definition of RESOLVE_* constants */
+#include <sys/syscall.h>    /* Definition of SYS_* constants */
 
 #include <QBuffer>
 #include <QDBusUnixFileDescriptor>
@@ -25,6 +28,7 @@
 #include <KLazyLocalizedString>
 #include <KLocalizedString>
 #include <KUser>
+
 
 static const QFile::Permissions standardPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther;
 
@@ -168,6 +172,89 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
     // Ensure permissions on the config file are appropriate
     if (file.permissions() != standardPermissions) {
         file.setPermissions(standardPermissions);
+    }
+
+    // wallpaper stuff
+    QString homeDirPath;
+    if (auto opt = plasmaloginUserHomeDir()) {
+        homeDirPath = *opt;
+    } else {
+        qWarning() << "Could not determine home directory for plasmalogin user";
+        return ActionReply::HelperErrorReply();
+    }
+
+
+    QDir homeDir(homeDirPath);
+    QDir wallpaperDir(homeDir.absoluteFilePath("wallpapers"));
+    if (!wallpaperDir.removeRecursively()) {
+        qWarning() << "Could not clean old wallpaper directory";
+    }
+    homeDir.mkdir("wallpapers");
+
+    auto rootWallpaperFd = open(wallpaperDir.path().toUtf8().constData(), O_RDONLY | O_DIRECTORY);
+    if (rootWallpaperFd < 0) {
+        qWarning() << "Could not load root wallpaper directory." << qPrintable(strerror(errno));
+        return ActionReply::HelperErrorReply();
+    }
+    auto closeRootWallpaperFd = qScopeGuard([&]() {
+        close(rootWallpaperFd);
+    });
+
+    const QStringList wallpapers = args[QStringLiteral("wallpapers")].toStringList();
+    for (const QString &wallpaper : wallpapers) {
+        // This shouldn't be needed with the explicit openat flags, but
+        // another check can't hurt
+        if (wallpaper.contains("..")) {
+            qWarning() << "Badly formed wallpaper name detected, aborting";
+            return ActionReply::HelperErrorReply();
+        }
+
+        const QString relativeFilePath = "wallpapers/" + wallpaper;
+        const QString relativeParentDirectory = relativeFilePath.left(relativeFilePath.lastIndexOf("/"));
+        if (!homeDir.mkpath(relativeParentDirectory)) {
+            qWarning() << "Could not create new wallpaper directory";
+            return ActionReply::HelperErrorReply();
+        }
+
+         struct open_how how = {
+            .flags = O_CREAT | O_WRONLY | O_TRUNC,
+            .mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH,
+            .resolve = RESOLVE_BENEATH | RESOLVE_NO_MAGICLINKS
+        };
+        int outFd = syscall(SYS_openat2, rootWallpaperFd, wallpaper.toUtf8().constData(), &how, sizeof(struct open_how));        
+        if (outFd < 0) {
+            qWarning() << "Could not open wallpaper file." << qPrintable(strerror(errno));
+            return ActionReply::HelperErrorReply();
+        }
+        QFile file;
+        if (!file.open(outFd, QIODevice::WriteOnly | QIODevice::Truncate, QFileDevice::AutoCloseHandle)) {
+            qWarning() << "Could not open wallpaper directory from FD.";
+            return ActionReply::HelperErrorReply();
+        }
+
+        QDataStream out(&file);
+        QDBusUnixFileDescriptor fd = args.value("_fd_" + wallpaper).value<QDBusUnixFileDescriptor>();
+        if (!fd.isValid()) {
+            qWarning() << "Could not retrieve wallpaper" << wallpaper;
+            continue;
+        }
+        QFile wallpaperIn;
+        if (!wallpaperIn.open(fd.fileDescriptor(), QIODevice::ReadOnly)) {
+            qWarning() << "Failed to open wallpaper";
+            return ActionReply::HelperErrorReply();
+        }
+        QByteArray buf(4096, 0);
+        while (true) {
+            qint64 n = wallpaperIn.read(buf.data(), buf.size());
+            if (n == 0) {
+                break;
+            } else if (n < 0) {
+                qWarning() << "Failed to transfer wallpaper data for file" << relativeFilePath;
+                return ActionReply::HelperErrorReply();
+            } else {
+                out.writeRawData(buf.data(), n);
+            }
+        }
     }
 
     return ActionReply::SuccessReply();

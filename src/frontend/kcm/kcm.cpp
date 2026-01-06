@@ -22,6 +22,7 @@
 #include <KService>
 #include <KUser>
 #include <kauth/action.h>
+#include <qdbusunixfiledescriptor.h>
 
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
@@ -99,6 +100,26 @@ void PlasmaLoginKcm::save()
             .group(QLatin1String("General"))
             .writeEntry(wallpaperKey, value);
     }
+    QVariantMap args;
+
+    // For image wallpapers we want to copy the user-set image
+    auto imageWallpaperGroup = tempConfig.group("Greeter").group("Wallpaper").group("org.kde.image");
+    if (imageWallpaperGroup.exists()) {
+        // PreviewImage is a supposedly transient state for previewing, we don't want to save this to disk
+        imageWallpaperGroup.group("General").deleteEntry("PreviewImage");
+
+        // Copy the original image to somewhere the greeter can read it
+        const QUrl imageUri = QUrl(imageWallpaperGroup.group("General").readEntry("Image")).adjusted(QUrl::StripTrailingSlash);
+        if (imageUri.isLocalFile()) {
+            args.insert(syncWallpaper(imageUri));
+
+            QUrl adjustedUri = QUrl();
+            adjustedUri.setScheme(QStringLiteral("file"));
+            adjustedUri.setPath(KUser("plasmalogin").homeDir() + "/wallpapers/" + imageUri.fileName());
+            adjustedUri.setFragment(imageUri.fragment());
+            imageWallpaperGroup.group("General").writeEntry("Image", adjustedUri);
+        }
+    }
 
     tempConfig.sync();
 
@@ -109,7 +130,6 @@ void PlasmaLoginKcm::save()
         return;
     }
 
-    QVariantMap args;
     QTextStream in(&tempFile);
     args[QStringLiteral("config")] = in.readAll();
 
@@ -128,6 +148,50 @@ void PlasmaLoginKcm::save()
         this->setNeedsSave(job->error());
     });
     job->start();
+}
+
+QVariantMap PlasmaLoginKcm::syncWallpaper(const QUrl &imageUri)
+{
+    const QString baseName = imageUri.fileName();
+    const QString imagePath = imageUri.toLocalFile();
+
+    if (imagePath.isEmpty()) {
+        return {};
+    }
+
+    QVariantMap wallpaperArgs;
+    QStringList files;
+
+    // We open the file and pass an FD so the root helper knows our user can read the contents
+    auto addFile = [&wallpaperArgs, &files](const QString &relativePath, const QString &fullPath) {
+        files.append(relativePath);
+        QFile imageFile(fullPath);
+        if (imageFile.open(QIODevice::ReadOnly)) {
+            // There's a silly quirk in KAuth that we can only pass FDs on the top level of the QVariantMap as it's handled specially
+            // Hence one entry for the list of files, then one entry per file descriptor.
+            wallpaperArgs["_fd_" + relativePath] = QVariant::fromValue(QDBusUnixFileDescriptor(imageFile.handle()));
+        } else {
+            qWarning() << "Could not read file" << fullPath;
+        }
+    };
+
+    QFileInfo fileInfo(imagePath);
+    if (fileInfo.isDir()) {
+        // special case, it's a package
+        addFile(baseName + "/metadata.json", imagePath + "/metadata.json");
+        QDir imagesDir(imagePath + "/contents/images");
+        for (const QString &imageFileName : imagesDir.entryList(QDir::Files)) {
+            addFile(baseName + "/contents/images/" + imageFileName, imagePath + "/contents/images/" + imageFileName);
+        }
+        QDir darkImagesDir(imagePath + "/contents/images_dark");
+        for (const QString &imageFileName : darkImagesDir.entryList(QDir::Files)) {
+            addFile(baseName + "/contents/images_dark/" + imageFileName, imagePath + "/contents/images_dark/" + imageFileName);
+        }
+    } else {
+        addFile(baseName, imagePath);
+    }
+    wallpaperArgs.insert("wallpapers", files);
+    return wallpaperArgs;
 }
 
 void PlasmaLoginKcm::synchronizeSettings()
