@@ -205,9 +205,12 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
                 break;
             } else if (n < 0) {
                 return ActionReply::HelperErrorReply();
+            } else {
+                out.writeRawData(buf.data(), n);
             }
-            out.writeRawData(buf.data(), n);
         }
+    } else {
+        // clean up wallpapers
     }
 
     return ActionReply::SuccessReply();
