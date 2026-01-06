@@ -170,6 +170,65 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         file.setPermissions(standardPermissions);
     }
 
+    // wallpaper stuff
+    QString homeDirPath;
+    if (auto opt = plasmaloginUserHomeDir()) {
+        homeDirPath = *opt;
+    } else {
+        qWarning() << "Could not determine home directory for plasmalogin user";
+        return ActionReply::HelperErrorReply();
+    }
+
+    QDir homeDir(homeDirPath);
+    QDir wallpaperDir(homeDir.absoluteFilePath("wallpapers"));
+    if (!wallpaperDir.removeRecursively()) {
+        qWarning() << "Could not clean old wallpaper directory";
+    }
+
+    const QStringList wallpapers = args[QStringLiteral("wallpapers")].toStringList();
+    for (const QString &wallpaper : wallpapers) {
+        if (wallpaper.contains("..")) {
+            qWarning() << "Badly formed wallpaper name detected, aborting";
+            return ActionReply::HelperErrorReply();
+        }
+
+        const QString relativeFilePath = "wallpapers/" + wallpaper;
+        const QString relativeParentDirectory = relativeFilePath.left(relativeFilePath.lastIndexOf("/"));
+        if (!homeDir.mkpath(relativeParentDirectory)) {
+            qWarning() << "Could not create new wallpaper directory";
+        }
+
+        QFile file(homeDir.filePath(relativeFilePath));
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate, standardPermissions)) {
+            qWarning() << "Could not open wallpaper file " << relativeFilePath << " for writing";
+            return ActionReply::HelperErrorReply();
+        }
+
+        QDataStream out(&file);
+        QDBusUnixFileDescriptor fd = args.value("_fd_" + wallpaper).value<QDBusUnixFileDescriptor>();
+        if (!fd.isValid()) {
+            qWarning() << "Could not retrieve wallpaper" << wallpaper;
+            continue;
+        }
+        QFile wallpaperIn;
+        if (!wallpaperIn.open(fd.fileDescriptor(), QIODevice::ReadOnly)) {
+            qWarning() << "Failed to open wallpaper";
+            return ActionReply::HelperErrorReply();
+        }
+        QByteArray buf(4096, 0);
+        while (true) {
+            qint64 n = wallpaperIn.read(buf.data(), buf.size());
+            if (n == 0) {
+                break;
+            } else if (n < 0) {
+                qWarning() << "Failed to transfer wallpaper data for file" << relativeFilePath;
+                return ActionReply::HelperErrorReply();
+            } else {
+                out.writeRawData(buf.data(), n);
+            }
+        }
+    }
+
     return ActionReply::SuccessReply();
 }
 

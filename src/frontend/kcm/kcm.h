@@ -82,6 +82,7 @@ private:
     bool isSaveNeeded() const override;
     bool isDefaults() const override;
 
+    QVariantMap syncWallpaper(const QUrl &url);
     KConfigPropertyMap *wallpaperConfiguration() const;
 
     WallpaperSettings *m_wallpaperSettings;
