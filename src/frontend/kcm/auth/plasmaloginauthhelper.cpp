@@ -188,10 +188,26 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
             return ActionReply::HelperErrorReply();
         }
         QDataStream out(&file);
-        out << args["wallpaper"].toByteArray();
 
-        qDebug() << "written wallapper";
         qDebug() << args["wallpaperFd"].value<QDBusUnixFileDescriptor>().isValid();
+        QDBusUnixFileDescriptor fd = args["wallpaperFd"].value<QDBusUnixFileDescriptor>();
+        QFile wallpaperIn;
+        if (!wallpaperIn.open(fd.fileDescriptor(), QIODevice::ReadOnly)) {
+            qWarning() << "Failed to open wallpaper";
+            return ActionReply::HelperErrorReply();
+
+        }
+
+        QByteArray buf(4096, 0);
+        while (true) {
+            qint64 n = wallpaperIn.read(buf.data(), buf.size());
+            if (n == 0) {
+                break;
+            } else if (n < 0) {
+                return ActionReply::HelperErrorReply();
+            }
+            out.writeRawData(buf.data(), n);
+        }
     }
 
     return ActionReply::SuccessReply();
