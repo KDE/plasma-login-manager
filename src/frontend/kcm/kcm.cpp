@@ -106,14 +106,18 @@ void PlasmaLoginKcm::save()
     // For image wallpapers we want to copy the user-set image
     auto imageWallpaperGroup = tempConfig.group("Greeter").group("Wallpaper").group("org.kde.image");
     if (imageWallpaperGroup.exists()) {
-        const QUrl imageUri = imageWallpaperGroup.group("General").readEntry("Image");
+        // PreviewImage is a supposedly transient state for previewing, we don't want to save this to disk
+        imageWallpaperGroup.group("General").deleteEntry("PreviewImage");
 
+        // Copy the original image
+        const QUrl imageUri = imageWallpaperGroup.group("General").readEntry("Image");
         const QString imagePath = imageUri.toLocalFile(); //Dave, should we do KIO stuff?
 
-        // we open the file here to ensure that we can read the contents
+        // We open the file here so the auth knows we can read the contents
         if (!imagePath.isEmpty()) {
             QFile imageFile(imagePath);
             if (imageFile.open(QIODevice::ReadOnly)) {
+                // Dave, check the dup
                 args[QStringLiteral("wallpaperFd")] = QVariant::fromValue(QDBusUnixFileDescriptor(dup(imageFile.handle())));
             } else {
                 qDebug() << "Could not read file";

@@ -175,7 +175,7 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
     }
 
     // wallpaper
-    if (args.contains("wallpaper"))
+    if (args.contains("wallpaperFd"))
     {
         QString homeDir;
         if (auto opt = plasmaloginUserHomeDir()) {
