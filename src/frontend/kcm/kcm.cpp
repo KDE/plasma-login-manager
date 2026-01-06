@@ -100,19 +100,8 @@ void PlasmaLoginKcm::save()
             .group(QLatin1String("General"))
             .writeEntry(wallpaperKey, value);
     }
-
-    tempConfig.sync();
-
-    // Open our temporary saved config
-    QFile tempFile(tempFileName);
-    if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        Q_EMIT errorOccurred(QString::fromUtf8(kli18n("Unable to save settings because the config could not be opened.").untranslatedText()));
-        return;
-    }
-
     QVariantMap args;
-    QTextStream in(&tempFile);
-    args[QStringLiteral("config")] = in.readAll();
+
 
     // For image wallpapers we want to copy the user-set image
     auto imageWallpaperGroup = tempConfig.group("Greeter").group("Wallpaper").group("org.kde.image");
@@ -120,6 +109,7 @@ void PlasmaLoginKcm::save()
         const QUrl imageUri = imageWallpaperGroup.group("General").readEntry("Image");
 
         const QString imagePath = imageUri.toLocalFile(); //Dave, should we do KIO stuff?
+
         // we open the file here to ensure that we can read the contents
         if (!imagePath.isEmpty()) {
             QFile imageFile(imagePath);
@@ -129,7 +119,20 @@ void PlasmaLoginKcm::save()
                 qDebug() << "Could not read file";
             }
         }
+        imageWallpaperGroup.group("General").writeEntry("Image", QStringLiteral("file://var/lib/plasmalogin/wallpaper.png"));
     }
+
+    tempConfig.sync();
+
+           // Open our temporary saved config
+    QFile tempFile(tempFileName);
+    if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        Q_EMIT errorOccurred(QString::fromUtf8(kli18n("Unable to save settings because the config could not be opened.").untranslatedText()));
+        return;
+    }
+
+    QTextStream in(&tempFile);
+    args[QStringLiteral("config")] = in.readAll();
 
     KAuth::Action saveAction(authActionName());
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));

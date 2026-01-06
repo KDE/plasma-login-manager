@@ -195,7 +195,6 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         if (!wallpaperIn.open(fd.fileDescriptor(), QIODevice::ReadOnly)) {
             qWarning() << "Failed to open wallpaper";
             return ActionReply::HelperErrorReply();
-
         }
 
         QByteArray buf(4096, 0);
