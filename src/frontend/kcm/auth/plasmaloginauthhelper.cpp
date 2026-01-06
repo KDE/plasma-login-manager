@@ -183,13 +183,12 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         } else {
             return ActionReply::HelperErrorReply();
         }
-        QFile file(homeDir + "/wallpaper.png");
+        QFile file(homeDir + "/wallpaper.jpg");
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate, standardPermissions)) {
             return ActionReply::HelperErrorReply();
         }
         QDataStream out(&file);
 
-        qDebug() << args["wallpaperFd"].value<QDBusUnixFileDescriptor>().isValid();
         QDBusUnixFileDescriptor fd = args["wallpaperFd"].value<QDBusUnixFileDescriptor>();
         QFile wallpaperIn;
         if (!wallpaperIn.open(fd.fileDescriptor(), QIODevice::ReadOnly)) {

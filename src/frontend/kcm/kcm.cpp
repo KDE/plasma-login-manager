@@ -119,7 +119,7 @@ void PlasmaLoginKcm::save()
                 qDebug() << "Could not read file";
             }
         }
-        imageWallpaperGroup.group("General").writeEntry("Image", QStringLiteral("file://var/lib/plasmalogin/wallpaper.png"));
+        imageWallpaperGroup.group("General").writeEntry("Image", QStringLiteral("file://var/lib/plasmalogin/wallpaper.jpg"));
     }
 
     tempConfig.sync();
