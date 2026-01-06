@@ -22,6 +22,7 @@
 #include <KService>
 #include <KUser>
 #include <kauth/action.h>
+#include <qdbusunixfiledescriptor.h>
 
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
@@ -112,6 +113,28 @@ void PlasmaLoginKcm::save()
     QVariantMap args;
     QTextStream in(&tempFile);
     args[QStringLiteral("config")] = in.readAll();
+
+    // For image wallpapers we want to copy the user-set image
+    auto imageWallpaperGroup = tempConfig.group("Greeter").group("Wallpaper").group("org.kde.image");
+    if (imageWallpaperGroup.exists()) {
+        const QUrl imageUri = imageWallpaperGroup.group("General").readEntry("Image");
+
+        const QString imagePath = imageUri.toLocalFile(); //Dave, should we do KIO stuff?
+        // we read the file here to ensure that we can read the contents
+        // we could pass an FD, but changing wallpaper shouldn't be a high frequency operation
+
+        qDebug() << imageUri << imagePath;
+        if (!imagePath.isEmpty()) {
+            QFile imageFile(imagePath);
+            if (imageFile.open(QIODevice::ReadOnly)) {
+                args[QStringLiteral("wallpaper")] = imageFile.readAll();
+                qDebug() << args[QStringLiteral("wallpaper")].toByteArray().size();
+                args[QStringLiteral("wallpaperFd")] = QVariant::fromValue(QDBusUnixFileDescriptor(imageFile.handle()));
+            } else {
+                qDebug() << "Could not read file";
+            }
+        }
+    }
 
     KAuth::Action saveAction(authActionName());
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));

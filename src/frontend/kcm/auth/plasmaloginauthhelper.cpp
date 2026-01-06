@@ -155,19 +155,43 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
-    QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate, standardPermissions)) {
-        return ActionReply::HelperErrorReply();
+    qDebug() << "SAVE";
+    // main config (why is this in /etc?)
+    {
+        QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate, standardPermissions)) {
+            return ActionReply::HelperErrorReply();
+        }
+
+        QTextStream out(&file);
+        out << args[QStringLiteral("config")].toString();
+        out.flush();
+        file.close();
+
+               // Ensure permissions on the config file are appropriate
+        if (file.permissions() != standardPermissions) {
+            file.setPermissions(standardPermissions);
+        }
     }
 
-    QTextStream out(&file);
-    out << args[QStringLiteral("config")].toString();
-    out.flush();
-    file.close();
+    // wallpaper
+    if (args.contains("wallpaper"))
+    {
+        QString homeDir;
+        if (auto opt = plasmaloginUserHomeDir()) {
+            homeDir = *opt;
+        } else {
+            return ActionReply::HelperErrorReply();
+        }
+        QFile file(homeDir + "/wallpaper.png");
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate, standardPermissions)) {
+            return ActionReply::HelperErrorReply();
+        }
+        QDataStream out(&file);
+        out << args["wallpaper"].toByteArray();
 
-    // Ensure permissions on the config file are appropriate
-    if (file.permissions() != standardPermissions) {
-        file.setPermissions(standardPermissions);
+        qDebug() << "written wallapper";
+        qDebug() << args["wallpaperFd"].value<QDBusUnixFileDescriptor>().isValid();
     }
 
     return ActionReply::SuccessReply();

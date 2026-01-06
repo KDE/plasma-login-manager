@@ -32,4 +32,5 @@ public Q_SLOTS:
      * Update the PLASMALOGIN_CONFIG_FILE with the user's specified settings
      */
     ActionReply save(const QVariantMap &args);
+
 };
