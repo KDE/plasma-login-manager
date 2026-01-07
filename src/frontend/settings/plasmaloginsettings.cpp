@@ -80,7 +80,16 @@ void PlasmaLoginSettings::getUids()
 void PlasmaLoginSettings::getWallpaperPlugins()
 {
     const auto wallpaperPackages = KPackage::PackageLoader::self()->listPackages(QStringLiteral("Plasma/Wallpaper"));
+
+    QStringList blackListedPlugins = {
+        QStringLiteral("org.kde.slideshow"), // Too many files copied
+    };
+
     for (auto &package : wallpaperPackages) {
+        // this involves copying too many files, blacklist. Ideally we should do some sort of metadata, but we can expand in time
+        if (blackListedPlugins.contains(package.pluginId())) {
+            continue;
+        }
         m_availableWallpaperPlugins.append({package.name(), package.pluginId()});
     }
 
