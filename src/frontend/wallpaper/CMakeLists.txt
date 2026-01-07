@@ -10,6 +10,7 @@ target_link_libraries(plasma-login-wallpaper PRIVATE
     settings
     Qt::Core
     Qt::Gui
+    Qt::DBus
     Qt::Quick
     KF6::WindowSystem
     KF6::Package

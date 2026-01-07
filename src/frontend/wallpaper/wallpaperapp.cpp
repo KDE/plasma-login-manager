@@ -10,6 +10,9 @@
 #include <QQmlContext>
 #include <QQuickItem>
 
+#include <QDBusConnection>
+#include <QDBusError>
+
 #include <KConfigLoader>
 #include <KConfigPropertyMap>
 #include <KPackage/PackageLoader>
@@ -36,6 +39,12 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
     }
 
     connect(this, &QGuiApplication::screenAdded, this, &WallpaperApp::adoptScreen);
+
+    auto bus = QDBusConnection::sessionBus();
+    bus.registerObject(QStringLiteral("/Wallpaper"), this, QDBusConnection::ExportScriptableSlots);
+    if (!bus.registerService(QStringLiteral("org.kde.plasma.wallpaper"))) {
+        qWarning() << "Failed to register DBus service org.kde.plasma.wallpaper:" << bus.lastError().message();
+    }
 }
 
 WallpaperApp::~WallpaperApp()
@@ -97,6 +106,17 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
     window->setSource(QUrl::fromLocalFile(m_wallpaperPackage.filePath("mainscript")));
     window->rootObject()->setProperty("configuration", QVariant::fromValue(config));
     window->rootObject()->setProperty("pluginName", PlasmaLoginSettings::getInstance().wallpaperPluginId());
+}
+
+void WallpaperApp::blurScreen(const QString &screenName)
+{
+    for (WallpaperWindow *window : std::as_const(m_windows)) {
+        if (window->screen()->name() == screenName) {
+            window->setBlur(true);
+        } else {
+            window->setBlur(false);
+        }
+    }
 }
 
 #include "wallpaperapp.moc"

@@ -46,3 +46,18 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
         setWindowState(Qt::WindowFullScreen);
     }
 }
+
+bool WallpaperWindow::blur() const
+{
+    return m_blur;
+}
+
+void WallpaperWindow::setBlur(bool enable)
+{
+    if (m_blur == enable) {
+        return;
+    }
+    qDebug() << "blur changed";
+    m_blur = enable;
+    Q_EMIT blurChanged();
+}
