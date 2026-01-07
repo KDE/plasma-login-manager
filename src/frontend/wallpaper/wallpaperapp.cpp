@@ -7,6 +7,7 @@
 */
 
 #include <QFile>
+#include <QQmlComponent>
 #include <QQmlContext>
 #include <QQuickItem>
 
@@ -103,9 +104,31 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
     // cache data for the lockscreen. Let's notify it.
     config->setNotify(true);
 
-    window->setSource(QUrl::fromLocalFile(m_wallpaperPackage.filePath("mainscript")));
-    window->rootObject()->setProperty("configuration", QVariant::fromValue(config));
-    window->rootObject()->setProperty("pluginName", PlasmaLoginSettings::getInstance().wallpaperPluginId());
+    const QUrl sourceUrl = QUrl::fromLocalFile(m_wallpaperPackage.filePath("mainscript"));
+
+    auto *component = new QQmlComponent(window->engine().get(), sourceUrl, window);
+    if (component->isError()) {
+        qWarning() << "Failed to load wallpaper component:" << component->errors();
+        return;
+    }
+
+    const QVariantMap properties = {{QStringLiteral("configuration"), QVariant::fromValue(config)},
+                                    {QStringLiteral("pluginName"), PlasmaLoginSettings::getInstance().wallpaperPluginId()}};
+    QObject *wallpaperObject = component->createWithInitialProperties(properties, window->rootContext());
+    auto wallpaperItem = qobject_cast<QQuickItem *>(wallpaperObject);
+    if (!wallpaperItem) {
+        qWarning() << "Failed to create wallpaper root object:" << component->errors();
+        return;
+    }
+    wallpaperItem->setParentItem(window->contentItem());
+    wallpaperItem->setWidth(window->contentItem()->width());
+    wallpaperItem->setHeight(window->contentItem()->height());
+    connect(window->contentItem(), &QQuickItem::widthChanged, wallpaperItem, [contentItem = window->contentItem(), wallpaperItem]() {
+        wallpaperItem->setWidth(contentItem->width());
+    });
+    connect(window->contentItem(), &QQuickItem::heightChanged, wallpaperItem, [contentItem = window->contentItem(), wallpaperItem]() {
+        wallpaperItem->setHeight(contentItem->height());
+    });
 }
 
 void WallpaperApp::blurScreen(const QString &screenName)
