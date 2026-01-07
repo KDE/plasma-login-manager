@@ -112,6 +112,8 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
         return;
     }
 
+    window->setSource(QUrl(QStringLiteral("qrc:/main.qml")));
+
     const QVariantMap properties = {{QStringLiteral("configuration"), QVariant::fromValue(config)},
                                     {QStringLiteral("pluginName"), PlasmaLoginSettings::getInstance().wallpaperPluginId()}};
     QObject *wallpaperObject = component->createWithInitialProperties(properties, window->rootContext());
@@ -120,14 +122,16 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
         qWarning() << "Failed to create wallpaper root object:" << component->errors();
         return;
     }
-    wallpaperItem->setParentItem(window->contentItem());
-    wallpaperItem->setWidth(window->contentItem()->width());
-    wallpaperItem->setHeight(window->contentItem()->height());
-    connect(window->contentItem(), &QQuickItem::widthChanged, wallpaperItem, [contentItem = window->contentItem(), wallpaperItem]() {
-        wallpaperItem->setWidth(contentItem->width());
+    auto wallpaperContainer = window->rootObject()->property("wallpaperContainer").value<QQuickItem *>();
+
+    wallpaperItem->setParentItem(wallpaperContainer);
+    wallpaperItem->setWidth(wallpaperContainer->width());
+    wallpaperItem->setHeight(wallpaperContainer->height());
+    connect(wallpaperContainer, &QQuickItem::widthChanged, wallpaperItem, [wallpaperContainer, wallpaperItem]() {
+        wallpaperItem->setWidth(wallpaperContainer->width());
     });
-    connect(window->contentItem(), &QQuickItem::heightChanged, wallpaperItem, [contentItem = window->contentItem(), wallpaperItem]() {
-        wallpaperItem->setHeight(contentItem->height());
+    connect(wallpaperContainer, &QQuickItem::heightChanged, wallpaperItem, [wallpaperContainer, wallpaperItem]() {
+        wallpaperItem->setHeight(wallpaperContainer->height());
     });
 }
 

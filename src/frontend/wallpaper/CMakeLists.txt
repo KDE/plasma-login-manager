@@ -6,6 +6,13 @@ target_sources(plasma-login-wallpaper PRIVATE
     wallpaperwindow.cpp
 )
 
+# Embed QML via Qt Resource System
+qt_add_resources(plasma-login-wallpaper qml_resources
+    PREFIX "/"
+    FILES
+        main.qml
+)
+
 target_link_libraries(plasma-login-wallpaper PRIVATE
     settings
     Qt::Core
