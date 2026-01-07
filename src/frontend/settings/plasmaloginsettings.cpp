@@ -80,7 +80,22 @@ void PlasmaLoginSettings::getUids()
 void PlasmaLoginSettings::getWallpaperPlugins()
 {
     const auto wallpaperPackages = KPackage::PackageLoader::self()->listPackages(QStringLiteral("Plasma/Wallpaper"));
+
+    // not all plugins are suitable for the login screen due to file access
+    QStringList allowedPlugins = {
+        QStringLiteral("org.kde.color"),
+        QStringLiteral("org.kde.image"),
+        QStringLiteral("org.kde.tiled"),
+        QStringLiteral("org.kde.haenau"),
+        QStringLiteral("org.kde.potd"),
+        QStringLiteral("org.kde.hunyango"),
+        // slideshow is explicitly not included as we only sync one file
+    };
+
     for (auto &package : wallpaperPackages) {
+        if (!allowedPlugins.contains(package.pluginId())) {
+            continue;
+        }
         m_availableWallpaperPlugins.append({package.name(), package.pluginId()});
     }
 
