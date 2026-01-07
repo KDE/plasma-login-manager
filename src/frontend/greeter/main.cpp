@@ -19,6 +19,7 @@
 #include "backend/GreeterProxy.h"
 #include "mockbackend/MockGreeterProxy.h"
 
+#include "blurscreenbridge.h"
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
 #include "plasmaloginsettings.h"
@@ -44,14 +45,10 @@ public:
 private:
     void createWindowForScreen(QScreen *screen)
     {
-        if (s_testMode && m_hasWindow) {
-            return;
-        }
-
         auto *window = new PlasmaQuick::QuickViewSharedEngine();
         window->QObject::setParent(this);
         window->setScreen(screen);
-        window->setColor(s_testMode ? Qt::black : Qt::transparent);
+        window->setColor(s_testMode ? Qt::darkGray : Qt::transparent);
 
         window->setGeometry(screen->geometry());
         connect(screen, &QScreen::geometryChanged, this, [window]() {
@@ -86,11 +83,8 @@ private:
         });
 
         window->show();
-
-        m_hasWindow = true;
     }
 
-    bool m_hasWindow = false;
     static bool s_testMode;
 };
 
@@ -129,6 +123,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "SessionManagement", new SessionManagement());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Settings", &PlasmaLoginSettings::getInstance());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "StateConfig", StateConfig::self());
+    qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "BlurScreenBridge", new BlurScreenBridge);
 
     LoginGreeter greeter;
     return app.exec();

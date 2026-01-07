@@ -74,4 +74,3 @@ PlasmaComponents.ToolButton {
         }
     }
 }
-

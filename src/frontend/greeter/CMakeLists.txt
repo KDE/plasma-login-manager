@@ -9,6 +9,7 @@ set(LOGIN_GREETER_SRCS
     backend/GreeterProxy.cpp
     backend/SocketWriter.cpp
     mockbackend/MockGreeterProxy.cpp
+    blurscreenbridge.cpp
 )
 
 add_definitions(-DTRANSLATION_DOMAIN="plasma_login")
@@ -23,6 +24,9 @@ ecm_qt_declare_logging_category(LOGIN_GREETER_SRCS HEADER debug.h
 
 add_executable(plasma-login-greeter ${LOGIN_GREETER_SRCS})
 
+set_source_files_properties(qml/GreeterState.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 ecm_add_qml_module(plasma-login-greeter URI "org.kde.plasma.login" GENERATE_PLUGIN_SOURCE)
 ecm_target_qml_sources(plasma-login-greeter
     SOURCES
@@ -30,6 +34,7 @@ ecm_target_qml_sources(plasma-login-greeter
     qml/Login.qml
     qml/SessionButton.qml
     qml/KeyboardButton.qml
+    qml/GreeterState.qml
 
     RESOURCES
     qml/faces/.face.icon

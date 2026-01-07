@@ -46,41 +46,51 @@ Item {
         id: loginScreenRoot
         anchors.fill: parent
 
-        property bool uiVisible: true
-        property bool blockUI: mainStack.depth > 1 || userListComponent.mainPasswordBox.text.length > 0 // || inputPanel.keyboardActive || config.type !== "image"
-
         hoverEnabled: true
-        onPressed: uiVisible = true;
-        onPositionChanged: uiVisible = true;
-        onUiVisibleChanged: {
-            if (blockUI) {
-                fadeoutTimer.running = false;
-            } else if (uiVisible) {
-                fadeoutTimer.restart();
-            }
-        }
-        onBlockUIChanged: {
-            if (blockUI) {
-                fadeoutTimer.running = false;
-                uiVisible = true;
-            } else if (uiVisible) {
-                fadeoutTimer.restart();
-            }
+
+        property bool uiVisible: PlasmaLogin.GreeterState.activeWindow === Window.window
+        property bool blockUiTimeout: mainStack.depth > 1 || userListComponent.mainPasswordBox.text.length > 0 // || inputPanel.keyboardActive || config.type !== "image"
+
+        function wake() {
+            PlasmaLogin.GreeterState.activateWindow(Window.window);
         }
 
+        function timeout() {
+            PlasmaLogin.GreeterState.timeoutWindow(Window.window);
+        }
+
+        onPressed: wake()
+        onPositionChanged: wake()
         Keys.onPressed: (event) => {
-            uiVisible = true;
+            wake();
             event.accepted = true;
         }
 
+        onUiVisibleChanged: {
+            if (blockUiTimeout) {
+                uiTimeoutTimer.running = false;
+            } else if (uiVisible) {
+                uiTimeoutTimer.restart();
+            }
+        }
+
+        onBlockUiTimeoutChanged: {
+            if (blockUiTimeout) {
+                uiTimeoutTimer.running = false;
+                wake();
+            } else if (uiVisible) {
+                uiTimeoutTimer.restart();
+            }
+        }
+
         Timer {
-            id: fadeoutTimer
-            running: true
+            id: uiTimeoutTimer
+            running: false
             interval: 60000
             onTriggered: {
-                if (!loginScreenRoot.blockUI) {
+                if (!loginScreenRoot.blockUiTimeout) {
                     userListComponent.mainPasswordBox.showPassword = false;
-                    loginScreenRoot.uiVisible = false;
+                    loginScreenRoot.timeout();
                 }
             }
         }
@@ -124,6 +134,7 @@ Item {
 
             focus: true
 
+            opacity: loginScreenRoot.uiVisible ? 1 : 0
             Behavior on opacity {
                 OpacityAnimator {
                     duration: Kirigami.Units.longDuration
@@ -369,17 +380,10 @@ Item {
         }
     }
 
-    // Used to save in onLoginSucceeded
-    property string lastLoggedInSession
-    property string lastLoggedInUser
-
     function handleLoginRequest(username, password, sessionType, sessionFileName, sessionPath) {
         root.notificationMessage = "";
-
-        root.lastLoggedInUser = username;
-        root.lastLoggedInSession = sessionPath;
-
-        PlasmaLogin.Authenticator.login(username, password, sessionType, sessionFileName);
+        // GreeterState handles updating stateconfig with user/session of successful login
+        PlasmaLogin.GreeterState.handleLoginRequest(username, password, sessionType, sessionFileName, sessionPath);
     }
 
     Connections {
@@ -398,10 +402,6 @@ Item {
         function onLoginSucceeded() {
             mainStack.opacity = 0;
             footer.opacity = 0;
-
-            PlasmaLogin.StateConfig.lastLoggedInUser = root.lastLoggedInUser;
-            PlasmaLogin.StateConfig.lastLoggedInSession = root.lastLoggedInSession;
-            PlasmaLogin.StateConfig.save();
         }
     }
 
