@@ -21,7 +21,8 @@ PlasmaComponents.ToolButton {
     readonly property string currentSessionFileName: instantiator.model.data(instantiator.model.index(currentIndex, 0), PlasmaLogin.SessionModel.FileNameRole)
     readonly property string currentSessionPath: instantiator.model.data(instantiator.model.index(currentIndex, 0), PlasmaLogin.SessionModel.PathRole)
 
-    text: i18nd("plasma_login", "Desktop Session: %1", instantiator.objectAt(currentIndex)?.text ?? "")
+    // Count is used as instantiator may not have made items yet
+    text: i18nd("plasma_login", "Desktop Session: %1", instantiator.count > currentIndex ? instantiator.objectAt(currentIndex).text : "")
     visible: menu.count > 1
 
     checkable: true
