@@ -177,25 +177,25 @@ Item {
                     BreezeComponents.ActionButton {
                         icon.name: "system-hibernate"
                         text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
-                        enabled: PlasmaLogin.SessionManagement.canHibernate
+                        visible: PlasmaLogin.SessionManagement.canHibernate
                         onClicked: PlasmaLogin.SessionManagement.hibernate()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
-                        enabled: PlasmaLogin.SessionManagement.canSuspend
+                        visible: PlasmaLogin.SessionManagement.canSuspend
                         onClicked: PlasmaLogin.SessionManagement.suspend()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
                         text: i18nd("plasma_login", "Restart")
-                        enabled: PlasmaLogin.SessionManagement.canReboot
+                        visible: PlasmaLogin.SessionManagement.canReboot
                         onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
                         text: i18nd("plasma_login", "Shut Down")
-                        enabled: PlasmaLogin.SessionManagement.canShutdown
+                        visible: PlasmaLogin.SessionManagement.canShutdown
                         onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
@@ -298,21 +298,27 @@ Item {
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
                     BreezeComponents.ActionButton {
+                        icon.name: "system-hibernate"
+                        text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
+                        visible: PlasmaLogin.SessionManagement.canHibernate
+                        onClicked: PlasmaLogin.SessionManagement.hibernate()
+                    },
+                    BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
-                        enabled: PlasmaLogin.SessionManagement.canSuspend
+                        visible: PlasmaLogin.SessionManagement.canSuspend
                         onClicked: PlasmaLogin.SessionManagement.suspend()
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
                         text: i18nd("plasma_login", "Restart")
-                        enabled: PlasmaLogin.SessionManagement.canReboot
+                        visible: PlasmaLogin.SessionManagement.canReboot
                         onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
                         text: i18nd("plasma_login", "Shut Down")
-                        enabled: PlasmaLogin.SessionManagement.canShutdown
+                        visible: PlasmaLogin.SessionManagement.canShutdown
                         onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
