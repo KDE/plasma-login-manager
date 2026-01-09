@@ -77,7 +77,6 @@ Item {
         onBlockUiTimeoutChanged: {
             if (blockUiTimeout) {
                 uiTimeoutTimer.running = false;
-                wake();
             } else if (uiVisible) {
                 uiTimeoutTimer.restart();
             }
@@ -141,6 +140,25 @@ Item {
                 }
             }
 
+            Connections {
+                target: PlasmaLogin.GreeterState
+
+                function onLoginStateChanged() {
+                    switch (PlasmaLogin.GreeterState.loginState) {
+                        case PlasmaLogin.GreeterState.LoginState.UserList:
+                            if (mainStack.depth !== 2) { return; /* already showing user list */ }
+                            mainStack.pop();
+                            return;
+                        case PlasmaLogin.GreeterState.LoginState.UserPrompt:
+                            if (mainStack.depth !== 1) { return; /* already showing user prompt */ }
+                            mainStack.push(userPromptComponent);
+                            return;
+                        default:
+                            console.warn("Cannot synchronize login state:", PlasmaLogin.GreeterState.loginState);
+                    }
+                }
+            }
+
             initialItem: Login {
                 id: userListComponent
                 userListModel: PlasmaLogin.UserModel
@@ -158,8 +176,8 @@ Item {
                         return 0;
                     }
                 }
-                lastUserName: "" // Unused — we probably want empty when showing a text box i.e. for corporate use with >7 users
-                showUserList: userListModel.count <= 7
+
+                showUserList: !PlasmaLogin.GreeterState.beyondUserLimit
 
                 notificationMessage: {
                     const parts = [];
@@ -201,7 +219,7 @@ Item {
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-prompt"
                         text: i18ndc("plasma_login", "For switching to a username and password prompt", "Other…")
-                        onClicked: mainStack.push(userPromptComponent)
+                        onClicked: PlasmaLogin.GreeterState.loginState = PlasmaLogin.GreeterState.LoginState.UserPrompt
                         visible: !userListComponent.showUsernamePrompt
                     }]
 
@@ -289,7 +307,7 @@ Item {
                     Component.onCompleted: {
                         // as we can't bind inside ListElement
                         setProperty(0, "name", i18nd("plasma_login", "Type in Username and Password"));
-                        setProperty(0, "icon", Qt.resolvedUrl("faces/.face.icon"))
+                        setProperty(0, "icon", Qt.resolvedUrl(".face.icon"))
                     }
                 }
 
@@ -324,7 +342,7 @@ Item {
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-list"
                         text: i18nd("plasma_login", "List Users")
-                        onClicked: mainStack.pop()
+                        onClicked: PlasmaLogin.GreeterState.loginState = PlasmaLogin.GreeterState.LoginState.UserList
                     }
                 ]
             }

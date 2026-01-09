@@ -14,13 +14,14 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 
+import org.kde.plasma.login as PlasmaLogin
+
 SessionManagementScreen {
     id: root
     property Item mainPasswordBox: passwordBox
 
     property bool showUsernamePrompt: !showUserList
 
-    property string lastUserName
     property bool loginScreenUiVisible: false
 
     //the y position that should be ensured visible when the on screen keyboard is visible
@@ -30,12 +31,6 @@ SessionManagementScreen {
     property real fontSize: Kirigami.Theme.defaultFont.pointSize
 
     signal loginRequest(string username, string password)
-
-    onShowUsernamePromptChanged: {
-        if (!showUsernamePrompt) {
-            lastUserName = ""
-        }
-    }
 
     onUserSelected: {
         // Don't startLogin() here, because the signal is connected to the
@@ -86,9 +81,9 @@ SessionManagementScreen {
         font.pointSize: fontSize + 1
         Layout.fillWidth: true
 
-        text: lastUserName
+        text: ""
         visible: showUsernamePrompt
-        focus: showUsernamePrompt && !lastUserName //if there's a username prompt it gets focus first, otherwise password does
+        focus: showUsernamePrompt
         placeholderText: i18nd("plasma_login", "Username")
 
         onAccepted: {
@@ -107,7 +102,7 @@ SessionManagementScreen {
             Layout.fillWidth: true
 
             placeholderText: i18nd("plasma_login", "Password")
-            focus: !showUsernamePrompt || lastUserName
+            focus: !showUsernamePrompt
 
             // Disable reveal password action because SDDM does not have the breeze icon set loaded
             rightActions: []
@@ -137,15 +132,14 @@ SessionManagementScreen {
                 }
             }
 
-            /*
             Connections {
-                target: sddm
+                target: PlasmaLogin.Authenticator
+
                 function onLoginFailed() {
                     passwordBox.selectAll()
                     passwordBox.forceActiveFocus()
                 }
             }
-            */
         }
 
         PlasmaComponents3.Button {
@@ -160,6 +154,112 @@ SessionManagementScreen {
             onClicked: startLogin()
             Keys.onEnterPressed: clicked()
             Keys.onReturnPressed: clicked()
+        }
+    }
+
+    // Synchronise state
+    Item {
+        id: sync
+
+        readonly property bool isUserList: root.showUserList && !root.showUsernamePrompt
+
+        // Login initial state
+        Component.onCompleted: {
+            if (sync.isUserList) {
+                root.userList.currentIndex = PlasmaLogin.GreeterState.userListIndex;
+                passwordBox.text = PlasmaLogin.GreeterState.userListPassword;
+            } else {
+                userNameInput.text = PlasmaLogin.GreeterState.userPromptUsername;
+                passwordBox.text = PlasmaLogin.GreeterState.userPromptPassword;
+            }
+        }
+
+        // Login -> GreeterState
+        Connections {
+            target: root.userList
+
+            function onCurrentIndexChanged() {
+                if (!sync.isUserList) {
+                    return;
+                }
+
+                if (PlasmaLogin.GreeterState.userListIndex != root.userList.currentIndex) {
+                    PlasmaLogin.GreeterState.userListIndex = root.userList.currentIndex;
+                }
+            }
+        }
+
+        Connections {
+            target: userNameInput
+
+            function onTextChanged() {
+                if (!sync.isUserList) {
+                    if (PlasmaLogin.GreeterState.userPromptUsername != userNameInput.text) {
+                        PlasmaLogin.GreeterState.userPromptUsername = userNameInput.text;
+                    }
+                }
+            }
+        }
+
+        Connections {
+            target: passwordBox
+
+            function onTextChanged() {
+                if (sync.isUserList) {
+                    if (PlasmaLogin.GreeterState.userListPassword != passwordBox.text) {
+                        PlasmaLogin.GreeterState.userListPassword = passwordBox.text;
+                    }
+                } else {
+                    if (PlasmaLogin.GreeterState.userPromptPassword != passwordBox.text) {
+                        PlasmaLogin.GreeterState.userPromptPassword = passwordBox.text;
+                    }
+                }
+            }
+        }
+
+        // GreeterState -> Login
+        Connections {
+            target: PlasmaLogin.GreeterState
+
+            function onUserListIndexChanged() {
+                if (!sync.isUserList) {
+                    return;
+                }
+
+                if (root.userList.currentIndex != PlasmaLogin.GreeterState.userListIndex) {
+                    root.userList.currentIndex = PlasmaLogin.GreeterState.userListIndex;
+                }
+            }
+
+            function onUserListPasswordChanged() {
+                if (!sync.isUserList) {
+                    return;
+                }
+
+                if (passwordBox.text != PlasmaLogin.GreeterState.userListPassword) {
+                    passwordBox.text = PlasmaLogin.GreeterState.userListPassword;
+                }
+            }
+
+            function onUserPromptUsernameChanged() {
+                if (sync.isUserList) {
+                    return;
+                }
+
+                if (userNameInput.text != PlasmaLogin.GreeterState.userPromptUsername) {
+                    userNameInput.text = PlasmaLogin.GreeterState.userPromptUsername;
+                }
+            }
+
+            function onUserPromptPasswordChanged() {
+                if (sync.isUserList) {
+                    return;
+                }
+
+                if (passwordBox.text != PlasmaLogin.GreeterState.userPromptPassword) {
+                    passwordBox.text = PlasmaLogin.GreeterState.userPromptPassword;
+                }
+            }
         }
     }
 }

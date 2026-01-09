@@ -110,7 +110,7 @@ void UserModel::populate()
 
         QString icon = user.faceIconPath();
         if (icon.isEmpty()) {
-            icon = QStringLiteral("file:///usr/share/sddm/themes/breeze/faces/.face.icon");
+            icon = QStringLiteral("qrc:/qt/qml/org/kde/plasma/login/.face.icon");
         } else {
             icon.prepend(QStringLiteral("file://"));
         }
