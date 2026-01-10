@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:54+0000\n"
-"PO-Revision-Date: 2026-01-01 20:49+0000\n"
+"PO-Revision-Date: 2026-01-05 23:34+0000\n"
 "Last-Translator: Charlotte <altronic25@protonmail.com>\n"
 "Language-Team: Irish\n"
 "Language: ga\n"
@@ -25,6 +25,8 @@ msgstr ""
 #: kcm.cpp:108
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
+"Níorbh fhéidir an socruithe a shábháil mar níorbh fhéidir an cumraíocht a "
+"oscailt."
 
 #: kcm.cpp:137
 msgid ""
@@ -42,17 +44,17 @@ msgstr ""
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
-msgstr ""
+msgstr "Cuma"
 
 #: ui/Appearance.qml:35
 #, kde-format
 msgid "Clock"
-msgstr ""
+msgstr "Clog"
 
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr ""
+msgstr "Taispeáin an clog"
 
 #: ui/Appearance.qml:52
 #, kde-format
@@ -93,6 +95,10 @@ msgid ""
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
 "configuration</item></list></para>"
 msgstr ""
+"<para><list><item>Scéim datha</item><item>Cursor theme and size</"
+"item><item>Cló agus rindreáil cló</item><item>NumLock rogha</"
+"item><item>Plasma téama</item><item>DPI scála</item><item>Scáileán "
+"cumraíocht</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
@@ -154,7 +160,7 @@ msgstr ""
 #: ui/main.qml:206
 #, kde-format
 msgid "Open KDE Wallet Settings"
-msgstr ""
+msgstr "Oscail Socruithe KDE Sparáin"
 
 #: ui/main.qml:213
 #, kde-format
@@ -166,13 +172,13 @@ msgstr ""
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
-msgstr ""
+msgstr "Réamhshocruithe"
 
 #: ui/main.qml:229
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
-msgstr ""
+msgstr "Úsáideoir réamhshocraithe:"
 
 #: ui/main.qml:235
 #, kde-format
@@ -184,7 +190,7 @@ msgstr ""
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
-msgstr ""
+msgstr "Seisiún réamhshocraithe:"
 
 #: ui/main.qml:312
 #, kde-format
