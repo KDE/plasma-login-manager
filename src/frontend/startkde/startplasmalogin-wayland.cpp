@@ -59,7 +59,6 @@ int main(int argc, char **argv)
             qWarning() << "not a reply org.freedesktop.locale1" << resultMessage;
         }
     }
-    runEnvironmentScripts();
 
     setupPlasmaEnvironment();
     runStartupConfig();
@@ -68,13 +67,7 @@ int main(int argc, char **argv)
     if (!syncDBusEnvironment()) {
         out << "Could not sync environment to dbus.\n";
         return 1;
-    }
-
-    // DAVE useless??
-    //  We import systemd environment after we sync the dbus environment here.
-    //  Otherwise it may leads to some unwanted order of applying environment
-    //  variables (e.g. LANG and LC_*)
-    //  importSystemdEnvrionment();
+    };
 
     {
         auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),

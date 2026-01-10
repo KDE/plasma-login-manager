@@ -295,67 +295,6 @@ void importSystemdEnvrionment()
     }
 }
 
-// Source scripts found in <config locations>/plasma-workspace/env/*.sh
-// (where <config locations> correspond to the system and user's configuration
-// directory.
-//
-// Scripts are sourced in reverse order of priority of their directory, as defined
-// by `QStandardPaths::standardLocations`. This ensures that high-priority scripts
-// (such as those in the user's home directory) are sourced last and take precedence
-// over lower-priority scripts (such as system defaults). Scripts in the same
-// directory are sourced in lexical order of their filename.
-//
-// This is where you can define environment variables that will be available to
-// all KDE programs, so this is where you can run agents using e.g. eval `ssh-agent`
-// or eval `gpg-agent --daemon`.
-// Note: if you do that, you should also put "ssh-agent -k" as a shutdown script
-//
-// (see end of this file).
-// For anything else (that doesn't set env vars, or that needs a window manager),
-// better use the Autostart folder.
-
-void runEnvironmentScripts()
-{
-    QStringList scripts;
-    auto locations = QStandardPaths::standardLocations(QStandardPaths::GenericConfigLocation);
-
-    //`standardLocations()` returns locations sorted by "order of priority". We iterate in reverse
-    // order so that high-priority scripts are sourced last and their modifications take precedence.
-    for (auto loc = locations.crbegin(); loc != locations.crend(); loc++) {
-        QDir dir(*loc);
-        if (!dir.cd(QStringLiteral("./plasma-workspace/env"))) {
-            // Skip location if plasma-workspace/env subdirectory does not exist
-            continue;
-        }
-        const auto dirScripts = dir.entryInfoList({QStringLiteral("*.sh")}, QDir::Files, QDir::Name);
-        for (const auto &script : dirScripts) {
-            scripts << script.absoluteFilePath();
-        }
-    }
-    sourceFiles(scripts);
-}
-
-// Mark that full KDE session is running (e.g. Konqueror preloading works only
-// with full KDE running). The KDE_FULL_SESSION property can be detected by
-// any X client connected to the same X session, even if not launched
-// directly from the KDE session but e.g. using "ssh -X", kdesu. $KDE_FULL_SESSION
-// however guarantees that the application is launched in the same environment
-// like the KDE session and that e.g. KDE utilities/libraries are available.
-// KDE_FULL_SESSION property is also only available since KDE 3.5.5.
-// The matching tests are:
-//   For $KDE_FULL_SESSION:
-//     if test -n "$KDE_FULL_SESSION"; then ... whatever
-//   For KDE_FULL_SESSION property (on X11):
-//     xprop -root | grep "^KDE_FULL_SESSION" >/dev/null 2>/dev/null
-//     if test $? -eq 0; then ... whatever
-//
-// Additionally there is $KDE_SESSION_UID with the uid
-// of the user running the KDE session. It should be rarely needed (e.g.
-// after sudo to prevent desktop-wide functionality in the new user's kded).
-//
-// Since KDE4 there is also KDE_SESSION_VERSION, containing the major version number.
-//
-
 void setupPlasmaEnvironment()
 {
     // Manually disable auto scaling because we are scaling above
@@ -464,28 +403,6 @@ bool syncDBusEnvironment()
     return true;
 }
 
-static bool desktopLockedAtStart = false;
-
-QProcess *setupKSplash()
-{
-    const auto dlstr = qgetenv("DESKTOP_LOCKED");
-    desktopLockedAtStart = dlstr == "true" || dlstr == "1";
-    qunsetenv("DESKTOP_LOCKED"); // Don't want it in the environment
-
-    QProcess *p = nullptr;
-    if (!desktopLockedAtStart) {
-        const KConfig cfg(QStringLiteral("ksplashrc"));
-        // the splashscreen and progress indicator
-        KConfigGroup ksplashCfg = cfg.group(QStringLiteral("KSplash"));
-        if (ksplashCfg.readEntry("Engine", QStringLiteral("KSplashQML")) == QLatin1String("KSplashQML")) {
-            p = new QProcess;
-            p->setProcessChannelMode(QProcess::ForwardedChannels);
-            p->start(QStringLiteral("ksplashqml"), {ksplashCfg.readEntry("Theme", QStringLiteral("Breeze"))});
-        }
-    }
-    return p;
-}
-
 // If something went on an endless restart crash loop it will get blacklisted, as this is a clean login we will want to reset those counters
 // This is independent of whether we use the Plasma systemd boot
 void resetSystemdFailedUnits()
@@ -495,57 +412,4 @@ void resetSystemdFailedUnits()
                                                           QStringLiteral("org.freedesktop.systemd1.Manager"),
                                                           QStringLiteral("ResetFailed"));
     QDBusConnection::sessionBus().call(message);
-}
-
-// Reload systemd to make sure the current configuration is active, which also reruns generators.
-// Needed for e.g. XDG autostart changes to become effective.
-void reloadSystemd()
-{
-    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                          QStringLiteral("/org/freedesktop/systemd1"),
-                                                          QStringLiteral("org.freedesktop.systemd1.Manager"),
-                                                          QStringLiteral("Reload"));
-    QDBusConnection::sessionBus().call(message);
-}
-
-bool hasSystemdService(const QString &serviceName)
-{
-    qDBusRegisterMetaType<QPair<QString, QString>>();
-    qDBusRegisterMetaType<QList<QPair<QString, QString>>>();
-    auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                              QStringLiteral("/org/freedesktop/systemd1"),
-                                              QStringLiteral("org.freedesktop.systemd1.Manager"),
-                                              QStringLiteral("ListUnitFilesByPatterns"));
-    msg << QStringList({QStringLiteral("enabled"), QStringLiteral("static"), QStringLiteral("linked"), QStringLiteral("linked-runtime")});
-    msg << QStringList({serviceName});
-    QDBusReply<QList<QPair<QString, QString>>> reply = QDBusConnection::sessionBus().call(msg);
-    if (!reply.isValid()) {
-        return false;
-    }
-    // if we have a service returned then it must have found it
-    return !reply.value().isEmpty();
-}
-
-bool useSystemdBoot()
-{
-    auto config = KSharedConfig::openConfig(QStringLiteral("startkderc"), KConfig::NoGlobals);
-    const QString configValue = config->group(QStringLiteral("General")).readEntry("systemdBoot", QStringLiteral("true")).toLower();
-
-    if (configValue == QLatin1String("false")) {
-        return false;
-    }
-
-    if (configValue == QLatin1String("force")) {
-        qInfo() << "Systemd boot forced";
-        return true;
-    }
-
-    if (!hasSystemdService(QStringLiteral("plasma-workspace.target"))) {
-        return false;
-    }
-
-    // xdg-desktop-autostart.target is shipped with an systemd 246 and provides a generator
-    // for creating units out of existing autostart files
-    // only enable our systemd boot if that exists, unless the user has forced the systemd boot above
-    return hasSystemdService(QStringLiteral("xdg-desktop-autostart.target"));
 }
