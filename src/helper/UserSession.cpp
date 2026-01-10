@@ -139,10 +139,11 @@ void UserSession::setupChildProcess()
     const bool hasDisplayServer = !m_displayServerCmd.isEmpty();
     const bool x11UserSession = sessionType == QLatin1String("x11") && sessionClass == QLatin1String("user");
     const bool waylandUserSession = sessionType == QLatin1String("wayland") && sessionClass == QLatin1String("user");
+    const bool waylandGreeterSession = sessionType == QLatin1String("wayland") && sessionClass == QLatin1String("greeter");
 
     // When the display server is part of the session, we leak the VT into
     // the session as stdin so that it stays open without races
-    if (hasDisplayServer || waylandUserSession) {
+    if (hasDisplayServer || waylandUserSession || waylandGreeterSession) {
         // open VT and get the fd
         int vtNumber = processEnvironment().value(QStringLiteral("XDG_VTNR")).toInt();
         QString ttyString = VirtualTerminal::path(vtNumber);
