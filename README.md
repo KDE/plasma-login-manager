@@ -50,4 +50,4 @@ sudo systemctl enable plasmalogin
 
 ### Configuration
 
-Plasma Login is configured by users through `/etc/plasmalogin.conf`, which overrides distro-provided defaults at `/usr/lib/plasma-login/defaults.conf`. In managed scenarios, the latter file can be modified to set a default wallpaper or login session, with the settings module disabled via Kiosk.
+Plasma Login is configured by users through `/etc/plasmalogin.conf`, which overrides distro-provided defaults at `/usr/lib/plasmalogin/defaults.conf`. In managed scenarios, the latter file can be modified to set a default wallpaper or login session, with the settings module disabled via Kiosk.

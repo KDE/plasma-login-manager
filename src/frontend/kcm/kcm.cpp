@@ -78,7 +78,7 @@ void PlasmaLoginKcm::save()
         return;
     }
 
-    const QString tempFileName = tempDir.path() + QLatin1String("/plasma-login.conf");
+    const QString tempFileName = tempDir.path() + QLatin1String("/plasmalogin.conf");
     KConfig tempConfig(tempFileName, KConfig::SimpleConfig);
 
     // Write our config
