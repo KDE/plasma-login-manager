@@ -136,50 +136,43 @@ void UserSession::setupChildProcess()
     // Session type
     QString sessionType = processEnvironment().value(QStringLiteral("XDG_SESSION_TYPE"));
     QString sessionClass = processEnvironment().value(QStringLiteral("XDG_SESSION_CLASS"));
-    const bool hasDisplayServer = !m_displayServerCmd.isEmpty();
-    const bool x11UserSession = sessionType == QLatin1String("x11") && sessionClass == QLatin1String("user");
-    const bool waylandUserSession = sessionType == QLatin1String("wayland") && sessionClass == QLatin1String("user");
-    const bool waylandGreeterSession = sessionType == QLatin1String("wayland") && sessionClass == QLatin1String("greeter");
+    const bool x11Session = sessionType == QLatin1String("x11");
 
-    // When the display server is part of the session, we leak the VT into
-    // the session as stdin so that it stays open without races
-    if (hasDisplayServer || waylandUserSession || waylandGreeterSession) {
-        // open VT and get the fd
-        int vtNumber = processEnvironment().value(QStringLiteral("XDG_VTNR")).toInt();
-        QString ttyString = VirtualTerminal::path(vtNumber);
-        int vtFd = ::open(qPrintable(ttyString), O_RDWR | O_NOCTTY);
+    // open VT and get the fd
+    int vtNumber = processEnvironment().value(QStringLiteral("XDG_VTNR")).toInt();
+    QString ttyString = VirtualTerminal::path(vtNumber);
+    int vtFd = ::open(qPrintable(ttyString), O_RDWR | O_NOCTTY);
 
-        // when this is true we'll take control of the tty
-        bool takeControl = false;
+    // when this is true we'll take control of the tty
+    bool takeControl = false;
 
-        if (vtNumber > 0 && vtFd > 0) {
-            dup2(vtFd, STDIN_FILENO);
-            ::close(vtFd);
-            takeControl = true;
-        } else {
-            int stdinFd = ::open("/dev/null", O_RDWR);
-            dup2(stdinFd, STDIN_FILENO);
-            ::close(stdinFd);
+    if (vtNumber > 0 && vtFd > 0) {
+        dup2(vtFd, STDIN_FILENO);
+        ::close(vtFd);
+        takeControl = true;
+    } else {
+        int stdinFd = ::open("/dev/null", O_RDWR);
+        dup2(stdinFd, STDIN_FILENO);
+        ::close(stdinFd);
+    }
+
+    // set this process as session leader
+    if (setsid() < 0) {
+        qCritical("Failed to set pid %lld as leader of the new session and process group: %s", QCoreApplication::applicationPid(), strerror(errno));
+        _exit(Auth::HELPER_OTHER_ERROR);
+    }
+
+    // take control of the tty
+    if (takeControl) {
+        if (ioctl(STDIN_FILENO, TIOCSCTTY) < 0) {
+            const auto error = strerror(errno);
+            qCritical().nospace() << "Failed to take control of " << ttyString << " (" << QFileInfo(ttyString).owner() << "): " << error;
+            _exit(Auth::HELPER_TTY_ERROR);
         }
+    }
 
-        // set this process as session leader
-        if (setsid() < 0) {
-            qCritical("Failed to set pid %lld as leader of the new session and process group: %s", QCoreApplication::applicationPid(), strerror(errno));
-            _exit(Auth::HELPER_OTHER_ERROR);
-        }
-
-        // take control of the tty
-        if (takeControl) {
-            if (ioctl(STDIN_FILENO, TIOCSCTTY) < 0) {
-                const auto error = strerror(errno);
-                qCritical().nospace() << "Failed to take control of " << ttyString << " (" << QFileInfo(ttyString).owner() << "): " << error;
-                _exit(Auth::HELPER_TTY_ERROR);
-            }
-        }
-
-        if (vtNumber > 0) {
-            VirtualTerminal::jumpToVt(vtNumber, x11UserSession);
-        }
+    if (vtNumber > 0) {
+        VirtualTerminal::jumpToVt(vtNumber, x11Session);
     }
 
 #ifdef Q_OS_LINUX
