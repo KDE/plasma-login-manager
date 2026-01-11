@@ -23,6 +23,7 @@
 PlasmaLoginSettings &PlasmaLoginSettings::getInstance()
 {
     auto config = KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE), KConfig::CascadeConfig);
+    config->addConfigSources({QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE)});
 
     static PlasmaLoginSettings instance(config);
     return instance;
