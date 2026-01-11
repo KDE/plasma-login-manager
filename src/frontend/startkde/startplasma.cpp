@@ -362,14 +362,7 @@ void setupPlasmaEnvironment()
     // otherwise apps that manually opt in for high DPI get auto scaled by the developer AND manually scaled by us
     qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
 
-    qputenv("KDE_FULL_SESSION", "true");
-    qputenv("KDE_SESSION_VERSION", "6");
-    qputenv("KDE_SESSION_UID", QByteArray::number(getuid()));
-    qputenv("XDG_CURRENT_DESKTOP", "KDE");
-
     qputenv("KDE_APPLICATIONS_AS_SCOPE", "1");
-
-    qputenv("XDG_MENU_PREFIX", "plasma-");
 
     // Add kdedefaults dir to allow config defaults overriding from a writable location
     QByteArray currentConfigDirs = qgetenv("XDG_CONFIG_DIRS");
@@ -383,10 +376,6 @@ void setupPlasmaEnvironment()
 
 void cleanupPlasmaEnvironment(const std::optional<QProcessEnvironment> &oldSystemdEnvironment)
 {
-    qunsetenv("KDE_FULL_SESSION");
-    qunsetenv("KDE_SESSION_VERSION");
-    qunsetenv("KDE_SESSION_UID");
-
     if (!oldSystemdEnvironment) {
         return;
     }
