@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-01 00:45+0000\n"
+"POT-Creation-Date: 2026-01-11 00:45+0000\n"
 "PO-Revision-Date: 2025-05-31 19:07+0200\n"
 "Last-Translator: Martin Hansen <mh306602@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -75,50 +75,50 @@ msgstr "Passord"
 msgid "Log In"
 msgstr "Logg inn"
 
-#: qml/Main.qml:156
+#: qml/Main.qml:167
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "«Caps Lock» er på"
 
-#: qml/Main.qml:168
+#: qml/Main.qml:179 qml/Main.qml:302
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr ""
 
-#: qml/Main.qml:174 qml/Main.qml:291
+#: qml/Main.qml:185 qml/Main.qml:308
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Hvilemodus"
 
-#: qml/Main.qml:180 qml/Main.qml:297
+#: qml/Main.qml:191 qml/Main.qml:314
 #, kde-format
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: qml/Main.qml:186 qml/Main.qml:303
+#: qml/Main.qml:197 qml/Main.qml:320
 #, kde-format
 msgid "Shut Down"
 msgstr "Slå av"
 
-#: qml/Main.qml:192
+#: qml/Main.qml:203
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Annet …"
 
-#: qml/Main.qml:280
+#: qml/Main.qml:291
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Skriv inn brukernavn og passord"
 
-#: qml/Main.qml:309
+#: qml/Main.qml:326
 #, kde-format
 msgid "List Users"
 msgstr "Vis brukere"
 
-#: qml/Main.qml:389
+#: qml/Main.qml:399
 #, kde-format
 msgid "Login Failed"
 msgstr "Feil ved innlogging"

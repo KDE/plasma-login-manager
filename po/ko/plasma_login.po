@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-01 00:45+0000\n"
+"POT-Creation-Date: 2026-01-11 00:45+0000\n"
 "PO-Revision-Date: 2025-10-09 01:20+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -78,50 +78,50 @@ msgstr "암호"
 msgid "Log In"
 msgstr "로그인"
 
-#: qml/Main.qml:156
+#: qml/Main.qml:167
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock이 켜져 있음"
 
-#: qml/Main.qml:168
+#: qml/Main.qml:179 qml/Main.qml:302
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "최대 절전 모드"
 
-#: qml/Main.qml:174 qml/Main.qml:291
+#: qml/Main.qml:185 qml/Main.qml:308
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "대기 모드"
 
-#: qml/Main.qml:180 qml/Main.qml:297
+#: qml/Main.qml:191 qml/Main.qml:314
 #, kde-format
 msgid "Restart"
 msgstr "다시 시작"
 
-#: qml/Main.qml:186 qml/Main.qml:303
+#: qml/Main.qml:197 qml/Main.qml:320
 #, kde-format
 msgid "Shut Down"
 msgstr "컴퓨터 끄기"
 
-#: qml/Main.qml:192
+#: qml/Main.qml:203
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "기타…"
 
-#: qml/Main.qml:280
+#: qml/Main.qml:291
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "사용자 이름과 암호 입력"
 
-#: qml/Main.qml:309
+#: qml/Main.qml:326
 #, kde-format
 msgid "List Users"
 msgstr "사용자 목록"
 
-#: qml/Main.qml:389
+#: qml/Main.qml:399
 #, kde-format
 msgid "Login Failed"
 msgstr "로그인 실패"

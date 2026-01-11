@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-01 00:45+0000\n"
+"POT-Creation-Date: 2026-01-11 00:45+0000\n"
 "PO-Revision-Date: 2025-12-12 09:54+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -75,50 +75,50 @@ msgstr "Parolă"
 msgid "Log In"
 msgstr "Autentificare"
 
-#: qml/Main.qml:156
+#: qml/Main.qml:167
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock e activ"
 
-#: qml/Main.qml:168
+#: qml/Main.qml:179 qml/Main.qml:302
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Hibernează"
 
-#: qml/Main.qml:174 qml/Main.qml:291
+#: qml/Main.qml:185 qml/Main.qml:308
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Adormire"
 
-#: qml/Main.qml:180 qml/Main.qml:297
+#: qml/Main.qml:191 qml/Main.qml:314
 #, kde-format
 msgid "Restart"
 msgstr "Repornire"
 
-#: qml/Main.qml:186 qml/Main.qml:303
+#: qml/Main.qml:197 qml/Main.qml:320
 #, kde-format
 msgid "Shut Down"
 msgstr "Oprire"
 
-#: qml/Main.qml:192
+#: qml/Main.qml:203
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Altcineva…"
 
-#: qml/Main.qml:280
+#: qml/Main.qml:291
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Tastați numele de utilizator și parola"
 
-#: qml/Main.qml:309
+#: qml/Main.qml:326
 #, kde-format
 msgid "List Users"
 msgstr "Enumeră utilizatorii"
 
-#: qml/Main.qml:389
+#: qml/Main.qml:399
 #, kde-format
 msgid "Login Failed"
 msgstr "Autentificare eșuată"
