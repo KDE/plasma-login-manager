@@ -294,9 +294,19 @@ Item {
 
             Login {
                 showUsernamePrompt: true
-                notificationMessage: root.notificationMessage
                 loginScreenUiVisible: loginScreenRoot.uiVisible
                 fontSize: Kirigami.Theme.defaultFont.pointSize + 2
+
+                notificationMessage: {
+                    const parts = [];
+                    if (capsLockState.locked) {
+                        parts.push(i18nd("plasma_login", "Caps Lock is on"));
+                    }
+                    if (root.notificationMessage) {
+                        parts.push(root.notificationMessage);
+                    }
+                    return parts.join(" • ");
+                }
 
                 // using a model rather than a QObject list to avoid QTBUG-75900
                 userListModel: ListModel {
