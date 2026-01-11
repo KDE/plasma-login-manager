@@ -124,6 +124,7 @@ QHash<int, QByteArray> SessionModel::roleNames() const
     roles[PathRole] = "path";
     roles[DisplayNameRole] = "displayName";
     roles[CommentRole] = "comment";
+    roles[FileNameRole] = "fileName";
     return roles;
 }
 
