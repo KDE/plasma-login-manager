@@ -1,5 +1,6 @@
 /*
- * SPDX-FileContributor: David Edmundson
+ * SPDX-FileCopyrightText: Oliver Beard
+ * SPDX-FileCopyrightText: David Edmundson
  *
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
