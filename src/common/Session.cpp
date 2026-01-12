@@ -25,13 +25,18 @@ namespace PLASMALOGIN
 
 Session Session::create(Type type, const QString &name)
 {
+    QString fileName = name;
+    if (!name.endsWith(".desktop")) {
+        fileName = name + QStringLiteral(".desktop");
+    }
+
     QString filePath;
     switch (type) {
     case Session::X11Session:
-        filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("/xsessions/") + name);
+        filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("/xsessions/") + fileName);
         break;
     case Session::WaylandSession:
-        filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("/wayland-sessions/") + name);
+        filePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("/wayland-sessions/") + fileName);
         break;
     default:
         filePath = QString();
