@@ -99,5 +99,6 @@
     "X-KDE-Keywords[zh_CN]": "display manager,themes,login theme,login screen,login skin,login visual,login look,authentication screen,session,default session,default user,user uid,login as,authenticate as,xianshiguanliqi,zhuti,denglu,dengluzhuti,denglupingmu,dengluhuamian,denglujiemian,denglupifu,denglushijuexiaoguo,dengluwaiguan,zhuxiao,jinru,shenfenyanzhengpingmu,huihua,huihualeixing,morenhuihua,morenyonghu,yonghu UID,denglushenfen,renzhengshenfen,显示管理器,主题,登录,登录主题,登录屏幕,登录画面,登录界面,登录皮肤,登录视觉效果,登录外观,身份验证屏幕,会话,会话类型,默认会话,默认用户,用户 UID,登录身份,认证身份",
     "X-KDE-Keywords[zh_TW]": "顯示管理器,登入畫面,主題,登入主題,登入視覺,登入外觀,登入畫面外觀,認證畫面,工作階段,作業階段,預設作業階段,預設工作階段,使用者 UID,預設使用者,登入為,認證為",
     "X-KDE-System-Settings-Parent-Category": "security-privacy",
+    "X-KDE-System-Settings-Uses-ModuleData": true,
     "X-KDE-Weight": 5
 }
