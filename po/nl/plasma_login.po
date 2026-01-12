@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-11 00:45+0000\n"
+"POT-Creation-Date: 2026-01-12 00:45+0000\n"
 "PO-Revision-Date: 2025-12-01 18:35+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -59,70 +59,70 @@ msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
 msgstr "Indeling omschakelen"
 
-#: qml/Login.qml:92
+#: qml/Login.qml:87
 #, kde-format
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: qml/Login.qml:109
+#: qml/Login.qml:104
 #, kde-format
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: qml/Login.qml:153 qml/Login.qml:159
+#: qml/Login.qml:147 qml/Login.qml:153
 #, kde-format
 msgid "Log In"
 msgstr "Aanmelden"
 
-#: qml/Main.qml:167
+#: qml/Main.qml:185 qml/Main.qml:303
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock staat aan"
 
-#: qml/Main.qml:179 qml/Main.qml:302
+#: qml/Main.qml:197 qml/Main.qml:330
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Slaapstand naar schijf"
 
-#: qml/Main.qml:185 qml/Main.qml:308
+#: qml/Main.qml:203 qml/Main.qml:336
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Slapen"
 
-#: qml/Main.qml:191 qml/Main.qml:314
+#: qml/Main.qml:209 qml/Main.qml:342
 #, kde-format
 msgid "Restart"
 msgstr "Herstarten"
 
-#: qml/Main.qml:197 qml/Main.qml:320
+#: qml/Main.qml:215 qml/Main.qml:348
 #, kde-format
 msgid "Shut Down"
 msgstr "Systeem afsluiten"
 
-#: qml/Main.qml:203
+#: qml/Main.qml:221
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Overig…"
 
-#: qml/Main.qml:291
+#: qml/Main.qml:319
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Voer gebruikersnaam en wachtwoord in"
 
-#: qml/Main.qml:326
+#: qml/Main.qml:354
 #, kde-format
 msgid "List Users"
 msgstr "Lijst van gebruiker maken"
 
-#: qml/Main.qml:399
+#: qml/Main.qml:427
 #, kde-format
 msgid "Login Failed"
 msgstr "Aanmelden mislukt"
 
-#: qml/SessionButton.qml:24
+#: qml/SessionButton.qml:25
 #, kde-format
 msgid "Desktop Session: %1"
 msgstr "Bureaubladsessie: %1"
