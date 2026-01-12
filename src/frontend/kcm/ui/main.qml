@@ -124,34 +124,20 @@ KCM.SimpleKCM {
                     implicitWidth: Kirigami.Units.gridUnit * 12
                     model: kcm.userModel
                     textRole: "display"
-                    editable: true
-                    onActivated: kcm.settings.user = currentText
+                    valueRole: "name"
+                    onActivated: kcm.settings.user = currentValue
                     KCM.SettingStateBinding {
                         visible: autologinBox.checked
                         configObject: kcm.settings
                         settingName: "User"
                         extraEnabledConditions: autologinBox.checked
                     }
-                    Component.onCompleted: {
-                        updateSelectedUser();
-
-                        // In the initial state, comboBox sets currentIndex to 0 (the first value from the comboBox).
-                        // After component is completed currentIndex changes to the correct value using `updateSelectUser` here.
-                        // This implicit initial changing of the currentIndex (to 0) calls the onEditTextChanged handler,
-                        // which in turn saves the wrong login in kcm.settings.user (the first value from the comboBox).
-                        // So we need connect to editTextChanged signal here after the correct currentIndex was settled
-                        // thus reacting only to user input and pressing the Reset/Default buttons.
-                        autologinUser.editTextChanged.connect(setUserFromEditText);
-                    }
+                    Component.onCompleted: updateSelectedUser()
                     function setUserFromEditText() {
                         kcm.settings.user = editText;
                     }
                     function updateSelectedUser() {
-                        const index = find(kcm.settings.user);
-                        if (index != -1) {
-                            currentIndex = index;
-                        }
-                        editText = kcm.settings.user;
+                        currentIndex = indexOfValue(kcm.settings.user);
                     }
                     Connections { // Needed for "Reset" and "Default" buttons to work
                         target: kcm.settings
