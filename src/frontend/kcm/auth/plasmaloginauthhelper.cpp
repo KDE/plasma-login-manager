@@ -9,6 +9,9 @@
 #include "config.h"
 
 #include <unistd.h>
+#include <fcntl.h>          /* Definition of O_* and S_* constants */
+#include <linux/openat2.h>  /* Definition of RESOLVE_* constants */
+#include <sys/syscall.h>    /* Definition of SYS_* constants */
 
 #include <QBuffer>
 #include <QDBusUnixFileDescriptor>
@@ -25,6 +28,7 @@
 #include <KLazyLocalizedString>
 #include <KLocalizedString>
 #include <KUser>
+
 
 static const QFile::Permissions standardPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther;
 
@@ -179,6 +183,7 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         return ActionReply::HelperErrorReply();
     }
 
+
     QDir homeDir(homeDirPath);
     QDir wallpaperDir(homeDir.absoluteFilePath("wallpapers"));
     if (!wallpaperDir.removeRecursively()) {
@@ -196,11 +201,30 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         const QString relativeParentDirectory = relativeFilePath.left(relativeFilePath.lastIndexOf("/"));
         if (!homeDir.mkpath(relativeParentDirectory)) {
             qWarning() << "Could not create new wallpaper directory";
+            return ActionReply::HelperErrorReply();
         }
 
-        QFile file(homeDir.filePath(relativeFilePath));
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate, standardPermissions)) {
-            qWarning() << "Could not open wallpaper file " << relativeFilePath << " for writing";
+        qDebug() << homeDir.absoluteFilePath(relativeParentDirectory);
+        int parentFd = open(homeDir.absoluteFilePath(relativeParentDirectory).toUtf8().constData() , O_RDONLY | O_DIRECTORY);
+        if (parentFd < 0) {
+            qWarning() << "Could not parent directory." << qPrintable(strerror(errno));
+            return ActionReply::HelperErrorReply();
+        }
+
+         struct open_how how = {
+            .flags = O_CREAT | O_WRONLY | O_TRUNC,
+            .mode = standardPermissions,
+            .resolve = RESOLVE_BENEATH | RESOLVE_NO_MAGICLINKS
+        };
+        int outFd = syscall(SYS_openat2, parentFd, wallpaper.toUtf8().constData(), &how, sizeof(struct open_how));
+
+        if (outFd < 0) {
+            qWarning() << "Could not open wallpaper file." << qPrintable(strerror(errno));
+            return ActionReply::HelperErrorReply();
+        }
+        QFile file;
+        if (!file.open(outFd, QIODevice::WriteOnly | QIODevice::Truncate)) {
+            qWarning() << "Could not open wallpaper directory from FD.";
             return ActionReply::HelperErrorReply();
         }
 
@@ -227,6 +251,7 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
                 out.writeRawData(buf.data(), n);
             }
         }
+        qDebug() << "done";
     }
 
     return ActionReply::SuccessReply();
