@@ -28,6 +28,8 @@ public:
 
     WallpaperIntegration *wallpaperIntegration() const;
 
+    KCoreConfigSkeleton *wallpaperSkeleton() const;
+
     void load();
     void save();
     void defaults();

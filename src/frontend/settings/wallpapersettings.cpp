@@ -35,6 +35,11 @@ WallpaperIntegration *WallpaperSettings::wallpaperIntegration() const
     return m_wallpaperIntegration;
 }
 
+KCoreConfigSkeleton *WallpaperSettings::wallpaperSkeleton() const
+{
+    return m_wallpaperSettings;
+}
+
 void WallpaperSettings::load()
 {
     loadWallpaperConfig();

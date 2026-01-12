@@ -92,13 +92,16 @@ void PlasmaLoginKcm::save()
 
     // Write wallpaper config
     const QString wallpaperPluginId = PlasmaLoginSettings::getInstance().wallpaperPluginId();
-    for (const QString &wallpaperKey : wallpaperConfiguration()->keys()) {
-        const QVariant value = wallpaperConfiguration()->value(wallpaperKey);
+    for (const auto item : m_wallpaperSettings->wallpaperSkeleton()->items()) {
+        if (item->isDefault()) {
+            continue;
+        }
+
         tempConfig.group(QLatin1String("Greeter"))
             .group(QLatin1String("Wallpaper"))
             .group(wallpaperPluginId)
             .group(QLatin1String("General"))
-            .writeEntry(wallpaperKey, value);
+            .writeEntry(item->key(), wallpaperConfiguration()->value(item->key()));
     }
     QVariantMap args;
 
