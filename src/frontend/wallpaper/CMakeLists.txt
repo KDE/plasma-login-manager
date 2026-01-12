@@ -1,3 +1,6 @@
+## SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: David Edmundson <kde@davidedmundson.co.uk>
+# SPDX-FileCopyrightText: Oliver Beard <olib141@outlook.com>
 add_executable(plasma-login-wallpaper)
 
 ecm_add_qml_module(plasma-login-wallpaper URI "org.kde.plasma.login.wallpaper" GENERATE_PLUGIN_SOURCE)

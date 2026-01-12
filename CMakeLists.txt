@@ -1,3 +1,45 @@
+## SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+# SPDX-FileCopyrightText: Adriaan de Groot <groot@kde.org>
+# SPDX-FileCopyrightText: a.k.a. Harvey <teknocratdefunct@riseup.net>
+# SPDX-FileCopyrightText: Aleix Pol <aleixpol@kde.org>
+# SPDX-FileCopyrightText: Alexey Yushkin <636808@mail.ru>
+# SPDX-FileCopyrightText: AnAkkk <anakin.cs@gmail.com>
+# SPDX-FileCopyrightText: Andrea Scarpino <andrea@archlinux.org>
+# SPDX-FileCopyrightText: Andrea Scarpino <me@andreascarpino.it>
+# SPDX-FileCopyrightText: Andreas Cord-Landwehr <cordlandwehr@kde.org>
+# SPDX-FileCopyrightText: Andreas Müller <schnitzeltony@googlemail.com>
+# SPDX-FileCopyrightText: Christopher Roy Bratusek <nano@tuxfamily.org>
+# SPDX-FileCopyrightText: David Edmundson <kde@davidedmundson.co.uk>
+# SPDX-FileCopyrightText: Dāvis <davispuh@gmail.com>
+# SPDX-FileCopyrightText: Emil Velikov <emil.l.velikov@gmail.com>
+# SPDX-FileCopyrightText: Fabian Vogt <fabian@ritter-vogt.de>
+# SPDX-FileCopyrightText: Gioele Barabucci <gioele@svario.it>
+# SPDX-FileCopyrightText: Gleb Popov <6yearold@gmail.com>
+# SPDX-FileCopyrightText: Harald Sitter <sitter@kde.org>
+# SPDX-FileCopyrightText: herostrat <sebastian.englbrecht@tum.de>
+# SPDX-FileCopyrightText: Jerome Leclanche <jerome@leclan.ch>
+# SPDX-FileCopyrightText: Jonathan Marten <jjm@keelhaul.me.uk>
+# SPDX-FileCopyrightText: Kuzma Shapran <kuzma.shapran@gmail.com>
+# SPDX-FileCopyrightText: Luís Pereira <luis.artur.pereira@gmail.com>
+# SPDX-FileCopyrightText: Marc Deop i Argemí <kde@marcdeop.com>
+# SPDX-FileCopyrightText: Martin Briza <mbriza@redhat.com>
+# SPDX-FileCopyrightText: Mingye Wang <arthur200126@gmail.com>
+# SPDX-FileCopyrightText: Neal Gompa <neal@gompa.dev>
+# SPDX-FileCopyrightText: Neal Gompa <ngompa@kde.org>
+# SPDX-FileCopyrightText: Nicolas Fella <nicolas.fella@gmx.de>
+# SPDX-FileCopyrightText: Nikita Mikhailov <nslqqq@gmail.com>
+# SPDX-FileCopyrightText: Nikita Mikhaylov <nslqqq@gmail.com>
+# SPDX-FileCopyrightText: Nikolay Amiantov <ab@fmap.me>
+# SPDX-FileCopyrightText: Oliver Beard <olib141@outlook.com>
+# SPDX-FileCopyrightText: Peter <petershh@disroot.org>
+# SPDX-FileCopyrightText: Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+# SPDX-FileCopyrightText: Pier Luigi Fiorini <pierluigi.fiorini@liri.io>
+# SPDX-FileCopyrightText: Pier Luigi Fiorini <plfiorini@users.noreply.github.com>
+# SPDX-FileCopyrightText: Raphael Kubo da Costa <rakuco@FreeBSD.org>
+# SPDX-FileCopyrightText: Stefan Majewsky <majewsky@gmx.net>
+# SPDX-FileCopyrightText: Sven Eden <seden@havi.de>
+# SPDX-FileCopyrightText: Volker Krause <vkrause@kde.org>
 cmake_minimum_required(VERSION 3.22)
 
 project(PLASMALOGIN)

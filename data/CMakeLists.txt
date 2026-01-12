@@ -1,3 +1,18 @@
+## SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+# SPDX-FileCopyrightText: Alberto Milone <alberto.milone@canonical.com>
+# SPDX-FileCopyrightText: AnAkkk <anakin.cs@gmail.com>
+# SPDX-FileCopyrightText: Andrea Scarpino <andrea@archlinux.org>
+# SPDX-FileCopyrightText: David Edmundson <kde@davidedmundson.co.uk>
+# SPDX-FileCopyrightText: Harald Sitter <sitter@kde.org>
+# SPDX-FileCopyrightText: Jerome Leclanche <jerome@leclan.ch>
+# SPDX-FileCopyrightText: Kurt Kremitzki <kkremitzki@posteo.net>
+# SPDX-FileCopyrightText: Martin Briza <mbriza@redhat.com>
+# SPDX-FileCopyrightText: Neal Gompa <ngompa@kde.org>
+# SPDX-FileCopyrightText: Nicolas Fella <nicolas.fella@gmx.de>
+# SPDX-FileCopyrightText: Nikita Mikhailov <nslqqq@gmail.com>
+# SPDX-FileCopyrightText: Nikita Mikhaylov <nslqqq@gmail.com>
+# SPDX-FileCopyrightText: Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 install(FILES
     "org.freedesktop.DisplayManager.conf"
     DESTINATION "${DBUS_CONFIG_DIR}"

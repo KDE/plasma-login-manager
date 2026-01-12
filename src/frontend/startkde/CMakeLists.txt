@@ -1,3 +1,5 @@
+## SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: David Edmundson <kde@davidedmundson.co.uk>
 install(FILES plasma-login-wayland.target DESTINATION ${KDE_INSTALL_SYSTEMDUSERUNITDIR})
 ecm_install_configured_files(INPUT plasma-login-kwin_wayland.service.in DESTINATION ${KDE_INSTALL_SYSTEMDUSERUNITDIR})
 

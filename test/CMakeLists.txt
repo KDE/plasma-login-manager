@@ -1,3 +1,11 @@
+## SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: Andreas Cord-Landwehr <cordlandwehr@kde.org>
+# SPDX-FileCopyrightText: David Edmundson <kde@davidedmundson.co.uk>
+# SPDX-FileCopyrightText: Fabian Vogt <fabian@ritter-vogt.de>
+# SPDX-FileCopyrightText: Fabian Vogt <fvogt@suse.de>
+# SPDX-FileCopyrightText: Martin Briza <mbriza@redhat.com>
+# SPDX-FileCopyrightText: Nicolas Fella <nicolas.fella@gmx.de>
+# SPDX-FileCopyrightText: Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 set(QT_USE_QTTEST TRUE)
 
 include_directories(../src/common)
