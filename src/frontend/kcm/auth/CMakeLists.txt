@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+
 kauth_install_actions(org.kde.kcontrol.kcmplasmalogin kcm_plasmalogin.actions)
 
 add_executable(kcmplasmalogin_authhelper plasmaloginauthhelper.cpp plasmaloginauthhelper.h)

@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Plasma Login Manager
+Upstream-Contact: David Edmundson <kde@davidedmundson.co.uk>
+
+Files: src/frontend/kcm/kcm_plasmalogin.json
+License: CC0-1.0
+Copyright: 2025 Oliver Beard <olib141@outlook.com>

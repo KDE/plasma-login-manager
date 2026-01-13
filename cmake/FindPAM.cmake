@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2013-2025 SDDM Contributors
+
 # - Try to find the PAM libraries
 # Once done this will define
 #

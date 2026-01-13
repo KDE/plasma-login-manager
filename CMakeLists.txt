@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2013-2025 SDDM Contributors
+# SPDX-FileCopyrightText: 2025 David Edmundson <kde@davidedmundson.co.uk>
+# SPDX-FileCopyrightText: 2025 Nicolas Fella <nicolas.fella@gmx.de>
+
 cmake_minimum_required(VERSION 3.22)
 
 project(PLASMALOGIN)

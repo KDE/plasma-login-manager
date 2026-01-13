@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: None
+
 [Unit]
 Description=Plasma Login
 PartOf=plasma-login-wayland.target
@@ -6,4 +9,3 @@ After=plasma-login-kwin_wayland.service
 [Service]
 ExecStart=@CMAKE_INSTALL_FULL_LIBEXECDIR@/plasma-login-greeter
 Slice=session.slice
-

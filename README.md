@@ -1,3 +1,8 @@
+<!--
+    SPDX-License-Identifier: CC0-1.0
+    SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+-->
+
 ## Plasma Login
 
 Plasma Login provides a display manager for KDE Plasma, forked from [SDDM](https://github.com/sddm/sddm) and with an new frontend providing a greeter, wallpaper plugin integration and System Settings module (KCM).

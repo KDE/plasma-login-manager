@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+
 kcmutils_add_qml_kcm(kcm_plasmalogin)
 add_definitions(-DTRANSLATION_DOMAIN="kcm_plasmalogin")
 

@@ -1,7 +1,7 @@
 /*
- *  SPDX-FileCopyrightText: 2026 Oliver Beard <olib141@outlook.com>
+ * SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
  *
- *  SPDX-License-Identifier: LGPL-2.0-or-later
+ * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
 pragma Singleton

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+
 set(PLASMALOGIN_CONFIG_FILE         "/etc/plasmalogin.conf"                                    CACHE PATH  "Path of the plasma-login config file")
 set(PLASMALOGIN_SYSTEM_CONFIG_FILE  "${CMAKE_INSTALL_PREFIX}/lib/plasmalogin/defaults.conf"    CACHE PATH  "Path of the system plasma-login config file")
 

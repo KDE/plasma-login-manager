@@ -1,6 +1,6 @@
 /*
- * SPDX-FileCopyrightText: Oliver Beard
- * SPDX-FileCopyrightText: David Edmundson
+ * SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ * SPDX-FileCopyrightText: 2025 David Edmundson <kde@davidedmundson.co.uk>
  *
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
