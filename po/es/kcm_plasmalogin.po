@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcm_plasmalogin\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:54+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-10-22 01:41+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -19,20 +19,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 25.08.2\n"
 
-#: kcm.cpp:77
+#: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 "No se han podido guardar las preferencias porque no se ha podido crear un "
 "directorio temporal."
 
-#: kcm.cpp:108
+#: kcm.cpp:129
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "No se han podido guardar las preferencias porque no se puede abrir la "
 "configuración."
 
-#: kcm.cpp:137
+#: kcm.cpp:201
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -41,7 +41,7 @@ msgstr ""
 "«plasmalogin» no existe. Compruebe la instalación del inicio de sesión de "
 "Plasma."
 
-#: kcm.cpp:188
+#: kcm.cpp:252
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -153,7 +153,7 @@ msgctxt ""
 msgid "as user:"
 msgstr "como usuario:"
 
-#: ui/main.qml:168
+#: ui/main.qml:154
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
@@ -161,7 +161,7 @@ msgctxt ""
 msgid "with session:"
 msgstr "con la sesión:"
 
-#: ui/main.qml:201
+#: ui/main.qml:187
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -176,42 +176,42 @@ msgstr ""
 "contraseña en blanco. Tenga en cuenta que esto no es seguro y que solo "
 "debería hacerlo en un entorno de confianza."
 
-#: ui/main.qml:206
+#: ui/main.qml:192
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "Abrir las preferencias de la cartera de KDE"
 
-#: ui/main.qml:213
+#: ui/main.qml:199
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "Iniciar sesión de nuevo inmediatamente tras cerrar una sesión"
 
-#: ui/main.qml:224
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "Predeterminados"
 
-#: ui/main.qml:229
+#: ui/main.qml:215
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
 msgstr "Usuario predeterminado:"
 
-#: ui/main.qml:235
+#: ui/main.qml:221
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Último usuario que haya iniciado sesión"
 
-#: ui/main.qml:306
+#: ui/main.qml:292
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "Sesión predeterminada:"
 
-#: ui/main.qml:312
+#: ui/main.qml:298
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"

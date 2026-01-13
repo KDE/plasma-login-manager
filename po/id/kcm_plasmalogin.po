@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:54+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-05-12 06:04+0700\n"
 "Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
 "Language-Team: https://t.me/Localizations_KDE_Indonesia\n"
@@ -17,22 +17,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 25.04.0\n"
 
-#: kcm.cpp:77
+#: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 
-#: kcm.cpp:108
+#: kcm.cpp:129
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 
-#: kcm.cpp:137
+#: kcm.cpp:201
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
 
-#: kcm.cpp:188
+#: kcm.cpp:252
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -147,7 +147,7 @@ msgctxt ""
 msgid "as user:"
 msgstr "Sebagai pengguna:"
 
-#: ui/main.qml:168
+#: ui/main.qml:154
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
@@ -155,7 +155,7 @@ msgctxt ""
 msgid "with session:"
 msgstr "dengan sesi:"
 
-#: ui/main.qml:201
+#: ui/main.qml:187
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -170,42 +170,42 @@ msgstr ""
 "kata sandi pada wallet. Ingat bahwa ini adalah tidak aman dan seharusnya "
 "hanya dilakukan dalam lingkungan yang terpercaya."
 
-#: ui/main.qml:206
+#: ui/main.qml:192
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "Buka Pengaturan Wallet KDE"
 
-#: ui/main.qml:213
+#: ui/main.qml:199
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "Segera login kembali setelah logoff"
 
-#: ui/main.qml:224
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "Baku"
 
-#: ui/main.qml:229
+#: ui/main.qml:215
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
 msgstr "Pengguna baku:"
 
-#: ui/main.qml:235
+#: ui/main.qml:221
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Pengguna yang terakhir kali login"
 
-#: ui/main.qml:306
+#: ui/main.qml:292
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "Sesi baku:"
 
-#: ui/main.qml:312
+#: ui/main.qml:298
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"

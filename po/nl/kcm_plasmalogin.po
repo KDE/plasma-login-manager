@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:54+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-10-22 00:28+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -17,20 +17,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 25.08.2\n"
 
-#: kcm.cpp:77
+#: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 "Opslaan van instellingen kan niet omdat een tijdelijke map niet aangemaakt "
 "kan worden."
 
-#: kcm.cpp:108
+#: kcm.cpp:129
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "Opslaan van instellingen kan niet omdat de configuratie niet geopend kan "
 "worden."
 
-#: kcm.cpp:137
+#: kcm.cpp:201
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -38,7 +38,7 @@ msgstr ""
 "Kan Plasma instellingen niet synchroniseren omdat de gebruiker 'plasmalogin' "
 "niet bestaat. Controleer het installeren van uw Plasma aanmelden."
 
-#: kcm.cpp:188
+#: kcm.cpp:252
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -149,7 +149,7 @@ msgctxt ""
 msgid "as user:"
 msgstr "als gebruiker:"
 
-#: ui/main.qml:168
+#: ui/main.qml:154
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
@@ -157,7 +157,7 @@ msgctxt ""
 msgid "with session:"
 msgstr "met sessie:"
 
-#: ui/main.qml:201
+#: ui/main.qml:187
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -172,42 +172,42 @@ msgstr ""
 "portefeuille wijzigen in een leeg wachtwoord. Merk op dat dit onveilig is en "
 "alleen gedaan moet worden in een vertrouwde omgeving."
 
-#: ui/main.qml:206
+#: ui/main.qml:192
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "KDE Wallet-instellingen"
 
-#: ui/main.qml:213
+#: ui/main.qml:199
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "Onmiddellijke opnieuw aanmelden na afmelden"
 
-#: ui/main.qml:224
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "Standaardwaarden"
 
-#: ui/main.qml:229
+#: ui/main.qml:215
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
 msgstr "Standaard gebruiker:"
 
-#: ui/main.qml:235
+#: ui/main.qml:221
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Laatst aangemelde gebruiker"
 
-#: ui/main.qml:306
+#: ui/main.qml:292
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "Standaardsessie:"
 
-#: ui/main.qml:312
+#: ui/main.qml:298
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"

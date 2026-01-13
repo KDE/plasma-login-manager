@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:54+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-11-11 19:18+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -18,16 +18,16 @@ msgstr ""
 "2);\n"
 "X-Generator: Lokalize 25.08.2\n"
 
-#: kcm.cpp:77
+#: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr "Neizdodas saglabāt iestatījumus, jo neizdevās izveidot pagaidu mapi."
 
-#: kcm.cpp:108
+#: kcm.cpp:129
 msgid "Unable to save settings because the config could not be opened."
 msgstr "Neizdevās saglabāt iestatījumus, jo nevarēja atvērt konfigurāciju."
 
-#: kcm.cpp:137
+#: kcm.cpp:201
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -35,7 +35,7 @@ msgstr ""
 "Neizdodas sinhronizēt „Plasma“ iestatījumus, jo „plasmalogin“ lietotājs "
 "nepastāv. Pārbaudiet „Plasma Login“ instalāciju."
 
-#: kcm.cpp:188
+#: kcm.cpp:252
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -146,7 +146,7 @@ msgctxt ""
 msgid "as user:"
 msgstr "kā lietotājam:"
 
-#: ui/main.qml:168
+#: ui/main.qml:154
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
@@ -154,7 +154,7 @@ msgctxt ""
 msgid "with session:"
 msgstr "ar sesiju:"
 
-#: ui/main.qml:201
+#: ui/main.qml:187
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -169,42 +169,42 @@ msgstr ""
 "tomēr ņemiet vērā, ka šāda rīcība nav droša, tāpēc tā drīkst darīt tikai "
 "drošā vidē."
 
-#: ui/main.qml:206
+#: ui/main.qml:192
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "Atvērt KDE maciņa iestatījumus"
 
-#: ui/main.qml:213
+#: ui/main.qml:199
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "Pēc izrakstīšanās nekavējoties ierakstīties no jauna"
 
-#: ui/main.qml:224
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "Noklusējumi"
 
-#: ui/main.qml:229
+#: ui/main.qml:215
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
 msgstr "Lietotājs pēc noklusējuma:"
 
-#: ui/main.qml:235
+#: ui/main.qml:221
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Pēdējās ierakstīšanās lietotājs"
 
-#: ui/main.qml:306
+#: ui/main.qml:292
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "Noklusējuma sesija:"
 
-#: ui/main.qml:312
+#: ui/main.qml:298
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"

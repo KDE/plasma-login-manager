@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:54+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-10-21 06:15+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: kcm.cpp:77
+#: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 "პარამეტრების შენახვა შეუძლებელია, რადგან დროებითი საქაღალდე ვერ შეიქმნა."
 
-#: kcm.cpp:108
+#: kcm.cpp:129
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "პარამეტრების შენახვა შეუძლებელია, რადგან კონფოგურაციის ფაილის გახსნა ვერ "
 "მოხერხდა."
 
-#: kcm.cpp:137
+#: kcm.cpp:201
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -38,7 +38,7 @@ msgstr ""
 "Plasma-ის პარამეტრების სინქრონიზაცია ვერ მოხერხდა, რადგან მომხმარებელი "
 "'plasmalogin' არ არსებობს. შეამოწმეთ, დაყენებული გაქვთ თუ არა Plasma Login."
 
-#: kcm.cpp:188
+#: kcm.cpp:252
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -149,7 +149,7 @@ msgctxt ""
 msgid "as user:"
 msgstr "როგორც მომხმარებელი:"
 
-#: ui/main.qml:168
+#: ui/main.qml:154
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
@@ -157,7 +157,7 @@ msgctxt ""
 msgid "with session:"
 msgstr "სესიით:"
 
-#: ui/main.qml:201
+#: ui/main.qml:187
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -171,42 +171,42 @@ msgstr ""
 "ეს თავიდან აიცილოთ, შეცვალეთ საფულე, რომ მას ცარიელი პაროლი ჰქონდეს. "
 "დაიმახსოვრეთ, რომ ეს უსაფრთხო არაა და, მხოლოდ, სანდო გარემოში უნდა გააკეთოთ."
 
-#: ui/main.qml:206
+#: ui/main.qml:192
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "KDE-ის საფულის პარამეტრების გახსნა"
 
-#: ui/main.qml:213
+#: ui/main.qml:199
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "გასვლის შემდეგ ავტომატურად ისევ შესვლა"
 
-#: ui/main.qml:224
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "ნაგულისხმევი მნიშვნელობები"
 
-#: ui/main.qml:229
+#: ui/main.qml:215
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
 msgstr "ნაგულისხმევი მომხმარებელი:"
 
-#: ui/main.qml:235
+#: ui/main.qml:221
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "ბოლოს შესული მომხმარებელი"
 
-#: ui/main.qml:306
+#: ui/main.qml:292
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "ნაგულისხმევი სესია:"
 
-#: ui/main.qml:312
+#: ui/main.qml:298
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"

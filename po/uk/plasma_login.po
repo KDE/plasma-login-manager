@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-11 00:45+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-12-01 15:06+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -60,70 +60,70 @@ msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
 msgstr "Змінити розкладку"
 
-#: qml/Login.qml:92
+#: qml/Login.qml:88
 #, kde-format
 msgid "Username"
 msgstr "Користувач"
 
-#: qml/Login.qml:109
+#: qml/Login.qml:105
 #, kde-format
 msgid "Password"
 msgstr "Пароль"
 
-#: qml/Login.qml:153 qml/Login.qml:159
+#: qml/Login.qml:148 qml/Login.qml:154
 #, kde-format
 msgid "Log In"
 msgstr "Увійти"
 
-#: qml/Main.qml:167
+#: qml/Main.qml:186 qml/Main.qml:304
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock увімкнено"
 
-#: qml/Main.qml:179 qml/Main.qml:302
+#: qml/Main.qml:198 qml/Main.qml:331
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Приспати"
 
-#: qml/Main.qml:185 qml/Main.qml:308
+#: qml/Main.qml:204 qml/Main.qml:337
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Призупинити"
 
-#: qml/Main.qml:191 qml/Main.qml:314
+#: qml/Main.qml:210 qml/Main.qml:343
 #, kde-format
 msgid "Restart"
 msgstr "Перезапустити"
 
-#: qml/Main.qml:197 qml/Main.qml:320
+#: qml/Main.qml:216 qml/Main.qml:349
 #, kde-format
 msgid "Shut Down"
 msgstr "Вимкнути"
 
-#: qml/Main.qml:203
+#: qml/Main.qml:222
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Інше…"
 
-#: qml/Main.qml:291
+#: qml/Main.qml:320
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Введіть ім'я користувача і пароль"
 
-#: qml/Main.qml:326
+#: qml/Main.qml:355
 #, kde-format
 msgid "List Users"
 msgstr "Список користувачів"
 
-#: qml/Main.qml:399
+#: qml/Main.qml:428
 #, kde-format
 msgid "Login Failed"
 msgstr "Невдала спроба увійти"
 
-#: qml/SessionButton.qml:24
+#: qml/SessionButton.qml:25
 #, kde-format
 msgid "Desktop Session: %1"
 msgstr "Сеанс стільниці: %1"

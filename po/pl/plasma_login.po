@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-12 00:45+0000\n"
+"POT-Creation-Date: 2026-01-13 08:43+0000\n"
 "PO-Revision-Date: 2025-12-06 15:15+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: pl\n"
@@ -60,65 +60,65 @@ msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
 msgstr "Przełącz układ"
 
-#: qml/Login.qml:87
+#: qml/Login.qml:88
 #, kde-format
 msgid "Username"
 msgstr "Nazwa użytkownika"
 
-#: qml/Login.qml:104
+#: qml/Login.qml:105
 #, kde-format
 msgid "Password"
 msgstr "Hasło"
 
-#: qml/Login.qml:147 qml/Login.qml:153
+#: qml/Login.qml:148 qml/Login.qml:154
 #, kde-format
 msgid "Log In"
 msgstr "Zaloguj"
 
-#: qml/Main.qml:185 qml/Main.qml:303
+#: qml/Main.qml:186 qml/Main.qml:304
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock jest włączony"
 
-#: qml/Main.qml:197 qml/Main.qml:330
+#: qml/Main.qml:198 qml/Main.qml:331
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Zahibernuj"
 
-#: qml/Main.qml:203 qml/Main.qml:336
+#: qml/Main.qml:204 qml/Main.qml:337
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Uśpij"
 
-#: qml/Main.qml:209 qml/Main.qml:342
+#: qml/Main.qml:210 qml/Main.qml:343
 #, kde-format
 msgid "Restart"
 msgstr "Uruchom ponownie"
 
-#: qml/Main.qml:215 qml/Main.qml:348
+#: qml/Main.qml:216 qml/Main.qml:349
 #, kde-format
 msgid "Shut Down"
 msgstr "Wyłącz"
 
-#: qml/Main.qml:221
+#: qml/Main.qml:222
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Inne…"
 
-#: qml/Main.qml:319
+#: qml/Main.qml:320
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Wpisz nazwę użytkownika i hasło"
 
-#: qml/Main.qml:354
+#: qml/Main.qml:355
 #, kde-format
 msgid "List Users"
 msgstr "Pokaż dostępnych użytkowników"
 
-#: qml/Main.qml:427
+#: qml/Main.qml:428
 #, kde-format
 msgid "Login Failed"
 msgstr "Nie udało się zalogować"
