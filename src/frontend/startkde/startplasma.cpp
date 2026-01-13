@@ -261,7 +261,7 @@ void setupPlasmaEnvironment()
     // Manually disable auto scaling because we are scaling above
     // otherwise apps that manually opt in for high DPI get auto scaled by the developer AND manually scaled by us
     qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
-
+    qputenv("QT_QUICK_CONTROLS_STYLE", "org.kde.breeze");
     qputenv("KDE_APPLICATIONS_AS_SCOPE", "1");
 
     // Add kdedefaults dir to allow config defaults overriding from a writable location
