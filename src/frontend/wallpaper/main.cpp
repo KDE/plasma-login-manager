@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     format.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(format);
 
+    QGuiApplication::setDesktopSettingsAware(false);
     WallpaperApp app(argc, argv);
 
     return app.exec();

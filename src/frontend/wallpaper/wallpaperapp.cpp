@@ -60,6 +60,8 @@ void WallpaperApp::adoptScreen(QScreen *screen)
     }
 
     WallpaperWindow *window = new WallpaperWindow(screen);
+    window->setBlur(true);
+
     window->setGeometry(screen->geometry());
     window->setVisible(true);
     m_windows << window;
