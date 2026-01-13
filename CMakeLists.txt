@@ -14,7 +14,7 @@ option(INSTALL_PAM_CONFIGURATION "Install PAM configuration files" ON)
 
 # Version settings
 set(PROJECT_DEP_VERSION "6.3.0")
-set(QT_MIN_VERSION "6.7.0")
+set(QT_MIN_VERSION "6.10.0")
 set(KF6_MIN_VERSION "6.22.0")
 set(KDE_COMPILERSETTINGS_LEVEL "5.82")
 
