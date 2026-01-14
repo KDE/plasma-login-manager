@@ -11,7 +11,6 @@ set(DAEMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/common/ConfigReader.cpp
     ${CMAKE_SOURCE_DIR}/src/common/Session.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SocketWriter.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/SignalHandler.cpp
     ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/Auth.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthPrompt.cpp
@@ -53,6 +52,7 @@ target_link_libraries(plasmalogin
                       Qt6::Network
                       Qt6::Qml
                       ${PAM_LIBRARIES}
+                      KF6::CoreAddons
                       KF6::ConfigCore
                       KF6::ConfigGui
                       PkgConfig::LIBSYSTEMD)

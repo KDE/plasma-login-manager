@@ -12,8 +12,8 @@
  */
 
 #include "MessageHandler.h"
-#include "SignalHandler.h"
 #include "xorguserhelper.h"
+#include <KSignalHandler>
 #include <QCoreApplication>
 #include <QDebug>
 #include <QProcess>
@@ -30,9 +30,12 @@ int main(int argc, char **argv)
 {
     qInstallMessageHandler(X11UserHelperMessageHandler);
     QCoreApplication app(argc, argv);
-    PLASMALOGIN::SignalHandler s;
-    QObject::connect(&s, &PLASMALOGIN::SignalHandler::sigtermReceived, &app, [] {
-        QCoreApplication::instance()->exit(-1);
+    auto sig = KSignalHandler::self();
+    sig->watchSignal(SIGTERM);
+    QObject::connect(sig, &KSignalHandler::signalReceived, &app, [](int s) {
+        if (s == SIGTERM) {
+            QCoreApplication::instance()->exit(-1);
+        }
     });
 
     Q_ASSERT(::getuid() != 0);

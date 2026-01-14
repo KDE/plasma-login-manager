@@ -18,7 +18,7 @@
 
 #include "DisplayManager.h"
 #include "SeatManager.h"
-#include "SignalHandler.h"
+#include <KSignalHandler>
 
 #include "MessageHandler.h"
 
@@ -28,6 +28,7 @@
 #include <QTimer>
 
 #include <iostream>
+#include <signal.h>
 
 namespace PLASMALOGIN
 {
@@ -57,12 +58,15 @@ DaemonApp::DaemonApp(int &argc, char **argv)
     connect(m_seatManager, &SeatManager::seatCreated, m_displayManager, &DisplayManager::AddSeat);
     connect(m_seatManager, &SeatManager::seatRemoved, m_displayManager, &DisplayManager::RemoveSeat);
 
-    // create signal handler
-    m_signalHandler = new SignalHandler(this);
-
-    // quit when SIGINT, SIGTERM received
-    connect(m_signalHandler, &SignalHandler::sigintReceived, this, &DaemonApp::quit);
-    connect(m_signalHandler, &SignalHandler::sigtermReceived, this, &DaemonApp::quit);
+    // watch SIGINT and SIGTERM and quit on receipt
+    auto sig = KSignalHandler::self();
+    sig->watchSignal(SIGINT);
+    sig->watchSignal(SIGTERM);
+    connect(sig, &KSignalHandler::signalReceived, this, [this](int s) {
+        if (s == SIGINT || s == SIGTERM) {
+            this->quit();
+        }
+    });
     // log message
     qDebug() << "Starting...";
 
@@ -83,11 +87,6 @@ DisplayManager *DaemonApp::displayManager() const
 SeatManager *DaemonApp::seatManager() const
 {
     return m_seatManager;
-}
-
-SignalHandler *DaemonApp::signalHandler() const
-{
-    return m_signalHandler;
 }
 
 int DaemonApp::newSessionId()

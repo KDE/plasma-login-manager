@@ -13,8 +13,8 @@
 #include "backend/PamBackend.h"
 
 #include "MessageHandler.h"
-#include "SignalHandler.h"
 #include "VirtualTerminal.h"
+#include <KSignalHandler>
 
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
@@ -38,9 +38,12 @@ HelperApp::HelperApp(int &argc, char **argv)
     , m_socket(new QLocalSocket(this))
 {
     qInstallMessageHandler(HelperMessageHandler);
-    SignalHandler *s = new SignalHandler(this);
-    QObject::connect(s, &SignalHandler::sigtermReceived, m_session, [] {
-        QCoreApplication::instance()->exit(-1);
+    auto sig = KSignalHandler::self();
+    sig->watchSignal(SIGTERM);
+    QObject::connect(sig, &KSignalHandler::signalReceived, m_session, [](int s) {
+        if (s == SIGTERM) {
+            QCoreApplication::instance()->exit(-1);
+        }
     });
 
     QTimer::singleShot(0, this, SLOT(setUp()));
