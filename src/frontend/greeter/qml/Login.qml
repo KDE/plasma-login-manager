@@ -105,9 +105,6 @@ SessionManagementScreen {
             placeholderText: i18nd("plasma_login", "Password")
             focus: !showUsernamePrompt
 
-            // Disable reveal password action because SDDM does not have the breeze icon set loaded
-            rightActions: []
-
             onAccepted: {
                 if (root.loginScreenUiVisible) {
                     startLogin();
@@ -173,6 +170,8 @@ SessionManagementScreen {
                 userNameInput.text = PlasmaLogin.GreeterState.userPromptUsername;
                 passwordBox.text = PlasmaLogin.GreeterState.userPromptPassword;
             }
+
+            passwordBox.showPassword = PlasmaLogin.GreeterState.showPassword;
         }
 
         // Login -> GreeterState
@@ -214,6 +213,12 @@ SessionManagementScreen {
                     if (PlasmaLogin.GreeterState.userPromptPassword != passwordBox.text) {
                         PlasmaLogin.GreeterState.userPromptPassword = passwordBox.text;
                     }
+                }
+            }
+
+            function onShowPasswordChanged() {
+                if (PlasmaLogin.GreeterState.showPassword != passwordBox.showPassword) {
+                    PlasmaLogin.GreeterState.showPassword = passwordBox.showPassword;
                 }
             }
         }
@@ -259,6 +264,12 @@ SessionManagementScreen {
 
                 if (passwordBox.text != PlasmaLogin.GreeterState.userPromptPassword) {
                     passwordBox.text = PlasmaLogin.GreeterState.userPromptPassword;
+                }
+            }
+
+            function onShowPasswordChanged() {
+                if (passwordBox.showPassword != PlasmaLogin.GreeterState.showPassword) {
+                    passwordBox.showPassword = PlasmaLogin.GreeterState.showPassword;
                 }
             }
         }
