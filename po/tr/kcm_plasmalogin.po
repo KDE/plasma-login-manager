@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"POT-Creation-Date: 2026-01-14 02:39+0000\n"
 "PO-Revision-Date: 2025-10-22 17:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -22,11 +22,11 @@ msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr "Bir geçici dizin oluşturulamadığından ayarlar kaydedilemedi."
 
-#: kcm.cpp:129
+#: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
 msgstr "Yapılandırma açılamadığından ayarlar kaydedilemedi."
 
-#: kcm.cpp:201
+#: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -34,7 +34,7 @@ msgstr ""
 "Plasma ayarları eşzamanlanamıyor; çünkü “plasmalogin” kullanıcısı yok. "
 "Lütfen Plasma Oturum Aç kurulumunuzu denetleyin."
 
-#: kcm.cpp:252
+#: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

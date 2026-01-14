@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"POT-Creation-Date: 2026-01-14 02:39+0000\n"
 "PO-Revision-Date: 2025-05-12 14:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -23,11 +23,11 @@ msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr "无法保存设置，因为无法创建临时目录。"
 
-#: kcm.cpp:129
+#: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
 msgstr "无法保存设置，因为无法打开配置文件。"
 
-#: kcm.cpp:201
+#: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -35,7 +35,7 @@ msgstr ""
 "无法同步 Plasma 设置，因为用户“plasmalogin”不存在。请检查您的 Plasma 登录程序"
 "是否正确安装。"
 
-#: kcm.cpp:252
+#: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"POT-Creation-Date: 2026-01-14 02:39+0000\n"
 "PO-Revision-Date: 2025-11-07 21:17+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -24,11 +24,11 @@ msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr "Nepavyko įrašyti nuostatų, nes nepavyko sukurti laikinojo katalogo."
 
-#: kcm.cpp:129
+#: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
 msgstr "Nepavyko įrašyti nuostatų, nes nepavyko atverti konfigūracijos."
 
-#: kcm.cpp:201
+#: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -36,7 +36,7 @@ msgstr ""
 "Nepavyko sinchronizuoti Plasma nuostatų, nes nėra „plasmalogin“ naudotojo. "
 "Patikrinkite, ar gerai įdiegtas Plasma prisijungimas."
 
-#: kcm.cpp:252
+#: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"POT-Creation-Date: 2026-01-14 02:39+0000\n"
 "PO-Revision-Date: 2025-10-25 20:38+0200\n"
 "Last-Translator: Valter Mura <valtermura@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -24,13 +24,13 @@ msgstr ""
 "Impossibile salvare le impostazioni perché non è stato possibile creare la "
 "cartella temporanea."
 
-#: kcm.cpp:129
+#: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "Impossibile salvare le impostazioni perché non è stato possibile aprire il "
 "file di configurazione."
 
-#: kcm.cpp:201
+#: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -38,7 +38,7 @@ msgstr ""
 "Impossibile sincronizzare le impostazioni di Plasma perché l'utente "
 "«plasmalogin» non esiste. Verifica l'installazione di Accesso a Plasma."
 
-#: kcm.cpp:252
+#: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
