@@ -19,8 +19,6 @@
 #include <KPackage/PackageLoader>
 #include <KWindowSystem>
 
-#include <LayerShellQt/Shell>
-
 #include "plasmaloginsettings.h"
 
 #include "wallpaperwindow.h"
@@ -30,8 +28,6 @@
 WallpaperApp::WallpaperApp(int &argc, char **argv)
     : QGuiApplication(argc, argv)
 {
-    LayerShellQt::Shell::useLayerShell();
-
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
     m_wallpaperPackage.setPath(PlasmaLoginSettings::getInstance().wallpaperPluginId());
 
