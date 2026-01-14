@@ -18,6 +18,7 @@
 #define PLASMALOGIN_DAEMONAPP_H
 
 #include <QCoreApplication>
+#include <QtCore>
 
 #define daemonApp DaemonApp::instance()
 
@@ -40,7 +41,7 @@ public:
         return self;
     }
 
-    bool first{true};
+    bool tryLockFirstLogin();
 
     QString hostName() const;
     DisplayManager *displayManager() const;
@@ -54,6 +55,8 @@ private:
     static DaemonApp *self;
 
     int m_lastSessionId{0};
+
+    bool m_firstloginLock{false};
 
     bool m_testing{false};
     DisplayManager *m_displayManager{nullptr};

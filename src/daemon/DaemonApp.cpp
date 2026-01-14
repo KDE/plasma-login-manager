@@ -96,6 +96,35 @@ int DaemonApp::newSessionId()
 {
     return m_lastSessionId++;
 }
+
+bool DaemonApp::tryLockFirstLogin()
+{
+    if (m_firstloginLock) {
+        return false;
+    }
+    m_firstloginLock = true;
+
+    QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                      QStringLiteral("/org/freedesktop/systemd1"),
+                                                      QStringLiteral("org.freedesktop.DBus.Properties"),
+                                                      QStringLiteral("Get"));
+
+    msg << QStringLiteral("org.freedesktop.systemd1.Manager") << QStringLiteral("SoftRebootsCount");
+
+    const QDBusMessage reply = QDBusConnection::systemBus().call(msg);
+
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qWarning() << "DBus error:" << reply.errorName() << "-" << reply.errorMessage();
+        return false;
+    }
+
+    const QVariant soft_reboot_count = qvariant_cast<QDBusVariant>(reply.arguments().at(0)).variant();
+    if (soft_reboot_count.isValid() && soft_reboot_count.typeId() == QMetaType::UInt) {
+        qWarning() << "DBus variant is invalid or wroing type.";
+        return false;
+    };
+    return soft_reboot_count.toInt() == 0;
+};
 }
 
 int main(int argc, char **argv)

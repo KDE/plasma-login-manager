@@ -129,7 +129,7 @@ Display::Display(Seat *parent)
     connect(m_greeter, &Greeter::displayServerFailed, this, &Display::displayServerFailed);
 
     // Load autologin configuration (whether to autologin, user, session, session type)
-    if ((daemonApp->first || mainConfig.Autologin.Relogin.get()) && !mainConfig.Autologin.User.get().isEmpty()) {
+    if ((mainConfig.Autologin.Relogin.get() || daemonApp->tryLockFirstLogin()) && !mainConfig.Autologin.User.get().isEmpty()) {
         // determine session type
         QString autologinSession = mainConfig.Autologin.Session.get();
         // not configured: try last successful logged in
@@ -144,9 +144,6 @@ Display::Display(Seat *parent)
             qCritical() << "Unable to find autologin session entry" << autologinSession;
         }
     }
-
-    // reset first flag
-    daemonApp->first = false;
 }
 
 Display::~Display()
