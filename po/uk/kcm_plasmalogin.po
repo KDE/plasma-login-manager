@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"POT-Creation-Date: 2026-01-14 00:46+0000\n"
 "PO-Revision-Date: 2025-10-21 22:16+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -25,12 +25,12 @@ msgstr ""
 "Не вдалося зберегти параметри, оскільки не вдалося створити тимчасовий "
 "каталог."
 
-#: kcm.cpp:129
+#: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "Не вдалося зберегти параметри, оскільки не вдалося відкрити файл налаштувань."
 
-#: kcm.cpp:201
+#: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -39,7 +39,7 @@ msgstr ""
 "«plasmalogin» не існує. Будь ласка, перевірте встановлені компоненти Plasma "
 "Login."
 
-#: kcm.cpp:252
+#: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
