@@ -16,8 +16,6 @@
 
 #include "DaemonApp.h"
 
-#include "Configuration.h"
-#include "Constants.h"
 #include "DisplayManager.h"
 #include "SeatManager.h"
 #include "SignalHandler.h"
@@ -138,17 +136,9 @@ int main(int argc, char **argv)
     if (arguments.contains(QStringLiteral("--help")) || arguments.contains(QStringLiteral("-h"))) {
         std::cout << "Usage: plasmalogin [options]\n"
                   << "Options: \n"
-                  << "  --test-mode         Start daemon in test mode" << std::endl
-                  << "  --example-config    Print the complete current configuration to stdout" << std::endl;
+                  << "  --test-mode         Start daemon in test mode" << std::endl;
 
         return EXIT_FAILURE;
-    }
-
-    // spit a complete config file on stdout and quit on demand
-    if (arguments.contains(QStringLiteral("--example-config"))) {
-        PLASMALOGIN::mainConfig.wipe();
-        QTextStream(stdout) << PLASMALOGIN::mainConfig.toConfigFull();
-        return EXIT_SUCCESS;
     }
 
     // create application
