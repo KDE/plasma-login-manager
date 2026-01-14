@@ -292,7 +292,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_reuseSessionId = QString();
 
-    if (Logind::isAvailable() && mainConfig.Users.ReuseSession.get()) {
+    if (Logind::isAvailable()) {
         OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
         auto reply = manager.ListSessions();
         reply.waitForFinished();
