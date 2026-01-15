@@ -21,6 +21,7 @@
 #include "SignalHandler.h"
 
 #include "MessageHandler.h"
+#include "mainconfig.h"
 
 #include <QDBusConnectionInterface>
 #include <QDebug>
@@ -46,6 +47,32 @@ DaemonApp::DaemonApp(int &argc, char **argv)
 
     // set testing parameter
     m_testing = (arguments().indexOf(QStringLiteral("--test-mode")) != -1);
+
+    // Initialize and reload config (CONFIG_FILE + *.conf.d fallback sources)
+    {
+        auto cfg = KSharedConfig::openConfig(QStringLiteral(CONFIG_FILE), KConfig::NoGlobals);
+        QStringList sources;
+        if (!QStringLiteral(SYSTEM_CONFIG_DIR).isEmpty()) {
+            QDir sysDir(QStringLiteral(SYSTEM_CONFIG_DIR));
+            if (sysDir.exists()) {
+                const auto dirFiles = sysDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
+                for (const QFileInfo &fi : dirFiles) {
+                    sources << fi.absoluteFilePath();
+                }
+            }
+        }
+        if (!QStringLiteral(CONFIG_DIR).isEmpty()) {
+            QDir cfgDir(QStringLiteral(CONFIG_DIR));
+            if (cfgDir.exists()) {
+                const auto dirFiles = cfgDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
+                for (const QFileInfo &fi : dirFiles) {
+                    sources << fi.absoluteFilePath();
+                }
+            }
+        }
+        cfg->addConfigSources(sources);
+        MainConfig::self()->setSharedConfig(cfg);
+    }
 
     // create display manager
     m_displayManager = new DisplayManager(this);
