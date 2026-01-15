@@ -68,6 +68,10 @@ Item {
         }
 
         onUiVisibleChanged: {
+            if (uiVisible) {
+                Window.window.requestActivate();
+            }
+
             if (blockUiTimeout) {
                 uiTimeoutTimer.running = false;
             } else if (uiVisible) {
