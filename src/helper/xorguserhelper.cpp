@@ -15,11 +15,11 @@
  ***************************************************************************/
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QFile>
 #include <QStandardPaths>
 
-#include "Configuration.h"
-
+#include "Constants.h"
 #include "xorguserhelper.h"
 
 #include <fcntl.h>

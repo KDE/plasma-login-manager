@@ -27,7 +27,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "Configuration.h"
 #include "Constants.h"
 #include "XAuth.h"
 

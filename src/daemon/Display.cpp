@@ -18,7 +18,6 @@
 
 #include "Display.h"
 
-#include "Configuration.h"
 #include "DaemonApp.h"
 #include "DisplayManager.h"
 #include "Greeter.h"
@@ -26,6 +25,7 @@
 #include "SocketServer.h"
 #include "Utils.h"
 #include "XorgUserDisplayServer.h"
+#include "mainconfig.h"
 
 #include <QDebug>
 #include <QFile>
@@ -129,9 +129,9 @@ Display::Display(Seat *parent)
     connect(m_greeter, &Greeter::displayServerFailed, this, &Display::displayServerFailed);
 
     // Load autologin configuration (whether to autologin, user, session, session type)
-    if ((mainConfig.Autologin.Relogin.get() || daemonApp->tryLockFirstLogin()) && !mainConfig.Autologin.User.get().isEmpty()) {
+    if ((MainConfig::self()->autologinRelogin() || daemonApp->tryLockFirstLogin()) && !MainConfig::self()->autologinUser().isEmpty()) {
         // determine session type
-        QString autologinSession = mainConfig.Autologin.Session.get();
+        QString autologinSession = MainConfig::self()->autologinSession();
         m_autologinSession = Session::create(Session::WaylandSession, autologinSession);
         if (!m_autologinSession.isValid()) {
             m_autologinSession = Session::create(Session::X11Session, autologinSession);
@@ -175,7 +175,7 @@ bool Display::start()
     // (rootful X + X11 autologin session).
     if (m_autologinSession.isValid()) {
         m_auth->setAutologin(true);
-        if (startAuth(mainConfig.Autologin.User.get(), QString(), m_autologinSession)) {
+        if (startAuth(MainConfig::self()->autologinUser(), QString(), m_autologinSession)) {
             return true;
         } else {
             return handleAutologinFailure();
@@ -323,7 +323,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId << session.xdgSessionType();
 
     QProcessEnvironment env;
-    env.insert(QStringLiteral("PATH"), mainConfig.Users.DefaultPath.get());
+    env.insert(QStringLiteral("PATH"), MainConfig::self()->usersDefaultPath());
     env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(seat()->name()));
     env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
     env.insert(QStringLiteral("DESKTOP_SESSION"), session.desktopSession());

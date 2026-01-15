@@ -7,13 +7,15 @@
  *
  */
 
+#include <QDir>
+#include <QFileInfo>
 #include <QSocketNotifier>
 
-#include "Configuration.h"
 #include "Constants.h"
 #include "HelperApp.h"
 #include "UserSession.h"
 #include "VirtualTerminal.h"
+#include "mainconfig.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -177,7 +179,7 @@ void UserSession::setupChildProcess()
 
 #ifdef Q_OS_LINUX
     // enter Linux namespaces
-    for (const QString &ns : mainConfig.Namespaces.get()) {
+    for (const QString &ns : MainConfig::self()->namespaces()) {
         qInfo() << "Entering namespace" << ns;
         int fd = ::open(qPrintable(ns), O_RDONLY);
         if (fd < 0) {
@@ -280,9 +282,10 @@ void UserSession::setupChildProcess()
         // we want to redirect after we setuid so that the log file is owned by the user
 
         // determine stderr log file based on session type
-        QString sessionLog = QStringLiteral("%1/%2")
-                                 .arg(QString::fromLocal8Bit(pw.pw_dir))
-                                 .arg(sessionType == QLatin1String("x11") ? mainConfig.X11.SessionLogFile.get() : mainConfig.Wayland.SessionLogFile.get());
+        QString sessionLog =
+            QStringLiteral("%1/%2")
+                .arg(QString::fromLocal8Bit(pw.pw_dir))
+                .arg(sessionType == QLatin1String("x11") ? MainConfig::self()->x11SessionLogFile() : MainConfig::self()->waylandSessionLogFile());
 
         // create the path
         QFileInfo finfo(sessionLog);

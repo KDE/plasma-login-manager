@@ -17,13 +17,19 @@
 
 #include "Seat.h"
 
-#include "Configuration.h"
 #include "DaemonApp.h"
 #include "VirtualTerminal.h"
+#include "mainconfig.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QTimer>
+
+#include "Constants.h"
+#include <KConfig>
+#include <KSharedConfig>
+#include <QDir>
+#include <QFileInfo>
 
 #include <Login1Manager.h>
 #include <Login1Seat.h>
@@ -48,8 +54,35 @@ const QString &Seat::name() const
 
 void Seat::createDisplay()
 {
-    // reload config if needed
-    mainConfig.load();
+    // Initialize and reload config (CONFIG_FILE + *.conf.d fallback sources)
+    {
+        auto cfg = KSharedConfig::openConfig(QStringLiteral(CONFIG_FILE), KConfig::NoGlobals);
+        QStringList sources;
+        // System defaults directory
+        if (QStringLiteral(SYSTEM_CONFIG_DIR) != QLatin1Char('\0')) {
+            QDir sysDir(QStringLiteral(SYSTEM_CONFIG_DIR));
+            if (sysDir.exists()) {
+                const auto dirFiles = sysDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
+                for (const QFileInfo &fi : dirFiles) {
+                    sources << fi.absoluteFilePath();
+                }
+            }
+        }
+        // Admin overrides directory
+        if (QStringLiteral(CONFIG_DIR) != QLatin1Char('\0')) {
+            QDir cfgDir(QStringLiteral(CONFIG_DIR));
+            if (cfgDir.exists()) {
+                const auto dirFiles = cfgDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
+                for (const QFileInfo &fi : dirFiles) {
+                    sources << fi.absoluteFilePath();
+                }
+            }
+        }
+        if (!sources.isEmpty()) {
+            cfg->addConfigSources(sources);
+        }
+        MainConfig::self()->setSharedConfig(cfg);
+    }
 
     // create a new display
     qDebug() << "Adding new display...";

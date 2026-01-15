@@ -15,9 +15,9 @@
  ***************************************************************************/
 
 #include "XorgUserDisplayServer.h"
-#include "Configuration.h"
 #include "Display.h"
 #include "Seat.h"
+#include "mainconfig.h"
 
 namespace PLASMALOGIN
 {
@@ -25,9 +25,9 @@ namespace PLASMALOGIN
 QString XorgUserDisplayServer::command(Display *display)
 {
     QStringList args;
-    args << mainConfig.X11.ServerPath.get() << mainConfig.X11.ServerArguments.get().split(QLatin1Char(' '), Qt::SkipEmptyParts) << QStringLiteral("-background")
-         << QStringLiteral("none") << QStringLiteral("-seat") << display->seat()->name() << QStringLiteral("-noreset") << QStringLiteral("-keeptty")
-         << QStringLiteral("-novtswitch") << QStringLiteral("-verbose") << QStringLiteral("3");
+    args << MainConfig::self()->x11ServerPath() << MainConfig::self()->x11ServerArguments().split(QLatin1Char(' '), Qt::SkipEmptyParts)
+         << QStringLiteral("-background") << QStringLiteral("none") << QStringLiteral("-seat") << display->seat()->name() << QStringLiteral("-noreset")
+         << QStringLiteral("-keeptty") << QStringLiteral("-novtswitch") << QStringLiteral("-verbose") << QStringLiteral("3");
 
     return args.join(QLatin1Char(' '));
 }
