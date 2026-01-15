@@ -118,7 +118,7 @@ bool DaemonApp::tryLockFirstLogin()
 
     const QVariant soft_reboot_count = qvariant_cast<QDBusVariant>(reply.arguments().at(0)).variant();
     if (soft_reboot_count.isValid() && soft_reboot_count.typeId() == QMetaType::UInt) {
-        qWarning() << "DBus variant is invalid or wroing type.";
+        qWarning() << "DBus variant is invalid or wrong type.";
         return false;
     };
     return soft_reboot_count.toInt() == 0;
