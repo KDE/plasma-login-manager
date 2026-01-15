@@ -49,18 +49,9 @@ namespace PLASMALOGIN
         );
     );
 
-    Config(StateConfig, []()->QString{auto tmp = getpwnam("plasmalogin"); return tmp ? QString::fromLocal8Bit(tmp->pw_dir) : QStringLiteral(STATE_DIR);}().append(QStringLiteral("/state.conf")), QString(), QString(),
-        Section(Last,
-            Entry(Session,         QString,     QString(),                                      _S("Name of the session for the last logged-in user.\n"
-                                                                                                   "This session will be preselected when the login screen appears."));
-            Entry(User,            QString,     QString(),                                      _S("Name of the last logged-in user.\n"
-                                                                                                   "This user will be preselected when the login screen appears"));
-        );
-    );
 // clang-format on
 
-extern MainConfig mainConfig;
-extern StateConfig stateConfig;
+    extern MainConfig mainConfig;
 }
 
 #endif // PLASMALOGIN_CONFIGURATION_H
