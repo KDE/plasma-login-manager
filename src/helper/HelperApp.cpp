@@ -7,7 +7,6 @@
  */
 
 #include "HelperApp.h"
-#include "Configuration.h"
 #include "SafeDataStream.h"
 #include "UserSession.h"
 #include "backend/PamBackend.h"
@@ -28,6 +27,12 @@
 
 #include <QByteArray>
 #include <signal.h>
+
+#include "Constants.h"
+#include <KConfig>
+#include <KSharedConfig>
+#include <QDir>
+#include <QFileInfo>
 
 namespace PLASMALOGIN
 {
