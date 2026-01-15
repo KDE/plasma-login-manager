@@ -8,6 +8,15 @@ target_link_libraries(startplasma-login-wayland PRIVATE
     Qt::Core
     Qt::DBus
     KF6::ConfigCore
+    KF6::ConfigGui
     KF6::DBusAddons
+    KF6::Package
+    PW::KLookAndFeel
 )
+
+kconfig_target_kcfg_file(startplasma-login-wayland
+    FILE lookandfeelsettings.kcfg
+    CLASS_NAME LookAndFeelSettings
+)
+
 install(TARGETS startplasma-login-wayland ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
