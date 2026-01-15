@@ -14,7 +14,6 @@ Item {
 
     property alias source: wallpaperBlur.source
     property real factor: 0
-    readonly property bool lightColorScheme: Math.max(Kirigami.Theme.backgroundColor.r, Kirigami.Theme.backgroundColor.g, Kirigami.Theme.backgroundColor.b) > 0.5
 
     Behavior on factor {
         NumberAnimation {
@@ -46,7 +45,7 @@ Item {
 
         readonly property real contrast: 0.8 * wallpaperFader.factor + (1 - wallpaperFader.factor)
         readonly property real saturation: 1.5 * wallpaperFader.factor + (1 - wallpaperFader.factor)
-        readonly property real intensity: (wallpaperFader.lightColorScheme ? 1.6 : 0.7) * wallpaperFader.factor + (1 - wallpaperFader.factor)
+        readonly property real intensity: 0.7 * wallpaperFader.factor + (1 - wallpaperFader.factor)
 
         readonly property real transl: (1.0 - contrast) / 2.0;
         readonly property real rval: (1.0 - saturation) * 0.2126;
