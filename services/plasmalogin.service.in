@@ -1,5 +1,5 @@
 [Unit]
-Description=Simple Desktop Display Manager
+Description=Plasma Login Manager
 Documentation=man:plasmalogin(1) man:plasmalogin.conf(5)
 Conflicts=getty@tty${PLASMALOGIN_INITIAL_VT}.service kmsconvt@tty${PLASMALOGIN_INITIAL_VT}.service
 After=systemd-user-sessions.service getty@tty${PLASMALOGIN_INITIAL_VT}.service kmsconvt@tty${PLASMALOGIN_INITIAL_VT}.service plymouth-quit.service systemd-logind.service
