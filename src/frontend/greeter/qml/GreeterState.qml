@@ -72,6 +72,8 @@ Item {
     property string userPromptUsername: ""
     property string userPromptPassword: ""
 
+    property bool showPassword: false
+
     function activateWindow(window): void {
         if (!window) {
             return;
