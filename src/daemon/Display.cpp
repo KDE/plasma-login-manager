@@ -132,10 +132,6 @@ Display::Display(Seat *parent)
     if ((daemonApp->first || mainConfig.Autologin.Relogin.get()) && !mainConfig.Autologin.User.get().isEmpty()) {
         // determine session type
         QString autologinSession = mainConfig.Autologin.Session.get();
-        // not configured: try last successful logged in
-        if (autologinSession.isEmpty()) {
-            autologinSession = stateConfig.Last.Session.get();
-        }
         m_autologinSession = Session::create(Session::WaylandSession, autologinSession);
         if (!m_autologinSession.isValid()) {
             m_autologinSession = Session::create(Session::X11Session, autologinSession);
@@ -375,15 +371,6 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
             manager.UnlockSession(m_reuseSessionId);
             manager.ActivateSession(m_reuseSessionId);
         }
-
-        // save last user and last session
-        if (mainConfig.Users.RememberLastUser.get()) {
-            stateConfig.Last.User.set(m_auth->user());
-        } else {
-            stateConfig.Last.User.setDefault();
-        }
-        stateConfig.Last.Session.set(m_sessionName);
-        stateConfig.save();
 
         if (m_socket) {
             emit loginSucceeded(m_socket);

@@ -11,5 +11,4 @@
 namespace PLASMALOGIN
 {
 MainConfig mainConfig;
-StateConfig stateConfig;
 }
