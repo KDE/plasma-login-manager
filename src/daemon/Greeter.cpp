@@ -16,13 +16,13 @@
 
 #include "Greeter.h"
 
-#include "Configuration.h"
 #include "Constants.h"
 #include "DaemonApp.h"
 #include "Display.h"
 #include "DisplayManager.h"
 #include "Seat.h"
 #include "XorgUserDisplayServer.h"
+#include "mainconfig.h"
 
 #include <QStandardPaths>
 #include <QtCore/QDebug>

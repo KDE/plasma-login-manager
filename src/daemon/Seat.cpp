@@ -17,13 +17,19 @@
 
 #include "Seat.h"
 
-#include "Configuration.h"
 #include "DaemonApp.h"
 #include "VirtualTerminal.h"
+#include "mainconfig.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QTimer>
+
+#include "Constants.h"
+#include <KConfig>
+#include <KSharedConfig>
+#include <QDir>
+#include <QFileInfo>
 
 #include <Login1Manager.h>
 #include <Login1Seat.h>
@@ -48,9 +54,6 @@ const QString &Seat::name() const
 
 void Seat::createDisplay()
 {
-    // reload config if needed
-    mainConfig.load();
-
     // create a new display
     qDebug() << "Adding new display...";
     Display *display = new Display(this);

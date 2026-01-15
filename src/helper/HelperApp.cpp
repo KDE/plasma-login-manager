@@ -7,10 +7,10 @@
  */
 
 #include "HelperApp.h"
-#include "Configuration.h"
 #include "SafeDataStream.h"
 #include "UserSession.h"
 #include "backend/PamBackend.h"
+#include "mainconfig.h"
 
 #include "MessageHandler.h"
 #include "VirtualTerminal.h"
@@ -29,6 +29,12 @@
 #include <QByteArray>
 #include <signal.h>
 
+#include "Constants.h"
+#include <KConfig>
+#include <KSharedConfig>
+#include <QDir>
+#include <QFileInfo>
+
 namespace PLASMALOGIN
 {
 HelperApp::HelperApp(int &argc, char **argv)
@@ -37,6 +43,35 @@ HelperApp::HelperApp(int &argc, char **argv)
     , m_session(new UserSession(this))
     , m_socket(new QLocalSocket(this))
 {
+    // // Initialize configuration backend for the helper
+    // {
+    //     auto cfg = KSharedConfig::openConfig(QStringLiteral(CONFIG_FILE), KConfig::NoGlobals);
+    //     QStringList sources;
+    //     if (*QStringLiteral(SYSTEM_CONFIG_DIR) != QLatin1Char('\0')) {
+    //         QDir sysDir(QStringLiteral(SYSTEM_CONFIG_DIR));
+    //         if (sysDir.exists()) {
+    //             const auto dirFiles = sysDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
+    //             for (const QFileInfo &fi : dirFiles) {
+    //                 sources << fi.absoluteFilePath();
+    //             }
+    //         }
+    //     }
+    //     if (*QStringLiteral(CONFIG_DIR) != QLatin1Char('\0')) {
+    //         QDir cfgDir(QStringLiteral(CONFIG_DIR));
+    //         if (cfgDir.exists()) {
+    //             const auto dirFiles = cfgDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::LocaleAware);
+    //             for (const QFileInfo &fi : dirFiles) {
+    //                 sources << fi.absoluteFilePath();
+    //             }
+    //         }
+    //     }
+    //     if (!sources.isEmpty()) {
+    //         cfg->addConfigSources(sources);
+    //     }
+    //     MainConfig::self()->setSharedConfig(cfg);
+    //     MainConfig::self()->config()->reparseConfiguration();
+    //     MainConfig::self()->read();
+    // }
     qInstallMessageHandler(HelperMessageHandler);
     auto sig = KSignalHandler::self();
     sig->watchSignal(SIGTERM);

@@ -7,11 +7,13 @@
  *
  */
 
+#include <QDir>
+#include <QFileInfo>
 #include <QSocketNotifier>
 
-#include "Configuration.h"
 #include "Constants.h"
 #include "HelperApp.h"
+#include "MainConfigLoader.h"
 #include "UserSession.h"
 #include "VirtualTerminal.h"
 
@@ -263,9 +265,10 @@ void UserSession::setupChildProcess()
         // we want to redirect after we setuid so that the log file is owned by the user
 
         // determine stderr log file based on session type
-        QString sessionLog = QStringLiteral("%1/%2")
-                                 .arg(QString::fromLocal8Bit(pw.pw_dir))
-                                 .arg(sessionType == QLatin1String("x11") ? mainConfig.X11.SessionLogFile.get() : mainConfig.Wayland.SessionLogFile.get());
+        QString sessionLog =
+            QStringLiteral("%1/%2")
+                .arg(QString::fromLocal8Bit(pw.pw_dir))
+                .arg(sessionType == QLatin1String("x11") ? PlasmaLogin::config()->x11SessionLogFile() : PlasmaLogin::config()->waylandSessionLogFile());
 
         // create the path
         QFileInfo finfo(sessionLog);

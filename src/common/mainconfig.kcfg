@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+                           http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <!-- We will override the config source in code to use CONFIG_FILE and fallbacks. -->
+  <kcfgfile/>
+
+  <group name="X11">
+    <entry name="X11ServerPath" key="ServerPath" type="String">
+      <default>/usr/bin/X</default>
+    </entry>
+    <entry name="X11ServerArguments" key="ServerArguments" type="String">
+      <default>-nolisten tcp</default>
+    </entry>
+    <entry name="X11SessionLogFile" key="SessionLogFile" type="String">
+      <default>.local/share/plasmalogin/xorg-session.log</default>
+    </entry>
+  </group>
+
+  <group name="Wayland">
+    <entry name="WaylandSessionLogFile" key="SessionLogFile" type="String">
+      <default>.local/share/plasmalogin/wayland-session.log</default>
+    </entry>
+  </group>
+
+  <group name="Autologin">
+    <entry name="AutologinUser" key="User" type="String">
+      <default></default>
+    </entry>
+    <entry name="AutologinSession" key="Session" type="String">
+      <default></default>
+    </entry>
+    <entry name="AutologinRelogin" key="Relogin" type="Bool">
+      <default>false</default>
+    </entry>
+  </group>
+</kcfg>
+
