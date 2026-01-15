@@ -6,12 +6,12 @@ include_directories(
 
 configure_file(config.h.in config.h IMMEDIATE @ONLY)
 set(DAEMON_SOURCES
-    ${CMAKE_SOURCE_DIR}/src/common/Configuration.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SafeDataStream.cpp
-    ${CMAKE_SOURCE_DIR}/src/common/ConfigReader.cpp
     ${CMAKE_SOURCE_DIR}/src/common/Session.cpp
     ${CMAKE_SOURCE_DIR}/src/common/SocketWriter.cpp
     ${CMAKE_SOURCE_DIR}/src/common/VirtualTerminal.cpp
+    ${CMAKE_SOURCE_DIR}/src/common/MainConfigLoader.cpp
+
     ${CMAKE_SOURCE_DIR}/src/auth/Auth.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthPrompt.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthRequest.cpp
@@ -25,6 +25,10 @@ set(DAEMON_SOURCES
     SeatManager.cpp
     SocketServer.cpp
 )
+
+# Generate KConfigXT for main configuration
+kconfig_add_kcfg_files(DAEMON_SOURCES GENERATE_MOC
+    ${CMAKE_SOURCE_DIR}/src/common/mainconfig.kcfgc)
 
 qt_add_dbus_adaptor(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.DisplayManager.xml"          "DisplayManager.h" PLASMALOGIN::DisplayManager)
 qt_add_dbus_adaptor(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.DisplayManager.Seat.xml"     "DisplayManager.h" PLASMALOGIN::DisplayManagerSeat)

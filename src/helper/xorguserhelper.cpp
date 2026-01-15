@@ -19,8 +19,8 @@
 #include <QFile>
 #include <QStandardPaths>
 
-#include "Configuration.h"
-
+#include "Constants.h"
+#include "MainConfigLoader.h"
 #include "xorguserhelper.h"
 
 #include <fcntl.h>
@@ -53,7 +53,7 @@ bool XOrgUserHelper::start()
     const QString seatName = qEnvironmentVariable("XDG_SEAT");
     Q_ASSERT(!seatName.isEmpty());
     QStringList xorgArgs;
-    xorgArgs << mainConfig.X11.ServerPath.get() << mainConfig.X11.ServerArguments.get().split(QLatin1Char(' '), Qt::SkipEmptyParts)
+    xorgArgs << PlasmaLogin::config()->x11ServerPath() << PlasmaLogin::config()->x11ServerArguments().split(QLatin1Char(' '), Qt::SkipEmptyParts)
              << QStringLiteral("-background") << QStringLiteral("none") << QStringLiteral("-seat") << seatName << QStringLiteral("-noreset")
              << QStringLiteral("-keeptty") << QStringLiteral("-novtswitch") << QStringLiteral("-verbose") << QStringLiteral("3");
 

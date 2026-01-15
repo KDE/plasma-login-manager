@@ -1,5 +1,5 @@
 /***************************************************************************
- * SPDX-FileCopyrightText: 2023 Fabian Vogt <fabian@ritter-vogt.de>
+ * SPDX-FileCopyrightText: 2026 David Edmundson <davidedmundson@kde.org>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  *
@@ -14,23 +14,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ***************************************************************************/
 
-#include <QQmlContext>
-#include <QQmlEngine>
-#include <QtQuickTest>
+#pragma once
 
-#include "ThemeConfig.h"
+#include "mainconfig.h"
 
-class Setup : public QObject
+namespace PlasmaLogin
 {
-    Q_OBJECT
-public slots:
-    void qmlEngineAvailable(QQmlEngine *engine)
-    {
-        auto *config = new PLASMALOGIN::ThemeConfig(QStringLiteral("theme.conf"), this);
-        engine->rootContext()->setContextProperty(QStringLiteral("config"), config);
-    }
+MainConfig *config();
 };
-
-QUICK_TEST_MAIN_WITH_SETUP(QMLThemeConfigTest, Setup)
-
-#include "QMLThemeConfigTest.moc"

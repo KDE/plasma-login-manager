@@ -16,11 +16,11 @@
 
 #include "Greeter.h"
 
-#include "Configuration.h"
 #include "Constants.h"
 #include "DaemonApp.h"
 #include "Display.h"
 #include "DisplayManager.h"
+#include "MainConfigLoader.h"
 #include "Seat.h"
 
 #include <QStandardPaths>
@@ -97,7 +97,7 @@ bool Greeter::start()
                               sysenv,
                               env);
 
-        env.insert(QStringLiteral("PATH"), mainConfig.Users.DefaultPath.get());
+        env.insert(QStringLiteral("PATH"), PlasmaLogin::config()->defaultPath());
         env.insert(QStringLiteral("XDG_SEAT"), m_display->seat()->name());
         env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(m_display->seat()->name()));
         env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
