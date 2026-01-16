@@ -28,9 +28,17 @@ Item {
     FastBlur {
         id: wallpaperBlur
         anchors.fill: parent
-        radius: 50 * wallpaperFader.factor
+        radius: 64 * wallpaperFader.factor
     }
 
+    Rectangle {
+        anchors.fill: parent
+
+        opacity: factor * 0.7 // Matches Plasma's overview
+        color: Kirigami.Theme.backgroundColor
+    }
+
+    /*
     ShaderEffect {
         id: wallpaperShader
         anchors.fill: parent
@@ -70,4 +78,5 @@ Item {
 
         fragmentShader: "qrc:/qt/qml/org/kde/plasma/login/wallpaper/shaders/WallpaperFader.frag.qsb"
     }
+    */
 }
