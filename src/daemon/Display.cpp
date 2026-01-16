@@ -323,7 +323,6 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId << session.xdgSessionType();
 
     QProcessEnvironment env;
-    env.insert(QStringLiteral("PATH"), mainConfig.Users.DefaultPath.get());
     env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(seat()->name()));
     env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
     env.insert(QStringLiteral("DESKTOP_SESSION"), session.desktopSession());
