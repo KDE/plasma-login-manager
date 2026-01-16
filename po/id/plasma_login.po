@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-13 08:43+0000\n"
+"POT-Creation-Date: 2026-01-16 00:45+0000\n"
 "PO-Revision-Date: 2025-05-12 06:05+0700\n"
 "Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
 "Language-Team: https://t.me/Localizations_KDE_Indonesia\n"
@@ -69,55 +69,55 @@ msgstr "Nama Pengguna"
 msgid "Password"
 msgstr "Kata Sandi"
 
-#: qml/Login.qml:148 qml/Login.qml:154
+#: qml/Login.qml:145 qml/Login.qml:151
 #, kde-format
 msgid "Log In"
 msgstr "Login"
 
-#: qml/Main.qml:186 qml/Main.qml:304
+#: qml/Main.qml:190 qml/Main.qml:308
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock menyala"
 
-#: qml/Main.qml:198 qml/Main.qml:331
+#: qml/Main.qml:202 qml/Main.qml:335
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr ""
 
-#: qml/Main.qml:204 qml/Main.qml:337
+#: qml/Main.qml:208 qml/Main.qml:341
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Tidur"
 
-#: qml/Main.qml:210 qml/Main.qml:343
+#: qml/Main.qml:214 qml/Main.qml:347
 #, kde-format
 msgid "Restart"
 msgstr "Nyalakan Ulang"
 
-#: qml/Main.qml:216 qml/Main.qml:349
+#: qml/Main.qml:220 qml/Main.qml:353
 #, kde-format
 msgid "Shut Down"
 msgstr "Matikan"
 
-#: qml/Main.qml:222
+#: qml/Main.qml:226
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Lainnya..."
 
-#: qml/Main.qml:320
+#: qml/Main.qml:324
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Ketik Nama Pengguna dan Kata Sandi"
 
-#: qml/Main.qml:355
+#: qml/Main.qml:359
 #, kde-format
 msgid "List Users"
 msgstr "Daftar Pengguna"
 
-#: qml/Main.qml:428
+#: qml/Main.qml:432
 #, kde-format
 msgid "Login Failed"
 msgstr "Gagal Login"
