@@ -17,9 +17,6 @@ PlasmaComponents.ToolButton {
 
     property int currentIndex: PlasmaLogin.GreeterState.sessionIndex
 
-    readonly property int currentSessionType: instantiator.model.data(instantiator.model.index(currentIndex, 0), PlasmaLogin.SessionModel.TypeRole)
-    readonly property string currentSessionFileName: instantiator.model.data(instantiator.model.index(currentIndex, 0), PlasmaLogin.SessionModel.FileNameRole)
-
     // Count is used as instantiator may not have made items yet
     text: i18nd("plasma_login", "Desktop Session: %1", instantiator.count > currentIndex ? instantiator.objectAt(currentIndex).text : "")
     visible: menu.count > 1
@@ -66,6 +63,7 @@ PlasmaComponents.ToolButton {
         function onSessionIndexChanged() {
             if (root.currentIndex != PlasmaLogin.GreeterState.sessionIndex) {
                 root.currentIndex = PlasmaLogin.GreeterState.sessionIndex;
+                menu.currentIndex = root.currentIndex;
             }
         }
     }

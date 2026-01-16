@@ -95,6 +95,7 @@ SessionManagementScreen {
     }
 
     RowLayout {
+        id: passwordRow
         Layout.fillWidth: true
 
         PlasmaExtras.PasswordField {
@@ -153,6 +154,11 @@ SessionManagementScreen {
             Keys.onEnterPressed: clicked()
             Keys.onReturnPressed: clicked()
         }
+    }
+
+    SessionButton {
+        id: sessionButton
+        Layout.maximumWidth: passwordRow.width
     }
 
     // Synchronise state

@@ -37,12 +37,20 @@ Item {
     readonly property int beyondUserLimit: PlasmaLogin.UserModel.rowCount() === 0 || PlasmaLogin.UserModel.rowCount() > 7
 
     property int loginState: GreeterState.LoginState.UserList
-    onLoginStateChanged: clearPasswords();
+
+    onLoginStateChanged: {
+        clearPasswords();
+
+        if (greeterState.loginState == GreeterState.LoginState.UserList) {
+            let user = PlasmaLogin.UserModel.data(PlasmaLogin.UserModel.index(greeterState.userListIndex, 0), PlasmaLogin.UserModel.NameRole);
+            updateSessionForUser(user);
+        }
+    }
 
     property int sessionIndex: {
         // indexOfData will return -1 if passed an empty string, which these are by default
         let preselectedSessionIndex = PlasmaLogin.SessionModel.indexOfData(PlasmaLogin.Settings.preselectedSession, PlasmaLogin.SessionModel.FileNameRole);
-        let lastLoggedInSessionIndex = PlasmaLogin.SessionModel.indexOfData(PlasmaLogin.StateConfig.lastLoggedInSession, PlasmaLogin.SessionModel.FileNameRole);
+        let lastLoggedInSessionIndex = PlasmaLogin.SessionModel.indexOfData(getLastLoggedInSessionForUser(PlasmaLogin.StateConfig.lastLoggedInUser), PlasmaLogin.SessionModel.FileNameRole);
 
         if (preselectedSessionIndex != -1) {
             return preselectedSessionIndex;
@@ -66,10 +74,20 @@ Item {
             return 0;
         }
     }
+
+    onUserListIndexChanged: {
+        let user = PlasmaLogin.UserModel.data(PlasmaLogin.UserModel.index(greeterState.userListIndex, 0), PlasmaLogin.UserModel.NameRole);
+        updateSessionForUser(user);
+    }
+
     property string userListPassword: ""
 
     property string userPromptUsername: ""
     property string userPromptPassword: ""
+
+    onUserPromptUsernameChanged: {
+        updateSessionForUser(greeterState.userPromptUsername);
+    }
 
     property bool showPassword: false
 
@@ -140,11 +158,54 @@ Item {
     property string lastLoggedInUser
     property string lastLoggedInSession
 
-    function handleLoginRequest(username, password, sessionType, sessionFileName) {
+    function handleLoginRequest(username, password) {
         greeterState.lastLoggedInUser = username;
+
+        let sessionType = PlasmaLogin.SessionModel.data(PlasmaLogin.SessionModel.index(greeterState.sessionIndex, 0), PlasmaLogin.SessionModel.TypeRole)
+        let sessionFileName = PlasmaLogin.SessionModel.data(PlasmaLogin.SessionModel.index(greeterState.sessionIndex, 0), PlasmaLogin.SessionModel.FileNameRole)
         greeterState.lastLoggedInSession = sessionFileName;
 
         PlasmaLogin.Authenticator.login(username, password, sessionType, sessionFileName);
+    }
+
+    property var lastLoggedInSessions: {
+        let lastLoggedInUser = PlasmaLogin.StateConfig.lastLoggedInUser;
+        let sessionsJson = PlasmaLogin.StateConfig.lastLoggedInSession;
+        let result = {};
+        if (sessionsJson !== "") {
+            try {
+                result = JSON.parse(sessionsJson);
+            } catch (e) {
+                if (lastLoggedInUser !== "") {
+                    result[lastLoggedInUser] = sessionsJson;
+                }
+            }
+        }
+
+        for (let user in result) {
+            if (PlasmaLogin.UserModel.indexOfData(user, PlasmaLogin.UserModel.NameRole) === -1) {
+                delete result[user];
+            }
+        }
+        
+        return result;
+    }
+
+    function getLastLoggedInSessionForUser(username) {
+        return greeterState.lastLoggedInSessions[username] ?? -1;
+    }
+
+    function setLastLoggedInSessionForUser(username, sessionPath) {
+        greeterState.lastLoggedInSessions[username] = sessionPath;
+        PlasmaLogin.StateConfig.lastLoggedInSession = JSON.stringify(greeterState.lastLoggedInSessions);
+    }
+
+    function updateSessionForUser(username) {
+        let session = getLastLoggedInSessionForUser(username);
+        let lastLoggedInSessionIndex = PlasmaLogin.SessionModel.indexOfData(session, PlasmaLogin.SessionModel.FileNameRole);
+        if (lastLoggedInSessionIndex != -1) {
+            greeterState.sessionIndex = lastLoggedInSessionIndex;
+        }
     }
 
     Connections {
@@ -152,7 +213,7 @@ Item {
 
         function onLoginSucceeded() {
             PlasmaLogin.StateConfig.lastLoggedInUser = greeterState.lastLoggedInUser;
-            PlasmaLogin.StateConfig.lastLoggedInSession = greeterState.lastLoggedInSession;
+            setLastLoggedInSessionForUser(greeterState.lastLoggedInUser, greeterState.lastLoggedInSession);
             PlasmaLogin.StateConfig.save();
         }
     }

@@ -211,7 +211,7 @@ Item {
                         visible: !userListComponent.showUsernamePrompt
                     }]
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password)
             }
 
             readonly property real zoomFactor: 1.5
@@ -309,7 +309,7 @@ Item {
                     }
                 }
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password)
 
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
@@ -373,33 +373,6 @@ Item {
                 id: keyboardButton
             }
 
-            SessionButton {
-                id: sessionButton
-
-                onSessionChanged: {
-                    // NOTE: This won't work for userPromptComponent: we might
-                    // want a function to focus the correct password box, but
-                    // userPromptComponent has both that and the user box
-                    // Perhaps we need to store which one last had focus
-
-                    // Otherwise the password field loses focus and virtual keyboard
-                    // keystrokes get eaten
-                    userListComponent.mainPasswordBox.forceActiveFocus();
-                }
-
-                Layout.fillHeight: true
-                containmentMask: Item {
-                    parent: sessionButton
-                    anchors.fill: parent
-                    /*
-                    anchors.leftMargin: virtualKeyboardButton.visible || keyboardButton.visible
-                        ? 0 : -footer.anchors.margins
-                    */
-                    anchors.leftMargin: 0
-                    anchors.bottomMargin: -footer.anchors.margins
-                }
-            }
-
             Item {
                 Layout.fillWidth: true
             }
@@ -408,10 +381,10 @@ Item {
         }
     }
 
-    function handleLoginRequest(username, password, sessionType, sessionFileName) {
+    function handleLoginRequest(username, password) {
         root.notificationMessage = "";
         // GreeterState handles updating stateconfig with user/session of successful login
-        PlasmaLogin.GreeterState.handleLoginRequest(username, password, sessionType, sessionFileName);
+        PlasmaLogin.GreeterState.handleLoginRequest(username, password);
     }
 
     Connections {
