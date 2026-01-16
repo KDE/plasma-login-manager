@@ -31,12 +31,36 @@ Kirigami.Page {
         Kirigami.FormLayout {
             id: parentLayout // Don't change needed for correct alignment with wallpaper config
 
-            QQC2.CheckBox {
-                Kirigami.FormData.label: i18n("Clock")
-                text: i18n("Show clock")
+            QQC2.RadioButton {
+                Kirigami.FormData.label: i18nc("@title:group 'Show clock: Always/On login prompt/Never'", "Show clock:")
+                text: i18nc("@option:radio, 'Show clock: Always'", "Always")
 
-                checked: kcm.settings.showClock
-                onToggled: kcm.settings.showClock = checked
+                checked: kcm.settings.showClock === 0
+                onToggled: kcm.settings.showClock = 0
+
+                KCM.SettingStateBinding {
+                    configObject: kcm.settings
+                    settingName: "ShowClock"
+                }
+            }
+
+            QQC2.RadioButton {
+                text: i18nc("@option:radio, 'Show clock: On login prompt'", "On login prompt")
+
+                checked: kcm.settings.showClock === 1
+                onToggled: kcm.settings.showClock = 1
+
+                KCM.SettingStateBinding {
+                    configObject: kcm.settings
+                    settingName: "ShowClock"
+                }
+            }
+
+            QQC2.RadioButton {
+                text: i18nc("@option:radio, 'Show clock: Never'", "Never")
+
+                checked: kcm.settings.showClock === 2
+                onToggled: kcm.settings.showClock = 2
 
                 KCM.SettingStateBinding {
                     configObject: kcm.settings

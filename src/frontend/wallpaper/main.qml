@@ -10,7 +10,7 @@ import QtQuick.Window
 
 import org.kde.kirigami as Kirigami
 
-import org.kde.plasma.login.wallpaper as PlasmaLoginWallpaper
+import org.kde.breeze.components as BreezeComponents
 
 Item {
     id: main
@@ -26,7 +26,7 @@ Item {
         anchors.fill: parent
     }
 
-    PlasmaLoginWallpaper.WallpaperFader {
+    BreezeComponents.WallpaperFader {
         anchors.fill: parent
         factor: Window.window?.blur ? 1 : 0
         source: wallpaperPlaceholder.children[0]

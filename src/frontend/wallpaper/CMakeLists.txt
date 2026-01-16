@@ -11,7 +11,6 @@ target_sources(plasma-login-wallpaper PRIVATE
 ecm_target_qml_sources(plasma-login-wallpaper PRIVATE
     SOURCES
     main.qml
-    WallpaperFader.qml
 )
 
 target_link_libraries(plasma-login-wallpaper PRIVATE
@@ -24,17 +23,6 @@ target_link_libraries(plasma-login-wallpaper PRIVATE
     KF6::Package
     Plasma::PlasmaQuick
     LayerShellQt::Interface
-)
-
-qt_add_shaders(plasma-login-wallpaper "wallpaper_shaders"
-    PRECOMPILE
-    BATCHABLE
-    OPTIMIZED
-    PREFIX "/qt/qml/org/kde/plasma/login/wallpaper/shaders"
-    FILES
-        WallpaperFader.frag
-    OUTPUTS
-        WallpaperFader.frag.qsb
 )
 
 ecm_finalize_qml_module(plasma-login-wallpaper)

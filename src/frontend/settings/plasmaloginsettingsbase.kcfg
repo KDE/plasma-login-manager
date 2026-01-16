@@ -22,7 +22,12 @@
     <entry name="PreselectedSession" type="String">
       <default code="true">defaultPreselectedSession()</default>
     </entry>
-    <entry name="ShowClock" type="Bool">
+    <entry name="ShowClock" type="Enum">
+      <choices>
+        <choice name="Always"/>
+        <choice name="OnLoginPrompt"/>
+        <choice name="Never"/>
+      </choices>
       <default code="true">defaultShowClock()</default>
     </entry>
     <entry name="WallpaperPluginId" type="String">

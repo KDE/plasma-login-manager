@@ -37,7 +37,7 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMConfiguredInstall)
 include(ECMQmlModule)
 
-find_package(Qt6 CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest ShaderTools)
+find_package(Qt6 CONFIG REQUIRED Core DBus Gui Qml Quick LinguistTools Test QuickTest)
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config Package WindowSystem I18n DBusAddons KCMUtils Auth KIO CoreAddons)
 find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)

@@ -13,7 +13,7 @@ QString PlasmaLoginSettingsDefaults::s_defaultSession;
 bool PlasmaLoginSettingsDefaults::s_defaultRelogin;
 QString PlasmaLoginSettingsDefaults::s_defaultPreselectedUser;
 QString PlasmaLoginSettingsDefaults::s_defaultPreselectedSession;
-bool PlasmaLoginSettingsDefaults::s_defaultShowClock;
+int PlasmaLoginSettingsDefaults::s_defaultShowClock;
 QString PlasmaLoginSettingsDefaults::s_defaultWallpaperPluginId;
 
 PlasmaLoginSettingsDefaults::PlasmaLoginSettingsDefaults(KSharedConfigPtr config, QObject *parent)
@@ -25,7 +25,7 @@ PlasmaLoginSettingsDefaults::PlasmaLoginSettingsDefaults(KSharedConfigPtr config
     s_defaultRelogin = defaultConfig->group(QStringLiteral("AutoLogin")).readEntry("Relogin", false);
     s_defaultPreselectedUser = defaultConfig->group(QStringLiteral("Greeter")).readEntry("PreselectedUser", "");
     s_defaultPreselectedSession = defaultConfig->group(QStringLiteral("Greeter")).readEntry("PreselectedSession", "");
-    s_defaultShowClock = defaultConfig->group(QStringLiteral("Greeter")).readEntry("ShowClock", true);
+    s_defaultShowClock = defaultConfig->group(QStringLiteral("Greeter")).readEntry("ShowClock", 0);
     s_defaultWallpaperPluginId = defaultConfig->group(QStringLiteral("Greeter")).readEntry("WallpaperPluginId", "org.kde.image");
 }
 
@@ -54,7 +54,7 @@ QString PlasmaLoginSettingsDefaults::defaultPreselectedSession()
     return s_defaultPreselectedSession;
 }
 
-bool PlasmaLoginSettingsDefaults::defaultShowClock()
+int PlasmaLoginSettingsDefaults::defaultShowClock()
 {
     return s_defaultShowClock;
 }

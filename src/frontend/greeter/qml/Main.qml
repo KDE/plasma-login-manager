@@ -99,29 +99,30 @@ Item {
             }
         }
 
+        BreezeComponents.GreeterFader {
+            state: loginScreenRoot.uiVisible ? "on" : "off"
+            mainStack: mainStack
+            footer: footer
+            clock: clock
+            alwaysShowClock: Settings.showClock === 0
+        }
+
         DropShadow {
             id: clockShadow
             anchors.fill: clock
             source: clock
-            visible: !softwareRendering && clock.visible
+            visible: !softwareRendering && Settings.alwaysShowClock === 0
             radius: 7
             verticalOffset: 0.8
             samples: 15
             spread: 0.2
             color: Qt.rgba(0, 0, 0, 0.7)
-            opacity: loginScreenRoot.uiVisible ? 0 : 1
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: Kirigami.Units.veryLongDuration * 2
-                    easing.type: Easing.InOutQuad
-                }
-            }
         }
 
         BreezeComponents.Clock {
             id: clock
             property Item shadow: clockShadow
-            visible: y > 0 && Settings.showClock
+            visible: y > 0 && Settings.alwaysShowClock !== 2
             anchors.horizontalCenter: parent.horizontalCenter
             y: (userListComponent.userList.y + mainStack.y)/2 - height/2
             Layout.alignment: Qt.AlignBaseline
@@ -138,12 +139,7 @@ Item {
 
             focus: true
 
-            opacity: loginScreenRoot.uiVisible ? 1 : 0
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: Kirigami.Units.longDuration
-                }
-            }
+            visible: opacity > 0
 
             Connections {
                 target: PlasmaLogin.GreeterState
@@ -371,12 +367,6 @@ Item {
             anchors.margins: Kirigami.Units.smallSpacing
 
             spacing: Kirigami.Units.smallSpacing
-
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: Kirigami.Units.longDuration
-                }
-            }
 
             /* Virtual keyboard btn */
 
