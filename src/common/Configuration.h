@@ -39,7 +39,6 @@ namespace PLASMALOGIN
 
         Section(Users,
             Entry(DefaultPath,         QString,     _S("/usr/local/bin:/usr/bin:/bin"),         _S("Default $PATH for logged in users"));
-            Entry(RememberLastUser,    bool,        true,                                       _S("Remember the last successfully logged in user"));
         );
 
         Section(Autologin,
