@@ -90,7 +90,7 @@ Item {
         Timer {
             id: uiTimeoutTimer
             running: false
-            interval: 60000
+            interval: 10000
             onTriggered: {
                 if (!loginScreenRoot.blockUiTimeout) {
                     userListComponent.mainPasswordBox.showPassword = false;
