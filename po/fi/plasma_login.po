@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# SPDX-FileCopyrightText: 2025 Tommi Nieminen <translator@legisign.org>
+# SPDX-FileCopyrightText: 2025, 2026 Tommi Nieminen <translator@legisign.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-16 00:45+0000\n"
-"PO-Revision-Date: 2025-10-13 21:14+0300\n"
+"PO-Revision-Date: 2026-01-05 18:05+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -46,11 +46,7 @@ msgid "%1 (Wayland)"
 msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inmenu %1 is the localised name of a desktop session, %2 is the "
-#| "index of the sessionn"
-#| msgid "%1 (%2)"
+#, kde-format
 msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
