@@ -43,8 +43,8 @@
 
 // #include "../config-workspace.h"
 #include "debug.h"
+#include "klookandfeelmanager.h"
 #include "lookandfeelsettings.h"
-#include <klookandfeel/klookandfeelmanager.h>
 
 using namespace Qt::StringLiterals;
 
