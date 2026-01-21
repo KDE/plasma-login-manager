@@ -3,6 +3,6 @@ Description=KDE Window Manager (Login Manager Version)
 PartOf=graphical-session.target
 
 [Service]
-ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/kwin_wayland --no-lockscreen --no-global-shortcuts --no-kactivities --inputmethod plasma-keyboard --locale1
-BusName=org.kde.KWin
+ExecStart=@CMAKE_INSTALL_FULL_BINDIR@/kwin_wayland_wrapper --no-lockscreen --no-global-shortcuts --no-kactivities --inputmethod plasma-keyboard --locale1
+BusName=org.kde.KWinWrapper
 Slice=session.slice
