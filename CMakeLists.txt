@@ -42,6 +42,7 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS Config Package WindowSys
 find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LayerShellQt ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(LibKWorkspace ${PROJECT_DEP_VERSION} REQUIRED)
+find_package(LibKLookAndFeel ${PROJECT_DEP_VERSION} REQUIRED)
 
 # PAM
 find_package(PAM REQUIRED)

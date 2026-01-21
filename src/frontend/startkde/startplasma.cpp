@@ -27,9 +27,10 @@
 
 #include <KConfig>
 #include <KConfigGroup>
+// #include <KDarkLightSchedule>
 // #include <KNotifyConfig>
-// #include <KPackage/Package>
-// #include <KPackage/PackageLoader>
+#include <KPackage/Package>
+#include <KPackage/PackageLoader>
 #include <KSharedConfig>
 
 #include <unistd.h>
@@ -41,8 +42,9 @@
 #include "startplasma.h"
 
 // #include "../config-workspace.h"
-// #include "../kcms/lookandfeel/lookandfeelmanager.h"
 #include "debug.h"
+#include "lookandfeelsettings.h"
+#include <klookandfeel/klookandfeelmanager.h>
 
 using namespace Qt::StringLiterals;
 
@@ -256,6 +258,55 @@ void importSystemdEnvrionment()
     }
 }
 
+/*
+static std::optional<std::pair<QString, KLookAndFeelManager::Contents>> dayNightLookAndFeel(const LookAndFeelSettings &settings)
+{
+    const KConfig lookandfeelautoswitcherstaterc(QStringLiteral("lookandfeelautoswitcherstaterc"), KConfig::SimpleConfig, QStandardPaths::GenericStateLocation);
+    const KConfigGroup darkNightCycleGroup(&lookandfeelautoswitcherstaterc, QStringLiteral("DarkLightCycle"));
+    if (!darkNightCycleGroup.isValid()) {
+        return std::nullopt;
+    }
+
+    const std::optional<KDarkLightSchedule> darkLightSchedule =
+        KDarkLightSchedule::fromState(darkNightCycleGroup.readEntry(QStringLiteral("SerializedSchedule")));
+    if (!darkLightSchedule) {
+        return std::nullopt;
+    }
+
+    const QDateTime now = QDateTime::currentDateTime();
+    const auto previousTransition = darkLightSchedule->previousTransition(now);
+
+    bool wantsDarkTheme = false;
+    switch (previousTransition->test(now)) {
+    case KDarkLightTransition::Upcoming:
+    case KDarkLightTransition::InProgress:
+        wantsDarkTheme = previousTransition->type() == KDarkLightTransition::Morning;
+        break;
+    case KDarkLightTransition::Passed:
+        wantsDarkTheme = previousTransition->type() != KDarkLightTransition::Morning;
+        break;
+    }
+
+    const QString lookAndFeelName = wantsDarkTheme ? settings.defaultDarkLookAndFeel() : settings.defaultLightLookAndFeel();
+    return std::make_pair(lookAndFeelName, KLookAndFeelManager::AppearanceSettings);
+}
+*/
+
+static std::pair<QString, KLookAndFeelManager::Contents> determineLookAndFeel()
+{
+    const LookAndFeelSettings settings;
+
+    /*
+    if (settings.automaticLookAndFeel()) {
+        if (const auto lookAndFeel = dayNightLookAndFeel(settings)) {
+            return *lookAndFeel;
+        }
+    }
+    */
+
+    return std::make_pair(settings.lookAndFeelPackage(), KLookAndFeelManager::AllSettings);
+}
+
 void setupPlasmaEnvironment()
 {
     // Manually disable auto scaling because we are scaling above
@@ -272,6 +323,43 @@ void setupPlasmaEnvironment()
     const QString extraConfigDir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1String("/kdedefaults");
     QDir().mkpath(extraConfigDir);
     qputenv("XDG_CONFIG_DIRS", QByteArray(QFile::encodeName(extraConfigDir) + ':' + currentConfigDirs));
+
+    const auto &[lookAndFeelName, lookAndFeelContents] = determineLookAndFeel();
+    QFile activeLnf(extraConfigDir + QLatin1String("/package"));
+    activeLnf.open(QIODevice::ReadOnly);
+    if (activeLnf.readLine() != lookAndFeelName.toUtf8()) {
+        KPackage::Package package = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/LookAndFeel"), lookAndFeelName);
+        KLookAndFeelManager lnfManager;
+        lnfManager.setMode(KLookAndFeelManager::Mode::Defaults);
+        lnfManager.save(package, lookAndFeelContents);
+    }
+    // check if colors changed, if so apply them and discard plasma cache
+    {
+        KLookAndFeelManager lnfManager;
+        lnfManager.setMode(KLookAndFeelManager::Mode::Apply);
+        KConfig globals(QStringLiteral("kdeglobals")); // Reload the config
+        KConfigGroup generalGroup(&globals, QStringLiteral("General"));
+        const QString colorScheme = generalGroup.readEntry("ColorScheme", QStringLiteral("BreezeLight"));
+        QString path = lnfManager.colorSchemeFile(colorScheme);
+
+        if (!path.isEmpty()) {
+            QFile f(path);
+            QCryptographicHash hash(QCryptographicHash::Sha1);
+            if (f.open(QFile::ReadOnly) && hash.addData(&f)) {
+                const QString fileHash = QString::fromUtf8(hash.result().toHex());
+                if (fileHash != generalGroup.readEntry("ColorSchemeHash", QString())) {
+                    lnfManager.setColors(colorScheme, path);
+                    generalGroup.writeEntry("ColorSchemeHash", fileHash);
+                    generalGroup.sync();
+                    const QString svgCache =
+                        QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation) + QLatin1Char('/') + QStringLiteral("plasma-svgelements");
+                    if (!svgCache.isEmpty()) {
+                        QFile::remove(svgCache);
+                    }
+                }
+            }
+        }
+    }
 }
 
 void cleanupPlasmaEnvironment(const std::optional<QProcessEnvironment> &oldSystemdEnvironment)
