@@ -257,6 +257,7 @@ KCM.SimpleKCM {
                     implicitWidth: Kirigami.Units.gridUnit * 12
                     model: kcm.userModel
                     textRole: "display"
+                    valueRole: "name"
                     editable: true
                     onActivated: kcm.settings.preselectedUser = currentText
                     onEditTextChanged: kcm.settings.preselectedUser = editText;
