@@ -42,8 +42,8 @@ Item {
 
     property int sessionIndex: {
         // indexOfData will return -1 if passed an empty string, which these are by default
-        let preselectedSessionIndex = PlasmaLogin.SessionModel.indexOfData(PlasmaLogin.Settings.preselectedSession, PlasmaLogin.SessionModel.PathRole);
-        let lastLoggedInSessionIndex = PlasmaLogin.SessionModel.indexOfData(PlasmaLogin.StateConfig.lastLoggedInSession, PlasmaLogin.SessionModel.PathRole);
+        let preselectedSessionIndex = PlasmaLogin.SessionModel.indexOfData(PlasmaLogin.Settings.preselectedSession, PlasmaLogin.SessionModel.FileNameRole);
+        let lastLoggedInSessionIndex = PlasmaLogin.SessionModel.indexOfData(PlasmaLogin.StateConfig.lastLoggedInSession, PlasmaLogin.SessionModel.FileNameRole);
 
         if (preselectedSessionIndex != -1) {
             return preselectedSessionIndex;
@@ -91,9 +91,9 @@ Item {
     property string lastLoggedInUser
     property string lastLoggedInSession
 
-    function handleLoginRequest(username, password, sessionType, sessionFileName, sessionPath) {
+    function handleLoginRequest(username, password, sessionType, sessionFileName) {
         greeterState.lastLoggedInUser = username;
-        greeterState.lastLoggedInSession = sessionPath;
+        greeterState.lastLoggedInSession = sessionFileName;
 
         PlasmaLogin.Authenticator.login(username, password, sessionType, sessionFileName);
     }
