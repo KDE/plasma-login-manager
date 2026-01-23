@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-01-23 00:45+0000\n"
 "PO-Revision-Date: 2025-05-12 14:58\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -191,13 +191,13 @@ msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "最近登录的用户"
 
-#: ui/main.qml:292
+#: ui/main.qml:293
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "默认会话："
 
-#: ui/main.qml:298
+#: ui/main.qml:299
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"

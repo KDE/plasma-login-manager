@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 00:46+0000\n"
+"POT-Creation-Date: 2026-01-23 00:45+0000\n"
 "PO-Revision-Date: 2025-10-27 11:47+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -199,13 +199,13 @@ msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Последний вошедший в систему пользователь"
 
-#: ui/main.qml:292
+#: ui/main.qml:293
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "Сеанс по умолчанию:"
 
-#: ui/main.qml:298
+#: ui/main.qml:299
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
