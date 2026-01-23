@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-14 02:39+0000\n"
+"POT-Creation-Date: 2026-01-23 02:42+0000\n"
 "PO-Revision-Date: 2025-10-21 06:38+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -198,13 +198,13 @@ msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Zadnje prijavljeni uporabnik"
 
-#: ui/main.qml:292
+#: ui/main.qml:293
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "Privzeta seja:"
 
-#: ui/main.qml:298
+#: ui/main.qml:299
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
