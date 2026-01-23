@@ -104,8 +104,6 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
         return session.displayName;
     case SessionModel::TypeRole:
         return session.type;
-    case SessionModel::PathRole:
-        return session.path;
     case SessionModel::FileNameRole:
         return QFileInfo(session.path).fileName();
     case SessionModel::CommentRole:
@@ -121,7 +119,6 @@ QHash<int, QByteArray> SessionModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     roles[TypeRole] = "type";
-    roles[PathRole] = "path";
     roles[DisplayNameRole] = "displayName";
     roles[CommentRole] = "comment";
     roles[FileNameRole] = "fileName";

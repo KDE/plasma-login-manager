@@ -37,7 +37,6 @@ public:
 
     enum SessionRoles {
         TypeRole = Qt::UserRole + 1,
-        PathRole,
         FileNameRole,
         DisplayNameRole,
         CommentRole

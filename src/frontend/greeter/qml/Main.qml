@@ -228,7 +228,7 @@ Item {
                         visible: !userListComponent.showUsernamePrompt
                     }]
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName, sessionButton.currentSessionPath)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
             }
 
             readonly property real zoomFactor: 1.5
@@ -326,7 +326,7 @@ Item {
                     }
                 }
 
-                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName, sessionButton.currentSessionPath)
+                onLoginRequest: (username, password) => root.handleLoginRequest(username, password, sessionButton.currentSessionType, sessionButton.currentSessionFileName)
 
                 //actionItemsVisible: !inputPanel.keyboardActive
                 actionItems: [
@@ -419,10 +419,10 @@ Item {
         }
     }
 
-    function handleLoginRequest(username, password, sessionType, sessionFileName, sessionPath) {
+    function handleLoginRequest(username, password, sessionType, sessionFileName) {
         root.notificationMessage = "";
         // GreeterState handles updating stateconfig with user/session of successful login
-        PlasmaLogin.GreeterState.handleLoginRequest(username, password, sessionType, sessionFileName, sessionPath);
+        PlasmaLogin.GreeterState.handleLoginRequest(username, password, sessionType, sessionFileName);
     }
 
     Connections {
