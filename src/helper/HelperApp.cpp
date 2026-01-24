@@ -42,6 +42,7 @@ HelperApp::HelperApp(int &argc, char **argv)
 
 void HelperApp::setUp()
 {
+    qDebug() << "set up";
     const QStringList args = QCoreApplication::arguments();
     QString server;
     int pos;
@@ -93,13 +94,20 @@ void HelperApp::doAuth()
     }
 
     if (!m_backend->start(m_user)) {
-        // authenticated(QString());
         exit(Auth::HELPER_AUTH_ERROR);
         return;
     }
 
     Q_ASSERT(getuid() == 0);
+    qDebug() << "A";
     if (m_backend->authenticate()) {
+        qDebug() << "B";
+        str << Msg::AUTHENTICATED << m_user;
+        str.send();
+        if (str.status() != QDataStream::Ok) {
+            qCritical() << "Couldn't write initial message:" << str.status();
+        }
+
         exit(Auth::HELPER_SUCCESS);
         return;
     }

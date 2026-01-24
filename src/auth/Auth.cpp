@@ -235,8 +235,8 @@ AuthRequest *Auth::request()
 
 bool Auth::isActive() const
 {
-    return true;
-    // d->child->state() != QProcess::NotRunning;
+    // FIXME!
+    return false; //d->child->state() != QProcess::NotRunning;
 }
 
 void Auth::setUser(const QString &user)
