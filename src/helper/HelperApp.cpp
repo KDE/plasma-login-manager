@@ -97,10 +97,7 @@ void HelperApp::setUp()
             exit(Auth::HELPER_OTHER_ERROR);
             return;
         }
-        m_session->setDisplayServerCommand(args[pos + 1]);
-        m_backend->setDisplayServer(true);
     }
-
     if ((pos = args.indexOf(QStringLiteral("--autologin"))) >= 0) {
         m_backend->setAutologin(true);
     }

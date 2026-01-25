@@ -256,7 +256,7 @@ bool PamBackend::openSession()
         QString tty = VirtualTerminal::path(sessionEnv.value(QStringLiteral("XDG_VTNR")).toInt());
         m_pam->setItem(PAM_TTY, qPrintable(tty));
     }
-    if (sessionType == QLatin1String("x11") && (sessionClass == QLatin1String("user") || !m_displayServer)) {
+    if (sessionType == QLatin1String("x11") && (sessionClass == QLatin1String("user"))) {
         QString display = sessionEnv.value(QStringLiteral("DISPLAY"));
         if (!display.isEmpty()) {
 #ifdef PAM_XDISPLAY
@@ -385,11 +385,6 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
 void PamBackend::setAutologin(bool on)
 {
     m_autologin = on;
-}
-
-void PamBackend::setDisplayServer(bool on)
-{
-    m_displayServer = on;
 }
 
 void PamBackend::setGreeter(bool on)

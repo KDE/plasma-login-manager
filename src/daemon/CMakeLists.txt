@@ -24,7 +24,6 @@ set(DAEMON_SOURCES
     Seat.cpp
     SeatManager.cpp
     SocketServer.cpp
-    XorgUserDisplayServer.cpp
 )
 
 qt_add_dbus_adaptor(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.DisplayManager.xml"          "DisplayManager.h" PLASMALOGIN::DisplayManager)

@@ -126,12 +126,6 @@ public:
     void setUser(const QString &user);
 
     /**
-     * Set the display server command to be started before the greeter.
-     * @param command Command of the display server to be started
-     */
-    void setDisplayServerCommand(const QString &command);
-
-    /**
      * Set the session to be started after authenticating.
      * @param path Path of the session executable to be started
      */

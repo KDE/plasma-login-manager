@@ -36,7 +36,7 @@ public:
 
     QString display() const;
 
-    bool start(const QString &cmd);
+    bool start();
     void stop();
 
 Q_SIGNALS:

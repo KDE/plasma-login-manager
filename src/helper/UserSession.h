@@ -50,7 +50,6 @@ private:
 #endif
 
     QString m_path{};
-    QString m_displayServerCmd;
 };
 }
 

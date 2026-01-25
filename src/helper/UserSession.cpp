@@ -45,22 +45,10 @@ bool UserSession::start()
     bool isWaylandGreeter = false;
 
     if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("x11")) {
-        QString command;
-        if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
-            command = m_path;
-        } else {
-            command = QStringLiteral("%1 \"%2\"").arg(SESSION_COMMAND).arg(m_path);
-        }
+        QString command = QStringLiteral("%1 \"%2\"").arg(SESSION_COMMAND).arg(m_path);
 
-        qInfo() << "Starting X11 session:" << m_displayServerCmd << command;
-        if (m_displayServerCmd.isEmpty()) {
-            auto args = QProcess::splitCommand(command);
-            setProgram(args.takeFirst());
-            setArguments(args);
-        } else {
-            setProgram(QStringLiteral(LIBEXEC_INSTALL_DIR "/plasmalogin-helper-start-x11user"));
-            setArguments({m_displayServerCmd, command});
-        }
+        setProgram(QStringLiteral(LIBEXEC_INSTALL_DIR "/plasmalogin-helper-start-x11user"));
+        setArguments({command});
         QProcess::start();
 
     } else if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("wayland")) {
@@ -104,16 +92,6 @@ void UserSession::stop()
     } else {
         Q_EMIT finished(Auth::HELPER_OTHER_ERROR);
     }
-}
-
-QString UserSession::displayServerCommand() const
-{
-    return m_displayServerCmd;
-}
-
-void UserSession::setDisplayServerCommand(const QString &command)
-{
-    m_displayServerCmd = command;
 }
 
 void UserSession::setPath(const QString &path)

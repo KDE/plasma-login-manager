@@ -25,7 +25,6 @@
 #include "Seat.h"
 #include "SocketServer.h"
 #include "Utils.h"
-#include "XorgUserDisplayServer.h"
 
 #include <QDebug>
 #include <QFile>
@@ -338,11 +337,6 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     }
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 
-    if (session.xdgSessionType() == QLatin1String("x11")) {
-        m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
-    } else {
-        m_auth->setDisplayServerCommand(QStringLiteral());
-    }
     m_auth->setUser(user);
     if (m_reuseSessionId.isNull()) {
         m_auth->setSession(session.exec());

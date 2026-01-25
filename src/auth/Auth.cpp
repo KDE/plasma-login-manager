@@ -56,7 +56,6 @@ public:
     AuthRequest *request{nullptr};
     QProcess *child{nullptr};
     QLocalSocket *socket{nullptr};
-    QString displayServerCmd;
     QString sessionPath{};
     QString user{};
     bool autologin{false};
@@ -343,14 +342,6 @@ void Auth::setGreeter(bool on)
     }
 }
 
-void Auth::setDisplayServerCommand(const QString &command)
-{
-    if (d->displayServerCmd != command) {
-        d->displayServerCmd = command;
-        Q_EMIT displayServerCommandChanged();
-    }
-}
-
 void Auth::setSession(const QString &path)
 {
     if (path != d->sessionPath) {
@@ -384,9 +375,6 @@ void Auth::start()
     }
     if (d->autologin) {
         args << QStringLiteral("--autologin");
-    }
-    if (!d->displayServerCmd.isEmpty()) {
-        args << QStringLiteral("--display-server") << d->displayServerCmd;
     }
     if (d->greeter) {
         args << QStringLiteral("--greeter");

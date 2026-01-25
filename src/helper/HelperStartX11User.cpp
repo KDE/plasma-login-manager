@@ -7,8 +7,7 @@
  */
 
 /**
- * This application sole purpose is to launch an X11 rootless compositor compositor (first
- * argument) and as soon as it's set up to launch a client (second argument)
+ * This application sole purpose is to launch an X11 rootless compositor compositor and as soon as it's set up to launch a client (second argument)
  */
 
 #include "MessageHandler.h"
@@ -39,7 +38,7 @@ int main(int argc, char **argv)
     });
 
     Q_ASSERT(::getuid() != 0);
-    if (argc != 3) {
+    if (argc != 2) {
         QTextStream(stderr) << "Wrong number of arguments\n";
         return 33;
     }
@@ -52,7 +51,7 @@ int main(int argc, char **argv)
     });
     QObject::connect(&helper, &XOrgUserHelper::displayChanged, &app, [&helper, &app] {
         qDebug() << "starting XOrg Greeter..." << helper.sessionEnvironment().value(QStringLiteral("DISPLAY"));
-        auto args = QProcess::splitCommand(app.arguments()[2]);
+        auto args = QProcess::splitCommand(app.arguments()[1]);
 
         QProcess *process = new QProcess(&app);
         process->setProcessChannelMode(QProcess::ForwardedChannels);
@@ -63,6 +62,6 @@ int main(int argc, char **argv)
         QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &app, &QCoreApplication::quit);
     });
 
-    helper.start(app.arguments()[1]);
+    helper.start();
     return app.exec();
 }

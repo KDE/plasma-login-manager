@@ -22,7 +22,6 @@
 #include "Display.h"
 #include "DisplayManager.h"
 #include "Seat.h"
-#include "XorgUserDisplayServer.h"
 
 #include <QStandardPaths>
 #include <QtCore/QDebug>
