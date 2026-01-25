@@ -47,16 +47,6 @@ void Greeter::setSocket(const QString &socket)
     m_socket = socket;
 }
 
-QString Greeter::displayServerCommand() const
-{
-    return m_displayServerCmd;
-}
-
-void Greeter::setDisplayServerCommand(const QString &cmd)
-{
-    m_displayServerCmd = cmd;
-}
-
 bool Greeter::start()
 {
     // check flag
@@ -126,7 +116,6 @@ bool Greeter::start()
 
         // start greeter
         m_auth->setUser(QStringLiteral("plasmalogin"));
-        m_auth->setDisplayServerCommand(m_displayServerCmd);
         m_auth->setGreeter(true);
         m_auth->setSession(greeterCommand);
         m_auth->start();
