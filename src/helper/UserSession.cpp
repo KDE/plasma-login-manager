@@ -175,6 +175,23 @@ void UserSession::setupChildProcess()
         VirtualTerminal::jumpToVt(vtNumber, x11Session);
     }
 
+#ifdef Q_OS_LINUX
+    // enter Linux namespaces
+    for (const QString &ns : mainConfig.Namespaces.get()) {
+        qInfo() << "Entering namespace" << ns;
+        int fd = ::open(qPrintable(ns), O_RDONLY);
+        if (fd < 0) {
+            qCritical("open(%s) failed: %s", qPrintable(ns), strerror(errno));
+            exit(Auth::HELPER_OTHER_ERROR);
+        }
+        if (setns(fd, 0) != 0) {
+            qCritical("setns(open(%s), 0) failed: %s", qPrintable(ns), strerror(errno));
+            exit(Auth::HELPER_OTHER_ERROR);
+        }
+        ::close(fd);
+    }
+#endif
+
     // switch user
     const QByteArray username = qobject_cast<HelperApp *>(parent())->user().toLocal8Bit();
     struct passwd pw;
