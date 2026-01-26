@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-16 00:45+0000\n"
+"POT-Creation-Date: 2026-01-26 00:44+0000\n"
 "PO-Revision-Date: 2025-12-01 15:06+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -123,7 +123,7 @@ msgstr "Список користувачів"
 msgid "Login Failed"
 msgstr "Невдала спроба увійти"
 
-#: qml/SessionButton.qml:25
+#: qml/SessionButton.qml:24
 #, kde-format
 msgid "Desktop Session: %1"
 msgstr "Сеанс стільниці: %1"

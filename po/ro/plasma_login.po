@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-16 00:45+0000\n"
+"POT-Creation-Date: 2026-01-26 00:44+0000\n"
 "PO-Revision-Date: 2025-12-12 09:54+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -123,7 +123,7 @@ msgstr "Enumeră utilizatorii"
 msgid "Login Failed"
 msgstr "Autentificare eșuată"
 
-#: qml/SessionButton.qml:25
+#: qml/SessionButton.qml:24
 #, kde-format
 msgid "Desktop Session: %1"
 msgstr "Sesiune de birou: %1"
