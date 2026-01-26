@@ -45,9 +45,6 @@ DaemonApp::DaemonApp(int &argc, char **argv)
     // log message
     qDebug() << "Initializing...";
 
-    // set testing parameter
-    m_testing = (arguments().indexOf(QStringLiteral("--test-mode")) != -1);
-
     // create display manager
     m_displayManager = new DisplayManager(this);
 
@@ -131,14 +128,6 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < argc; i++) {
         arguments << QString::fromLocal8Bit(argv[i]);
-    }
-
-    if (arguments.contains(QStringLiteral("--help")) || arguments.contains(QStringLiteral("-h"))) {
-        std::cout << "Usage: plasmalogin [options]\n"
-                  << "Options: \n"
-                  << "  --test-mode         Start daemon in test mode" << std::endl;
-
-        return EXIT_FAILURE;
     }
 
     // create application

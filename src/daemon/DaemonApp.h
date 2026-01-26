@@ -56,7 +56,6 @@ private:
 
     bool m_firstloginLock{false};
 
-    bool m_testing{false};
     DisplayManager *m_displayManager{nullptr};
     SeatManager *m_seatManager{nullptr};
 };
