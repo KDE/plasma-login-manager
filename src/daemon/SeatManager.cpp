@@ -110,9 +110,8 @@ void SeatManager::initialize()
         return;
     }
 
-    // fetch seats
-    auto listSeatsMsg = QDBusMessage::createMethodCall(Logind::serviceName(), Logind::managerPath(), Logind::managerIfaceName(), QStringLiteral("ListSeats"));
-    QDBusPendingReply<NamedSeatPathList> reply = QDBusConnection::systemBus().asyncCall(listSeatsMsg);
+    auto logind = new OrgFreedesktopLogin1ManagerInterface(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus(), this);
+    QDBusPendingReply<NamedSeatPathList> reply = logind->ListSeats();
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, watcher, reply]() {
@@ -123,24 +122,9 @@ void SeatManager::initialize()
         }
     });
 
-    QDBusConnection::systemBus().connect(Logind::serviceName(),
-                                         Logind::managerPath(),
-                                         Logind::managerIfaceName(),
-                                         QStringLiteral("SecureAttentionKey"),
-                                         this,
-                                         SLOT(logindSecureAttentionKey(QString, QDBusObjectPath)));
-    QDBusConnection::systemBus().connect(Logind::serviceName(),
-                                         Logind::managerPath(),
-                                         Logind::managerIfaceName(),
-                                         QStringLiteral("SeatNew"),
-                                         this,
-                                         SLOT(logindSeatAdded(QString, QDBusObjectPath)));
-    QDBusConnection::systemBus().connect(Logind::serviceName(),
-                                         Logind::managerPath(),
-                                         Logind::managerIfaceName(),
-                                         QStringLiteral("SeatRemoved"),
-                                         this,
-                                         SLOT(logindSeatRemoved(QString, QDBusObjectPath)));
+    connect(logind, &OrgFreedesktopLogin1ManagerInterface::SeatNew, this, &SeatManager::logindSeatAdded);
+    connect(logind, &OrgFreedesktopLogin1ManagerInterface::SeatRemoved, this, &SeatManager::logindSeatRemoved);
+    connect(logind, &OrgFreedesktopLogin1ManagerInterface::SecureAttentionKey, this, &SeatManager::logindSecureAttentionKey);
 }
 
 void SeatManager::createSeat(const QString &name)

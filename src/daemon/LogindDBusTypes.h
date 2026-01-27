@@ -19,15 +19,24 @@
 
 #include <QDBusArgument>
 #include <QDBusObjectPath>
+#include <QString>
 
 struct Logind {
     static bool isAvailable();
-    static QString serviceName();
-    static QString managerPath();
-    static QString managerIfaceName();
-    static QString sessionIfaceName();
-    static QString seatIfaceName();
-    static QString userIfaceName();
+
+    // These identifiers are constants; no need to resolve at runtime
+    static inline QString serviceName()
+    {
+        return QStringLiteral("org.freedesktop.login1");
+    }
+    static inline QString managerPath()
+    {
+        return QStringLiteral("/org/freedesktop/login1");
+    }
+    static inline QString seatIfaceName()
+    {
+        return QStringLiteral("org.freedesktop.login1.Seat");
+    }
 };
 
 struct SessionInfo {
