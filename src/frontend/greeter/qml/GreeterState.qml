@@ -32,9 +32,7 @@ Item {
 
     readonly property var activeWindow: internal.activeWindow
 
-    // TODO: In Login.qml, identify which LoginState we represent and have connections on GreeterState
-    //       property changed and update GreeterState property when the relevant thing is changed
-    //       also property for session combo
+    // Shared state
 
     readonly property int beyondUserLimit: PlasmaLogin.UserModel.rowCount() > 7
 
@@ -75,6 +73,41 @@ Item {
 
     property bool showPassword: false
 
+    // Shared functionality
+
+    readonly property bool inhibitGreeterTimeout: {
+        if (greeterState.loginState === PlasmaLogin.GreeterState.LoginState.UserList && greeterState.userListPassword.length > 0) {
+            // We're on the user list and a password is entered
+            return true;
+        } else if (greeterState.loginState === PlasmaLogin.GreeterState.UserPrompt && greeterState.userPromptPassword.length > 0) {
+            // We're on the user prompt and a password is entered
+            return true;
+        }
+
+        // inputPanel.keyboardActive
+
+        // No reason to block timeout
+        return false;
+    }
+    onInhibitGreeterTimeoutChanged: {
+        let greeterShouldTimeOut = greeterState.activeWindow !== null;
+        if (greeterTimeoutTimer.running !== greeterShouldTimeOut) {
+            greeterTimeoutTimer.running = greeterShouldTimeOut;
+        }
+    }
+
+    Timer {
+        id: greeterTimeoutTimer
+        running: false
+        interval: 10000
+        onTriggered: {
+            if (internal.activeWindow) {
+                greeterState.showPassword = false;
+                timeoutWindow(internal.activeWindow);
+            }
+        }
+    }
+
     function clearPasswords(): void {
         userListPassword = "";
         userPromptPassword = "";
@@ -86,13 +119,23 @@ Item {
         }
 
         internal.activeWindow = window;
+
+        window.requestActivate();
+
+        if (!inhibitGreeterTimeout) {
+            greeterTimeoutTimer.restart();
+        }
     }
 
     function timeoutWindow(window): void {
         if (internal.activeWindow == window) {
             internal.activeWindow = null;
         }
+
+        greeterTimeoutTimer.stop();
     }
+
+    // Remember last logged in user/session
 
     property string lastLoggedInUser
     property string lastLoggedInSession
