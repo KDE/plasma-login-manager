@@ -50,7 +50,20 @@ Item {
         hoverEnabled: true
 
         property bool uiVisible: PlasmaLogin.GreeterState.activeWindow === Window.window
-        property bool blockUiTimeout: mainStack.depth > 1 || userListComponent.mainPasswordBox.text.length > 0 // || inputPanel.keyboardActive || config.type !== "image"
+        property bool blockUiTimeout: {
+            if (PlasmaLogin.GreeterState.loginState === PlasmaLogin.GreeterState.LoginState.UserList && PlasmaLogin.GreeterState.userListPassword.length > 0) {
+                // We're on the user list and a password is entered
+                return true;
+            } else if (PlasmaLogin.GreeterState.loginState === PlasmaLogin.GreeterState.UserPrompt && PlasmaLogin.GreeterState.userPromptPassword.length > 0) {
+                // We're on the user prompt and a password is entered
+                return true;
+            }
+
+            // TODO: inputPanel.keyboardActive
+
+            // No reason to block timeout
+            return false;
+        }
 
         function wake() {
             PlasmaLogin.GreeterState.activateWindow(Window.window);
