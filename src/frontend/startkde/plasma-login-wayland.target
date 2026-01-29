@@ -5,3 +5,5 @@ Requires=plasma-login.service
 BindsTo=plasma-login.service
 
 Wants=plasma-wallpaper.service
+
+Wants=plasma-powerdevil.service
