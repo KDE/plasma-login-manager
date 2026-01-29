@@ -8,6 +8,7 @@
 #include <QCommandLineParser>
 #include <QGuiApplication>
 #include <QObject>
+#include <QQmlContext>
 #include <QScreen>
 
 #include <KLocalizedString>
@@ -20,6 +21,7 @@
 #include "mockbackend/MockGreeterProxy.h"
 
 #include "blurscreenbridge.h"
+#include "greetereventfilter.h"
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
 #include "plasmaloginsettings.h"
@@ -50,6 +52,12 @@ private:
         window->setScreen(screen);
         window->setColor(s_testMode ? Qt::darkGray : Qt::transparent);
 
+        connect(qApp, &QGuiApplication::screenRemoved, this, [window](QScreen *screenRemoved) {
+            if (screenRemoved == window->screen()) {
+                delete window;
+            }
+        });
+
         window->setGeometry(screen->geometry());
         connect(screen, &QScreen::geometryChanged, this, [window]() {
             window->setGeometry(window->screen()->geometry());
@@ -75,13 +83,11 @@ private:
             window->setWindowState(Qt::WindowFullScreen);
         }
 
-        window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
-        connect(qApp, &QGuiApplication::screenRemoved, this, [window](QScreen *screenRemoved) {
-            if (screenRemoved == window->screen()) {
-                delete window;
-            }
-        });
+        auto *greeterEventFilter = new GreeterEventFilter(this);
+        window->installEventFilter(greeterEventFilter);
+        window->rootContext()->setContextProperty(QStringLiteral("greeterEventFilter"), greeterEventFilter);
 
+        window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
         window->show();
     }
 

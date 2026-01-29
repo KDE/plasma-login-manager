@@ -43,11 +43,32 @@ Item {
         target: mainStack
     }
 
+    Connections {
+        target: greeterEventFilter
+
+        function onKeyPressed(): void {
+            // callLater, as otherwise 'enter' key press would arrive after waking
+            // and the uiVisible check would pass and a login attempt would be made
+            Qt.callLater(() => loginScreenRoot.wake());
+        }
+
+        function onEscapeKeyPressed(): void {
+            loginScreenRoot.timeout();
+            /*
+-            if (inputPanel.keyboardActive) {
+-                inputPanel.showHide();
+-            }
+-            */
+            PlasmaLogin.GreeterState.clearPasswords();
+        }
+    }
+
     MouseArea {
         id: loginScreenRoot
         anchors.fill: parent
 
         hoverEnabled: true
+        cursorShape: uiVisible ? Qt.ArrowCursor : Qt.BlankCursor
 
         property bool uiVisible: PlasmaLogin.GreeterState.activeWindow === Window.window
         property bool blockUiTimeout: {
@@ -59,7 +80,7 @@ Item {
                 return true;
             }
 
-            // TODO: inputPanel.keyboardActive
+            // inputPanel.keyboardActive
 
             // No reason to block timeout
             return false;
@@ -75,10 +96,6 @@ Item {
 
         onPressed: wake()
         onPositionChanged: wake()
-        Keys.onPressed: (event) => {
-            wake();
-            event.accepted = true;
-        }
 
         onUiVisibleChanged: {
             if (uiVisible) {
@@ -214,13 +231,19 @@ Item {
                         icon.name: "system-hibernate"
                         text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
                         visible: PlasmaLogin.SessionManagement.canHibernate
-                        onClicked: PlasmaLogin.SessionManagement.hibernate()
+                        onClicked: {
+                            PlasmaLogin.GreeterState.clearPasswords();
+                            PlasmaLogin.SessionManagement.hibernate();
+                        }
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
                         visible: PlasmaLogin.SessionManagement.canSuspend
-                        onClicked: PlasmaLogin.SessionManagement.suspend()
+                        onClicked: {
+                            PlasmaLogin.GreeterState.clearPasswords();
+                            PlasmaLogin.SessionManagement.suspend();
+                        }
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
@@ -347,13 +370,19 @@ Item {
                         icon.name: "system-hibernate"
                         text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
                         visible: PlasmaLogin.SessionManagement.canHibernate
-                        onClicked: PlasmaLogin.SessionManagement.hibernate()
+                        onClicked: {
+                            PlasmaLogin.GreeterState.clearPasswords();
+                            PlasmaLogin.SessionManagement.hibernate();
+                        }
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
                         text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
                         visible: PlasmaLogin.SessionManagement.canSuspend
-                        onClicked: PlasmaLogin.SessionManagement.suspend()
+                        onClicked: {
+                            PlasmaLogin.GreeterState.clearPasswords();
+                            PlasmaLogin.SessionManagement.suspend();
+                        }
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
