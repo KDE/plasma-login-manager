@@ -329,13 +329,13 @@ Item {
                 // using a model rather than a QObject list to avoid QTBUG-75900
                 userListModel: ListModel {
                     ListElement {
-                        name: ""
+                        realName: ""
                         icon: ""
                     }
                     Component.onCompleted: {
                         // as we can't bind inside ListElement
-                        setProperty(0, "name", i18nd("plasma_login", "Type in Username and Password"));
-                        setProperty(0, "icon", Qt.resolvedUrl(".face.icon"))
+                        setProperty(0, "realName", i18nd("plasma_login", "Type in Username and Password"));
+                        setProperty(0, "icon", Qt.resolvedUrl(".face.icon").toString());
                     }
                 }
 
