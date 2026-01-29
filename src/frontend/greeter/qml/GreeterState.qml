@@ -39,6 +39,7 @@ Item {
     readonly property int beyondUserLimit: PlasmaLogin.UserModel.rowCount() > 7
 
     property int loginState: GreeterState.LoginState.UserList
+    onLoginStateChanged: clearPasswords();
 
     property int sessionIndex: {
         // indexOfData will return -1 if passed an empty string, which these are by default
@@ -73,6 +74,11 @@ Item {
     property string userPromptPassword: ""
 
     property bool showPassword: false
+
+    function clearPasswords(): void {
+        userListPassword = "";
+        userPromptPassword = "";
+    }
 
     function activateWindow(window): void {
         if (!window) {
