@@ -49,11 +49,11 @@ Item {
         function onKeyPressed(): void {
             // callLater, as otherwise 'enter' key press would arrive after waking
             // and the uiVisible check would pass and a login attempt would be made
-            Qt.callLater(() => loginScreenRoot.wake());
+            Qt.callLater(() => PlasmaLogin.GreeterState.activateWindow(loginScreenRoot.Window.window));
         }
 
         function onEscapeKeyPressed(): void {
-            loginScreenRoot.timeout();
+            PlasmaLogin.GreeterState.timeoutWindow(loginScreenRoot.Window.window);
             /*
 -            if (inputPanel.keyboardActive) {
 -                inputPanel.showHide();
@@ -68,66 +68,13 @@ Item {
         anchors.fill: parent
 
         hoverEnabled: true
-        cursorShape: uiVisible ? Qt.ArrowCursor : Qt.BlankCursor
 
         property bool uiVisible: PlasmaLogin.GreeterState.activeWindow === Window.window
-        property bool blockUiTimeout: {
-            if (PlasmaLogin.GreeterState.loginState === PlasmaLogin.GreeterState.LoginState.UserList && PlasmaLogin.GreeterState.userListPassword.length > 0) {
-                // We're on the user list and a password is entered
-                return true;
-            } else if (PlasmaLogin.GreeterState.loginState === PlasmaLogin.GreeterState.UserPrompt && PlasmaLogin.GreeterState.userPromptPassword.length > 0) {
-                // We're on the user prompt and a password is entered
-                return true;
-            }
 
-            // inputPanel.keyboardActive
+        cursorShape: uiVisible ? Qt.ArrowCursor : Qt.BlankCursor
 
-            // No reason to block timeout
-            return false;
-        }
-
-        function wake() {
-            PlasmaLogin.GreeterState.activateWindow(Window.window);
-        }
-
-        function timeout() {
-            PlasmaLogin.GreeterState.timeoutWindow(Window.window);
-        }
-
-        onPressed: wake()
-        onPositionChanged: wake()
-
-        onUiVisibleChanged: {
-            if (uiVisible) {
-                Window.window.requestActivate();
-            }
-
-            if (blockUiTimeout) {
-                uiTimeoutTimer.running = false;
-            } else if (uiVisible) {
-                uiTimeoutTimer.restart();
-            }
-        }
-
-        onBlockUiTimeoutChanged: {
-            if (blockUiTimeout) {
-                uiTimeoutTimer.running = false;
-            } else if (uiVisible) {
-                uiTimeoutTimer.restart();
-            }
-        }
-
-        Timer {
-            id: uiTimeoutTimer
-            running: false
-            interval: 10000
-            onTriggered: {
-                if (!loginScreenRoot.blockUiTimeout) {
-                    userListComponent.mainPasswordBox.showPassword = false;
-                    loginScreenRoot.timeout();
-                }
-            }
-        }
+        onPressed: PlasmaLogin.GreeterState.activateWindow(Window.window);
+        onPositionChanged: PlasmaLogin.GreeterState.activateWindow(Window.window);
 
         DropShadow {
             id: clockShadow
