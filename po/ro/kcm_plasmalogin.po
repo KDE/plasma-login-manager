@@ -1,0 +1,217 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+# SPDX-FileCopyrightText: 2026 Sergiu Bivol <sergiu@cip.md>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-01-23 00:45+0000\n"
+"PO-Revision-Date: 2026-01-29 14:29+0000\n"
+"Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
+"Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Lokalize 25.08.1\n"
+
+#: kcm.cpp:78
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+"Configurările nu pot fi salvate deoarece nu a putut fi creat un dosar "
+"temporar."
+
+#: kcm.cpp:132
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+"Configurările nu pot fi salvate deoarece fișierul cu configurări nu a putut "
+"fi deschis."
+
+#: kcm.cpp:204
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"Configurările Plasma nu pot fi sincronizate deoarece utilizatorul "
+"„plasmalogin” nu există. Verificați corectitudinea instalării Autentificării "
+"Plasma."
+
+#: kcm.cpp:255
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"Configurările Plasma nu pot fi reinițializate deoarece utilizatorul "
+"„plasmalogin” nu există. Verificați corectitudinea instalării Autentificării "
+"Plasma."
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Aspect"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Ceas"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr "Arată ceasul"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Tipul tapetului:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Aplică configurările Plasma…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Configurează aspectul…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Aplică configurările Plasma"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Aceasta va face ca ecranul de autentificare Plasma să reflecte modificările "
+"aduse următoarelor configurări Plasma:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration</item></list></para>"
+msgstr ""
+"<para><list><item>Schemă de culori</item><item>Tematică de cursor și "
+"dimensiune</item><item>Font și randarea fonturilor</item><item>Preferință "
+"NumLock</item><item>Tematică Plasma</item><item>Scalare DPI</"
+"item><item>Configurare ecran</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"Rețineți că fișierele de tematică trebuiesc instalate global pentru a fi "
+"reflectate pe ecranul de autentificare Plasma."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Aplică"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Restabilește la configurări implicite"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Autentificare automată"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Autentifică automat:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "ca utilizator:"
+
+#: ui/main.qml:154
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "cu sesiune:"
+
+#: ui/main.qml:187
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"Autentificarea automată nu susține deblocarea automată a portofelului KDE, "
+"așa că acesta vă va cere să-l deblocați de fiecare dată când vă "
+"autentificați.<nl/><nl/>Pentru a evita aceasta, puteți configura portofelul "
+"să nu aibă parolă. Rețineți că acest lucru e nesigur și trebuie făcut doar "
+"în medii de încredere."
+
+#: ui/main.qml:192
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "Deschide configurările portofelului KDE"
+
+#: ui/main.qml:199
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Autentificare automată imediat după ieșire"
+
+#: ui/main.qml:210
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Implicite"
+
+#: ui/main.qml:215
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Utilizator implicit:"
+
+#: ui/main.qml:221
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Ultimul utilizator autentificat"
+
+#: ui/main.qml:293
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Sesiune implicită:"
+
+#: ui/main.qml:299
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Ultima sesiune autentificată"
