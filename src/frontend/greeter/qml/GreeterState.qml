@@ -90,7 +90,7 @@ Item {
         return false;
     }
     onInhibitGreeterTimeoutChanged: {
-        let greeterShouldTimeOut = greeterState.activeWindow !== null;
+        let greeterShouldTimeOut = greeterState.activeWindow !== null && !greeterState.inhibitGreeterTimeout;
         if (greeterTimeoutTimer.running !== greeterShouldTimeOut) {
             greeterTimeoutTimer.running = greeterShouldTimeOut;
         }
