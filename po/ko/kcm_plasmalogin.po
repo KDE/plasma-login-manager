@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# SPDX-FileCopyrightText: 2025 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2025, 2026 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:45+0000\n"
-"PO-Revision-Date: 2025-07-21 01:14+0200\n"
+"PO-Revision-Date: 2026-02-03 22:04+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,28 +15,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
-msgstr ""
+msgstr "임시 디렉터리를 만들 수 없어서 설정을 저장할 수 없습니다."
 
 #: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
-msgstr ""
+msgstr "설정을 열 수 없어서 설정을 저장할 수 없습니다."
 
 #: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"'plasmalogin' 사용자가 없어서 Plasma 설정을 동기화할 수 없습니다. Plasma 로그"
+"인 설치 상태를 확인하십시오."
 
 #: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"'plasmalogin' 사용자가 없어서 Plasma 설정을 초기화할 수 없습니다. Plasma 로그"
+"인 설치 상태를 확인하십시오."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -85,13 +89,7 @@ msgid ""
 msgstr "다음 사용자 정의 Plasma 설정을 Plasma 로그인 화면에도 적용합니다:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -101,7 +99,7 @@ msgid ""
 msgstr ""
 "<para><list><item>색 구성표</item><item>커서 테마와 크기</item><item>글꼴과 "
 "글꼴 렌더링</item><item>NumLock 설정</item><item>Plasma 테마</item><item>DPI "
-"크기 조정</item><item>화면 설정(Wayland만)</item></list></para>"
+"크기 조정</item><item>화면 설정</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format

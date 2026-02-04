@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 00:45+0000\n"
-"PO-Revision-Date: 2026-01-05 23:34+0000\n"
+"PO-Revision-Date: 2026-01-28 23:35+0000\n"
 "Last-Translator: Charlotte <altronic25@protonmail.com>\n"
 "Language-Team: Irish\n"
 "Language: ga\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
 "3 : 4\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -87,7 +88,13 @@ msgid ""
 msgstr ""
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Font and font rendering</item><item>NumLock preference</"
+#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+#| "configuration</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -129,7 +136,7 @@ msgstr "Logáil Isteach go huathoibríoch"
 #, kde-format
 msgctxt "@option:check"
 msgid "Automatically log in:"
-msgstr "Logáil Isteach go huathoibríoch"
+msgstr "Logáil Isteach go huathoibríoch:"
 
 #: ui/main.qml:99
 #, kde-format
@@ -145,7 +152,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
 "automatically"
 msgid "with session:"
-msgstr "le an seisiún:"
+msgstr "leis an seisiún:"
 
 #: ui/main.qml:187
 #, kde-kuit-format
