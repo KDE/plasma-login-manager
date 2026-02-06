@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 #
-# giovanni <g.sora@tiscali.it>, 2025.
+# SPDX-FileCopyrightText: 2025, 2026 giovanni <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-02-03 02:48+0000\n"
-"PO-Revision-Date: 2025-05-12 15:38+0200\n"
+"PO-Revision-Date: 2026-02-05 16:42+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -23,7 +23,7 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (X11) (%2)"
-msgstr ""
+msgstr "%1 (X11) (%2)"
 
 #: ../settings/models/sessionmodel.cpp:82
 #, kde-format
@@ -31,19 +31,19 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (Wayland) (%2)"
-msgstr ""
+msgstr "%1 (Wayland) (%2)"
 
 #: ../settings/models/sessionmodel.cpp:89
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (X11)"
-msgstr ""
+msgstr "%1 (X11)"
 
 #: ../settings/models/sessionmodel.cpp:91
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (Wayland)"
-msgstr ""
+msgstr "%1 (Wayland)"
 
 #: ../settings/models/sessionmodel.cpp:94
 #, kde-format
@@ -51,7 +51,7 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (%2)"
-msgstr ""
+msgstr "%1 (%2)"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
@@ -83,7 +83,7 @@ msgstr "Caps Lock es active"
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr ""
+msgstr "Hiberna"
 
 #: qml/Main.qml:188 qml/Main.qml:327
 #, kde-format

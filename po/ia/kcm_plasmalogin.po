@@ -1,14 +1,14 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 #
-# SPDX-FileCopyrightText: 2025 giovanni <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2025, 2026 giovanni <g.sora@tiscali.it>
 # giovanni <g.sora@tiscali.it>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 02:42+0000\n"
-"PO-Revision-Date: 2025-05-12 15:34+0200\n"
+"PO-Revision-Date: 2026-02-05 16:42+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -16,28 +16,36 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.1\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: kcm.cpp:78
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
+"Incapace a salveguardar preferentias proque un directorio temporanee non "
+"poteva esser create."
 
 #: kcm.cpp:132
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
+"Incapace a salveguardar preferentias proque le config non poteva esser "
+"aperite."
 
 #: kcm.cpp:204
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Incapace a synchronisar preferentias de Plasma proque le usator de "
+"'plasmalogin' non existe. Pro favor verifica tu installation de Plasma Login."
 
 #: kcm.cpp:255
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Incapace a reinitialisar preferentias de Plasma proque le usator de "
+"'plasmalogin' non existe. Pro favor verifica tu installation de Plasma Login."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -53,7 +61,7 @@ msgstr "Clock (Horologio)"
 #: ui/Appearance.qml:36
 #, kde-format
 msgid "Show clock"
-msgstr ""
+msgstr "Monstra horologio"
 
 #: ui/Appearance.qml:52
 #, kde-format
@@ -88,13 +96,7 @@ msgstr ""
 "al sequente preferentias de Plasma:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration (Wayland only)</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -105,7 +107,7 @@ msgstr ""
 "<para><list><item>Schema de color,</item><item>Thema de cursor e grandor</"
 "item><item>Font e Rendition de font,</item><item>Preferentia de NumLock </"
 "item><item>Thema de Plasma,</item><item>Scalar DPI</item><item> "
-"Configuration de schermo (solmente de Wayland)</item></list></para>"
+"Configuration de schermo</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
