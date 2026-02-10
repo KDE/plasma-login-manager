@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-01-23 02:42+0000\n"
-"PO-Revision-Date: 2026-01-29 14:41+0000\n"
+"PO-Revision-Date: 2026-02-05 13:24+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -142,7 +142,7 @@ msgstr "Autentificare automată"
 #, kde-format
 msgctxt "@option:check"
 msgid "Automatically log in:"
-msgstr "Autentifică automat:"
+msgstr "Autentifică automat în:"
 
 #: ui/main.qml:99
 #, kde-format
@@ -150,7 +150,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the user to log in "
 "automatically"
 msgid "as user:"
-msgstr "ca utilizator:"
+msgstr "Ca utilizator:"
 
 #: ui/main.qml:154
 #, kde-format
@@ -158,7 +158,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
 "automatically"
 msgid "with session:"
-msgstr "cu sesiune:"
+msgstr "Cu sesiune:"
 
 #: ui/main.qml:187
 #, kde-kuit-format
