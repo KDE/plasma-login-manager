@@ -1,0 +1,213 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2026 Mincho Kondarev <mkondarev@yahoo.de>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-01-23 02:42+0000\n"
+"PO-Revision-Date: 2026-02-12 22:31+0100\n"
+"Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
+"Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 26.03.70\n"
+
+#: kcm.cpp:78
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+"Неуспешно запазване на настройките, защото не можа да се създаде временна "
+"директория."
+
+#: kcm.cpp:132
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+"Неуспешно запазване на настройките, защото файлът config не можа да се "
+"отвори."
+
+#: kcm.cpp:204
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"Невъзможно е да се синхронизират настройките на Plasma, защото потребителят "
+"„plasmalogin“ не съществува. Моля, проверете инсталацията на приложението за "
+"влизане в Plasma."
+
+#: kcm.cpp:255
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Външен вид"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Часовник"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr "Показване на часовник"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Вид тапет:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Прилагане на настройките на Plasma…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Настройване на външния вид…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Прилагане на настройките на Plasma"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr "Това ще рефлектира върху следните потребителските настройки на Plasma:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration</item></list></para>"
+msgstr ""
+"<para><list><item>Цветова схема</item><item>Тема и размер на курсора</"
+"item><item>Шрифт и изобразяване на шрифтове</item><item>Предпочитания за "
+"NumLock</item><item>Тема на Plasma</item><item>Мащабиране на DPI</"
+"item><item>Конфигурация на екрана</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"Моля, обърнете внимание, че файловете с теми трябва да бъдат инсталирани "
+"глобално, за да се приложат на екрана за вход в Plasma."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Прилагане"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Връщане на стандартните настройки"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Автоматично влизане"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Автоматично влизане:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "като потребител:"
+
+#: ui/main.qml:154
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "със сесия:"
+
+#: ui/main.qml:187
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"Автоматичното влизане не поддържа автоматично отключване на вашия KDE "
+"портфейл, така че ще ви пита да го отключвате всеки път, когато влизате. <nl/"
+"><nl/> За да избегнете това, можете да промените паролата за портфейла, така "
+"че да е празна. Обърнете внимание, че това е несигурно и трябва да се прави "
+"само в надеждна среда."
+
+#: ui/main.qml:192
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "Отваряне на настройките на KDE Wallet"
+
+#: ui/main.qml:199
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Повторно влизане веднага след излизане"
+
+#: ui/main.qml:210
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "По подразбиране"
+
+#: ui/main.qml:215
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Потребител по подразбиране:"
+
+#: ui/main.qml:221
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Последно влязъл потребител"
+
+#: ui/main.qml:293
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Сесия по подразбиране:"
+
+#: ui/main.qml:299
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Последно използвана сесия"
