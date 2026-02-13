@@ -1,0 +1,128 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2026 Mincho Kondarev <mkondarev@yahoo.de>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-02-03 00:48+0000\n"
+"PO-Revision-Date: 2026-02-12 23:01+0100\n"
+"Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
+"Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 26.03.70\n"
+
+#: ../settings/models/sessionmodel.cpp:77
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (X11) (%2)"
+msgstr "%1 (X11) (%2)"
+
+#: ../settings/models/sessionmodel.cpp:82
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (Wayland) (%2)"
+msgstr "%1 (Wayland) (%2)"
+
+#: ../settings/models/sessionmodel.cpp:89
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (X11)"
+msgstr "%1 (X11)"
+
+#: ../settings/models/sessionmodel.cpp:91
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (Wayland)"
+msgstr "%1 (Wayland)"
+
+#: ../settings/models/sessionmodel.cpp:94
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (%2)"
+msgstr "%1 (%2)"
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr "Превключване на клавиатурата"
+
+#: qml/Login.qml:88
+#, kde-format
+msgid "Username"
+msgstr "Потребителско име"
+
+#: qml/Login.qml:105
+#, kde-format
+msgid "Password"
+msgstr "Парола"
+
+#: qml/Login.qml:145 qml/Login.qml:151
+#, kde-format
+msgid "Log In"
+msgstr "Влизане"
+
+#: qml/Main.qml:167 qml/Main.qml:291
+#, kde-format
+msgid "Caps Lock is on"
+msgstr "Клавишът \"Caps Lock\" е натиснат"
+
+#: qml/Main.qml:179 qml/Main.qml:318
+#, kde-format
+msgctxt "Suspend to disk"
+msgid "Hibernate"
+msgstr "Хибернация"
+
+#: qml/Main.qml:188 qml/Main.qml:327
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr "Приспиване"
+
+#: qml/Main.qml:197 qml/Main.qml:336
+#, kde-format
+msgid "Restart"
+msgstr "Рестартиране"
+
+#: qml/Main.qml:203 qml/Main.qml:342
+#, kde-format
+msgid "Shut Down"
+msgstr "Изключване"
+
+#: qml/Main.qml:209
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr "Други…"
+
+#: qml/Main.qml:307
+#, kde-format
+msgid "Type in Username and Password"
+msgstr "Въведете потребителско име и парола"
+
+#: qml/Main.qml:348
+#, kde-format
+msgid "List Users"
+msgstr "Списък на потребителите"
+
+#: qml/Main.qml:421
+#, kde-format
+msgid "Login Failed"
+msgstr "Неуспешно влизане"
+
+#: qml/SessionButton.qml:24
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr "Сесия на работния плот: %1"
