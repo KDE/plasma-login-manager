@@ -1,6 +1,7 @@
 [Domain]
 Name=PlasmaLogin
 Name[ar]=ولوج بلازما
+Name[bg]=Влизане в Plasma
 Name[ca]=PlasmaLogin
 Name[ca@valencia]=PlasmaLogin
 Name[cs]=Přihlašování Plasma
@@ -37,6 +38,7 @@ URL=https://invent.kde.org/davidedmundson/plasma-login
 [org.kde.kcontrol.kcmplasmalogin.save]
 Name=Save Settings
 Name[ar]=احفظ اﻹعدادات
+Name[bg]=Запазване на настройките
 Name[ca]=Desa la configuració
 Name[ca@valencia]=Guarda la configuració
 Name[cs]=Uložit nastavení
@@ -69,6 +71,7 @@ Name[zh_CN]=保存设置
 Name[zh_TW]=儲存設定
 Description=Save Settings in Plasma Login
 Description[ar]=حفظ إعدادات ولوج بلازما
+Description[bg]=Запазване на настройките за Влизане в Plasma
 Description[ca]=Desa la configuració al Plasma Login
 Description[ca@valencia]=Guarda la configuració en Plasma Login
 Description[cs]=Uložit nastavení v Přihlašování Plasma
@@ -104,6 +107,7 @@ Policy=auth_admin
 [org.kde.kcontrol.kcmplasmalogin.sync]
 Name=Synchronize Settings
 Name[ar]=زامن اﻹعدادات
+Name[bg]=Синхронизиране на настройките
 Name[ca]=Sincronitza la configuració
 Name[ca@valencia]=Sincronitza la configuració
 Name[cs]=Synchronizovat nastavení
@@ -136,6 +140,7 @@ Name[zh_CN]=同步设置
 Name[zh_TW]=同步設定值
 Description=Synchronize user settings with Plasma Login settings
 Description[ar]=يزامن إعدادات المستخدم مع إعدادات ولوج بلازما
+Description[bg]=Синхронизиране на потребителските настройки с настройките на Влизане в Plasma
 Description[ca]=Sincronitza la configuració de l'usuari amb la configuració del Plasma Login
 Description[ca@valencia]=Sincronitza la configuració de l'usuari amb la configuració de Plasma Login
 Description[cs]=Synchronizovat nastavení uživatelů s nastavením Přihlašování Plasma
@@ -171,6 +176,7 @@ Policy=auth_admin
 [org.kde.kcontrol.kcmplasmalogin.reset]
 Name=Reset Settings
 Name[ar]=صفّر اﻹعدادات
+Name[bg]=Връщане на стандартните настройки
 Name[ca]=Reinicia la configuració
 Name[ca@valencia]=Reinicia la configuració
 Name[cs]=Obnovit nastavení
@@ -203,6 +209,7 @@ Name[zh_CN]=重置设置
 Name[zh_TW]=重設設定值
 Description=Reset Plasma Login settings to factory default state
 Description[ar]=يعيد ضبط إعدادات ولوج بلازما إلى الإعدادات المبدئية
+Description[bg]=Нулиране на настройките на Влизане в Plasma до фабричното им състояние по подразбиране
 Description[ca]=Reinicia la configuració del Plasma Login a l'estat predeterminat inicial
 Description[ca@valencia]=Reinicia la configuració de Plasma Login a l'estat predeterminat inicial
 Description[cs]=Obnovit výchozí hodnoty nastavení Přihlašování Plasma
