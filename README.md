@@ -21,7 +21,7 @@ Plasma Login provides a display manager for KDE Plasma, forked from [SDDM](https
 To try Plasma Login, you can build both repositories and install them on your system.
 
 > [!caution]
-> It is not recommended to install this on your system — you should use a virtual machine instead. Installing this on real hardware will leave behind files not trivially uninstallable and could leave your system in a non-functional state.
+> It is not recommended to run the git latest this on your system — you should use a virtual machine instead. Installing this on real hardware will leave behind files not trivially uninstallable and could leave your system in a non-functional state.
 
 You will need to:
 
@@ -50,4 +50,4 @@ sudo systemctl enable plasmalogin
 
 ### Configuration
 
-Plasma Login is configured by users through `/etc/plasmalogin.conf`, which overrides distro-provided defaults at `/usr/lib/plasmalogin/defaults.conf`. In managed scenarios, the latter file can be modified to set a default wallpaper or login session, with the settings module disabled via Kiosk.
+The Plasma Login frontend is configured by users through `/etc/plasmalogin.conf`, which overrides distro-provided defaults at `/usr/lib/plasmalogin/defaults.conf`. In managed scenarios, the latter file can be modified to set a default wallpaper or login session, with the settings module disabled via Kiosk.
