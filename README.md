@@ -23,7 +23,7 @@ https://invent.kde.org/plasma/plasma-login-manager/-/issues/48
 
 ### Getting started
 
-To try Plasma Login, you can build both repositories and install them on your system.
+To try Plasma Login, build this repositories and install it on your system.
 
 > [!caution]
 > It is not recommended to run the git latest this on your system — you should use a virtual machine instead. Installing this on real hardware will leave behind files not trivially uninstallable and could leave your system in a non-functional state.
