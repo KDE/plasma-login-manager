@@ -6,6 +6,9 @@ project(PLASMALOGIN VERSION ${PROJECT_VERSION})
 
 # Options
 option(INSTALL_PAM_CONFIGURATION "Install PAM configuration files" ON)
+option(WITH_SYSTEMD "Build with systemd-logind support" ON)
+option(WITH_ELOGIND "Build with elogind support" OFF)
+option(WITH_CONSOLEKIT2 "Build with ConsoleKit2 support" OFF)
 
 # Version settings
 set(PROJECT_DEP_VERSION "6.5.90")
@@ -54,20 +57,54 @@ find_package(PkgConfig)
 # XAU
 pkg_check_modules(LIBXAU REQUIRED "xau" IMPORTED_TARGET)
 
-pkg_check_modules(SYSTEMD REQUIRED "systemd")
+# Session manager backend detection
+set(HAVE_SYSTEMD FALSE)
+set(HAVE_ELOGIND FALSE)
+set(HAVE_CONSOLEKIT2 FALSE)
 
-pkg_check_modules(LIBSYSTEMD REQUIRED "libsystemd" IMPORTED_TARGET)
-
-if (NOT DEFINED SYSTEMD_SYSTEM_UNIT_DIR)
-    pkg_get_variable(SYSTEMD_SYSTEM_UNIT_DIR systemd systemdsystemunitdir)
+if(WITH_SYSTEMD)
+    pkg_check_modules(SYSTEMD "systemd")
+    pkg_check_modules(LIBSYSTEMD "libsystemd" IMPORTED_TARGET)
+    if(LIBSYSTEMD_FOUND)
+        set(HAVE_SYSTEMD TRUE)
+        message(STATUS "systemd-logind support enabled")
+    endif()
 endif()
 
-if (NOT DEFINED SYSTEMD_SYSUSERS_DIR)
-    pkg_get_variable(SYSTEMD_SYSUSERS_DIR systemd sysusersdir)
+if(WITH_ELOGIND AND NOT HAVE_SYSTEMD)
+    pkg_check_modules(LIBELOGIND "libelogind" IMPORTED_TARGET)
+    if(LIBELOGIND_FOUND)
+        set(HAVE_ELOGIND TRUE)
+        message(STATUS "elogind support enabled")
+    endif()
 endif()
 
-if (NOT DEFINED SYSTEMD_TMPFILES_DIR)
-    pkg_get_variable(SYSTEMD_TMPFILES_DIR systemd tmpfilesdir)
+if(WITH_CONSOLEKIT2)
+    pkg_check_modules(CONSOLEKIT2 "ck-connector" IMPORTED_TARGET)
+    if(CONSOLEKIT2_FOUND)
+        set(HAVE_CONSOLEKIT2 TRUE)
+        message(STATUS "ConsoleKit2 support enabled")
+    endif()
+endif()
+
+# Report if no session manager backend found
+if(NOT HAVE_SYSTEMD AND NOT HAVE_ELOGIND AND NOT HAVE_CONSOLEKIT2)
+    message(STATUS "No session manager backend found - using fallback mode (single-seat only)")
+endif()
+
+# Systemd unit directories (only when systemd is available)
+if(HAVE_SYSTEMD AND SYSTEMD_FOUND)
+    if (NOT DEFINED SYSTEMD_SYSTEM_UNIT_DIR)
+        pkg_get_variable(SYSTEMD_SYSTEM_UNIT_DIR systemd systemdsystemunitdir)
+    endif()
+
+    if (NOT DEFINED SYSTEMD_SYSUSERS_DIR)
+        pkg_get_variable(SYSTEMD_SYSUSERS_DIR systemd sysusersdir)
+    endif()
+
+    if (NOT DEFINED SYSTEMD_TMPFILES_DIR)
+        pkg_get_variable(SYSTEMD_TMPFILES_DIR systemd tmpfilesdir)
+    endif()
 endif()
 
 set(RUNTIME_DIR_DEFAULT "/run/plasmalogin")

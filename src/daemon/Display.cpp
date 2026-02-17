@@ -23,6 +23,7 @@
 #include "DisplayManager.h"
 #include "Greeter.h"
 #include "Seat.h"
+#include "SeatManager.h"
 #include "SocketServer.h"
 #include "Utils.h"
 
@@ -45,9 +46,8 @@
 #include <KConfigGroup>
 #include <KDesktopFile>
 
-#include "Login1Manager.h"
-#include "Login1Session.h"
 #include "VirtualTerminal.h"
+#include "backend/SessionBackend.h"
 #include "config.h"
 
 static int s_ttyFailures = 0;
@@ -56,17 +56,12 @@ namespace PLASMALOGIN
 {
 bool isTtyInUse(const QString &desiredTty)
 {
-    if (Logind::isAvailable()) {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        auto reply = manager.ListSessions();
-        reply.waitForFinished();
-
-        const auto info = reply.value();
-        for (const SessionInfo &s : info) {
-            OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), s.sessionPath.path(), QDBusConnection::systemBus());
-            if (desiredTty == session.tTY() && session.state() != QLatin1String("closing")) {
-                qDebug() << "tty" << desiredTty << "already in use by" << session.user().path.path() << session.state() << session.display()
-                         << session.desktop() << session.vTNr();
+    auto *backend = daemonApp->seatManager()->backend();
+    if (backend && backend->isAvailable()) {
+        const auto sessions = backend->listSessions();
+        for (const BackendSessionInfo &s : sessions) {
+            if (desiredTty == s.tty && s.state != QLatin1String("closing")) {
+                qDebug() << "tty" << desiredTty << "already in use by" << s.userName << s.state << s.desktop << s.vtNumber;
                 return true;
             }
         }
@@ -288,19 +283,13 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_reuseSessionId = QString();
 
-    if (Logind::isAvailable()) {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        auto reply = manager.ListSessions();
-        reply.waitForFinished();
-
-        const auto info = reply.value();
-        for (const SessionInfo &s : reply.value()) {
-            if (s.userName == user) {
-                OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), s.sessionPath.path(), QDBusConnection::systemBus());
-                if (session.service() == QLatin1String("plasmalogin") && session.state() == QLatin1String("online")) {
-                    m_reuseSessionId = s.sessionId;
-                    break;
-                }
+    auto *backend = daemonApp->seatManager()->backend();
+    if (backend && backend->isAvailable()) {
+        const auto sessions = backend->listSessions();
+        for (const BackendSessionInfo &s : sessions) {
+            if (s.userName == user && s.service == QLatin1String("plasmalogin") && s.state == QLatin1String("online")) {
+                m_reuseSessionId = s.sessionId;
+                break;
             }
         }
     }
@@ -358,9 +347,11 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
         qDebug() << "Authentication for user " << user << " successful";
 
         if (!m_reuseSessionId.isNull()) {
-            OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-            manager.UnlockSession(m_reuseSessionId);
-            manager.ActivateSession(m_reuseSessionId);
+            auto *backend = daemonApp->seatManager()->backend();
+            if (backend && backend->isAvailable()) {
+                backend->unlockSession(m_reuseSessionId);
+                backend->activateSession(m_reuseSessionId);
+            }
         }
 
         if (m_socket) {

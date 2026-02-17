@@ -21,27 +21,53 @@
 #include <QFileInfo>
 #include <errno.h>
 #include <fcntl.h>
-#include <linux/kd.h>
-#include <linux/vt.h>
 #include <qscopeguard.h>
 #include <signal.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+#if defined(Q_OS_LINUX)
+#include <linux/kd.h>
+#include <linux/vt.h>
 #define RELEASE_DISPLAY_SIGNAL (SIGRTMAX)
 #define ACQUIRE_DISPLAY_SIGNAL (SIGRTMAX - 1)
+#elif defined(Q_OS_FREEBSD)
+#include <sys/consio.h>
+#include <sys/kbio.h>
+#include <termios.h>
+#define RELEASE_DISPLAY_SIGNAL SIGUSR1
+#define ACQUIRE_DISPLAY_SIGNAL SIGUSR2
+#endif
 
 namespace PLASMALOGIN
 {
 namespace VirtualTerminal
 {
+
+#if defined(Q_OS_LINUX)
 const char *defaultVtPath = "/dev/tty0";
+#elif defined(Q_OS_FREEBSD)
+const char *defaultVtPath = "/dev/ttyv0";
+#else
+const char *defaultVtPath = "/dev/tty0";
+#endif
 
 QString path(int vt)
 {
+#if defined(Q_OS_LINUX)
     return QStringLiteral("/dev/tty%1").arg(vt);
+#elif defined(Q_OS_FREEBSD)
+    if (vt < 1) {
+        return QStringLiteral("/dev/ttyv0");
+    }
+    return QStringLiteral("/dev/ttyv%1").arg(vt - 1, 0, 16);
+#else
+    return QStringLiteral("/dev/tty%1").arg(vt);
+#endif
 }
+
+#if defined(Q_OS_LINUX)
 
 int getVtActive(int fd)
 {
@@ -138,6 +164,126 @@ out:
     }
 }
 
+#elif defined(Q_OS_FREEBSD)
+
+int getVtActive(int fd)
+{
+    int vt = 0;
+    if (ioctl(fd, VT_GETACTIVE, &vt) < 0) {
+        qCritical() << "Failed to get current VT:" << strerror(errno);
+        return -1;
+    }
+    return vt;
+}
+
+static void onAcquireDisplay([[maybe_unused]] int signal)
+{
+    int fd = open(defaultVtPath, O_RDWR | O_NOCTTY);
+    if (fd >= 0) {
+        ioctl(fd, VT_RELDISP, VT_ACKACQ);
+        close(fd);
+    }
+}
+
+static void onReleaseDisplay([[maybe_unused]] int signal)
+{
+    int fd = open(defaultVtPath, O_RDWR | O_NOCTTY);
+    if (fd >= 0) {
+        ioctl(fd, VT_RELDISP, VT_TRUE);
+        close(fd);
+    }
+}
+
+static bool handleVtSwitches(int fd)
+{
+    struct vt_mode setModeRequest{};
+    bool ok = true;
+
+    setModeRequest.mode = VT_PROCESS;
+    setModeRequest.relsig = RELEASE_DISPLAY_SIGNAL;
+    setModeRequest.acqsig = ACQUIRE_DISPLAY_SIGNAL;
+
+    if (ioctl(fd, VT_SETMODE, &setModeRequest) < 0) {
+        qDebug() << "Failed to manage VT manually:" << strerror(errno);
+        ok = false;
+    }
+
+    signal(RELEASE_DISPLAY_SIGNAL, onReleaseDisplay);
+    signal(ACQUIRE_DISPLAY_SIGNAL, onAcquireDisplay);
+
+    return ok;
+}
+
+static void fixVtMode(int fd, bool vt_auto)
+{
+    struct vt_mode getmodeReply{};
+    int kernelDisplayMode = 0;
+    bool modeFixed = false;
+    bool ok = true;
+
+    if (ioctl(fd, VT_GETMODE, &getmodeReply) < 0) {
+        qWarning() << "Failed to query VT mode:" << strerror(errno);
+        ok = false;
+    }
+
+    if (getmodeReply.mode != VT_AUTO) {
+        goto out;
+    }
+
+    if (ioctl(fd, KDGETMODE, &kernelDisplayMode) < 0) {
+        qWarning() << "Failed to query kernel display mode:" << strerror(errno);
+        ok = false;
+    }
+
+    if (kernelDisplayMode == KD_TEXT) {
+        goto out;
+    }
+
+    // VT is in the VT_AUTO + KD_GRAPHICS state, fix it
+    if (vt_auto) {
+        if (ioctl(fd, KDSETMODE, KD_TEXT) < 0) {
+            qWarning("Failed to set text mode for current VT: %s", strerror(errno));
+            ok = false;
+        }
+    } else {
+        ok = handleVtSwitches(fd);
+        modeFixed = true;
+    }
+out:
+    if (!ok) {
+        qCritical() << "Failed to set up VT mode";
+        return;
+    }
+
+    if (modeFixed) {
+        qDebug() << "VT mode fixed";
+    } else {
+        qDebug() << "VT mode didn't need to be fixed";
+    }
+}
+
+#else
+
+int getVtActive(int fd)
+{
+    Q_UNUSED(fd);
+    return -1;
+}
+
+static bool handleVtSwitches(int fd)
+{
+    Q_UNUSED(fd);
+    return false;
+}
+
+static void fixVtMode(int fd, bool vt_auto)
+{
+    Q_UNUSED(fd);
+    Q_UNUSED(vt_auto);
+}
+
+#endif
+
 int currentVt()
 {
     int fd = open(defaultVtPath, O_RDWR | O_NOCTTY);
@@ -199,10 +345,12 @@ void jumpToVt(int vt, bool vt_auto)
             qWarning("Failed to clear VT %d: %s", vt, strerror(errno));
         }
 
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
         // set graphics mode to prevent flickering
         if (ioctl(fd, KDSETMODE, KD_GRAPHICS) < 0) {
             qWarning("Failed to set graphics mode for VT %d: %s", vt, strerror(errno));
         }
+#endif
 
         // it's possible that the current VT was left in a broken
         // combination of states (KD_GRAPHICS with VT_AUTO) that we

@@ -19,15 +19,15 @@
 
 #include "Configuration.h"
 #include "DaemonApp.h"
+#include "SeatManager.h"
 #include "VirtualTerminal.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QTimer>
 
-#include <Login1Manager.h>
-#include <Login1Seat.h>
-#include <Login1Session.h>
+#include "backend/SessionBackend.h"
+
 #include <functional>
 #include <optional>
 #include <unistd.h>
@@ -110,13 +110,15 @@ void Seat::removeDisplay(Display *display)
 void Seat::displayStopped()
 {
     Display *display = qobject_cast<Display *>(sender());
-    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
     std::optional<int> nextVt;
     auto reusing = display->reuseSessionId();
-    if (manager.isValid() && !reusing.isEmpty()) {
-        auto sessionPath = manager.GetSession(reusing);
-        OrgFreedesktopLogin1SessionInterface sessionIface(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
-        nextVt = QStringView(sessionIface.tTY()).mid(3).toInt(); // we need to convert ttyN to N
+
+    auto *backend = daemonApp->seatManager()->backend();
+    if (backend && backend->isAvailable() && !reusing.isEmpty()) {
+        nextVt = backend->sessionVTNumber(reusing);
+        if (nextVt && *nextVt <= 0) {
+            nextVt.reset();
+        }
     }
 
     // remove display
@@ -144,13 +146,9 @@ void Seat::displayStopped()
 
 bool Seat::canTTY()
 {
-    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-    if (manager.isValid()) {
-        auto seatPath = manager.GetSeat(m_name);
-        OrgFreedesktopLogin1SeatInterface seatIface(Logind::serviceName(), seatPath.value().path(), QDBusConnection::systemBus());
-        if (seatIface.property("CanTTY").isValid()) {
-            return seatIface.canTTY();
-        }
+    auto *backend = daemonApp->seatManager()->backend();
+    if (backend && backend->isAvailable()) {
+        return backend->canSeatTTY(m_name);
     }
 
     return m_name.compare(QStringLiteral("seat0"), Qt::CaseInsensitive) == 0 && access(VirtualTerminal::defaultVtPath, F_OK) == 0;

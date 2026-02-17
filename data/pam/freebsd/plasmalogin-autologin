@@ -1,0 +1,8 @@
+# PAM configuration for plasmalogin autologin on FreeBSD
+# Uses ConsoleKit2 for session management
+
+auth       required    pam_permit.so
+account    include     system
+password   required    pam_deny.so
+session    include     system
+session    optional    pam_ck_connector.so

@@ -1,0 +1,8 @@
+# PAM configuration for plasmalogin-greeter on FreeBSD
+# Uses ConsoleKit2 for session management
+
+auth       required    pam_permit.so
+account    required    pam_permit.so
+password   required    pam_deny.so
+session    required    pam_permit.so
+session    optional    pam_ck_connector.so

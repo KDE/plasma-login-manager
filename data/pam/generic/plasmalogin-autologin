@@ -1,0 +1,9 @@
+# PAM configuration for plasmalogin autologin on non-systemd Linux
+# Tries elogind first, then ConsoleKit2
+
+auth       required    pam_permit.so
+account    include     system-local-login
+password   required    pam_deny.so
+session    include     system-local-login
+-session   optional    pam_elogind.so
+-session   optional    pam_ck_connector.so

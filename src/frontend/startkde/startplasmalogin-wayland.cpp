@@ -9,6 +9,7 @@
 #include <KConfigGroup>
 #include <QDBusArgument>
 #include <QDBusConnection>
+#include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDebug>
@@ -16,6 +17,46 @@
 #include <QCoreApplication>
 #include <qdbusservicewatcher.h>
 #include <signal.h>
+
+static bool isSystemdUserRunning()
+{
+    QDBusConnection bus = QDBusConnection::sessionBus();
+    if (!bus.isConnected()) {
+        return false;
+    }
+
+    return bus.interface()->isServiceRegistered(QStringLiteral("org.freedesktop.systemd1"));
+}
+
+static bool startSystemdUnit(const QString &unit)
+{
+    auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                              QStringLiteral("/org/freedesktop/systemd1"),
+                                              QStringLiteral("org.freedesktop.systemd1.Manager"),
+                                              QStringLiteral("StartUnit"));
+    msg << unit << QStringLiteral("fail");
+    QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
+    if (!reply.isValid()) {
+        qWarning() << "Could not start systemd managed Plasma session:" << reply.error().name() << reply.error().message();
+        return false;
+    }
+    return true;
+}
+
+static bool stopSystemdUnit(const QString &unit)
+{
+    auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                              QStringLiteral("/org/freedesktop/systemd1"),
+                                              QStringLiteral("org.freedesktop.systemd1.Manager"),
+                                              QStringLiteral("StopUnit"));
+    msg << unit << QStringLiteral("fail");
+    QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
+    if (!reply.isValid()) {
+        qWarning() << "Could not stop systemd unit" << unit << ":" << reply.error().name() << reply.error().message();
+        return false;
+    }
+    return true;
+}
 
 int main(int argc, char **argv)
 {
@@ -69,16 +110,14 @@ int main(int argc, char **argv)
         return 1;
     };
 
-    {
-        auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                  QStringLiteral("/org/freedesktop/systemd1"),
-                                                  QStringLiteral("org.freedesktop.systemd1.Manager"),
-                                                  QStringLiteral("StartUnit"));
-        msg << QStringLiteral("plasma-login-wayland.target") << QStringLiteral("fail");
-        QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
-        if (!reply.isValid()) {
-            qWarning() << "Could not start systemd managed Plasma session:" << reply.error().name() << reply.error().message();
+    const bool useSystemd = isSystemdUserRunning();
+
+    if (useSystemd) {
+        if (!startSystemdUnit(QStringLiteral("plasma-login-wayland.target"))) {
+            qWarning() << "Failed to start plasma-login-wayland.target via systemd";
         }
+    } else {
+        qDebug() << "systemd user session not available, session management handled by login manager";
     }
 
     // stopped by the sigterm handler
@@ -86,32 +125,14 @@ int main(int argc, char **argv)
 
     qDebug() << "stopping";
 
-    {
-        auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                  QStringLiteral("/org/freedesktop/systemd1"),
-                                                  QStringLiteral("org.freedesktop.systemd1.Manager"),
-                                                  QStringLiteral("StopUnit"));
-        msg << QStringLiteral("plasma-login-wayland.target") << QStringLiteral("fail");
-        QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
-        if (!reply.isValid()) {
-            qWarning() << "Could not stop systemd managed Plasma session:" << reply.error().name() << reply.error().message();
-        }
-    }
+    if (useSystemd) {
+        stopSystemdUnit(QStringLiteral("plasma-login-wayland.target"));
 
-    qDebug() << "final cleanup";
+        qDebug() << "final cleanup";
 
-    // systemd returns when the call is made, but not all jobs are torn down
-    // this waits until kwin is definitely gone too, which helps logind
-    {
-        auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
-                                                  QStringLiteral("/org/freedesktop/systemd1"),
-                                                  QStringLiteral("org.freedesktop.systemd1.Manager"),
-                                                  QStringLiteral("StopUnit"));
-        msg << QStringLiteral("plasma-login-kwin_wayland.service") << QStringLiteral("fail");
-        QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
-        if (!reply.isValid()) {
-            qWarning() << "Could not close up systemd managed Plasma session:" << reply.error().name() << reply.error().message();
-        }
+        // systemd returns when the call is made, but not all jobs are torn down
+        // this waits until kwin is definitely gone too, which helps logind
+        stopSystemdUnit(QStringLiteral("plasma-login-kwin_wayland.service"));
     }
 
     return 0;

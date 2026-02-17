@@ -20,17 +20,18 @@
 #include <QDBusObjectPath>
 #include <QHash>
 #include <QObject>
+#include <QSet>
 
 namespace PLASMALOGIN
 {
 class Seat;
-class LogindSeat;
+class SessionBackend;
 
 class SeatManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit SeatManager(QObject *parent = 0)
+    explicit SeatManager(QObject *parent = nullptr)
         : QObject(parent)
     {
     }
@@ -40,18 +41,22 @@ public:
     void removeSeat(const QString &name);
     void switchToGreeter(const QString &seat);
 
+    SessionBackend *backend() const;
+
 Q_SIGNALS:
     void seatCreated(const QString &name);
     void seatRemoved(const QString &name);
 
 private Q_SLOTS:
-    void logindSecureAttentionKey(const QString &name, const QDBusObjectPath &objectPath);
-    void logindSeatAdded(const QString &name, const QDBusObjectPath &objectPath);
-    void logindSeatRemoved(const QString &name, const QDBusObjectPath &objectPath);
+    void onSecureAttentionKey(const QString &name);
+    void onSeatAdded(const QString &name, const QDBusObjectPath &objectPath);
+    void onSeatRemoved(const QString &name, const QDBusObjectPath &objectPath);
+    void onSeatCanGraphicalChanged(const QString &name, bool canGraphical);
 
 private:
-    QHash<QString, Seat *> m_seats; // these will exist only for graphical seats
-    QHash<QString, LogindSeat *> m_systemSeats; // these will exist for all seats
+    QHash<QString, Seat *> m_seats;
+    QSet<QString> m_pendingSeats;
+    SessionBackend *m_backend = nullptr;
 };
 }
 

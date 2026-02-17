@@ -1,0 +1,19 @@
+#!/sbin/openrc-run
+# OpenRC init script for plasmalogin
+
+description="Plasma Login Manager"
+command="@CMAKE_INSTALL_FULL_BINDIR@/plasmalogin"
+command_args=""
+pidfile="/run/plasmalogin.pid"
+command_background="yes"
+
+depend() {
+    need dbus localmount
+    after bootmisc consolefont modules
+    before xdm
+    keyword -prefix -lxc -docker -vserver
+}
+
+start_pre() {
+    checkpath --directory --owner plasmalogin:plasmalogin --mode 0755 /run/plasmalogin
+}

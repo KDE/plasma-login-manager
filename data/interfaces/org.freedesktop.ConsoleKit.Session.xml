@@ -1,0 +1,119 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.freedesktop.ConsoleKit.Session">
+    <method name="GetId">
+      <arg name="ssid" direction="out" type="o"/>
+    </method>
+    <method name="GetSeatId">
+      <arg name="sid" direction="out" type="s"/>
+    </method>
+    <method name="GetSessionType">
+      <arg name="type" direction="out" type="s"/>
+    </method>
+    <method name="GetUser">
+      <arg name="uid" direction="out" type="u"/>
+    </method>
+    <method name="GetUnixUser">
+      <arg name="uid" direction="out" type="u"/>
+    </method>
+    <method name="GetXDGRuntimeDir">
+      <arg name="xdg_runtime_dir" direction="out" type="s"/>
+    </method>
+    <method name="GetX11Display">
+      <arg name="display" direction="out" type="s"/>
+    </method>
+    <method name="GetX11DisplayDevice">
+      <arg name="x11_display_device" direction="out" type="s"/>
+    </method>
+    <method name="GetDisplayDevice">
+      <arg name="display_device" direction="out" type="s"/>
+    </method>
+    <method name="GetRemoteHostName">
+      <arg name="remote_host_name" direction="out" type="s"/>
+    </method>
+    <method name="GetLoginSessionId">
+      <arg name="login_session_id" direction="out" type="s"/>
+    </method>
+    <method name="IsActive">
+      <arg name="active" direction="out" type="b"/>
+    </method>
+    <method name="IsLocal">
+      <arg name="local" direction="out" type="b"/>
+    </method>
+    <method name="GetCreationTime">
+      <arg name="iso8601_datetime" direction="out" type="s"/>
+    </method>
+    <method name="Activate"/>
+    <method name="Lock"/>
+    <method name="Unlock"/>
+    <method name="GetIdleHint">
+      <arg name="idle_hint" direction="out" type="b"/>
+    </method>
+    <method name="GetIdleSinceHint">
+      <arg name="idle_since_hint" direction="out" type="s"/>
+    </method>
+    <method name="SetIdleHint">
+      <arg name="idle_hint" direction="in" type="b"/>
+    </method>
+    <method name="SetLockedHint">
+      <arg name="locked_hint" direction="in" type="b"/>
+    </method>
+    <method name="TakeControl">
+      <arg name="force" direction="in" type="b"/>
+      <arg name="result" direction="out" type="b"/>
+    </method>
+    <method name="ReleaseControl"/>
+    <method name="TakeDevice">
+      <arg name="major" direction="in" type="u"/>
+      <arg name="minor" direction="in" type="u"/>
+      <arg name="fd" direction="out" type="h"/>
+      <arg name="paused" direction="out" type="b"/>
+    </method>
+    <method name="ReleaseDevice">
+      <arg name="major" direction="in" type="u"/>
+      <arg name="minor" direction="in" type="u"/>
+    </method>
+    <method name="PauseDeviceComplete">
+      <arg name="major" direction="in" type="u"/>
+      <arg name="minor" direction="in" type="u"/>
+    </method>
+    <signal name="ActiveChanged">
+      <arg name="is_active" type="b"/>
+    </signal>
+    <signal name="IdleHintChanged">
+      <arg name="hint" type="b"/>
+    </signal>
+    <signal name="Lock"/>
+    <signal name="Unlock"/>
+    <signal name="PauseDevice">
+      <arg name="major" type="u"/>
+      <arg name="minor" type="u"/>
+      <arg name="type" type="s"/>
+    </signal>
+    <signal name="ResumeDevice">
+      <arg name="major" type="u"/>
+      <arg name="minor" type="u"/>
+      <arg name="fd" type="h"/>
+    </signal>
+    <property name="unix-user" type="u" access="read"/>
+    <property name="user" type="u" access="read"/>
+    <property name="session-type" type="s" access="read"/>
+    <property name="session-class" type="s" access="read"/>
+    <property name="session-state" type="s" access="read"/>
+    <property name="session-service" type="s" access="read"/>
+    <property name="remote-host-name" type="s" access="read"/>
+    <property name="display-device" type="s" access="read"/>
+    <property name="x11-display" type="s" access="read"/>
+    <property name="x11-display-device" type="s" access="read"/>
+    <property name="active" type="b" access="read"/>
+    <property name="is-local" type="b" access="read"/>
+    <property name="idle-hint" type="b" access="read"/>
+    <property name="idle-since-hint" type="s" access="read"/>
+    <property name="locked-hint" type="b" access="read"/>
+    <property name="VTNr" type="u" access="read"/>
+    <property name="id" type="s" access="read"/>
+    <property name="desktop" type="s" access="read"/>
+    <property name="service" type="s" access="read"/>
+  </interface>
+</node>

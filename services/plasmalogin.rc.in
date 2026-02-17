@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# PROVIDE: plasmalogin
+# REQUIRE: LOGIN cleanvar dbus
+# KEYWORD: shutdown
+#
+# Add the following line to /etc/rc.conf to enable plasmalogin:
+#
+# plasmalogin_enable="YES"
+#
+
+. /etc/rc.subr
+
+name="plasmalogin"
+rcvar="plasmalogin_enable"
+
+load_rc_config $name
+
+: ${plasmalogin_enable:="NO"}
+
+command="@CMAKE_INSTALL_FULL_BINDIR@/plasmalogin"
+pidfile="/var/run/${name}.pid"
+command_args=""
+
+start_precmd="${name}_prestart"
+
+plasmalogin_prestart()
+{
+    mkdir -p /var/run/plasmalogin
+    chown plasmalogin:plasmalogin /var/run/plasmalogin
+    chmod 0755 /var/run/plasmalogin
+}
+
+run_rc_command "$1"
