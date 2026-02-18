@@ -2,6 +2,11 @@
 
 Plasma Login provides a display manager for KDE Plasma, forked from [SDDM](https://github.com/sddm/sddm) and with an new frontend providing a greeter, wallpaper plugin integration and System Settings module (KCM).
 
+## Systemd
+
+Systemd is a hard requirement for future plans, see 
+https://invent.kde.org/plasma/plasma-login-manager/-/issues/48
+
 ### What we want
 
  - Great out-of-box experience in multi-monitor and high DPI and HDR
