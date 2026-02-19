@@ -24,6 +24,7 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
             layerShellWindow->setLayer(LayerShellQt::Window::LayerBackground);
             layerShellWindow->setExclusiveZone(-1);
             layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityNone);
+            layerShellWindow->setScreen(screen);
         }
     }
 
