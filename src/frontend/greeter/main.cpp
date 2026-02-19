@@ -69,6 +69,7 @@ private:
                 layerShellWindow->setLayer(LayerShellQt::Window::LayerTop);
                 layerShellWindow->setExclusiveZone(-1);
                 layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
+                layerShellWindow->setScreen(screen);
             }
         }
 
