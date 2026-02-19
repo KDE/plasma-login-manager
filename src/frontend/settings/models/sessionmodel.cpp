@@ -17,20 +17,20 @@ SessionModel::SessionModel(QObject *parent)
     : QAbstractListModel(parent)
 {
     // NOTE: /usr/local/share is listed first, then /usr/share, so sessions in the former take precedence
-    const QStringList xSessionPaths =
+    const QStringList xSessionsDirs =
         QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("xsessions"), QStandardPaths::LocateDirectory);
-    const QStringList waylandSessionPaths =
+    const QStringList waylandSessionsDirs =
         QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("wayland-sessions"), QStandardPaths::LocateDirectory);
 
     // NOTE: SDDM checks for the existence of /dev/dri before including wayland sessions
     // This is not duplicated here — if wayland isn't going to work, then neither is the greeter
 
-    populate(xSessionPaths, waylandSessionPaths);
+    populate(xSessionsDirs, waylandSessionsDirs);
 
     QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
-    watcher->addPaths(xSessionPaths + waylandSessionPaths);
-    connect(watcher, &QFileSystemWatcher::directoryChanged, [this, xSessionPaths, waylandSessionPaths]() {
-        populate(xSessionPaths, waylandSessionPaths);
+    watcher->addPaths(xSessionsDirs + waylandSessionsDirs);
+    connect(watcher, &QFileSystemWatcher::directoryChanged, [this, xSessionsDirs, waylandSessionsDirs]() {
+        populate(xSessionsDirs, waylandSessionsDirs);
     });
 }
 
@@ -140,65 +140,82 @@ int SessionModel::indexOfData(const QVariant &data, int role) const
     return -1;
 }
 
-void SessionModel::populate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths)
+void SessionModel::populate(const QStringList &xSessionsPaths, const QStringList &waylandSessionsPaths)
 {
     beginResetModel();
 
     m_sessions.clear();
 
-    auto findSessions = [](const QStringList &sessionPaths) {
-        QStringList sessions;
+    for (const auto &xSession : getSessionsPaths(xSessionsPaths)) {
+        m_sessions << getSession(xSession, Session::Type::X11);
+    }
 
-        for (const auto &sessionPath : sessionPaths) {
-            QDir dir = sessionPath;
-            dir.setNameFilters({QStringLiteral("*.desktop")});
-            dir.setFilter(QDir::Files);
+    for (const auto &waylandSession : getSessionsPaths(waylandSessionsPaths)) {
+        m_sessions << getSession(waylandSession, Session::Type::Wayland);
+    }
 
-            for (const auto &session : dir.entryList()) {
-                QString sessionFileName = QFileInfo(session).fileName();
-
-                // Ignore duplicate sessions, already added ones take precedence
-                bool isDuplicate = false;
-                for (const auto &existingSession : sessions) {
-                    if (QFileInfo(existingSession).fileName() == sessionFileName) {
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (!isDuplicate) {
-                    sessions.append(sessionPath + QStringLiteral("/") + session);
-                }
-            }
+    std::sort(m_sessions.begin(), m_sessions.end(), [](const Session &a, const Session &b) {
+        // Plasma first
+        const bool aIsPlasma = QFileInfo(a.path).fileName().startsWith(QStringLiteral("plasma"));
+        const bool bIsPlasma = QFileInfo(b.path).fileName().startsWith(QStringLiteral("plasma"));
+        if (aIsPlasma && !bIsPlasma) {
+            return true;
+        } else if (!aIsPlasma && bIsPlasma) {
+            return false;
         }
 
-        return sessions;
-    };
+        // then alphabetical
+        const int compare = QString::localeAwareCompare(a.displayName, b.displayName);
+        if (compare < 0) {
+            return true;
+        } else if (compare > 0) {
+            return false;
+        }
 
-    for (const auto &xSession : findSessions(xSessionPaths)) {
-        addSession(xSession, Session::Type::X11);
-    }
-
-    for (const auto &waylandSession : findSessions(waylandSessionPaths)) {
-        addSession(waylandSession, Session::Type::Wayland);
-    }
-
-    /*
-    // Useful for testing SessionModel::Data(index, Qt::DisplayRole) getDisplay lambda
-    m_sessions << Session(Session::Type::Wayland, "/foo/bar1.desktop", "Plasma", "This is Plasma Wayland 1");
-    m_sessions << Session(Session::Type::Wayland, "/foo/bar2.desktop", "Plasma", "This is Plasma Wayland 2");
-    m_sessions << Session(Session::Type::X11, "/foo/bar3.desktop", "Plasma", "This is Plasma X11 1");
-    */
+        // then Wayland first
+        const bool aIsWayland = (a.type == Session::Type::Wayland);
+        const bool bIsWayland = (b.type == Session::Type::Wayland);
+        if (aIsWayland && !bIsWayland) {
+            return true;
+        } else {
+            return false;
+        }
+    });
 
     endResetModel();
 }
 
-void SessionModel::addSession(const QString path, const Session::Type type)
+QStringList SessionModel::getSessionsPaths(const QStringList &sessionsDirs) const
+{
+    QStringList sessionsPaths;
+
+    for (QDir sessionsDir : sessionsDirs) {
+        sessionsDir.setNameFilters({QStringLiteral("*.desktop")});
+        sessionsDir.setFilter(QDir::Files);
+
+        for (const auto &sessionPath : sessionsDir.entryList()) {
+            const QString sessionFileName = QFileInfo(sessionPath).fileName();
+
+            // Ignore duplicate sessions, already added ones take precedence
+            bool isDuplicate = std::any_of(sessionsPaths.begin(), sessionsPaths.end(), [&](const auto &existingSessionPath) {
+                return QFileInfo(existingSessionPath).fileName() == sessionFileName;
+            });
+
+            if (!isDuplicate) {
+                sessionsPaths.append(sessionsDir.absoluteFilePath(sessionFileName));
+            }
+        }
+    }
+
+    return sessionsPaths;
+}
+
+Session SessionModel::getSession(const QString path, const Session::Type type) const
 {
     qDebug().nospace() << "Reading session (" << type << ") from " << path;
 
-    KDesktopFile desktop(path); // NOTE: localises for us
-    m_sessions << Session(type, path, desktop.readName(), desktop.readComment());
+    KDesktopFile desktop(path);
+    return Session(type, path, desktop.readName(), desktop.readComment());
 }
 
 #include "moc_sessionmodel.cpp"

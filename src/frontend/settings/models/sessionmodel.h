@@ -51,8 +51,9 @@ public:
     Q_INVOKABLE int indexOfData(const QVariant &data, int role = Qt::DisplayRole) const;
 
 private:
-    void populate(const QStringList &xSessionPaths, const QStringList &waylandSessionPaths);
-    void addSession(const QString path, const Session::Type type);
+    void populate(const QStringList &xSessionsDirs, const QStringList &waylandSessionsDirs);
+    QStringList getSessionsPaths(const QStringList &sessionsDirs) const;
+    Session getSession(const QString path, const Session::Type type) const;
 
     QList<Session> m_sessions;
 };
