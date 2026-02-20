@@ -97,10 +97,14 @@ void UserModel::populate()
         const K_UID uid = user.userId().nativeId();
         const K_GID gid = user.groupId().nativeId();
 
+        // Filter out users that cannot log in
+        const bool cannotLogin = user.shell().endsWith("/nologin") || user.shell().endsWith("/false");
+        
+        // Consider UID ranges (homed range from systemd: HOME_UID_MIN, HOME_UID_MAX)
         const bool inLogindDefRange = (uid >= PlasmaLoginSettings::getInstance().minimumUid() && uid <= PlasmaLoginSettings::getInstance().maximumUid());
-        // values are hardcoded in systemd. Search there for HOME_UID_MIN/HOME_UID_MAX
         const bool inHomedRange = (uid >= 60001 && uid <= 60513);
-        if (!inLogindDefRange && !inHomedRange) {
+        
+        if (cannotLogin || (!inLogindDefRange && !inHomedRange)) {
             continue;
         }
 

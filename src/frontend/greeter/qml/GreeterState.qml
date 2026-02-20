@@ -34,7 +34,7 @@ Item {
 
     // Shared state
 
-    readonly property int beyondUserLimit: PlasmaLogin.UserModel.rowCount() > 7
+    readonly property int beyondUserLimit: PlasmaLogin.UserModel.rowCount() === 0 || PlasmaLogin.UserModel.rowCount() > 7
 
     property int loginState: GreeterState.LoginState.UserList
     onLoginStateChanged: clearPasswords();
