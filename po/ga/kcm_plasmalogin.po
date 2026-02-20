@@ -87,13 +87,7 @@ msgid ""
 msgstr ""
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Color scheme</item><item>Cursor theme and size</"
@@ -101,10 +95,6 @@ msgid ""
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
 "configuration</item></list></para>"
 msgstr ""
-"<para><list><item>Scéim datha</item><item>Cursor theme and size</"
-"item><item>Cló agus rindreáil cló</item><item>NumLock rogha</"
-"item><item>Plasma téama</item><item>DPI scála</item><item>Scáileán "
-"cumraíocht</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
