@@ -85,7 +85,6 @@ void PlasmaLoginKcm::save()
     // Write our config
     for (const auto &item : PlasmaLoginSettings::getInstance().items()) {
         if (!item->isDefault()) {
-            // Write this to the new config
             tempConfig.group(item->group()).writeEntry(item->key(), item->property());
         }
     }
@@ -124,17 +123,28 @@ void PlasmaLoginKcm::save()
         }
     }
 
-    tempConfig.sync();
-
-    // Open our temporary saved config
-    QFile tempFile(tempFileName);
-    if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        Q_EMIT errorOccurred(QString::fromUtf8(kli18n("Unable to save settings because the config could not be opened.").untranslatedText()));
-        return;
+    // Write our temporary saved config to be read back into auth helper args
+    // NOTE: If the config ends up empty, then sync won't write the file and
+    //       we'd trip up on that later
+    const bool configHasContent = tempConfig.isDirty();
+    if (configHasContent) {
+        tempConfig.sync();
     }
 
-    QTextStream in(&tempFile);
-    args[QStringLiteral("config")] = in.readAll();
+    // Read our temporary saved config into auth helper args
+    QString config;
+    if (configHasContent) {
+        QFile tempFile(tempFileName);
+        if (!tempFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            Q_EMIT errorOccurred(QString::fromUtf8(kli18n("Unable to save settings because the config could not be opened.").untranslatedText()));
+            return;
+        }
+
+        QTextStream in(&tempFile);
+        config = in.readAll();
+    }
+
+    args[QStringLiteral("config")] = config;
 
     KAuth::Action saveAction(authActionName());
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
