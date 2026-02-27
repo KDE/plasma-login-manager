@@ -31,6 +31,7 @@
 
 
 static const QFile::Permissions standardPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther;
+static const QFile::Permissions standardDirectoryPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther;
 
 /*
  * Return the plasmalogin user path
@@ -80,14 +81,14 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
     // Create config location if it does not exist
     QDir configLocation(homeDir + QStringLiteral("/.config"));
     if (!configLocation.exists()) {
-        homeLocation.mkdir(QStringLiteral(".config"), standardPermissions);
+        homeLocation.mkdir(QStringLiteral(".config"), standardDirectoryPermissions);
         chownPath(configLocation.path());
     }
 
     // Create fontconfig location if it does not exist
     QDir fontConfigLocation(homeDir + QStringLiteral("/.config/fontconfig"));
     if (!fontConfigLocation.exists()) {
-        configLocation.mkdir(QStringLiteral("fontconfig"), standardPermissions);
+        configLocation.mkdir(QStringLiteral("fontconfig"), standardDirectoryPermissions);
         chownPath(fontConfigLocation.path());
     }
 
