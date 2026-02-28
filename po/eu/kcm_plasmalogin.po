@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:45+0000\n"
+"POT-Creation-Date: 2026-02-28 00:46+0000\n"
 "PO-Revision-Date: 2025-10-23 01:16+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -27,11 +27,11 @@ msgstr ""
 "Ez da ezarpenak gordetzeko gai aldi baterako direktorio bat ezin izan "
 "duelako sortu."
 
-#: kcm.cpp:132
+#: kcm.cpp:139
 msgid "Unable to save settings because the config could not be opened."
 msgstr "Ez da ezarpenak gordetzeko gai konfigurazioa ezin izan duelako ireki."
 
-#: kcm.cpp:204
+#: kcm.cpp:214
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -40,7 +40,7 @@ msgstr ""
 "existitzen ez delako. Mesedez, egiaztatu Plasman saio hasteko zure "
 "instalazioa."
 
-#: kcm.cpp:255
+#: kcm.cpp:265
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

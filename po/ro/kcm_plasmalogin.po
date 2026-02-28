@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-23 00:45+0000\n"
+"POT-Creation-Date: 2026-02-28 00:46+0000\n"
 "PO-Revision-Date: 2026-02-05 13:24+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -25,13 +25,13 @@ msgstr ""
 "Configurările nu pot fi salvate deoarece nu a putut fi creat un dosar "
 "temporar."
 
-#: kcm.cpp:132
+#: kcm.cpp:139
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "Configurările nu pot fi salvate deoarece fișierul cu configurări nu a putut "
 "fi deschis."
 
-#: kcm.cpp:204
+#: kcm.cpp:214
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -40,7 +40,7 @@ msgstr ""
 "„plasmalogin” nu există. Verificați corectitudinea instalării Autentificării "
 "Plasma."
 
-#: kcm.cpp:255
+#: kcm.cpp:265
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
