@@ -36,18 +36,11 @@ public:
 Q_SIGNALS:
     void finished(int exitCode);
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-protected:
-    void setupChildProcess() override;
-#endif
-
 private:
     void setup();
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // Don't call it directly, it will be invoked by the child process only
     void childModifier();
-#endif
 
     QString m_path{};
 };
