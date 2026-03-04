@@ -1,0 +1,215 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2026 Kheyyam <xxmn77@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-02-28 00:46+0000\n"
+"PO-Revision-Date: 2026-03-04 00:12+0400\n"
+"Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
+"Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 25.12.2\n"
+
+#: kcm.cpp:78
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+"Ayarları saxlamaq mümkün olmadı, çünki müvəqqəti qovluq yaratmaq mümkün "
+"olmadı."
+
+#: kcm.cpp:139
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+"Ayarları saxlamaq mümkün olmadı, çünki tənzimləmə faylını açmaq mümkün "
+"olmadı."
+
+#: kcm.cpp:214
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"Plasma ayarlarını eyniləşdirmək mümkün olmadı, çünki \"plasmalogin\" "
+"istifadəçi mövcud deyil. Plasma login tətbiqinin quraşdırılıb "
+"quraşdırılmadığını yoxlayın."
+
+#: kcm.cpp:265
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"Plasma ayarlarını sıfırlamaq mümkün olmadı, çünki \"plasmalogin\" istifadəçi "
+"mövcud deyil. Plasma Login tətbiqinin quraşdırılıb quraşdırılmadığını "
+"yoxlayın."
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Görünüş"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Saat"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr "Saatı göstərmək"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Divar kağızı növü:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Plasma ayarlarını aktiv edin..."
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Görünüşü tənzimləmək..."
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Plasma ayarlarını tətbiq etmək"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Bununla cari Plasma ayarlarına etdiyiniz dəyişikliklər Plama girişi "
+"ekranında öz əksini tapacaq.:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration</item></list></para>"
+msgstr ""
+"<para><list><item>Rəng sxemi</item><item>Kursor görünüşü və ölçüsü</"
+"item><item>Şrift və şriftin görünüşü</item><item>NumLock seçimləri</"
+"item><item>Plasma görünüşü</item><item>DPI dəyərləri</item><item>Ekran "
+"tənzimləməsi</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"Nəzərə alın ki, görünüş mövzusunun Plasma giriş ekranında tam əksini tapması "
+"üçün mövzu faylları bütün sistem üçün quraşdırılmalıdır."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Tətbiq edin"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "İlkin ayarlara sıfırlayın"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Avtomatik giriş"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Avtomatik daxil olmaq:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "bu istifadəçi kimi:"
+
+#: ui/main.qml:154
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "bu sessiya ilə:"
+
+#: ui/main.qml:187
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"Avtomatik giriş KDE cüzdanının avtomatik kiliddən çıxarılmasını dəstəkləmir, "
+"belə ki, hər girişdə o şifrə tələb edəcək.    <nl/><nl/>    Bunun qarşısını "
+"almaq üçün cüzdanın şifrəsini boş olaraq dəyişdirməlisiniz. Nəzərə alın ki, "
+"bu təhlükəli ola bilər və yalnız etibarlı mühitdə istifadə olunmalıdır."
+
+#: ui/main.qml:192
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "KDE cüzdanı ayarlarını açın"
+
+#: ui/main.qml:199
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Çıxdıqdan dərhal sonra daxil olmaq"
+
+#: ui/main.qml:210
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Əsas istifadəçi və sessiya"
+
+#: ui/main.qml:215
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Əsas istifadəçi:"
+
+#: ui/main.qml:221
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Sistemə son daxil olan istifadəçi"
+
+#: ui/main.qml:293
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Əsas sessiya:"
+
+#: ui/main.qml:299
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Son istifadə olunan sessiya"
