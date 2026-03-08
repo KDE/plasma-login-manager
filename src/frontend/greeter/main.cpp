@@ -11,6 +11,7 @@
 #include <QQmlContext>
 #include <QScreen>
 
+#include <KLocalizedQmlContext>
 #include <KLocalizedString>
 #include <KWindowSystem>
 #include <LayerShellQt/Window>
