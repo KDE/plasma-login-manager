@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 #
-# SPDX-FileCopyrightText: 2025 Sveinn í Felli <sv1@fellsnet.is>
+# SPDX-FileCopyrightText: 2025, 2026 Sveinn í Felli <sv1@fellsnet.is>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-02-03 00:48+0000\n"
-"PO-Revision-Date: 2025-12-01 16:26+0000\n"
+"PO-Revision-Date: 2026-03-12 09:24+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -89,7 +89,7 @@ msgstr "Leggja í dvala"
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr "Svæfa"
+msgstr "Svæfa í minni"
 
 #: qml/Main.qml:197 qml/Main.qml:336
 #, kde-format
