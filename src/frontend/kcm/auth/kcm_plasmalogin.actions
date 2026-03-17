@@ -34,7 +34,7 @@ Name[uk]=Вхід до Плазми
 Name[zh_CN]=Plasma 登录
 Name[zh_TW]=Plasma 登入畫面
 Icon=kauth-example
-URL=https://invent.kde.org/davidedmundson/plasma-login
+URL=https://invent.kde.org/plasma/plasma-login-manager
 
 [org.kde.kcontrol.kcmplasmalogin.save]
 Name=Save Settings
