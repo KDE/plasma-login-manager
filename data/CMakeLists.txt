@@ -44,6 +44,9 @@ if(INSTALL_PAM_CONFIGURATION)
         elseif("arch" IN_LIST OS_ID_LIST)
            message(STATUS "Installing PAM configuration for Arch Linux-like systems.")
            set(PAM_OS_CONFIGURATION "arch" CACHE INTERNAL "Auto-detected Arch Linux type system" FORCE)
+        elseif("debian" IN_LIST OS_ID_LIST)
+           message(STATUS "Installing PAM configuration for Debian Linux-like systems.")
+           set(PAM_OS_CONFIGURATION "debian" CACHE INTERNAL "Auto-detected Debian Linux type system" FORCE)
         else()
            message(FATAL_ERROR
                "Unknown operating system detected!\n"
