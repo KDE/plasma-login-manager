@@ -10,6 +10,7 @@
 
 #include <fcntl.h> /* Definition of O_* and S_* constants */
 #include <linux/openat2.h> /* Definition of RESOLVE_* constants */
+#include <sys/stat.h>
 #include <sys/syscall.h> /* Definition of SYS_* constants */
 #include <sys/wait.h>
 #include <unistd.h>
@@ -185,6 +186,22 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
     }
 }
 
+static bool isRegularFd(int fd)
+{
+    int flags = fcntl(fd, F_GETFL);
+    if (flags == -1) {
+        return false;
+    }
+    if (flags & O_PATH) {
+        return false;
+    }
+    struct stat st;
+    if (fstat(fd, &st) == -1) {
+        return false;
+    }
+    return S_ISREG(st.st_mode);
+}
+
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
     QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
@@ -203,16 +220,16 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
     }
 
     // Wallpaper stuff
-    // This is in /var/plasmalogin so we drop priveleges
-    runAsPlasmaLoginUser([args]() {
-        QString homeDirPath;
-        if (auto opt = plasmaloginUserHomeDir()) {
-            homeDirPath = *opt;
-        } else {
-            qWarning() << "Could not determine home directory for plasmalogin user";
-            return false;
-        }
+    // This is in /var/plasmalogin so we drop privileges
+    QString homeDirPath;
+    if (auto opt = plasmaloginUserHomeDir()) {
+        homeDirPath = *opt;
+    } else {
+        qWarning() << "Could not determine home directory for plasmalogin user";
+        return ActionReply::HelperErrorReply();
+    }
 
+    runAsPlasmaLoginUser([homeDirPath, args]() {
         QDir homeDir(homeDirPath);
         QDir wallpaperDir(homeDir.absoluteFilePath("wallpapers"));
         if (!wallpaperDir.removeRecursively()) {
@@ -261,7 +278,7 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 
             QDataStream out(&file);
             QDBusUnixFileDescriptor fd = args.value("_fd_" + wallpaper).value<QDBusUnixFileDescriptor>();
-            if (!fd.isValid()) {
+            if (!fd.isValid() || !isRegularFd(fd.fileDescriptor())) {
                 qWarning() << "Could not retrieve wallpaper" << wallpaper;
                 continue;
             }
