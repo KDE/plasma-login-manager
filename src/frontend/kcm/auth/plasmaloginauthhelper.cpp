@@ -8,10 +8,11 @@
 #include "plasmaloginauthhelper.h"
 #include "config.h"
 
+#include <fcntl.h> /* Definition of O_* and S_* constants */
+#include <linux/openat2.h> /* Definition of RESOLVE_* constants */
+#include <sys/syscall.h> /* Definition of SYS_* constants */
+#include <sys/wait.h>
 #include <unistd.h>
-#include <fcntl.h>          /* Definition of O_* and S_* constants */
-#include <linux/openat2.h>  /* Definition of RESOLVE_* constants */
-#include <sys/syscall.h>    /* Definition of SYS_* constants */
 
 #include <QBuffer>
 #include <QDBusUnixFileDescriptor>
@@ -49,15 +50,6 @@ static std::optional<QString> plasmaloginUserHomeDir()
     }
 }
 
-/*
- * Ensure correct ownership of the provided file or directory
- */
-static void chownPath(const QString &path)
-{
-    static const KUser plasmaloginUser("plasmalogin");
-    chown(path.toLocal8Bit().data(), plasmaloginUser.userId().nativeId(), plasmaloginUser.groupId().nativeId());
-}
-
 ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
 {
     QString homeDir;
@@ -67,59 +59,84 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
         return ActionReply::HelperErrorReply();
     }
 
-    // In plasma-framework, ThemePrivate::useCache documents the requirement to
-    // clear the cache when colors change while the app that uses them isn't
-    // running; that condition applies to the greeter here, so clear the cache
-    // if it exists to make sure plasma login has a fresh state
-    QDir cacheLocation(homeDir + QStringLiteral("/.cache"));
-    if (cacheLocation.exists()) {
-        cacheLocation.removeRecursively();
-    }
-
-    QDir homeLocation(homeDir);
-
-    // Create config location if it does not exist
-    QDir configLocation(homeDir + QStringLiteral("/.config"));
-    if (!configLocation.exists()) {
-        homeLocation.mkdir(QStringLiteral(".config"), standardDirectoryPermissions);
-        chownPath(configLocation.path());
-    }
-
-    // Create fontconfig location if it does not exist
-    QDir fontConfigLocation(homeDir + QStringLiteral("/.config/fontconfig"));
-    if (!fontConfigLocation.exists()) {
-        configLocation.mkdir(QStringLiteral("fontconfig"), standardDirectoryPermissions);
-        chownPath(fontConfigLocation.path());
-    }
-
-    auto createConfigFile = [&args, &homeDir](const QString &name) {
-        // Don't create config for any file we weren't given - and remove any
-        // existing config as it does not exist in the user's config folder
-        if (!args.keys().contains(name)) {
-            QFile(homeDir + QStringLiteral("/.config/")).remove();
-            return;
+    pid_t pid = fork();
+    if (pid < 0) {
+        qWarning() << "Failed to fork plasmalogin helper process";
+        return ActionReply::HelperErrorReply();
+    } else if (pid == 0) {
+        // In the child process, switch to the plasmalogin user and execute the helper
+        if (setgid(KUser("plasmalogin").groupId().nativeId()) != 0) {
+            qWarning() << "Failed to setgid in plasmalogin helper subprocess";
+            _exit(EXIT_FAILURE);
+        }
+        if (setuid(KUser("plasmalogin").userId().nativeId()) != 0) {
+            qWarning() << "Failed to setuid in plasmalogin helper subprocess";
+            _exit(EXIT_FAILURE);
         }
 
-        const QString content = args.value(name).toString();
-        QFile file(homeDir + QStringLiteral("/.config/") + name);
-        if (file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate, standardPermissions)) {
-            QTextStream out(&file);
-            out << content;
-            chownPath(file.fileName());
+        // In plasma-framework, ThemePrivate::useCache documents the requirement to
+        // clear the cache when colors change while the app that uses them isn't
+        // running; that condition applies to the greeter here, so clear the cache
+        // if it exists to make sure plasma login has a fresh state
+        QDir cacheLocation(homeDir + QStringLiteral("/.cache"));
+        if (cacheLocation.exists()) {
+            cacheLocation.removeRecursively();
         }
-    };
 
-    createConfigFile(QStringLiteral("kdeglobals"));
+        QDir homeLocation(homeDir);
 
-    createConfigFile(QStringLiteral("plasmarc"));
+        // Create config location if it does not exist
+        QDir configLocation(homeDir + QStringLiteral("/.config"));
+        if (!configLocation.exists()) {
+            homeLocation.mkdir(QStringLiteral(".config"), standardDirectoryPermissions);
+        }
 
-    createConfigFile(QStringLiteral("kcminputrc"));
+        // Create fontconfig location if it does not exist
+        QDir fontConfigLocation(homeDir + QStringLiteral("/.config/fontconfig"));
+        if (!fontConfigLocation.exists()) {
+            configLocation.mkdir(QStringLiteral("fontconfig"), standardDirectoryPermissions);
+        }
 
-    createConfigFile(QStringLiteral("kwinoutputconfig.json"));
+        auto createConfigFile = [&args, &homeDir](const QString &name) {
+            // Don't create config for any file we weren't given - and remove any
+            // existing config as it does not exist in the user's config folder
+            if (!args.keys().contains(name)) {
+                QFile(homeDir + QStringLiteral("/.config/")).remove();
+                return;
+            }
 
-    createConfigFile(QStringLiteral("fontconfig/fonts.conf"));
+            const QString content = args.value(name).toString();
+            QFile file(homeDir + QStringLiteral("/.config/") + name);
+            if (file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate, standardPermissions)) {
+                QTextStream out(&file);
+                out << content;
+            }
+        };
 
-    return ActionReply::SuccessReply();
+        createConfigFile(QStringLiteral("kdeglobals"));
+
+        createConfigFile(QStringLiteral("plasmarc"));
+
+        createConfigFile(QStringLiteral("kcminputrc"));
+
+        createConfigFile(QStringLiteral("kwinoutputconfig.json"));
+
+        createConfigFile(QStringLiteral("fontconfig/fonts.conf"));
+
+        qDebug() << "WRITING STUFF IN THE FORK!!! " << getuid();
+
+        return EXIT_SUCCESS;
+    } else {
+        int status;
+        waitpid(pid, &status, 0);
+        qDebug() << "DAVE STATUS " << status;
+        if (status == EXIT_SUCCESS) {
+            return ActionReply::SuccessReply();
+        } else {
+            return ActionReply::HelperErrorReply();
+        }
+    }
+    Q_ASSERT(false);
 }
 
 ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
