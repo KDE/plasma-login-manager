@@ -50,6 +50,39 @@ static std::optional<QString> plasmaloginUserHomeDir()
     }
 }
 
+static bool runAsPlasmaLoginUser(std::function<bool()> function)
+{
+    KUser user("plasmalogin");
+    if (!user.isValid()) {
+        qWarning() << "Could not find plasmalogin user";
+        return false;
+    }
+    pid_t pid = fork();
+    if (pid < 0) {
+        qWarning() << "Failed to fork plasmalogin helper process";
+        return false;
+    } else if (pid == 0) {
+        if (setgid(user.groupId().nativeId()) != 0) {
+            qWarning() << "Failed to setgid in plasmalogin helper subprocess";
+            _exit(EXIT_FAILURE);
+        }
+        if (setuid(user.userId().nativeId()) != 0) {
+            qWarning() << "Failed to setuid in plasmalogin helper subprocess";
+            _exit(EXIT_FAILURE);
+        }
+
+        if (function()) {
+            _exit(EXIT_SUCCESS);
+        } else {
+            _exit(EXIT_FAILURE);
+        }
+    } else {
+        int status;
+        waitpid(pid, &status, 0);
+        return status == EXIT_SUCCESS;
+    }
+}
+
 ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
 {
     QString homeDir;
@@ -59,21 +92,7 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
         return ActionReply::HelperErrorReply();
     }
 
-    pid_t pid = fork();
-    if (pid < 0) {
-        qWarning() << "Failed to fork plasmalogin helper process";
-        return ActionReply::HelperErrorReply();
-    } else if (pid == 0) {
-        // In the child process, switch to the plasmalogin user and execute the helper
-        if (setgid(KUser("plasmalogin").groupId().nativeId()) != 0) {
-            qWarning() << "Failed to setgid in plasmalogin helper subprocess";
-            _exit(EXIT_FAILURE);
-        }
-        if (setuid(KUser("plasmalogin").userId().nativeId()) != 0) {
-            qWarning() << "Failed to setuid in plasmalogin helper subprocess";
-            _exit(EXIT_FAILURE);
-        }
-
+    bool rc = runAsPlasmaLoginUser([args, homeDir]() {
         // In plasma-framework, ThemePrivate::useCache documents the requirement to
         // clear the cache when colors change while the app that uses them isn't
         // running; that condition applies to the greeter here, so clear the cache
@@ -122,21 +141,14 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
         createConfigFile(QStringLiteral("kwinoutputconfig.json"));
 
         createConfigFile(QStringLiteral("fontconfig/fonts.conf"));
+        return true;
+    });
 
-        qDebug() << "WRITING STUFF IN THE FORK!!! " << getuid();
-
-        return EXIT_SUCCESS;
+    if (rc) {
+        return ActionReply::SuccessReply();
     } else {
-        int status;
-        waitpid(pid, &status, 0);
-        qDebug() << "DAVE STATUS " << status;
-        if (status == EXIT_SUCCESS) {
-            return ActionReply::SuccessReply();
-        } else {
-            return ActionReply::HelperErrorReply();
-        }
+        return ActionReply::HelperErrorReply();
     }
-    Q_ASSERT(false);
 }
 
 ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
