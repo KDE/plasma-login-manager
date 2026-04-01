@@ -162,29 +162,27 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
         return ActionReply::HelperErrorReply();
     }
 
-    QDir cacheLocation(homeDir + QStringLiteral("/.cache"));
-    if (cacheLocation.exists()) {
-        cacheLocation.removeRecursively();
+    bool rc = runAsPlasmaLoginUser([homeDir]() {
+        QDir cacheDir(homeDir + QStringLiteral("/.cache"));
+        if (cacheDir.exists()) {
+            cacheDir.removeRecursively();
+        }
+
+        // Remove all config, including what we've synced, but
+        // also anything potentially created by running things
+        QDir configDir(homeDir + QStringLiteral("/.config"));
+        if (configDir.exists()) {
+            configDir.removeRecursively();
+        }
+
+        return true;
+    });
+
+    if (rc) {
+        return ActionReply::SuccessReply();
+    } else {
+        return ActionReply::HelperErrorReply();
     }
-
-    QDir fontConfigDir(homeDir + QStringLiteral("/.config/fontconfig"));
-    if (fontConfigDir.exists()) {
-        fontConfigDir.removeRecursively();
-    }
-
-    QFile kdeglobalsFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("kdeglobals"));
-    kdeglobalsFile.remove();
-
-    QFile plasmarcFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("/plasmarc"));
-    plasmarcFile.remove();
-
-    QFile kcminputrcFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("/kcminputrc"));
-    kcminputrcFile.remove();
-
-    QFile kwinoutputconfigFile(homeDir + QStringLiteral("/.config/") + QStringLiteral("/kwinoutputconfig.json"));
-    kwinoutputconfigFile.remove();
-
-    return ActionReply::SuccessReply();
 }
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
