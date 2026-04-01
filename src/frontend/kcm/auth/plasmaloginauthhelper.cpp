@@ -209,9 +209,15 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         return ActionReply::HelperErrorReply();
     }
 
-    QTextStream out(&file);
-    out << args[QStringLiteral("config")].toString();
-    out.flush();
+    if (args[QStringLiteral("config")].toString().toUtf8().size() > 1 * 1024 * 1024) {
+        qWarning() << "Config size is greater than 1 MiB";
+        return ActionReply::HelperErrorReply();
+    } else {
+        QTextStream out(&file);
+        out << args[QStringLiteral("config")].toString();
+        out.flush();
+    }
+
     file.close();
 
     // Ensure permissions on the config file are appropriate
