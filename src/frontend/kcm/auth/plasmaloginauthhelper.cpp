@@ -142,6 +142,15 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
         createConfigFile(QStringLiteral("kwinoutputconfig.json"));
 
         createConfigFile(QStringLiteral("fontconfig/fonts.conf"));
+
+        // Clean & fonts
+        QDir fontsDir = homeLocation.absoluteFilePath(QStringLiteral(".local/share/fonts"));
+        if (!fontsDir.removeRecursively()) {
+            qWarning() << "Could not clean fonts directory";
+        }
+
+        homeLocation.mkdir(QStringLiteral(".local/share/fonts"));
+
         return true;
     });
 
@@ -174,6 +183,11 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
         QDir configDir(homeDir + QStringLiteral("/.config"));
         if (configDir.exists()) {
             configDir.removeRecursively();
+        }
+
+        QDir fontsDir(homeDir + QStringLiteral("/.local/share/fonts"));
+        if (fontsDir.exists()) {
+            fontsDir.removeRecursively();
         }
 
         return true;

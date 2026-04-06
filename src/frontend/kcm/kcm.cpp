@@ -234,6 +234,8 @@ void PlasmaLoginKcm::synchronizeSettings()
         addConfigFile(fontconfigPath + QStringLiteral("/fonts.conf"), QStringLiteral("fontconfig/fonts.conf"));
     }
 
+    const QString fontsPath =
+
     KAuth::Action syncAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.sync"));
     syncAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
     syncAction.setArguments(args);
@@ -246,6 +248,18 @@ void PlasmaLoginKcm::synchronizeSettings()
         Q_EMIT syncAttempted();
     });
     job->start();
+}
+
+QVariantMap PlasmaLoginKcm::syncFonts(const QUrl &fontsUrl)
+{
+
+    QVariantMap fontArgs
+    QStringList fonts;
+
+    auto addFile = []() {
+
+    };
+    const QString fontPath = fontsUrl.toLocalFile();
 }
 
 void PlasmaLoginKcm::resetSynchronizedSettings()
