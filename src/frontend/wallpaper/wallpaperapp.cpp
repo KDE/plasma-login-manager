@@ -31,11 +31,10 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
     m_wallpaperPackage.setPath(PlasmaLoginSettings::getInstance().wallpaperPluginId());
 
-    for (const auto screenList{screens()}; QScreen *screen : screenList) {
+    connect(this, &QGuiApplication::screenAdded, this, &WallpaperApp::adoptScreen);
+    for (QScreen *screen : screens()) {
         adoptScreen(screen);
     }
-
-    connect(this, &QGuiApplication::screenAdded, this, &WallpaperApp::adoptScreen);
 
     auto bus = QDBusConnection::sessionBus();
     bus.registerObject(QStringLiteral("/Wallpaper"), this, QDBusConnection::ExportScriptableSlots);
@@ -44,28 +43,19 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
     }
 }
 
-WallpaperApp::~WallpaperApp()
-{
-    qDeleteAll(m_windows);
-}
-
 void WallpaperApp::adoptScreen(QScreen *screen)
 {
-    if (screen->geometry().isNull()) {
-        return;
-    }
-
     WallpaperWindow *window = new WallpaperWindow(screen);
-    window->setGeometry(screen->geometry());
-    window->setVisible(true);
-    m_windows << window;
+    window->QObject::setParent(this);
 
-    connect(screen, &QObject::destroyed, window, [this, window]() {
-        m_windows.removeAll(window);
-        window->deleteLater();
+    connect(this, &QGuiApplication::screenRemoved, window, [window](QScreen *screenRemoved) {
+        if (screenRemoved == window->screen()) {
+            delete window;
+        }
     });
 
     setupWallpaperPlugin(window);
+    window->show();
 }
 
 void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
@@ -129,11 +119,16 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
 
 void WallpaperApp::blurScreen(const QString &screenName)
 {
-    for (WallpaperWindow *window : std::as_const(m_windows)) {
-        if (window->screen()->name() == screenName) {
-            window->setBlur(true);
+    for (QWindow *window : topLevelWindows()) {
+        auto wallpaperWindow = qobject_cast<WallpaperWindow *>(window);
+        if (!wallpaperWindow) {
+            return;
+        }
+
+        if (wallpaperWindow->screen()->name() == screenName) {
+            wallpaperWindow->setBlur(true);
         } else {
-            window->setBlur(false);
+            wallpaperWindow->setBlur(false);
         }
     }
 }

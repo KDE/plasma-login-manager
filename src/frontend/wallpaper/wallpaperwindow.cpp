@@ -32,10 +32,6 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
     setScreen(m_screen);
 
     setGeometry(m_screen->geometry());
-    connect(m_screen, &QScreen::geometryChanged, this, [this]() {
-        setGeometry(m_screen->geometry());
-    });
-
     setResizeMode(PlasmaQuick::QuickViewSharedEngine::SizeRootObjectToView);
 
     if (KWindowSystem::isPlatformX11()) {
