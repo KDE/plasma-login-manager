@@ -27,7 +27,6 @@ enum class GreeterMessages {
 };
 
 enum class DaemonMessages {
-    HostName,
     LoginSucceeded,
     LoginFailed,
     InformationMessage,

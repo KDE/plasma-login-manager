@@ -24,7 +24,6 @@
 
 #include <QDBusConnectionInterface>
 #include <QDebug>
-#include <QHostInfo>
 #include <QTimer>
 
 #include <iostream>
@@ -69,11 +68,6 @@ DaemonApp::DaemonApp(int &argc, char **argv)
 
     // initialize seats only after signals are connected
     m_seatManager->initialize();
-}
-
-QString DaemonApp::hostName() const
-{
-    return QHostInfo::localHostName();
 }
 
 DisplayManager *DaemonApp::displayManager() const

@@ -17,7 +17,6 @@
 
 #include "SocketServer.h"
 
-#include "DaemonApp.h"
 #include "Messages.h"
 #include "SocketWriter.h"
 #include "Utils.h"
@@ -129,9 +128,6 @@ void SocketServer::readyRead()
         case GreeterMessages::Connect: {
             // log message
             qDebug() << "Message received from greeter: Connect";
-
-            // send host name
-            SocketWriter(socket) << quint32(DaemonMessages::HostName) << daemonApp->hostName();
 
             // emit signal
             emit connected();

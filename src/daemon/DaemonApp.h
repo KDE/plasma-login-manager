@@ -42,7 +42,6 @@ public:
 
     bool tryLockFirstLogin();
 
-    QString hostName() const;
     DisplayManager *displayManager() const;
     SeatManager *seatManager() const;
 
