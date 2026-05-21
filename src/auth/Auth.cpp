@@ -128,7 +128,7 @@ Auth::Private::Private(Auth *parent)
         env.insert(QStringLiteral("LANG"), QStringLiteral("C"));
     }
     child->setProcessEnvironment(env);
-    connect(child, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Auth::Private::childExited);
+    connect(child, &QProcess::finished, this, &Auth::Private::childExited);
     connect(child, &QProcess::errorOccurred, this, &Auth::Private::childError);
     connect(request, &AuthRequest::finished, this, &Auth::Private::requestFinished);
     connect(request, &AuthRequest::promptsChanged, parent, &Auth::requestChanged);

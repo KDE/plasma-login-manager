@@ -106,7 +106,7 @@ bool XOrgUserHelper::startProcess(const QString &cmd, const QProcessEnvironment 
     connect(process, &QProcess::readyReadStandardOutput, this, [process] {
         qInfo() << process->readAllStandardOutput();
     });
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), process, [](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(process, &QProcess::finished, process, [](int exitCode, QProcess::ExitStatus exitStatus) {
         if (exitCode != 0 || exitStatus != QProcess::NormalExit) {
             QCoreApplication::instance()->quit();
         }

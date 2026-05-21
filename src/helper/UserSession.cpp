@@ -33,7 +33,7 @@ namespace PLASMALOGIN
 UserSession::UserSession(HelperApp *parent)
     : QProcess(parent)
 {
-    connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &UserSession::finished);
+    connect(this, &QProcess::finished, this, &UserSession::finished);
     setChildProcessModifier(std::bind(&UserSession::childModifier, this));
 }
 

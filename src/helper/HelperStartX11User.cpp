@@ -59,7 +59,7 @@ int main(int argc, char **argv)
         process->setArguments(args);
         process->setProcessEnvironment(helper.sessionEnvironment());
         process->start();
-        QObject::connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &app, &QCoreApplication::quit);
+        QObject::connect(process, &QProcess::finished, &app, &QCoreApplication::quit);
     });
 
     helper.start();
