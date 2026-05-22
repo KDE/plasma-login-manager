@@ -32,7 +32,7 @@ KConfigPropertyMap *WallpaperSettings::wallpaperConfiguration() const
 
 WallpaperIntegration *WallpaperSettings::wallpaperIntegration() const
 {
-    return m_wallpaperIntegration;
+    return m_wallpaperIntegration.get();
 }
 
 KCoreConfigSkeleton *WallpaperSettings::wallpaperSkeleton() const
@@ -93,10 +93,9 @@ void WallpaperSettings::loadWallpaperConfig()
             // nothing changed
             return;
         }
-        delete m_wallpaperIntegration;
     }
 
-    m_wallpaperIntegration = new WallpaperIntegration();
+    m_wallpaperIntegration = std::make_unique<WallpaperIntegration>();
     m_wallpaperIntegration->setConfig(PlasmaLoginSettings::getInstance().sharedConfig());
     m_wallpaperIntegration->setPluginName(PlasmaLoginSettings::getInstance().wallpaperPluginId());
     m_wallpaperIntegration->init();

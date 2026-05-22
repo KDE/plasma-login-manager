@@ -44,7 +44,7 @@ Q_SIGNALS:
 
 private:
     // KPackage::Package m_package;
-    WallpaperIntegration *m_wallpaperIntegration = nullptr;
+    std::unique_ptr<WallpaperIntegration> m_wallpaperIntegration = nullptr;
     KCoreConfigSkeleton *m_wallpaperSettings = nullptr;
     QUrl m_wallpaperConfigFile;
 };
