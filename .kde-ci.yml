@@ -18,5 +18,6 @@ Dependencies:
     'plasma/plasma-workspace': '@same'
 
 Options:
+ require-passing-tests-on: ['@all']
  run-qmllint: true
  enable-lsan: true
