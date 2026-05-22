@@ -100,6 +100,10 @@ add_subdirectory(data)
 add_subdirectory(services)
 add_subdirectory(src)
 
+if (BUILD_TESTING)
+    add_subdirectory(autotests)
+endif()
+
 ki18n_install(po)
 
 # Display feature summary
