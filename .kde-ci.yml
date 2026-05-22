@@ -19,3 +19,4 @@ Dependencies:
 
 Options:
  run-qmllint: true
+ enable-lsan: true
