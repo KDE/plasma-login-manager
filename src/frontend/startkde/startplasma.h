@@ -23,7 +23,6 @@ int runSync(const QString &program, const QStringList &args, const QStringList &
 
 void createConfigDirectory();
 void runStartupConfig();
-void setupCursor(bool wayland);
 std::optional<QProcessEnvironment> getSystemdEnvironment();
 void importSystemdEnvrionment();
 void runEnvironmentScripts();

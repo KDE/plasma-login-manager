@@ -22,7 +22,6 @@ int main(int argc, char **argv)
     QCoreApplication app(argc, argv);
 
     createConfigDirectory();
-    setupCursor(true);
     signal(SIGTERM, sigtermHandler);
 
     // Let clients try to reconnect to kwin after a restart
