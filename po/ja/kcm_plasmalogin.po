@@ -1,0 +1,198 @@
+# SPDX-FileCopyrightText: 2026 Yuma Kakei <yumasansansan@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"PO-Revision-Date: 2026-03-12 21:41+0900\n"
+"Last-Translator: Yuma Kakei <yumasansansan@gmail.com>\n"
+"Language-Team: Japanese <kde-jp@kde.org>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Generator: Lokalize 25.12.2\n"
+
+#: kcm.cpp:78
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr "一時フォルダを作成できなかったため、設定を保存できませんでした。"
+
+#: kcm.cpp:139
+msgid "Unable to save settings because the config could not be opened."
+msgstr "設定ファイルを開けなかったため、設定を保存できませんでした。"
+
+#: kcm.cpp:214
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"「plasmalogin」 ユーザが存在しないため、Plasma 設定を同期できませんでした。"
+"Plasma Login のインストール状態を確認してください。"
+
+#: kcm.cpp:267
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"「plasmalogin」 ユーザが存在しないため、Plasma 設定をリセットできませんでし"
+"た。Plasma Login のインストール状態を確認してください。"
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "外観"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "時計"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr "時計を表示する"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "壁紙のタイプ:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Plasma 設定を適用…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "外観を設定…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Plasma 設定を適用する"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr "以下の Plasma 設定への変更を、Plasma ログイン画面にも反映します:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration</item><item>Keyboard layouts</item></list></para>"
+msgstr ""
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"テーマを Plasma ログイン画面に反映させるには、テーマファイルがシステム全体に"
+"インストールされている必要があります。"
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "適用"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "標準設定に戻す"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "自動ログイン"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "自動的にログイン:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "ユーザ:"
+
+#: ui/main.qml:154
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "セッション:"
+
+#: ui/main.qml:187
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+
+#: ui/main.qml:192
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "KDE ウォレットの設定を開く"
+
+#: ui/main.qml:199
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "ログオフ後すぐに再度ログインする"
+
+#: ui/main.qml:210
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr ""
+
+#: ui/main.qml:215
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr ""
+
+#: ui/main.qml:221
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr ""
+
+#: ui/main.qml:293
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr ""
+
+#: ui/main.qml:299
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr ""
