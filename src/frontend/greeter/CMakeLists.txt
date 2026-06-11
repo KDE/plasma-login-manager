@@ -48,6 +48,7 @@ target_link_libraries(plasma-login-greeter PRIVATE
     Qt::Quick
     Qt::DBus
     KF6::I18n
+    KF6::I18nQml
     Plasma::PlasmaQuick
     KF6::Package
     KF6::WindowSystem

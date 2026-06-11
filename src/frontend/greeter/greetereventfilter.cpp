@@ -7,6 +7,8 @@
 #include <KScreenDpms/Dpms>
 #include <kscreendpms/dpms.h>
 
+#include <QKeyEvent>
+
 #include "greetereventfilter.h"
 
 GreeterEventFilter::GreeterEventFilter(QObject *parent)

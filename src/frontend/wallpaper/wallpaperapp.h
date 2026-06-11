@@ -10,14 +10,10 @@
 
 #include <QGuiApplication>
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 
 #include <KPackage/PackageStructure>
-
-namespace PlasmaQuick
-{
-class QuickViewSharedEngine;
-}
 
 class WallpaperWindow;
 
@@ -39,6 +35,7 @@ private:
 
     KPackage::Package m_wallpaperPackage;
     QList<WallpaperWindow *> m_windows;
+    std::shared_ptr<QQmlEngine> m_engine;
 
 private Q_SLOTS:
     void adoptScreen(QScreen *);

@@ -14,8 +14,8 @@
 
 #include "wallpaperwindow.h"
 
-WallpaperWindow::WallpaperWindow(QScreen *screen)
-    : PlasmaQuick::QuickViewSharedEngine()
+WallpaperWindow::WallpaperWindow(QQmlEngine *engine, QScreen *screen)
+    : QQuickView(engine, nullptr)
     , m_screen(screen)
 {
     if (KWindowSystem::isPlatformWayland()) {
@@ -36,7 +36,7 @@ WallpaperWindow::WallpaperWindow(QScreen *screen)
         setGeometry(m_screen->geometry());
     });
 
-    setResizeMode(PlasmaQuick::QuickViewSharedEngine::SizeRootObjectToView);
+    setResizeMode(QQuickView::SizeRootObjectToView);
 
     if (KWindowSystem::isPlatformX11()) {
         // X11 specific hint only on X11

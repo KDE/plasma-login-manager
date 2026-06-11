@@ -22,6 +22,7 @@ target_link_libraries(plasma-login-wallpaper PRIVATE
     Qt::Quick
     KF6::WindowSystem
     KF6::Package
+    KF6::I18nQml
     Plasma::PlasmaQuick
     LayerShellQt::Interface
 )

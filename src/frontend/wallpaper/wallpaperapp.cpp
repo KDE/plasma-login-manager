@@ -16,8 +16,10 @@
 
 #include <KConfigLoader>
 #include <KConfigPropertyMap>
+#include <KLocalizedQmlContext>
 #include <KPackage/PackageLoader>
 #include <KWindowSystem>
+#include <PlasmaQuick/PlasmaQuick>
 
 #include "plasmaloginsettings.h"
 
@@ -27,7 +29,10 @@
 
 WallpaperApp::WallpaperApp(int &argc, char **argv)
     : QGuiApplication(argc, argv)
+    , m_engine(PlasmaQuick::globalEngine())
 {
+    KLocalization::setupLocalizedContext(m_engine.get());
+
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
     m_wallpaperPackage.setPath(PlasmaLoginSettings::getInstance().wallpaperPluginId());
 
@@ -55,7 +60,7 @@ void WallpaperApp::adoptScreen(QScreen *screen)
         return;
     }
 
-    WallpaperWindow *window = new WallpaperWindow(screen);
+    WallpaperWindow *window = new WallpaperWindow(m_engine.get(), screen);
     window->setGeometry(screen->geometry());
     window->setVisible(true);
     m_windows << window;
@@ -98,7 +103,7 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
 
     const QUrl sourceUrl = QUrl::fromLocalFile(m_wallpaperPackage.filePath("mainscript"));
 
-    auto *component = new QQmlComponent(window->engine().get(), sourceUrl, window);
+    auto *component = new QQmlComponent(window->engine(), sourceUrl, window);
     if (component->isError()) {
         qWarning() << "Failed to load wallpaper component:" << component->errors();
         return;

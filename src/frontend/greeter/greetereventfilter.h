@@ -4,7 +4,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include <PlasmaQuick/QuickViewSharedEngine>
+#include <QObject>
 
 class GreeterEventFilter : public QObject
 {
