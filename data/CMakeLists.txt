@@ -18,7 +18,7 @@ install(FILES
 
 if(INSTALL_PAM_CONFIGURATION)
     set(PAM_OS_CONFIGURATION "auto"
-        CACHE STRING "PAM configuration data for operating system. Valid options: auto;fedora;suse"
+        CACHE STRING "PAM configuration data for operating system. Valid options: auto;arch;fedora;gentoo;kde-linux;suse"
     )
     if(PAM_OS_CONFIGURATION STREQUAL "auto")
         set(PAM_OS_CONFIGURATION "" CACHE INTERNAL "No detected system" FORCE)
@@ -44,6 +44,9 @@ if(INSTALL_PAM_CONFIGURATION)
         elseif("arch" IN_LIST OS_ID_LIST)
            message(STATUS "Installing PAM configuration for Arch Linux-like systems.")
            set(PAM_OS_CONFIGURATION "arch" CACHE INTERNAL "Auto-detected Arch Linux type system" FORCE)
+        elseif("gentoo" IN_LIST OS_ID_LIST)
+           message(STATUS "Installing PAM configuration for Gentoo Linux-like systems.")
+           set(PAM_OS_CONFIGURATION "gentoo" CACHE INTERNAL "Auto-detected Gentoo Linux type system" FORCE)
         else()
            message(FATAL_ERROR
                "Unknown operating system detected!\n"
