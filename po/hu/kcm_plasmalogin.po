@@ -1,0 +1,215 @@
+# Copyright (C) 2026 This file is copyright:
+# This file is distributed under the same license as the plasma-login-manager package.
+#
+# SPDX-FileCopyrightText: 2026 Kristof Kiszel <ulysses@fsf.hu>
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"PO-Revision-Date: 2026-06-17 22:43+0200\n"
+"Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
+"Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 26.04.2\n"
+
+#: kcm.cpp:78
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+"A beállítások mentése nem sikerült, mert nem sikerült létrehozni az "
+"ideiglenes könyvtárat."
+
+#: kcm.cpp:139
+msgid "Unable to save settings because the config could not be opened."
+msgstr ""
+"A beállítások mentése nem sikerült, mert a konfigurációs fájl nem nyitható "
+"meg."
+
+#: kcm.cpp:214
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"A Plasma beállítások szinkronizálása nem sikerült, mert a „plasmalogin” "
+"felhasználó nem létezik. Ellenőrizze a Plasma Bejelentkezés telepítését."
+
+#: kcm.cpp:267
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"A Plasma beállításai nem állíthatók vissza, mert a „plasmalogin” felhasználó "
+"nem létezik. Ellenőrizze a Plasma Bejelentkezés telepítését."
+
+#: ui/Appearance.qml:23
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Megjelenés"
+
+#: ui/Appearance.qml:35
+#, kde-format
+msgid "Clock"
+msgstr "Óra"
+
+#: ui/Appearance.qml:36
+#, kde-format
+msgid "Show clock"
+msgstr "Óra megjelenítése"
+
+#: ui/Appearance.qml:52
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Háttérkép típusa:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Plasma beállítások alkalmazása…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Megjelenés beállítása…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Plasma beállítások alkalmazása"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Ezzel a Plasma bejelentkező képernyőn az alábbi Plasma beállítások "
+"módosításai tükröződnek:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Font and font rendering</item><item>NumLock preference</"
+"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
+"configuration</item><item>Keyboard layouts</item></list></para>"
+msgstr ""
+"<para><list><item>Színséma</item><item>Kurzortéma és -méret</"
+"item><item>Betűkészlet és -renderelés</item><item>NumLock beállítások</"
+"item><item>Plasma téma</item><item>DPI skálázás</"
+"item><item>Képernyőbeállítás</item><item>Billentyűzetkiosztás</item></list></"
+"para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme files must be installed globally to be reflected on "
+"the Plasma login screen."
+msgstr ""
+"Fontos, hogy a témákat globálisan kell telepíteni, hogy a Plasma "
+"bejelentkező képernyőn tükröződjenek."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Alkalmaz"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Alapértelmezések visszaállítása"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Automatikus bejelentkezés"
+
+#: ui/main.qml:94
+#, kde-format
+msgctxt "@option:check"
+msgid "Automatically log in:"
+msgstr "Automatikus bejelentkezés mint:"
+
+#: ui/main.qml:99
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the user to log in "
+"automatically"
+msgid "as user:"
+msgstr "felhasználó:"
+
+#: ui/main.qml:154
+#, kde-format
+msgctxt ""
+"@label:listbox, the following combobox selects the session that is started "
+"automatically"
+msgid "with session:"
+msgstr "munkamenettel:"
+
+#: ui/main.qml:187
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
+"this, you can change the wallet to have a blank password. Note that this is "
+"insecure and should only be done in a trusted environment."
+msgstr ""
+"Az automatikus bejelentkezés nem támogatja a KDE Wallet automatikus "
+"feloldását, ezért minden egyes bejelentkezéskor fel kell oldania.    <nl/"
+"><nl/>    Ennek elkerülésére módosíthatja a jelszótárolót, hogy üres legyen "
+"a jelszava. Vegye figyelembe, hogy ez nem biztonságos és csak megbízható "
+"környezetben szabad megtenni."
+
+#: ui/main.qml:192
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "A KDE Wallet beállításainak megnyitása"
+
+#: ui/main.qml:199
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Bejelentkezés rögtön kijelentkezés után"
+
+#: ui/main.qml:210
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Alapértelmezések"
+
+#: ui/main.qml:215
+#, kde-format
+msgctxt "@label"
+msgid "Default user:"
+msgstr "Alapértelmezett felhasználó:"
+
+#: ui/main.qml:221
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Legutoljára bejelentkezett felhasználó"
+
+#: ui/main.qml:293
+#, kde-format
+msgctxt "@label"
+msgid "Default session:"
+msgstr "Alapértelmezett munkamenet:"
+
+#: ui/main.qml:299
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Legutoljára használt munkamenet"
