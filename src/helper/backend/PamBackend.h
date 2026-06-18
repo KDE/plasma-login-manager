@@ -54,6 +54,7 @@ public:
     void setAutologin(bool on = true);
     void setDisplayServer(bool on = true);
     void setGreeter(bool on = true);
+    void setPasswordless(bool on = true);
 
 public slots:
     bool start(const QString &user = QString());
@@ -68,6 +69,7 @@ private:
     bool m_autologin{false};
     bool m_displayServer = false;
     bool m_greeter{false};
+    bool m_passwordless{false};
     PamData *m_data{nullptr};
     PamHandle *m_pam{nullptr};
 };

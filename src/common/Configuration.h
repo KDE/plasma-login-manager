@@ -47,6 +47,11 @@ namespace PLASMALOGIN
             Entry(Session,             QString,     QString(),                                  _S("Name of session file for autologin session (if empty try last logged in)"));
             Entry(Relogin,             bool,        false,                                      _S("Whether plasmalogin should automatically log back into sessions when they exit"));
         );
+
+        Section(Passwordless,
+            Entry(Enable,              bool,        false,                                      _S("Opportunistically attempt passwordless (biometric, e.g. Howdy or fingerprint) PAM authentication while the login prompt is shown"));
+            Entry(Interval,            int,         2000,                                       _S("Milliseconds to wait between passwordless authentication attempts. 0 means re-arm a single continuous attempt immediately after each failure, suited to blocking readers like fprintd"));
+        );
     );
 
 // clang-format on

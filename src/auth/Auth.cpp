@@ -61,6 +61,7 @@ public:
     QString user{};
     bool autologin{false};
     bool greeter{false};
+    bool passwordless{false};
     QProcessEnvironment environment{};
     qint64 id{0};
     static qint64 lastId;
@@ -284,6 +285,11 @@ bool Auth::isGreeter() const
     return d->greeter;
 }
 
+bool Auth::isPasswordless() const
+{
+    return d->passwordless;
+}
+
 const QString &Auth::session() const
 {
     return d->sessionPath;
@@ -343,6 +349,14 @@ void Auth::setGreeter(bool on)
     }
 }
 
+void Auth::setPasswordless(bool on)
+{
+    if (on != d->passwordless) {
+        d->passwordless = on;
+        Q_EMIT passwordlessChanged();
+    }
+}
+
 void Auth::setDisplayServerCommand(const QString &command)
 {
     if (d->displayServerCmd != command) {
@@ -390,6 +404,9 @@ void Auth::start()
     }
     if (d->greeter) {
         args << QStringLiteral("--greeter");
+    }
+    if (d->passwordless) {
+        args << QStringLiteral("--passwordless");
     }
     d->child->start(QStringLiteral("%1/plasmalogin-helper").arg(QStringLiteral(LIBEXEC_INSTALL_DIR)), args);
 }

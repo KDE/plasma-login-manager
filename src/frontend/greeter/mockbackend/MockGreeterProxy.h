@@ -16,6 +16,7 @@ public:
     MockGreeterProxy();
 public Q_SLOTS:
     void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
+    void selectUser(const QString &user, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName, bool active) const;
 
 Q_SIGNALS:
     void informationMessage(const QString &message);

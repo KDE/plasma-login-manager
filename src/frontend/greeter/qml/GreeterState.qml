@@ -73,6 +73,36 @@ Item {
 
     property bool showPassword: false
 
+    readonly property bool screenActive: internal.activeWindow !== null
+
+    readonly property string currentPassword: {
+        if (loginState === GreeterState.LoginState.UserPrompt) {
+            return userPromptPassword;
+        }
+        return userListPassword;
+    }
+
+    readonly property bool passwordlessActive: screenActive && currentPassword.length === 0
+
+    readonly property string selectedUser: {
+        if (loginState === GreeterState.LoginState.UserPrompt) {
+            return userPromptUsername;
+        }
+        return PlasmaLogin.UserModel.data(PlasmaLogin.UserModel.index(userListIndex, 0), PlasmaLogin.UserModel.NameRole) ?? "";
+    }
+
+    readonly property int selectedSessionType: PlasmaLogin.SessionModel.data(PlasmaLogin.SessionModel.index(sessionIndex, 0), PlasmaLogin.SessionModel.TypeRole) ?? 0
+    readonly property string selectedSessionFileName: PlasmaLogin.SessionModel.data(PlasmaLogin.SessionModel.index(sessionIndex, 0), PlasmaLogin.SessionModel.FileNameRole) ?? ""
+
+    function notifySelectedUser(): void {
+        PlasmaLogin.Authenticator.selectUser(selectedUser, selectedSessionType, selectedSessionFileName, passwordlessActive);
+    }
+
+    Component.onCompleted: Qt.callLater(notifySelectedUser)
+    onSelectedUserChanged: Qt.callLater(notifySelectedUser)
+    onSelectedSessionFileNameChanged: Qt.callLater(notifySelectedUser)
+    onPasswordlessActiveChanged: Qt.callLater(notifySelectedUser)
+
     // Shared functionality
 
     readonly property bool inhibitGreeterTimeout: {

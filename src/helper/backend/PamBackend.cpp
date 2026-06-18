@@ -215,7 +215,9 @@ bool PamBackend::start(const QString &user)
 
     QString service = QStringLiteral("plasmalogin");
 
-    if (user == QStringLiteral("plasmalogin") && m_greeter) {
+    if (m_passwordless) {
+        service = QStringLiteral("plasmalogin-passwordless");
+    } else if (user == QStringLiteral("plasmalogin") && m_greeter) {
         service = QStringLiteral("plasmalogin-greeter");
     } else if (m_autologin) {
         service = QStringLiteral("plasmalogin-autologin");
@@ -245,8 +247,12 @@ bool PamBackend::authenticate()
 bool PamBackend::openSession()
 {
     if (!m_pam->setCred(PAM_ESTABLISH_CRED)) {
-        m_app->error(m_pam->errorString(), Auth::ERROR_AUTHENTICATION);
-        return false;
+        if (m_passwordless) {
+            qWarning() << "[PAM] setCred(PAM_ESTABLISH_CRED) failed in passwordless mode, continuing:" << m_pam->errorString();
+        } else {
+            m_app->error(m_pam->errorString(), Auth::ERROR_AUTHENTICATION);
+            return false;
+        }
     }
 
     QProcessEnvironment sessionEnv = m_app->session()->processEnvironment();
@@ -326,6 +332,10 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
         switch (msg[i]->msg_style) {
         case PAM_PROMPT_ECHO_OFF:
         case PAM_PROMPT_ECHO_ON:
+            if (m_passwordless) {
+                qWarning() << "[PAM] Passwordless attempt asked for input; refusing to prompt";
+                return PAM_CONV_ERR;
+            }
             newRequest = m_data->insertPrompt(msg[i], n == 1);
             break;
         case PAM_ERROR_MSG:
@@ -395,6 +405,11 @@ void PamBackend::setDisplayServer(bool on)
 void PamBackend::setGreeter(bool on)
 {
     m_greeter = on;
+}
+
+void PamBackend::setPasswordless(bool on)
+{
+    m_passwordless = on;
 }
 }
 

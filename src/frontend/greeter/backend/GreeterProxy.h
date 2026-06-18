@@ -41,6 +41,7 @@ public:
 
 public slots:
     void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
+    void selectUser(const QString &user, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName, bool active) const;
 
 private slots:
     void connected();

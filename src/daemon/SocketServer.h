@@ -51,6 +51,7 @@ public slots:
 
 signals:
     void login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session);
+    void selectUser(QLocalSocket *socket, const QString &user, const Session &session, bool active);
     void connected();
 
 private:

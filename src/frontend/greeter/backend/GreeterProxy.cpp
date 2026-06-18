@@ -61,6 +61,12 @@ void GreeterProxy::login(const QString &user, const QString &password, const PLA
     SocketWriter(d->socket) << quint32(GreeterMessages::Login) << user << password << static_cast<uint32_t>(sessionType) << sessionFileName;
 }
 
+void GreeterProxy::selectUser(const QString &user, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName, bool active) const
+{
+    SocketWriter(d->socket) << quint32(GreeterMessages::SelectUser) << user << static_cast<uint32_t>(sessionType) << sessionFileName
+                            << static_cast<uint32_t>(active);
+}
+
 void GreeterProxy::connected()
 {
     // log connection

@@ -59,5 +59,6 @@ if(INSTALL_PAM_CONFIGURATION)
     # Install pam files
     install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-autologin DESTINATION ${PAM_CONFIG_DIR})
     install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-greeter DESTINATION ${PAM_CONFIG_DIR})
+    install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin-passwordless DESTINATION ${PAM_CONFIG_DIR})
     install(FILES pam/${PAM_OS_CONFIGURATION}/plasmalogin DESTINATION ${PAM_CONFIG_DIR})
 endif()

@@ -108,8 +108,21 @@ Display::Display(Seat *parent)
     connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
     connect(m_auth, &Auth::error, this, &Display::slotAuthError);
 
+    m_passwordlessAuth = new Auth(this);
+    m_passwordlessAuth->setVerbose(true);
+    connect(m_passwordlessAuth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
+    connect(m_passwordlessAuth, &Auth::sessionStarted, this, &Display::slotSessionStarted);
+    connect(m_passwordlessAuth, &Auth::finished, this, &Display::slotHelperFinished);
+    connect(m_passwordlessAuth, &Auth::info, this, &Display::slotAuthInfo);
+    connect(m_passwordlessAuth, &Auth::error, this, &Display::slotAuthError);
+
     // connect login signal
     connect(m_socketServer, &SocketServer::login, this, &Display::login);
+    connect(m_socketServer, &SocketServer::selectUser, this, &Display::selectUser);
+
+    m_passwordlessTimer = new QTimer(this);
+    m_passwordlessTimer->setSingleShot(true);
+    connect(m_passwordlessTimer, &QTimer::timeout, this, &Display::startPasswordlessAttempt);
 
     // connect login result signals
     connect(this, &Display::loginFailed, m_socketServer, &SocketServer::loginFailed);
@@ -148,6 +161,7 @@ Display::Display(Seat *parent)
 Display::~Display()
 {
     disconnect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
+    disconnect(m_passwordlessAuth, &Auth::finished, this, &Display::slotHelperFinished);
     stop();
 }
 
@@ -237,6 +251,7 @@ void Display::stop()
     // stop the greeter
     m_greeter->stop();
 
+    stopPasswordless();
     m_auth->stop();
 
     // stop socket server
@@ -260,20 +275,92 @@ void Display::login(QLocalSocket *socket, const QString &user, const QString &pa
         return;
     }
 
+    stopPasswordless();
+
     // authenticate
     startAuth(user, password, session);
 }
 
-bool Display::startAuth(const QString &user, const QString &password, const Session &session)
+void Display::selectUser(QLocalSocket *socket, const QString &user, const Session &session, bool active)
 {
-    qDebug() << "start auth" << "user" << session.isValid() << session.exec();
+    if (!mainConfig.Passwordless.Enable.get()) {
+        return;
+    }
+
+    m_socket = socket;
+
+    const bool targetChanged = user != m_passwordlessUser || session.fileName() != m_passwordlessSession.fileName();
+    m_passwordlessUser = user;
+    m_passwordlessSession = session;
+    m_passwordlessActive = active;
 
     if (m_auth->isActive()) {
+        return;
+    }
+
+    if (targetChanged || !shouldPasswordless()) {
+        stopPasswordless();
+    }
+
+    if (shouldPasswordless() && !m_passwordlessAuth->isActive() && !m_passwordlessTimer->isActive()) {
+        startPasswordlessAttempt();
+    }
+}
+
+bool Display::shouldPasswordless() const
+{
+    return mainConfig.Passwordless.Enable.get() && m_passwordlessActive && !m_passwordlessUser.isEmpty() && m_passwordlessUser != QLatin1String("plasmalogin")
+        && m_passwordlessSession.isValid() && m_greeter->isRunning();
+}
+
+void Display::stopPasswordless()
+{
+    m_passwordlessTimer->stop();
+    if (m_passwordlessAuth->isActive()) {
+        m_passwordlessCancelled = true;
+        m_passwordlessAuth->stop();
+    }
+}
+
+void Display::schedulePasswordlessRetry()
+{
+    if (!shouldPasswordless()) {
+        return;
+    }
+
+    int delay = mainConfig.Passwordless.Interval.get();
+    if (delay <= 0) {
+        static const int kContinuousFloorMs = 500;
+        const qint64 elapsed = m_passwordlessAttemptElapsed.isValid() ? m_passwordlessAttemptElapsed.elapsed() : 0;
+        delay = elapsed < kContinuousFloorMs ? kContinuousFloorMs : 0;
+    }
+    m_passwordlessTimer->start(delay);
+}
+
+void Display::startPasswordlessAttempt()
+{
+    if (!shouldPasswordless() || m_auth->isActive() || m_passwordlessAuth->isActive()) {
+        return;
+    }
+    m_passwordlessAttemptElapsed.start();
+    startAuth(m_passwordlessUser, QString(), m_passwordlessSession, true);
+}
+
+bool Display::startAuth(const QString &user, const QString &password, const Session &session, bool passwordless)
+{
+    qDebug() << "start auth" << "user" << session.isValid() << session.exec() << "passwordless" << passwordless;
+
+    Auth *auth = passwordless ? m_passwordlessAuth : m_auth;
+
+    if (auth->isActive()) {
         qWarning() << "Existing authentication ongoing, aborting";
         return false;
     }
 
-    m_passPhrase = password;
+    auth->setPasswordless(passwordless);
+    if (!passwordless) {
+        m_passPhrase = password;
+    }
 
     // sanity check
     if (!session.isValid()) {
@@ -342,22 +429,30 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 
     if (session.xdgSessionType() == QLatin1String("x11")) {
-        m_auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
+        auth->setDisplayServerCommand(XorgUserDisplayServer::command(this));
     } else {
-        m_auth->setDisplayServerCommand(QStringLiteral());
+        auth->setDisplayServerCommand(QStringLiteral());
     }
-    m_auth->setUser(user);
+    auth->setUser(user);
     if (m_reuseSessionId.isNull()) {
-        m_auth->setSession(session.exec());
+        auth->setSession(session.exec());
     }
-    m_auth->insertEnvironment(env);
-    m_auth->start();
+    auth->insertEnvironment(env);
+    auth->start();
 
     return true;
 }
 
 void Display::slotAuthenticationFinished(const QString &user, bool success)
 {
+    const bool passwordless = sender() == m_passwordlessAuth;
+    if (passwordless) {
+        if (!success) {
+            return;
+        }
+        m_passwordlessTimer->stop();
+    }
+
     if (m_auth->autologin() && !success) {
         handleAutologinFailure();
         return;
@@ -397,6 +492,10 @@ void Display::slotAuthError(const QString &message, Auth::Error error)
 {
     qWarning() << "Authentication error:" << error << message;
 
+    if (sender() == m_passwordlessAuth && error == Auth::ERROR_AUTHENTICATION) {
+        return;
+    }
+
     if (!m_socket) {
         return;
     }
@@ -409,6 +508,17 @@ void Display::slotAuthError(const QString &message, Auth::Error error)
 
 void Display::slotHelperFinished(Auth::HelperExitStatus status)
 {
+    if (sender() == m_passwordlessAuth) {
+        if (m_passwordlessCancelled) {
+            m_passwordlessCancelled = false;
+            return;
+        }
+        if (status == Auth::HELPER_AUTH_ERROR) {
+            schedulePasswordlessRetry();
+            return;
+        }
+    }
+
     // Don't restart greeter and display server unless plasmalogin-helper exited
     // with an internal error or the user session finished successfully,
     // we want to avoid greeter from restarting when an authentication

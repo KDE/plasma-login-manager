@@ -20,6 +20,7 @@
 #define PLASMALOGIN_DISPLAY_H
 
 #include <QDir>
+#include <QElapsedTimer>
 #include <QObject>
 #include <QPointer>
 
@@ -27,6 +28,7 @@
 #include "Session.h"
 
 class QLocalSocket;
+class QTimer;
 
 namespace PLASMALOGIN
 {
@@ -59,6 +61,7 @@ public slots:
     void stop();
 
     void login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session);
+    void selectUser(QLocalSocket *socket, const QString &user, const Session &session, bool active);
     void displayServerStarted();
 
 signals:
@@ -69,10 +72,14 @@ signals:
     void loginSucceeded(QLocalSocket *socket);
 
 private:
-    bool startAuth(const QString &user, const QString &password, const Session &session);
+    bool startAuth(const QString &user, const QString &password, const Session &session, bool passwordless = false);
 
     void startSocketServerAndGreeter();
     bool handleAutologinFailure();
+
+    bool shouldPasswordless() const;
+    void stopPasswordless();
+    void schedulePasswordlessRetry();
 
     bool m_started{false};
 
@@ -86,10 +93,18 @@ private:
     Session m_autologinSession;
 
     Auth *m_auth{nullptr};
+    Auth *m_passwordlessAuth{nullptr};
     Seat *m_seat{nullptr};
     SocketServer *m_socketServer{nullptr};
     QPointer<QLocalSocket> m_socket;
     Greeter *m_greeter{nullptr};
+
+    QTimer *m_passwordlessTimer{nullptr};
+    QElapsedTimer m_passwordlessAttemptElapsed;
+    bool m_passwordlessCancelled{false};
+    bool m_passwordlessActive{false};
+    QString m_passwordlessUser;
+    Session m_passwordlessSession;
 
 private slots:
     void slotRequestChanged();
@@ -98,6 +113,7 @@ private slots:
     void slotHelperFinished(Auth::HelperExitStatus status);
     void slotAuthInfo(const QString &message, Auth::Info info);
     void slotAuthError(const QString &message, Auth::Error error);
+    void startPasswordlessAttempt();
 };
 }
 

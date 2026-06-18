@@ -148,6 +148,14 @@ void SocketServer::readyRead()
             // emit signal
             emit login(socket, user, password, session);
         } break;
+        case GreeterMessages::SelectUser: {
+            QString user;
+            Session session;
+            quint32 active = 0;
+            input >> user >> session >> active;
+
+            emit selectUser(socket, user, session, active != 0);
+        } break;
         default: {
             // log message
             qWarning() << "Unknown message" << message;

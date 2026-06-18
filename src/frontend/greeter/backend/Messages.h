@@ -24,6 +24,7 @@ namespace PLASMALOGIN
 enum class GreeterMessages {
     Connect = 0,
     Login,
+    SelectUser,
 };
 
 enum class DaemonMessages {

@@ -42,4 +42,12 @@ void MockGreeterProxy::login(const QString &user, const QString &password, const
     }
 }
 
+void MockGreeterProxy::selectUser(const QString &user, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName, bool active) const
+{
+    Q_UNUSED(user)
+    Q_UNUSED(sessionType)
+    Q_UNUSED(sessionFileName)
+    Q_UNUSED(active)
+}
+
 #include "moc_MockGreeterProxy.cpp"
