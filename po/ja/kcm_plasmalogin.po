@@ -1,12 +1,13 @@
 # SPDX-FileCopyrightText: 2026 Yuma Kakei <yumasansansan@gmail.com>
+# SPDX-FileCopyrightText: 2026 Mint <5602mint@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-01 00:47+0000\n"
-"PO-Revision-Date: 2026-03-12 21:41+0900\n"
-"Last-Translator: Yuma Kakei <yumasansansan@gmail.com>\n"
-"Language-Team: Japanese <kde-jp@kde.org>\n"
+"PO-Revision-Date: 2026-06-14 21:32+0900\n"
+"Last-Translator: Mint <5602mint@gmail.com>\n"
+"Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 25.12.2\n"
+"X-Generator: Lokalize 26.04.2\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -85,7 +86,8 @@ msgstr "Plasma 設定を適用する"
 msgid ""
 "This will make the Plasma login screen reflect your customizations to the "
 "following Plasma settings:"
-msgstr "以下の Plasma 設定への変更を、Plasma ログイン画面にも反映します:"
+msgstr ""
+"Plasma 設定に適用された以下の変更を、Plasma ログイン画面にも反映します。"
 
 #: ui/main.qml:66
 #, kde-kuit-format
@@ -96,6 +98,10 @@ msgid ""
 "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
 "configuration</item><item>Keyboard layouts</item></list></para>"
 msgstr ""
+"<para><list><item>カラースキーム</item><item>カーソルのテーマとサイズ</"
+"item><item>フォントとフォントレンダリング</item><item>NumLock 設定</"
+"item><item>Plasma テーマ</item><item>スケーリング DPI</item><item>スクリーン"
+"の設定</item><item>キーボードレイアウト</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
@@ -155,6 +161,10 @@ msgid ""
 "this, you can change the wallet to have a blank password. Note that this is "
 "insecure and should only be done in a trusted environment."
 msgstr ""
+"自動ログインを使用する場合、KDE ウォレットは自動的にアンロックされません。し"
+"たがって、ログインするたびに手動でのアンロックを要求されます。<nl/><nl/>ウォ"
+"レットに空のパスワードを設定すると、これを回避することができます。この設定は"
+"安全ではないため、信頼できる環境でのみ使用してください。"
 
 #: ui/main.qml:192
 #, kde-format
@@ -171,28 +181,28 @@ msgstr "ログオフ後すぐに再度ログインする"
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
-msgstr ""
+msgstr "デフォルト"
 
 #: ui/main.qml:215
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
-msgstr ""
+msgstr "デフォルトのユーザー:"
 
 #: ui/main.qml:221
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
-msgstr ""
+msgstr "最後にログインしたユーザー"
 
 #: ui/main.qml:293
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
-msgstr ""
+msgstr "デフォルトのセッション:"
 
 #: ui/main.qml:299
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
-msgstr ""
+msgstr "前回ログインしたセッション"
