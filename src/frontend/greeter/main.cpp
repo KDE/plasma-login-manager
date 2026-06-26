@@ -11,6 +11,7 @@
 #include <QQmlContext>
 #include <QQuickView>
 #include <QScreen>
+#include <QSurfaceFormat>
 
 #include <KLocalizedQmlContext>
 #include <KLocalizedString>
@@ -121,6 +122,10 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     parser.process(app);
     LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
+
+    auto format = QSurfaceFormat::defaultFormat();
+    format.setOption(QSurfaceFormat::ResetNotification);
+    QSurfaceFormat::setDefaultFormat(format);
 
     QQuickWindow::setDefaultAlphaBuffer(true);
     if (LoginGreeter::testModeEnabled()) {
