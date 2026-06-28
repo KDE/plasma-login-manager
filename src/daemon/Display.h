@@ -84,6 +84,10 @@ private:
     QString m_reuseSessionId;
 
     Session m_autologinSession;
+    // The user to autologin as. Normally PlasmaLogin::config()->autologinUser(), but for a seat
+    // with its own [Autologin][<seat>] config subgroup it is that subgroup's User= (the kiosk
+    // user on a dedicated seat). Set in the constructor, consumed by start().
+    QString m_autologinUser;
 
     Auth *m_auth{nullptr};
     Seat *m_seat{nullptr};
