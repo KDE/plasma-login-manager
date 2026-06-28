@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-01 00:47+0000\n"
-"PO-Revision-Date: 2026-05-15 23:00+0200\n"
+"PO-Revision-Date: 2026-06-27 11:45+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
 "Language: nn\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.04.1\n"
+"X-Generator: Lokalize 26.07.70\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -36,7 +36,7 @@ msgid ""
 "not exist. Please check your Plasma Login install."
 msgstr ""
 "Kan ikkje synkronisera Plasma-innstillingar, då brukaren «plasmalogin» ikkje "
-"finst. Kontroller installeringa av Plasma-innlogginga."
+"finst. Kontroller installeringa av Plasma-innloggaren."
 
 #: kcm.cpp:267
 msgid ""
@@ -44,7 +44,7 @@ msgid ""
 "exist. Please check your Plasma Login install."
 msgstr ""
 "Kan ikkje tilbakestilla Plasma-innstillingar, då brukaren «plasmalogin» "
-"ikkje finst. Kontroller installeringa av Plasma-innlogginga."
+"ikkje finst. Kontroller installeringa av Plasma-innloggaren."
 
 #: ui/Appearance.qml:23
 #, kde-format
@@ -106,7 +106,7 @@ msgstr ""
 "<para><list><item>Fargeoppsett</item><item>Peikartema og -storleik</"
 "item><item>Skrift og skriftvising</item><item>NumLock-innstilling</"
 "item><item>Plasma-tema</item><item>PPT-sakerling</item><item>Skjermoppsett</"
-"item> <item>Tastaturoppsett</item></list></para>"
+"item><item>Tastaturoppsett</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
@@ -114,7 +114,7 @@ msgid ""
 "Please note that theme files must be installed globally to be reflected on "
 "the Plasma login screen."
 msgstr ""
-"Merk at temafilene må vera installert globalt for å kunna brukast på "
+"Merk at temafilene må vera installerte globalt for å kunna brukast på "
 "innloggings­biletet til Plasma."
 
 #: ui/main.qml:71
@@ -127,7 +127,7 @@ msgstr "Bruk"
 #, kde-format
 msgctxt "@action:button"
 msgid "Reset to Default Settings"
-msgstr "Tilbakestill til standardinnstillingar"
+msgstr "Tilbakestill til standardinnstillingane"
 
 #: ui/main.qml:89
 #, kde-format
