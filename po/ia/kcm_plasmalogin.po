@@ -66,7 +66,7 @@ msgstr "Monstra horologio"
 #: ui/Appearance.qml:52
 #, kde-format
 msgid "Wallpaper type:"
-msgstr "Typo de Tapete de papiro:"
+msgstr "Typo de Fundo de schermo:"
 
 #: ui/main.qml:28
 #, kde-format
