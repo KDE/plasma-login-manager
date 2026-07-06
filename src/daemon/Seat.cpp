@@ -158,6 +158,21 @@ bool Seat::canTTY()
 
     return m_name.compare(QStringLiteral("seat0"), Qt::CaseInsensitive) == 0 && access(VirtualTerminal::defaultVtPath, F_OK) == 0;
 }
+
+bool Seat::tryLockFirstLogin()
+{
+    // One first-login token per seat. The token was previously daemon-global,
+    // so whichever seat's Display was constructed first consumed it for the
+    // whole boot; construction order varies between boots, so an autologin seat
+    // without Relogin only got its first-boot login when it happened to win
+    // that race. The soft-reboot check that decides whether this is a first
+    // boot stays on the daemon (isFirstBoot), as it is machine-global.
+    if (m_firstLoginLock) {
+        return false;
+    }
+    m_firstLoginLock = true;
+    return daemonApp->isFirstBoot();
+}
 }
 
 #include "moc_Seat.cpp"

@@ -20,6 +20,8 @@
 #include <QCoreApplication>
 #include <QtCore>
 
+#include <optional>
+
 #define daemonApp DaemonApp::instance()
 
 namespace PLASMALOGIN
@@ -40,7 +42,7 @@ public:
         return self;
     }
 
-    bool tryLockFirstLogin();
+    bool isFirstBoot();
 
     DisplayManager *displayManager() const;
     SeatManager *seatManager() const;
@@ -53,7 +55,7 @@ private:
 
     int m_lastSessionId{0};
 
-    bool m_firstloginLock{false};
+    std::optional<bool> m_isFirstBoot;
 
     DisplayManager *m_displayManager{nullptr};
     SeatManager *m_seatManager{nullptr};

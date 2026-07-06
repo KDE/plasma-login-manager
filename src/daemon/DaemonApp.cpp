@@ -85,12 +85,15 @@ int DaemonApp::newSessionId()
     return m_lastSessionId++;
 }
 
-bool DaemonApp::tryLockFirstLogin()
+bool DaemonApp::isFirstBoot()
 {
-    if (m_firstloginLock) {
-        return false;
+    // Whether this boot is a first boot (no soft reboot since power-on) is a
+    // machine-global fact that cannot change while the daemon runs, so resolve
+    // it once and cache the answer — including the "treat as first boot" error
+    // paths, which must stay sticky too.
+    if (m_isFirstBoot.has_value()) {
+        return m_isFirstBoot.value();
     }
-    m_firstloginLock = true;
 
     QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
                                                       QStringLiteral("/org/freedesktop/systemd1"),
@@ -103,16 +106,19 @@ bool DaemonApp::tryLockFirstLogin()
 
     if (reply.type() == QDBusMessage::ErrorMessage) {
         qWarning() << "DBus error:" << reply.errorName() << "-" << reply.errorMessage();
-        return true;
+        m_isFirstBoot = true;
+        return m_isFirstBoot.value();
     }
 
     const QVariant soft_reboot_count = qvariant_cast<QDBusVariant>(reply.arguments().at(0)).variant();
     if (!soft_reboot_count.isValid()) {
         qWarning() << "DBus variant is invalid:" << reply;
-        return true;
+        m_isFirstBoot = true;
+        return m_isFirstBoot.value();
     }
 
-    return soft_reboot_count.toUInt() == 0;
+    m_isFirstBoot = soft_reboot_count.toUInt() == 0;
+    return m_isFirstBoot.value();
 };
 }
 

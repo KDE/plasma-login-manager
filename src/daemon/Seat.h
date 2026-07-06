@@ -35,6 +35,7 @@ public:
     const QString &name() const;
     void createDisplay();
     bool canTTY();
+    bool tryLockFirstLogin();
 
 public slots:
     void removeDisplay(PLASMALOGIN::Display *display);
@@ -46,6 +47,8 @@ private:
     void startDisplay(PLASMALOGIN::Display *display, int tryNr = 1);
 
     QString m_name;
+
+    bool m_firstLoginLock = false;
 
     QVector<Display *> m_displays;
 };

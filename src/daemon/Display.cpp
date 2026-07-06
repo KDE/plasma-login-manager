@@ -135,7 +135,7 @@ Display::Display(Seat *parent)
     QString autologinUser;
     QString autologinSession;
     const KConfigGroup autologinGroup = PlasmaLogin::config()->config()->group(QStringLiteral("Autologin"));
-    const bool tryLockFirstLogin = daemonApp->tryLockFirstLogin();
+    const bool tryLockFirstLogin = seat()->tryLockFirstLogin();
     const QString seatName = seat()->name();
     if (autologinGroup.hasGroup(seatName)) {
         const KConfigGroup seatGroup = autologinGroup.group(seatName);
