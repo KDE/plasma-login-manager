@@ -135,10 +135,11 @@ Display::Display(Seat *parent)
     QString autologinUser;
     QString autologinSession;
     const KConfigGroup autologinGroup = PlasmaLogin::config()->config()->group(QStringLiteral("Autologin"));
+    const bool tryLockFirstLogin = daemonApp->tryLockFirstLogin();
     const QString seatName = seat()->name();
     if (autologinGroup.hasGroup(seatName)) {
         const KConfigGroup seatGroup = autologinGroup.group(seatName);
-        if (seatGroup.readEntry("Relogin", PlasmaLogin::config()->autologinRelogin()) || daemonApp->tryLockFirstLogin()) {
+        if (seatGroup.readEntry("Relogin", PlasmaLogin::config()->autologinRelogin()) || tryLockFirstLogin) {
             autologinUser = seatGroup.readEntry("User", QString());
             autologinSession = seatGroup.readEntry("Session", QString());
             if (autologinUser.isEmpty()) {
@@ -150,7 +151,7 @@ Display::Display(Seat *parent)
             qDebug() << "Per-seat autologin: seat" << seatName
                      << "has a config subgroup but Relogin is off and this is not the first login; it will be greeted.";
         }
-    } else if (PlasmaLogin::config()->autologinRelogin() || daemonApp->tryLockFirstLogin()) {
+    } else if (PlasmaLogin::config()->autologinRelogin() || tryLockFirstLogin) {
         autologinUser = PlasmaLogin::config()->autologinUser();
         autologinSession = PlasmaLogin::config()->autologinSession();
     }
