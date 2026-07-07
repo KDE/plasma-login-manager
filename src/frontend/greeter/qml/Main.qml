@@ -43,16 +43,16 @@ Item {
         target: mainStack
     }
 
-    Connections {
-        target: greeterEventFilter
+    PlasmaLogin.GreeterEventFilter {
+        window: root.Window.window
 
-        function onKeyPressed(): void {
+        onKeyPressed: {
             // callLater, as otherwise 'enter' key press would arrive after waking
             // and the uiVisible check would pass and a login attempt would be made
             Qt.callLater(() => PlasmaLogin.GreeterState.activateWindow(loginScreenRoot.Window.window));
         }
 
-        function onEscapeKeyPressed(): void {
+        onEscapeKeyPressed: {
             PlasmaLogin.GreeterState.timeoutWindow(loginScreenRoot.Window.window);
             /*
 -            if (inputPanel.keyboardActive) {

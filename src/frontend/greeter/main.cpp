@@ -87,10 +87,6 @@ private:
             window->setWindowState(Qt::WindowFullScreen);
         }
 
-        auto *greeterEventFilter = new GreeterEventFilter(this);
-        window->installEventFilter(greeterEventFilter);
-        window->rootContext()->setContextProperty(QStringLiteral("greeterEventFilter"), greeterEventFilter);
-
         window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
         window->show();
     }
@@ -139,6 +135,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Settings", &PlasmaLoginSettings::getInstance());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "StateConfig", StateConfig::self());
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "BlurScreenBridge", new BlurScreenBridge);
+    qmlRegisterType<GreeterEventFilter>("org.kde.plasma.login", 0, 1, "GreeterEventFilter");
 
     LoginGreeter greeter;
     return app.exec();
