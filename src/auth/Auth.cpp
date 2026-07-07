@@ -216,8 +216,12 @@ void Auth::Private::dataPending()
 void Auth::Private::childExited(int exitCode, QProcess::ExitStatus exitStatus)
 {
     if (exitStatus != QProcess::NormalExit) {
-        qWarning("Auth: plasmalogin-helper (%s) crashed (exit code %d)", qPrintable(child->arguments().join(QLatin1Char(' '))), HelperExitStatus(exitStatus));
+        qWarning("Auth: plasmalogin-helper (%s) crashed (signal %d)", qPrintable(child->arguments().join(QLatin1Char(' '))), exitCode);
         Q_EMIT qobject_cast<Auth *>(parent())->error(child->errorString(), ERROR_INTERNAL);
+        // A crashed helper's exit code is the terminating signal number, which
+        // can collide with HELPER_AUTH_ERROR; report a generic error instead.
+        Q_EMIT qobject_cast<Auth *>(parent())->finished(HELPER_OTHER_ERROR);
+        return;
     }
 
     if (exitCode == HELPER_SUCCESS) {
