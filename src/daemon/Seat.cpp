@@ -161,12 +161,9 @@ bool Seat::canTTY()
 
 bool Seat::tryLockFirstLogin()
 {
-    // One first-login token per seat. The token was previously daemon-global,
-    // so whichever seat's Display was constructed first consumed it for the
-    // whole boot; construction order varies between boots, so an autologin seat
-    // without Relogin only got its first-boot login when it happened to win
-    // that race. The soft-reboot check that decides whether this is a first
-    // boot stays on the daemon (isFirstBoot), as it is machine-global.
+    // One first-login token per seat, so each seat independently gets its
+    // first-boot login; the machine-global soft-reboot check stays on the
+    // daemon (isFirstBoot).
     if (m_firstLoginLock) {
         return false;
     }
