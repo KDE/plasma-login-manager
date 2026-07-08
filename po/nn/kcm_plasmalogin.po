@@ -105,7 +105,7 @@ msgid ""
 msgstr ""
 "<para><list><item>Fargeoppsett</item><item>Peikartema og -storleik</"
 "item><item>Skrift og skriftvising</item><item>NumLock-innstilling</"
-"item><item>Plasma-tema</item><item>PPT-sakerling</item><item>Skjermoppsett</"
+"item><item>Plasma-tema</item><item>PPT-skalering</item><item>Skjermoppsett</"
 "item><item>Tastaturoppsett</item></list></para>"
 
 #: ui/main.qml:67
