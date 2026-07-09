@@ -20,6 +20,7 @@
 #include "Display.h"
 #include <QObject>
 #include <QVector>
+#include <optional>
 
 namespace PLASMALOGIN
 {
@@ -36,6 +37,10 @@ public:
     void createDisplay();
     bool canTTY();
     bool tryLockFirstLogin();
+    int availableVt() const;
+    QString reusableSessionId(const QString &user) const;
+    void activateSession(const QString &sessionId) const;
+    std::optional<int> vtForSession(const QString &sessionId) const;
 
 public slots:
     void removeDisplay(PLASMALOGIN::Display *display);
@@ -45,6 +50,7 @@ private slots:
 
 private:
     void startDisplay(PLASMALOGIN::Display *display, int tryNr = 1);
+    bool isTtyInUse(const QString &tty) const;
 
     QString m_name;
 

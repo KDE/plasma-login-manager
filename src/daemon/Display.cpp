@@ -24,7 +24,6 @@
 #include "MainConfigLoader.h"
 #include "Seat.h"
 #include "SocketServer.h"
-#include "Utils.h"
 
 #include <QDebug>
 #include <QFile>
@@ -38,16 +37,10 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
-#include <QDBusConnection>
-#include <QDBusMessage>
-#include <QDBusReply>
-
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDesktopFile>
 
-#include "Login1Manager.h"
-#include "Login1Session.h"
 #include "VirtualTerminal.h"
 #include "config.h"
 
@@ -55,38 +48,6 @@ static int s_ttyFailures = 0;
 
 namespace PLASMALOGIN
 {
-bool isTtyInUse(const QString &desiredTty)
-{
-    if (Logind::isAvailable()) {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        auto reply = manager.ListSessions();
-        reply.waitForFinished();
-
-        const auto info = reply.value();
-        for (const SessionInfo &s : info) {
-            OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), s.sessionPath.path(), QDBusConnection::systemBus());
-            if (desiredTty == session.tTY() && session.state() != QLatin1String("closing")) {
-                qDebug() << "tty" << desiredTty << "already in use by" << session.user().path.path() << session.state() << session.display()
-                         << session.desktop() << session.vTNr();
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-int fetchAvailableVt()
-{
-    if (!isTtyInUse(QStringLiteral("tty%1").arg(PLASMALOGIN_INITIAL_VT))) {
-        return PLASMALOGIN_INITIAL_VT;
-    }
-    const auto vt = VirtualTerminal::currentVt();
-    if (vt > 0 && !isTtyInUse(QStringLiteral("tty%1").arg(vt))) {
-        return vt;
-    }
-    return VirtualTerminal::setUpNewVt();
-}
-
 Display::Display(Seat *parent)
     : QObject(parent)
     , m_auth(new Auth(this))
@@ -95,7 +56,7 @@ Display::Display(Seat *parent)
     , m_greeter(new Greeter(this))
 {
     if (seat()->canTTY()) {
-        m_terminalId = fetchAvailableVt();
+        m_terminalId = seat()->availableVt();
     }
     qDebug("Using VT %d", m_terminalId);
 
@@ -317,22 +278,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_reuseSessionId = QString();
 
-    if (Logind::isAvailable()) {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        auto reply = manager.ListSessions();
-        reply.waitForFinished();
-
-        const auto info = reply.value();
-        for (const SessionInfo &s : reply.value()) {
-            if (s.userName == user) {
-                OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), s.sessionPath.path(), QDBusConnection::systemBus());
-                if (session.service() == QLatin1String("plasmalogin") && session.state() == QLatin1String("online")) {
-                    m_reuseSessionId = s.sessionId;
-                    break;
-                }
-            }
-        }
-    }
+    m_reuseSessionId = seat()->reusableSessionId(user);
 
     // save session desktop file name, we'll use it to set the
     // last session later, in slotAuthenticationFinished()
@@ -387,9 +333,7 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
         qDebug() << "Authentication for user " << user << " successful";
 
         if (!m_reuseSessionId.isNull()) {
-            OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-            manager.UnlockSession(m_reuseSessionId);
-            manager.ActivateSession(m_reuseSessionId);
+            seat()->activateSession(m_reuseSessionId);
         }
 
         if (m_socket) {

@@ -26,6 +26,7 @@
 #include <QTimer>
 
 #include "Constants.h"
+#include "config.h"
 #include <KConfig>
 #include <KSharedConfig>
 #include <QDir>
@@ -50,6 +51,90 @@ Seat::Seat(const QString &name, QObject *parent)
 const QString &Seat::name() const
 {
     return m_name;
+}
+
+bool Seat::isTtyInUse(const QString &tty) const
+{
+    if (!Logind::isAvailable()) {
+        return false;
+    }
+
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    auto reply = manager.ListSessions();
+    reply.waitForFinished();
+
+    const auto info = reply.value();
+    for (const SessionInfo &sessionInfo : info) {
+        OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionInfo.sessionPath.path(), QDBusConnection::systemBus());
+        if (tty == session.tTY() && session.state() != QLatin1String("closing")) {
+            qDebug() << "tty" << tty << "already in use by" << session.user().path.path() << session.state() << session.display() << session.desktop()
+                     << session.vTNr();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int Seat::availableVt() const
+{
+    if (!isTtyInUse(QStringLiteral("tty%1").arg(PLASMALOGIN_INITIAL_VT))) {
+        return PLASMALOGIN_INITIAL_VT;
+    }
+
+    const auto vt = VirtualTerminal::currentVt();
+    if (vt > 0 && !isTtyInUse(QStringLiteral("tty%1").arg(vt))) {
+        return vt;
+    }
+
+    return VirtualTerminal::setUpNewVt();
+}
+
+QString Seat::reusableSessionId(const QString &user) const
+{
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    auto reply = manager.ListSessions();
+    reply.waitForFinished();
+
+    for (const SessionInfo &sessionInfo : reply.value()) {
+        if (sessionInfo.userName != user) {
+            continue;
+        }
+
+        OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionInfo.sessionPath.path(), QDBusConnection::systemBus());
+        if (session.service() == QLatin1String("plasmalogin") && session.state() == QLatin1String("online")) {
+            return sessionInfo.sessionId;
+        }
+    }
+
+    return {};
+}
+
+void Seat::activateSession(const QString &sessionId) const
+{
+    if (sessionId.isEmpty()) {
+        return;
+    }
+
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    manager.UnlockSession(sessionId);
+    manager.ActivateSession(sessionId);
+}
+
+std::optional<int> Seat::vtForSession(const QString &sessionId) const
+{
+    if (sessionId.isEmpty()) {
+        return std::nullopt;
+    }
+
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    if (!manager.isValid()) {
+        return std::nullopt;
+    }
+
+    auto sessionPath = manager.GetSession(sessionId);
+    OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
+    return QStringView(session.tTY()).mid(3).toInt(); // we need to convert ttyN to N
 }
 
 void Seat::createDisplay()
@@ -115,14 +200,8 @@ void Seat::removeDisplay(Display *display)
 void Seat::displayStopped()
 {
     Display *display = qobject_cast<Display *>(sender());
-    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
     std::optional<int> nextVt;
-    auto reusing = display->reuseSessionId();
-    if (manager.isValid() && !reusing.isEmpty()) {
-        auto sessionPath = manager.GetSession(reusing);
-        OrgFreedesktopLogin1SessionInterface sessionIface(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
-        nextVt = QStringView(sessionIface.tTY()).mid(3).toInt(); // we need to convert ttyN to N
-    }
+    nextVt = vtForSession(display->reuseSessionId());
 
     // remove display
     removeDisplay(display);
