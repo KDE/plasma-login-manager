@@ -195,9 +195,7 @@ void Greeter::onHelperFinished(Auth::HelperExitStatus status)
     m_auth->deleteLater();
     m_auth = nullptr;
 
-    if (status == Auth::HELPER_DISPLAYSERVER_ERROR) {
-        Q_EMIT displayServerFailed();
-    } else if (status == Auth::HELPER_TTY_ERROR) {
+    if (status == Auth::HELPER_TTY_ERROR) {
         Q_EMIT ttyFailed();
     } else if (status == Auth::HELPER_SESSION_ERROR) {
         Q_EMIT failed();

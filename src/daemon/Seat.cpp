@@ -147,11 +147,6 @@ void Seat::createDisplay()
 
     // restart display on stop
     connect(display, &Display::stopped, this, &Seat::displayStopped);
-    connect(display, &Display::displayServerFailed, this, [this, display] {
-        removeDisplay(display);
-        qWarning() << "Failed to launch a display server";
-        QCoreApplication::instance()->exit(12);
-    });
 
     // add display to the list
     m_displays << display;
@@ -181,30 +176,16 @@ void Seat::startDisplay(Display *display, int tryNr)
     });
 }
 
-void Seat::removeDisplay(Display *display)
-{
-    qDebug() << "Removing display" << display << "...";
-
-    // remove display from list
-    m_displays.removeAll(display);
-
-    // stop the display
-    display->blockSignals(true);
-    display->stop();
-    display->blockSignals(false);
-
-    // delete display
-    display->deleteLater();
-}
-
 void Seat::displayStopped()
 {
     Display *display = qobject_cast<Display *>(sender());
     std::optional<int> nextVt;
     nextVt = vtForSession(display->reuseSessionId());
 
-    // remove display
-    removeDisplay(display);
+    // remove display from list
+    m_displays.removeAll(display);
+    // delete display
+    display->deleteLater();
 
     // restart otherwise
     if (m_displays.isEmpty()) {

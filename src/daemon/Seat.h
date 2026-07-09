@@ -42,9 +42,6 @@ public:
     void activateSession(const QString &sessionId) const;
     std::optional<int> vtForSession(const QString &sessionId) const;
 
-public slots:
-    void removeDisplay(PLASMALOGIN::Display *display);
-
 private slots:
     void displayStopped();
 

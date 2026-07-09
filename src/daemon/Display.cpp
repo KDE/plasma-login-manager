@@ -87,7 +87,6 @@ Display::Display(Seat *parent)
         VirtualTerminal::jumpToVt(PLASMALOGIN_INITIAL_VT, true);
         stop();
     });
-    connect(m_greeter, &Greeter::displayServerFailed, this, &Display::displayServerFailed);
 
     // Per-seat autologin: a seat with its own [Autologin][<seat>] subgroup is logged in as that
     // subgroup's User running its Session, so a dedicated seat can be driven by the login manager

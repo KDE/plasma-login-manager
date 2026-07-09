@@ -63,7 +63,6 @@ public slots:
 
 signals:
     void stopped();
-    void displayServerFailed();
 
     void loginFailed(QLocalSocket *socket);
     void loginSucceeded(QLocalSocket *socket);
