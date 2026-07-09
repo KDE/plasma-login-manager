@@ -25,6 +25,7 @@ namespace PLASMALOGIN
 {
 class Seat;
 class LogindSeat;
+class LogindSession;
 
 class SeatManager : public QObject
 {
@@ -48,10 +49,13 @@ private Q_SLOTS:
     void logindSecureAttentionKey(const QString &name, const QDBusObjectPath &objectPath);
     void logindSeatAdded(const QString &name, const QDBusObjectPath &objectPath);
     void logindSeatRemoved(const QString &name, const QDBusObjectPath &objectPath);
+    void logindSessionAdded(const QString &id, const QDBusObjectPath &objectPath);
+    void logindSessionRemoved(const QString &id, const QDBusObjectPath &objectPath);
 
 private:
     QHash<QString, Seat *> m_seats; // these will exist only for graphical seats
     QHash<QString, LogindSeat *> m_systemSeats; // these will exist for all seats
+    QHash<QString, LogindSession *> m_systemSessions;
 };
 }
 

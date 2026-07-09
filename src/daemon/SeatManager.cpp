@@ -38,14 +38,37 @@ public:
     LogindSeat(const QString &name, const QDBusObjectPath &objectPath);
     QString name() const;
     bool canGraphical() const;
+    QString activeTty() const;
+    uint activeVt() const;
 Q_SIGNALS:
     void canGraphicalChanged(bool);
 private Q_SLOTS:
     void propertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
 
 private:
+    void updateActiveSession(const NamedSessionPath &activeSession);
+
     QString m_name;
     bool m_canGraphical;
+    QString m_activeTty;
+    uint m_activeVt = 0;
+};
+
+class LogindSession : public QObject
+{
+    Q_OBJECT
+public:
+    LogindSession(const QString &id, const QDBusObjectPath &objectPath, const QString &seatName = QString());
+    QString id() const;
+    QString seatName() const;
+    QString tty() const;
+    uint vt() const;
+
+private:
+    QString m_id;
+    QString m_seatName;
+    QString m_tty;
+    uint m_vt = 0;
 };
 
 LogindSeat::LogindSeat(const QString &name, const QDBusObjectPath &objectPath)
@@ -77,6 +100,21 @@ LogindSeat::LogindSeat(const QString &name, const QDBusObjectPath &objectPath)
             emit canGraphicalChanged(m_canGraphical);
         }
     });
+
+    auto activeSessionMsg =
+        QDBusMessage::createMethodCall(Logind::serviceName(), objectPath.path(), QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("Get"));
+    activeSessionMsg << Logind::seatIfaceName() << QStringLiteral("ActiveSession");
+
+    QDBusPendingReply<QVariant> activeSessionReply = QDBusConnection::systemBus().asyncCall(activeSessionMsg);
+    QDBusPendingCallWatcher *activeSessionWatcher = new QDBusPendingCallWatcher(activeSessionReply);
+    connect(activeSessionWatcher, &QDBusPendingCallWatcher::finished, this, [this, activeSessionReply, activeSessionWatcher]() {
+        activeSessionWatcher->deleteLater();
+        if (!activeSessionReply.isValid()) {
+            return;
+        }
+
+        updateActiveSession(qdbus_cast<NamedSessionPath>(activeSessionReply.value()));
+    });
 }
 
 bool LogindSeat::canGraphical() const
@@ -87,6 +125,16 @@ bool LogindSeat::canGraphical() const
 QString LogindSeat::name() const
 {
     return m_name;
+}
+
+QString LogindSeat::activeTty() const
+{
+    return m_activeTty;
+}
+
+uint LogindSeat::activeVt() const
+{
+    return m_activeVt;
 }
 
 void LogindSeat::propertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
@@ -100,6 +148,53 @@ void LogindSeat::propertiesChanged(const QString &interface, const QVariantMap &
         m_canGraphical = changedProperties[QStringLiteral("CanGraphical")].toBool();
         emit canGraphicalChanged(m_canGraphical);
     }
+    if (changedProperties.contains(QStringLiteral("ActiveSession"))) {
+        updateActiveSession(qdbus_cast<NamedSessionPath>(changedProperties[QStringLiteral("ActiveSession")]));
+    }
+}
+
+void LogindSeat::updateActiveSession(const NamedSessionPath &activeSession)
+{
+    const QString activeSessionPath = activeSession.path.path();
+    if (activeSessionPath.isEmpty() || activeSessionPath == QLatin1String("/")) {
+        return;
+    }
+
+    OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), activeSessionPath, QDBusConnection::systemBus());
+    m_activeTty = session.tTY();
+    m_activeVt = session.vTNr();
+}
+
+LogindSession::LogindSession(const QString &id, const QDBusObjectPath &objectPath, const QString &seatName)
+    : m_id(id)
+    , m_seatName(seatName)
+{
+    OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), objectPath.path(), QDBusConnection::systemBus());
+    if (m_seatName.isEmpty()) {
+        m_seatName = session.seat().name;
+    }
+    m_tty = session.tTY();
+    m_vt = session.vTNr();
+}
+
+QString LogindSession::id() const
+{
+    return m_id;
+}
+
+QString LogindSession::seatName() const
+{
+    return m_seatName;
+}
+
+QString LogindSession::tty() const
+{
+    return m_tty;
+}
+
+uint LogindSession::vt() const
+{
+    return m_vt;
 }
 
 void SeatManager::initialize()
@@ -112,6 +207,7 @@ void SeatManager::initialize()
 
     auto logind = new OrgFreedesktopLogin1ManagerInterface(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus(), this);
     QDBusPendingReply<NamedSeatPathList> reply = logind->ListSeats();
+    QDBusPendingReply<SessionInfoList> sessionsReply = logind->ListSessions();
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply);
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, watcher, reply]() {
@@ -121,9 +217,23 @@ void SeatManager::initialize()
             logindSeatAdded(seat.name, seat.path);
         }
     });
+    QDBusPendingCallWatcher *sessionsWatcher = new QDBusPendingCallWatcher(sessionsReply);
+    connect(sessionsWatcher, &QDBusPendingCallWatcher::finished, this, [this, sessionsWatcher, sessionsReply]() {
+        sessionsWatcher->deleteLater();
+        const auto sessions = sessionsReply.value();
+        for (const SessionInfo &session : sessions) {
+            if (session.seatId.isEmpty()) {
+                continue;
+            }
+            auto *logindSession = new LogindSession(session.sessionId, session.sessionPath, session.seatId);
+            m_systemSessions.insert(session.sessionId, logindSession);
+        }
+    });
 
     connect(logind, &OrgFreedesktopLogin1ManagerInterface::SeatNew, this, &SeatManager::logindSeatAdded);
     connect(logind, &OrgFreedesktopLogin1ManagerInterface::SeatRemoved, this, &SeatManager::logindSeatRemoved);
+    connect(logind, &OrgFreedesktopLogin1ManagerInterface::SessionNew, this, &SeatManager::logindSessionAdded);
+    connect(logind, &OrgFreedesktopLogin1ManagerInterface::SessionRemoved, this, &SeatManager::logindSessionRemoved);
     connect(logind, &OrgFreedesktopLogin1ManagerInterface::SecureAttentionKey, this, &SeatManager::logindSecureAttentionKey);
 }
 
@@ -163,26 +273,7 @@ void SeatManager::switchToGreeter(const QString &name)
         return;
     }
 
-    // Switch to existing greeter session if available
-    if (Logind::isAvailable()) {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        auto reply = manager.ListSessions();
-        reply.waitForFinished();
-
-        const auto info = reply.value();
-        for (const SessionInfo &s : reply.value()) {
-            if (s.userName == QLatin1String("plasmalogin")) {
-                OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), s.sessionPath.path(), QDBusConnection::systemBus());
-                if (session.service() == QLatin1String("plasmalogin-greeter") && session.seat().name == name) {
-                    session.Activate();
-                    return;
-                }
-            }
-        }
-    }
-
-    // switch to greeter
-    m_seats.value(name)->createDisplay();
+    m_seats.value(name)->switchToGreeter();
 }
 
 void PLASMALOGIN::SeatManager::logindSecureAttentionKey(const QString &name, const QDBusObjectPath &objectPath)
@@ -211,6 +302,40 @@ void PLASMALOGIN::SeatManager::logindSeatRemoved(const QString &name, const QDBu
     auto logindSeat = m_systemSeats.take(name);
     delete logindSeat;
     removeSeat(name);
+}
+
+void PLASMALOGIN::SeatManager::logindSessionAdded(const QString &id, const QDBusObjectPath &objectPath)
+{
+    auto *logindSession = new LogindSession(id, objectPath);
+    if (logindSession->seatName().isEmpty()) {
+        delete logindSession;
+        return;
+    }
+
+    auto *oldSession = m_systemSessions.take(id);
+    delete oldSession;
+    m_systemSessions.insert(id, logindSession);
+}
+
+void PLASMALOGIN::SeatManager::logindSessionRemoved(const QString &id, const QDBusObjectPath &objectPath)
+{
+    Q_UNUSED(objectPath);
+
+    auto *logindSession = m_systemSessions.take(id);
+    if (!logindSession) {
+        return;
+    }
+
+    const QString seatName = logindSession->seatName();
+    auto *logindSeat = m_systemSeats.value(seatName);
+    const bool shouldSwitchToGreeter = logindSeat && !logindSeat->activeTty().isEmpty() && logindSeat->activeTty() == logindSession->tty();
+    delete logindSession;
+
+    if (!shouldSwitchToGreeter || !m_seats.contains(seatName)) {
+        return;
+    }
+
+    switchToGreeter(seatName);
 }
 }
 

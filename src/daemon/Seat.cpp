@@ -25,7 +25,6 @@
 #include <QFile>
 #include <QTimer>
 
-#include "Constants.h"
 #include "config.h"
 #include <KConfig>
 #include <KSharedConfig>
@@ -33,10 +32,9 @@
 #include <QFileInfo>
 
 #include <Login1Manager.h>
-#include <Login1Seat.h>
 #include <Login1Session.h>
+#include <Login1Seat.h>
 #include <functional>
-#include <optional>
 #include <unistd.h>
 
 namespace PLASMALOGIN
@@ -121,20 +119,36 @@ void Seat::activateSession(const QString &sessionId) const
     manager.ActivateSession(sessionId);
 }
 
-std::optional<int> Seat::vtForSession(const QString &sessionId) const
+bool Seat::activateExistingGreeter() const
 {
-    if (sessionId.isEmpty()) {
-        return std::nullopt;
-    }
-
     OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
     if (!manager.isValid()) {
-        return std::nullopt;
+        return false;
     }
 
-    auto sessionPath = manager.GetSession(sessionId);
-    OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
-    return QStringView(session.tTY()).mid(3).toInt(); // we need to convert ttyN to N
+    auto reply = manager.ListSessions();
+    reply.waitForFinished();
+
+    for (const SessionInfo &sessionInfo : reply.value()) {
+        if (sessionInfo.userName != QLatin1String("plasmalogin")) {
+            continue;
+        }
+
+        OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionInfo.sessionPath.path(), QDBusConnection::systemBus());
+        if (session.service() == QLatin1String("plasmalogin-greeter") && session.seat().name == m_name) {
+            session.Activate();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Seat::switchToGreeter()
+{
+    if (!activateExistingGreeter()) {
+        createDisplay();
+    }
 }
 
 void Seat::createDisplay()
@@ -179,32 +193,14 @@ void Seat::startDisplay(Display *display, int tryNr)
 void Seat::displayStopped()
 {
     Display *display = qobject_cast<Display *>(sender());
-    std::optional<int> nextVt;
-    nextVt = vtForSession(display->reuseSessionId());
+    if (!display) {
+        return;
+    }
 
     // remove display from list
     m_displays.removeAll(display);
     // delete display
     display->deleteLater();
-
-    // restart otherwise
-    if (m_displays.isEmpty()) {
-        createDisplay();
-    }
-    // If there is still a session running on some display,
-    // switch to last display in display vector.
-    // Set vt_auto to true, so let the kernel handle the
-    // vt switch automatically (VT_AUTO).
-    else if (!nextVt) {
-        int disp = m_displays.last()->terminalId();
-        if (disp != -1) {
-            nextVt = disp;
-        }
-    }
-
-    if (nextVt) {
-        VirtualTerminal::jumpToVt(*nextVt, true);
-    }
 }
 
 bool Seat::canTTY()
