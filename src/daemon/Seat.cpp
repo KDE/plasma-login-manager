@@ -25,7 +25,6 @@
 #include <QFile>
 #include <QTimer>
 
-#include "Constants.h"
 #include "config.h"
 #include <KConfig>
 #include <KSharedConfig>
@@ -36,8 +35,20 @@
 #include <Login1Seat.h>
 #include <Login1Session.h>
 #include <functional>
-#include <optional>
 #include <unistd.h>
+
+using namespace Qt::StringLiterals;
+
+namespace
+{
+
+struct Autologin {
+    bool relogin;
+    QString user;
+    QString session;
+};
+
+} // namespace
 
 namespace PLASMALOGIN
 {
@@ -45,9 +56,6 @@ Seat::Seat(const QString &name, QObject *parent)
     : QObject(parent)
     , m_name(name)
 {
-    auto display = createDisplay();
-    setupAutoLogin(display);
-    display->start();
 }
 
 const QString &Seat::name() const
@@ -104,7 +112,14 @@ QString Seat::reusableSessionId(const QString &user) const
         }
 
         OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionInfo.sessionPath.path(), QDBusConnection::systemBus());
-        if (session.service() == QLatin1String("plasmalogin") && session.state() == QLatin1String("online")) {
+        qInfo() << "Checking session:" << sessionInfo.sessionId << "for user:" << user << "with service:" << session.service()
+                << "and state:" << session.state();
+        // Be careful when making changes here as the logic is a bit tricky.
+        // A session may be reused if it is from us and it is either online (not in the foreground) or active (in the foreground).
+        // The active part may be confusing... When switching user from an autologin session **with relogin** we are so fast that the session may still be
+        // marked active! No harm though, we can still reuse it just fine (we'll basically do a no-op activate run).
+        if ((session.service() == QLatin1String("plasmalogin") || session.service() == QLatin1String("plasmalogin-autologin"))
+            && (session.state() == QLatin1String("online") || session.state() == QLatin1String("active"))) {
             return sessionInfo.sessionId;
         }
     }
@@ -114,7 +129,9 @@ QString Seat::reusableSessionId(const QString &user) const
 
 void Seat::activateSession(const QString &sessionId) const
 {
+    qDebug() << "Activating session with ID:" << sessionId;
     if (sessionId.isEmpty()) {
+        qWarning() << "No session ID provided to activate.";
         return;
     }
 
@@ -123,25 +140,56 @@ void Seat::activateSession(const QString &sessionId) const
     manager.ActivateSession(sessionId);
 }
 
-std::optional<int> Seat::vtForSession(const QString &sessionId) const
+bool Seat::activateExistingGreeter()
 {
-    if (sessionId.isEmpty()) {
-        return std::nullopt;
+    if (!m_greeterSession) {
+        qDebug() << "No existing greeter session found. Not able to activate it.";
+        return false;
     }
 
-    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-    if (!manager.isValid()) {
-        return std::nullopt;
+    qDebug() << "Activating existing greeter session...";
+    m_greeterSession->activate();
+    return true;
+}
+
+void Seat::switchToGreeter()
+{
+    // A greeter becomes visible after this. UNLESS there is something super wrong with our state machine!
+    if (!activateExistingGreeter()) {
+        auto display = createDisplay();
+        if (!display) {
+            return;
+        }
+        maybeSetupAutoLogin(display);
+        display->start();
+    }
+}
+
+void Seat::setGreeterSession(const std::optional<QDBusObjectPath> &objectPath)
+{
+    if (!objectPath) {
+        qInfo() << "Resetting greeter session for seat:" << m_name;
+        m_greeterSession.reset();
+        return;
     }
 
-    auto sessionPath = manager.GetSession(sessionId);
-    OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionPath.value().path(), QDBusConnection::systemBus());
-    return QStringView(session.tTY()).mid(3).toInt(); // we need to convert ttyN to N
+    if (m_greeterSession) {
+        qWarning() << "Greeter session already exists, replacing it. This is probably a bug!";
+    }
+    m_greeterSession.emplace(objectPath.value());
 }
 
 Display *Seat::createDisplay()
 {
-    // create a new display
+    // Check if we have a display "queued". This is important to not double-queue startup of greeter displays.
+    for (const auto &display : m_displays) {
+        if (display->isGreeter()) {
+            qWarning() << "Found an existing display in greeter state, reusing it. This may indicate a race condition and should get investigated!";
+            return display;
+        }
+    }
+    // If no existing display is in greeter state then we need a new one.
+
     qDebug() << "Adding new display...";
     Display *display = new Display(this);
 
@@ -154,71 +202,58 @@ Display *Seat::createDisplay()
     return display;
 }
 
-void Seat::setupAutoLogin(Display *display)
+void Seat::maybeSetupAutoLogin(Display *display)
 {
     PlasmaLogin::config()->load();
 
     // Per-seat autologin overrides the global [Autologin] keys for a dedicated seat.
     // Resolve it here, after the configuration has been reloaded, rather than caching it
     // in Display's constructor.
-    QString autologinUser;
-    QString autologinSession;
+
     const bool firstLogin = tryLockFirstLogin();
-    const KConfigGroup autologinGroup = PlasmaLogin::config()->config()->group(QStringLiteral("Autologin"));
-    if (autologinGroup.hasGroup(m_name)) {
-        const KConfigGroup seatGroup = autologinGroup.group(m_name);
-        if (seatGroup.readEntry("Relogin", PlasmaLogin::config()->autologinRelogin()) || firstLogin) {
-            autologinUser = seatGroup.readEntry("User", QString());
-            autologinSession = seatGroup.readEntry("Session", QString());
-            if (autologinUser.isEmpty()) {
-                qWarning() << "Per-seat autologin: seat" << m_name << "is configured to autologin but names no User; it will be greeted.";
-            } else {
-                qInfo() << "Per-seat autologin: seat" << m_name << "configured for user" << autologinUser << "session" << autologinSession;
-            }
-        } else {
-            qDebug() << "Per-seat autologin: seat" << m_name << "has a config subgroup but Relogin is off and this is not the first login; it will be greeted.";
-        }
-    } else if (PlasmaLogin::config()->autologinRelogin() || firstLogin) {
-        autologinUser = PlasmaLogin::config()->autologinUser();
-        autologinSession = PlasmaLogin::config()->autologinSession();
+
+    // The global autologin configuration is used as a fallback if the seat-specific one is not set.
+    auto globalAutologin = []() -> Autologin {
+        auto autologinGroup = PlasmaLogin::config()->config()->group(u"Autologin"_s);
+        return Autologin{
+            .relogin = PlasmaLogin::config()->autologinRelogin(),
+            .user = PlasmaLogin::config()->autologinUser(),
+            .session = PlasmaLogin::config()->autologinSession(),
+        };
+    }();
+
+    // The effective configuration is the seat-specific, falling back to global as necessary.
+    auto effectiveAutologin = [this, &globalAutologin]() -> Autologin {
+        auto autologinGroup = PlasmaLogin::config()->config()->group(u"Autologin"_s);
+        auto group = autologinGroup.group(m_name);
+        return Autologin{
+            .relogin = group.readEntry("Relogin", globalAutologin.relogin),
+            .user = group.readEntry("User", globalAutologin.user),
+            .session = group.readEntry("Session", globalAutologin.session),
+        };
+    }();
+
+    qDebug() << "Effective autologin configuration for seat" << m_name << ":" << "relogin=" << effectiveAutologin.relogin << "user=" << effectiveAutologin.user
+             << "session=" << effectiveAutologin.session << ". isfirstLogin=" << firstLogin;
+
+    auto allowed = firstLogin || effectiveAutologin.relogin;
+    if (!allowed) {
+        return;
     }
-    display->setAutoLogin(autologinUser, autologinSession);
+    display->setAutoLogin(effectiveAutologin.user, effectiveAutologin.session);
 }
 
 void Seat::displayStopped()
 {
     Display *display = qobject_cast<Display *>(sender());
-    std::optional<int> nextVt;
-    nextVt = vtForSession(display->reuseSessionId());
+    if (!display) {
+        return;
+    }
 
     // remove display from list
     m_displays.removeAll(display);
     // delete display
     display->deleteLater();
-
-    // restart otherwise, unless the system is shutting down anyway
-    if (m_displays.isEmpty()) {
-        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
-        if (!Logind::isAvailable() || !manager.preparingForShutdown()) {
-            auto display = createDisplay();
-            setupAutoLogin(display);
-            display->start();
-        }
-    }
-    // If there is still a session running on some display,
-    // switch to last display in display vector.
-    // Set vt_auto to true, so let the kernel handle the
-    // vt switch automatically (VT_AUTO).
-    else if (!nextVt) {
-        int disp = m_displays.last()->terminalId();
-        if (disp != -1) {
-            nextVt = disp;
-        }
-    }
-
-    if (nextVt) {
-        VirtualTerminal::jumpToVt(*nextVt, true);
-    }
 }
 
 bool Seat::canTTY()

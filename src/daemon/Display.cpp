@@ -124,6 +124,11 @@ void Display::setAutoLogin(const QString &user, const QString &session)
     }
 }
 
+[[nodiscard]] bool Display::isGreeter() const
+{
+    return m_greeter && m_greeter->isRunning();
+}
+
 bool Display::start()
 {
     if (m_started) {
@@ -286,6 +291,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_auth->setUser(user);
     if (m_reuseSessionId.isNull()) {
+        qDebug() << "No reusable session found for user" << user;
         m_auth->setSession(session.exec());
     }
     m_auth->insertEnvironment(env);
@@ -302,9 +308,10 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
     }
 
     if (success) {
-        qDebug() << "Authentication for user " << user << " successful";
+        qDebug() << "Authentication for user " << user << " successful. Reusing session id?" << m_reuseSessionId;
 
         if (!m_reuseSessionId.isNull()) {
+            qDebug() << "Reusing session with ID:" << m_reuseSessionId;
             seat()->activateSession(m_reuseSessionId);
         }
 
@@ -345,6 +352,7 @@ void Display::slotAuthError(const QString &message, Auth::Error error)
 
 void Display::slotHelperFinished(Auth::HelperExitStatus status)
 {
+    qInfo() << "Helper finished with status:" << status;
     // Don't restart greeter and display server unless plasmalogin-helper exited
     // with an internal error or the user session finished successfully,
     // we want to avoid greeter from restarting when an authentication

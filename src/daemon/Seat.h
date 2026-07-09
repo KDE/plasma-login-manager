@@ -20,7 +20,8 @@
 #include "Display.h"
 #include <QObject>
 #include <QVector>
-#include <optional>
+
+#include "GreeterSession.h"
 
 namespace PLASMALOGIN
 {
@@ -34,26 +35,33 @@ public:
     explicit Seat(const QString &name, QObject *parent = 0);
 
     const QString &name() const;
-    Display *createDisplay();
+    [[nodiscard]] Display *createDisplay();
     bool canTTY();
     bool tryLockFirstLogin();
     VirtualTerminal::Terminal availableVt() const;
     QString reusableSessionId(const QString &user) const;
     void activateSession(const QString &sessionId) const;
-    std::optional<int> vtForSession(const QString &sessionId) const;
+    bool activateExistingGreeter();
+    void switchToGreeter();
+    void setGreeterSession(const std::optional<QDBusObjectPath> &objectPath);
 
 private slots:
     void displayStopped();
 
 private:
     bool isTtyInUse(const QString &tty) const;
-    void setupAutoLogin(Display *display);
+    void maybeSetupAutoLogin(Display *display);
 
     QString m_name;
 
     bool m_firstLoginLock = false;
 
+    /*!
+        Legacy tech. A Display is effectively either a Greeter session or a User session. Unfortunately this complicates
+        matters a bit because a Display may be "stopped" (have no Greeter) but still be active in so far as a session is managed by it.
+    */
     QVector<Display *> m_displays;
+    std::optional<GreeterSession> m_greeterSession;
 };
 }
 
