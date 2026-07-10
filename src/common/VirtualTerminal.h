@@ -29,6 +29,7 @@ QString path(int vt);
 int currentVt();
 int setUpNewVt();
 void jumpToVt(int vt, bool vt_auto);
+void ignoreVtSwitches();
 }
 }
 
