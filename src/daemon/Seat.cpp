@@ -18,8 +18,8 @@
 #include "Seat.h"
 
 #include "DaemonApp.h"
+#include "MainConfigLoader.h"
 #include "VirtualTerminal.h"
-#include "mainconfig.h"
 
 #include <QDebug>
 #include <QFile>
@@ -54,6 +54,8 @@ const QString &Seat::name() const
 
 void Seat::createDisplay()
 {
+    PlasmaLogin::config()->load();
+
     // create a new display
     qDebug() << "Adding new display...";
     Display *display = new Display(this);
