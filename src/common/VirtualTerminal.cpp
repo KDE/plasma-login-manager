@@ -87,17 +87,6 @@ static bool handleVtSwitches(int fd)
     return ok;
 }
 
-void ignoreVtSwitches()
-{
-    // For callers that execve() while still the VT_PROCESS owner:
-    // handled dispositions reset to SIG_DFL across exec, so a switch
-    // request in the window before the new compositor takes VT control
-    // would kill the process. SIG_IGN survives exec; the kernel defers
-    // the switch until the compositor re-establishes VT handling.
-    signal(RELEASE_DISPLAY_SIGNAL, SIG_IGN);
-    signal(ACQUIRE_DISPLAY_SIGNAL, SIG_IGN);
-}
-
 static void fixVtMode(int fd, bool vt_auto)
 {
     vt_mode getmodeReply{};
@@ -108,14 +97,6 @@ static void fixVtMode(int fd, bool vt_auto)
     if (ioctl(fd, VT_GETMODE, &getmodeReply) < 0) {
         qWarning() << "Failed to query VT mode:" << strerror(errno);
         ok = false;
-    }
-
-    // The previous VT_PROCESS owner (logind for Wayland greeters)
-    // can clear its VT mode mid-switch, leaving VT_WAITACTIVE hung.
-    // Take over so the relsig handshake completes locally.
-    if (getmodeReply.mode == VT_PROCESS) {
-        ok = handleVtSwitches(fd);
-        modeFixed = true;
     }
 
     if (getmodeReply.mode != VT_AUTO) {

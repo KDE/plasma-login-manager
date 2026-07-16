@@ -146,9 +146,6 @@ void UserSession::childModifier()
 
     if (vtNumber > 0) {
         VirtualTerminal::jumpToVt(vtNumber, x11Session);
-        // This process becomes the session via execve(); leave the VT
-        // switch signals ignored so they survive the exec.
-        VirtualTerminal::ignoreVtSwitches();
     }
 
 #ifdef Q_OS_LINUX
