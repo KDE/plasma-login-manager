@@ -16,6 +16,8 @@
 
 #include "debug.h"
 #include <QCoreApplication>
+#include <QDBusArgument>
+#include <QDebug>
 #include <QDir>
 #include <QEventLoop>
 #include <QProcess>
@@ -23,6 +25,7 @@
 
 #include <QDBusConnectionInterface>
 #include <QDBusMetaType>
+#include <QDBusReply>
 #include <QDBusServiceWatcher>
 
 #include <KConfig>
@@ -33,6 +36,7 @@
 #include <KPackage/PackageLoader>
 #include <KSharedConfig>
 
+#include <signal.h>
 #include <unistd.h>
 
 // #include <autostartscriptdesktopfile.h>
@@ -425,4 +429,103 @@ void resetSystemdFailedUnits()
                                                           QStringLiteral("org.freedesktop.systemd1.Manager"),
                                                           QStringLiteral("ResetFailed"));
     QDBusConnection::sessionBus().call(message);
+}
+
+int main(int argc, char **argv)
+{
+    QCoreApplication app(argc, argv);
+
+    createConfigDirectory();
+    signal(SIGTERM, sigtermHandler);
+
+    // Let clients try to reconnect to kwin after a restart
+    qputenv("QT_WAYLAND_RECONNECT", "1");
+
+    // Query whether org.freedesktop.locale1 is available. If it is, try to
+    // set XKB_DEFAULT_{MODEL,LAYOUT,VARIANT,OPTIONS} accordingly.
+    {
+        const QString locale1Service = QStringLiteral("org.freedesktop.locale1");
+        const QString locale1Path = QStringLiteral("/org/freedesktop/locale1");
+        QDBusMessage message =
+            QDBusMessage::createMethodCall(locale1Service, locale1Path, QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("GetAll"));
+        message << locale1Service;
+        QDBusMessage resultMessage = QDBusConnection::systemBus().call(message);
+        if (resultMessage.type() == QDBusMessage::ReplyMessage) {
+            QVariantMap result;
+            QDBusArgument dbusArgument = resultMessage.arguments().at(0).value<QDBusArgument>();
+            while (!dbusArgument.atEnd()) {
+                dbusArgument >> result;
+            }
+
+            auto queryAndSet = [&result](const char *var, const QString &value) {
+                const auto r = result.value(value).toString();
+                if (!r.isEmpty()) {
+                    qputenv(var, r.toUtf8());
+                }
+            };
+
+            queryAndSet("XKB_DEFAULT_MODEL", QStringLiteral("X11Model"));
+            queryAndSet("XKB_DEFAULT_LAYOUT", QStringLiteral("X11Layout"));
+            queryAndSet("XKB_DEFAULT_VARIANT", QStringLiteral("X11Variant"));
+            queryAndSet("XKB_DEFAULT_OPTIONS", QStringLiteral("X11Options"));
+        } else {
+            qWarning() << "not a reply org.freedesktop.locale1" << resultMessage;
+        }
+    }
+
+    setupPlasmaEnvironment();
+    runStartupConfig();
+
+    auto oldSystemdEnvironment = getSystemdEnvironment();
+    if (!syncDBusEnvironment()) {
+        out << "Could not sync environment to dbus.\n";
+        return 1;
+    };
+
+    {
+        auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                  QStringLiteral("/org/freedesktop/systemd1"),
+                                                  QStringLiteral("org.freedesktop.systemd1.Manager"),
+                                                  QStringLiteral("StartUnit"));
+        msg << QStringLiteral("plasma-login-wayland.target") << QStringLiteral("fail");
+        QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
+        if (!reply.isValid()) {
+            qWarning() << "Could not start systemd managed Plasma session:" << reply.error().name() << reply.error().message();
+        }
+    }
+
+    // stopped by the sigterm handler
+    app.exec();
+
+    qDebug() << "stopping";
+
+    {
+        auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                  QStringLiteral("/org/freedesktop/systemd1"),
+                                                  QStringLiteral("org.freedesktop.systemd1.Manager"),
+                                                  QStringLiteral("StopUnit"));
+        msg << QStringLiteral("plasma-login-wayland.target") << QStringLiteral("fail");
+        QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
+        if (!reply.isValid()) {
+            qWarning() << "Could not stop systemd managed Plasma session:" << reply.error().name() << reply.error().message();
+        }
+    }
+
+    qDebug() << "final cleanup";
+
+    // systemd returns when the call is made, but not all jobs are torn down
+    // this waits until kwin is definitely gone too, which helps logind
+    {
+        auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
+                                                  QStringLiteral("/org/freedesktop/systemd1"),
+                                                  QStringLiteral("org.freedesktop.systemd1.Manager"),
+                                                  QStringLiteral("StopUnit"));
+        msg << QStringLiteral("plasma-login-kwin_wayland.service") << QStringLiteral("fail");
+        QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
+        if (!reply.isValid()) {
+            qWarning() << "Could not close up systemd managed Plasma session:" << reply.error().name() << reply.error().message();
+        }
+    }
+
+    return 0;
 }
