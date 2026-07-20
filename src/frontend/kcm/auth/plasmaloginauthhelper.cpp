@@ -8,6 +8,7 @@
 #include "plasmaloginauthhelper.h"
 #include "config.h"
 
+#include <dirent.h>
 #include <fcntl.h> /* Definition of O_* and S_* constants */
 #include <linux/openat2.h> /* Definition of RESOLVE_* constants */
 #include <sys/stat.h>
@@ -87,12 +88,96 @@ static bool runAsPlasmaLoginUser(Func function)
     }
 }
 
+static bool adjustOwnershipRecursively(int dirFd, uid_t uid, gid_t gid, const QString &path)
+{
+    bool success = true;
+
+    DIR *dir = fdopendir(dirFd);
+    if (!dir) {
+        qWarning() << "Could not open directory stream for" << path << ":" << strerror(errno);
+        close(dirFd);
+        return false;
+    }
+    auto closeDir = qScopeGuard([dir]() {
+        closedir(dir);
+    });
+
+    while (dirent *entry = readdir(dir)) {
+        const QByteArray name(entry->d_name);
+        if (name == "." || name == "..") {
+            continue;
+        }
+
+        struct stat statBuf;
+        if (fstatat(dirFd, name.constData(), &statBuf, AT_SYMLINK_NOFOLLOW) != 0) {
+            qWarning() << "Could not stat" << path + QLatin1Char('/') + QString::fromUtf8(name) << ":" << strerror(errno);
+            success = false;
+            continue;
+        }
+
+        if (S_ISLNK(statBuf.st_mode)) {
+            continue;
+        }
+
+        if (S_ISDIR(statBuf.st_mode)) {
+            struct open_how how = {.flags = O_RDONLY | O_DIRECTORY | O_CLOEXEC,
+                                   .mode = 0,
+                                   .resolve = RESOLVE_BENEATH | RESOLVE_NO_MAGICLINKS};
+            const int childFd = syscall(SYS_openat2, dirFd, name.constData(), &how, sizeof(struct open_how));
+            if (childFd < 0) {
+                qWarning() << "Could not open directory" << path + QLatin1Char('/') + QString::fromUtf8(name) << ":" << strerror(errno);
+                success = false;
+                continue;
+            }
+
+            success = adjustOwnershipRecursively(childFd, uid, gid, path + QLatin1Char('/') + QString::fromUtf8(name)) && success;
+        }
+
+        if (fchownat(dirFd, name.constData(), uid, gid, AT_SYMLINK_NOFOLLOW) != 0) {
+            qWarning() << "Could not change owner of" << path + QLatin1Char('/') + QString::fromUtf8(name) << ":" << strerror(errno);
+            success = false;
+        }
+    }
+
+    return success;
+}
+
+bool PlasmaLoginAuthHelper::adjustPermissionsFromPlasma6_6()
+{
+    // Plasma 6.6 ran some things as root. For 6.7 onwards we run them as the
+    // plasmalogin user, so upgraded installations may need ownership repaired.
+    KUser user(QStringLiteral("plasmalogin"));
+    if (!user.isValid()) {
+        qWarning() << "Could not find plasmalogin user";
+        return false;
+    }
+
+    const QString homeDirPath = user.homeDir();
+    if (homeDirPath.isEmpty()) {
+        qWarning() << "Could not determine home directory for plasmalogin user";
+        return false;
+    }
+
+    const QByteArray homeDirPathUtf8 = homeDirPath.toUtf8();
+    const int homeDirFd = open(homeDirPathUtf8.constData(), O_RDONLY | O_DIRECTORY | O_CLOEXEC | O_NOFOLLOW);
+    if (homeDirFd < 0) {
+        qWarning() << "Could not open home directory for plasmalogin user:" << strerror(errno);
+        return false;
+    }
+
+    return adjustOwnershipRecursively(homeDirFd, user.userId().nativeId(), user.groupId().nativeId(), homeDirPath);
+}
+
 ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
 {
     QString homeDir;
     if (auto opt = plasmaloginUserHomeDir()) {
         homeDir = *opt;
     } else {
+        return ActionReply::HelperErrorReply();
+    }
+
+    if (!adjustPermissionsFromPlasma6_6()) {
         return ActionReply::HelperErrorReply();
     }
 
@@ -168,6 +253,10 @@ ActionReply PlasmaLoginAuthHelper::reset(const QVariantMap &args)
         return ActionReply::HelperErrorReply();
     }
 
+    if (!adjustPermissionsFromPlasma6_6()) {
+        return ActionReply::HelperErrorReply();
+    }
+
     bool rc = runAsPlasmaLoginUser([homeDir]() {
         QDir cacheDir(homeDir + QStringLiteral("/.cache"));
         if (cacheDir.exists()) {
@@ -237,6 +326,10 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         homeDirPath = *opt;
     } else {
         qWarning() << "Could not determine home directory for plasmalogin user";
+        return ActionReply::HelperErrorReply();
+    }
+
+    if (!adjustPermissionsFromPlasma6_6()) {
         return ActionReply::HelperErrorReply();
     }
 
