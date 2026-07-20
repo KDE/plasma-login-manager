@@ -151,6 +151,32 @@ void Seat::createDisplay()
     // add display to the list
     m_displays << display;
 
+    // Per-seat autologin overrides the global [Autologin] keys for a dedicated seat.
+    // Resolve it here, after the configuration has been reloaded, rather than caching it
+    // in Display's constructor.
+    QString autologinUser;
+    QString autologinSession;
+    const bool firstLogin = tryLockFirstLogin();
+    const KConfigGroup autologinGroup = PlasmaLogin::config()->config()->group(QStringLiteral("Autologin"));
+    if (autologinGroup.hasGroup(m_name)) {
+        const KConfigGroup seatGroup = autologinGroup.group(m_name);
+        if (seatGroup.readEntry("Relogin", PlasmaLogin::config()->autologinRelogin()) || firstLogin) {
+            autologinUser = seatGroup.readEntry("User", QString());
+            autologinSession = seatGroup.readEntry("Session", QString());
+            if (autologinUser.isEmpty()) {
+                qWarning() << "Per-seat autologin: seat" << m_name << "is configured to autologin but names no User; it will be greeted.";
+            } else {
+                qInfo() << "Per-seat autologin: seat" << m_name << "configured for user" << autologinUser << "session" << autologinSession;
+            }
+        } else {
+            qDebug() << "Per-seat autologin: seat" << m_name << "has a config subgroup but Relogin is off and this is not the first login; it will be greeted.";
+        }
+    } else if (PlasmaLogin::config()->autologinRelogin() || firstLogin) {
+        autologinUser = PlasmaLogin::config()->autologinUser();
+        autologinSession = PlasmaLogin::config()->autologinSession();
+    }
+    display->setAutoLogin(autologinUser, autologinSession);
+
     // start the display
     startDisplay(display);
 }

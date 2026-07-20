@@ -37,10 +37,6 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
-#include <KConfig>
-#include <KConfigGroup>
-#include <KDesktopFile>
-
 #include "VirtualTerminal.h"
 #include "config.h"
 
@@ -87,47 +83,6 @@ Display::Display(Seat *parent)
         VirtualTerminal::jumpToVt(PLASMALOGIN_INITIAL_VT, true);
         stop();
     });
-
-    // Per-seat autologin: a seat with its own [Autologin][<seat>] subgroup is logged in as that
-    // subgroup's User running its Session, so a dedicated seat can be driven by the login manager
-    // without the greeter claiming it. The subgroup overrides the [Autologin] keys (User, Session,
-    // Relogin) for that seat; a seat with no subgroup takes the global path unchanged.
-    QString autologinUser;
-    QString autologinSession;
-    const KConfigGroup autologinGroup = PlasmaLogin::config()->config()->group(QStringLiteral("Autologin"));
-    const bool tryLockFirstLogin = seat()->tryLockFirstLogin();
-    const QString seatName = seat()->name();
-    if (autologinGroup.hasGroup(seatName)) {
-        const KConfigGroup seatGroup = autologinGroup.group(seatName);
-        if (seatGroup.readEntry("Relogin", PlasmaLogin::config()->autologinRelogin()) || tryLockFirstLogin) {
-            autologinUser = seatGroup.readEntry("User", QString());
-            autologinSession = seatGroup.readEntry("Session", QString());
-            if (autologinUser.isEmpty()) {
-                qWarning() << "Per-seat autologin: seat" << seatName << "is configured to autologin but names no User; it will be greeted.";
-            } else {
-                qInfo() << "Per-seat autologin: seat" << seatName << "configured for user" << autologinUser << "session" << autologinSession;
-            }
-        } else {
-            qDebug() << "Per-seat autologin: seat" << seatName
-                     << "has a config subgroup but Relogin is off and this is not the first login; it will be greeted.";
-        }
-    } else if (PlasmaLogin::config()->autologinRelogin() || tryLockFirstLogin) {
-        autologinUser = PlasmaLogin::config()->autologinUser();
-        autologinSession = PlasmaLogin::config()->autologinSession();
-    }
-
-    if (!autologinUser.isEmpty()) {
-        m_autologinUser = autologinUser;
-        // determine session type
-        m_autologinSession = Session::create(Session::WaylandSession, autologinSession);
-        if (!m_autologinSession.isValid()) {
-            m_autologinSession = Session::create(Session::X11Session, autologinSession);
-        }
-        if (!m_autologinSession.isValid()) {
-            qCritical() << "Unable to find autologin session entry" << autologinSession << "for user"
-                        << autologinUser << "on seat" << seatName << "— falling back to the greeter";
-        }
-    }
 }
 
 Display::~Display()
@@ -149,6 +104,24 @@ QString Display::sessionType() const
 Seat *Display::seat() const
 {
     return m_seat;
+}
+
+void Display::setAutoLogin(const QString &user, const QString &session)
+{
+    m_autologinUser = user;
+    m_autologinSession = Session();
+    if (user.isEmpty()) {
+        return;
+    }
+
+    m_autologinSession = Session::create(Session::WaylandSession, session);
+    if (!m_autologinSession.isValid()) {
+        m_autologinSession = Session::create(Session::X11Session, session);
+    }
+    if (!m_autologinSession.isValid()) {
+        qCritical() << "Unable to find autologin session entry" << session << "for user" << user << "on seat" << seat()->name()
+                    << "— falling back to the greeter";
+    }
 }
 
 bool Display::start()
