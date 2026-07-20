@@ -87,57 +87,6 @@ static bool handleVtSwitches(int fd)
     return ok;
 }
 
-static void fixVtMode(int fd, bool vt_auto)
-{
-    vt_mode getmodeReply{};
-    int kernelDisplayMode = 0;
-    bool modeFixed = false;
-    bool ok = true;
-
-    if (ioctl(fd, VT_GETMODE, &getmodeReply) < 0) {
-        qWarning() << "Failed to query VT mode:" << strerror(errno);
-        ok = false;
-    }
-
-    if (getmodeReply.mode != VT_AUTO) {
-        goto out;
-    }
-
-    if (ioctl(fd, KDGETMODE, &kernelDisplayMode) < 0) {
-        qWarning() << "Failed to query kernel display mode:" << strerror(errno);
-        ok = false;
-    }
-
-    if (kernelDisplayMode == KD_TEXT) {
-        goto out;
-    }
-
-    // VT is in the VT_AUTO + KD_GRAPHICS state, fix it
-    if (vt_auto) {
-        // If vt_auto is true, the controlling process is already gone, so there is no
-        // process which could send the VT_RELDISP 1 ioctl to release the vt.
-        // Switch to KD_TEXT and let the kernel switch vts automatically
-        if (ioctl(fd, KDSETMODE, KD_TEXT) < 0) {
-            qWarning("Failed to set text mode for current VT: %s", strerror(errno));
-            ok = false;
-        }
-    } else {
-        ok = handleVtSwitches(fd);
-        modeFixed = true;
-    }
-out:
-    if (!ok) {
-        qCritical() << "Failed to set up VT mode";
-        return;
-    }
-
-    if (modeFixed) {
-        qDebug() << "VT mode fixed";
-    } else {
-        qDebug() << "VT mode didn't need to be fixed";
-    }
-}
-
 int currentVt()
 {
     int fd = open(defaultVtPath, O_RDWR | O_NOCTTY);
@@ -199,16 +148,6 @@ void jumpToVt(int vt, bool vt_auto)
             qWarning("Failed to clear VT %d: %s", vt, strerror(errno));
         }
 
-        // set graphics mode to prevent flickering
-        if (ioctl(fd, KDSETMODE, KD_GRAPHICS) < 0) {
-            qWarning("Failed to set graphics mode for VT %d: %s", vt, strerror(errno));
-        }
-
-        // it's possible that the current VT was left in a broken
-        // combination of states (KD_GRAPHICS with VT_AUTO) that we
-        // cannot switch from, so make sure things are in a way that
-        // will make VT_ACTIVATE work without hanging VT_WAITACTIVE
-        fixVtMode(activeVtFd, vt_auto);
     } else {
         qWarning("Failed to open %s: %s", qPrintable(ttyString), strerror(errno));
         qDebug("Using %s instead of %s!", defaultVtPath, qPrintable(ttyString));
