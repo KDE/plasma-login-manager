@@ -93,12 +93,15 @@ Item {
 
     // Shared functionality
 
+    property bool greeterHasSessionButtonPopup: false
     readonly property bool inhibitGreeterTimeout: {
         if (greeterState.loginState === PlasmaLogin.GreeterState.LoginState.UserList && greeterState.userListPassword.length > 0) {
             // We're on the user list and a password is entered
             return true;
         } else if (greeterState.loginState === PlasmaLogin.GreeterState.UserPrompt && greeterState.userPromptPassword.length > 0) {
             // We're on the user prompt and a password is entered
+            return true;
+        } else if (greeterState.greeterHasSessionButtonPopup) {
             return true;
         }
 

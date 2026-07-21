@@ -35,6 +35,13 @@ PlasmaComponents.ComboBox {
     PlasmaComponents.ToolTip.visible: hovered && contentItem.truncated && !popup.visible
     PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
 
+    Binding {
+        target: PlasmaLogin.GreeterState
+        property: "greeterHasSessionButtonPopup"
+        value: true
+        when: popup.visible
+    }
+
     currentIndex: PlasmaLogin.GreeterState.sessionIndex
 
     Connections {
