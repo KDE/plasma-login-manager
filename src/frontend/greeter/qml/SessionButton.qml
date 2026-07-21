@@ -1,61 +1,41 @@
 /*
-    SPDX-FileCopyrightText: 2016 David Edmundson <davidedmundson@kde.org>
-    SPDX-FileCopyrightText: 2022 Aleix Pol Gonzalez <aleixpol@kde.org>
+    SPDX-FileCopyrightText: 2026 Oliver Beard <olib141@outlook.com>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-import QtQuick 2.15
+import QtQuick
+import QtQuick.Controls as QQC2
 
-import org.kde.plasma.components 3.0 as PlasmaComponents
-import org.kde.kirigami 2.20 as Kirigami
+import org.kde.plasma.components as PlasmaComponents
+import org.kde.kirigami as Kirigami
 
 import org.kde.plasma.login as PlasmaLogin
 
-PlasmaComponents.ToolButton {
+PlasmaComponents.ComboBox {
     id: root
 
-    property int currentIndex: PlasmaLogin.GreeterState.sessionIndex
+    model: PlasmaLogin.SessionModel
+    textRole: "display"
 
-    // Count is used as instantiator may not have made items yet
-    text: i18nd("plasma_login", "Desktop Session: %1", instantiator.count > currentIndex ? instantiator.objectAt(currentIndex).text : "")
-    visible: menu.count > 1
+    visible: count > 1
+    flat: true
+    displayText: i18nd("plasma_login", "Desktop Session: %1", currentText)
 
-    checkable: true
-    checked: menu.opened
-    onToggled: {
-        if (checked) {
-            menu.popup(root, 0, 0)
-        } else {
-            menu.dismiss()
-        }
+    contentItem: QQC2.Label {
+        font: root.font
+        horizontalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
+
+        text: root.displayText
     }
 
-    signal sessionChanged()
+    PlasmaComponents.ToolTip.text: currentText
+    PlasmaComponents.ToolTip.visible: hovered && contentItem.truncated && !popup.visible
+    PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
 
-    PlasmaComponents.Menu {
-        Kirigami.Theme.colorSet: Kirigami.Theme.Window
-        Kirigami.Theme.inherit: false
-
-        id: menu
-        Instantiator {
-            id: instantiator
-            model: PlasmaLogin.SessionModel
-            onObjectAdded: (index, object) => menu.insertItem(index, object)
-            onObjectRemoved: (index, object) => menu.removeItem(object)
-            delegate: PlasmaComponents.MenuItem {
-                PlasmaComponents.ToolTip.text: model.comment
-                PlasmaComponents.ToolTip.visible: hovered
-                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
-
-                text: model.display
-                onTriggered: {
-                    root.currentIndex = model.index
-                    sessionChanged()
-                }
-            }
-        }
-    }
+    currentIndex: PlasmaLogin.GreeterState.sessionIndex
 
     Connections {
         target: PlasmaLogin.GreeterState
@@ -63,7 +43,6 @@ PlasmaComponents.ToolButton {
         function onSessionIndexChanged() {
             if (root.currentIndex != PlasmaLogin.GreeterState.sessionIndex) {
                 root.currentIndex = PlasmaLogin.GreeterState.sessionIndex;
-                menu.currentIndex = root.currentIndex;
             }
         }
     }
