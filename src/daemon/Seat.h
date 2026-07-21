@@ -37,7 +37,7 @@ public:
     void createDisplay();
     bool canTTY();
     bool tryLockFirstLogin();
-    int availableVt() const;
+    VirtualTerminal::Terminal availableVt() const;
     QString reusableSessionId(const QString &user) const;
     void activateSession(const QString &sessionId) const;
     std::optional<int> vtForSession(const QString &sessionId) const;

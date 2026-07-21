@@ -25,6 +25,7 @@
 
 #include "Auth.h"
 #include "Session.h"
+#include "VirtualTerminal.h"
 
 class QLocalSocket;
 
@@ -75,8 +76,8 @@ private:
 
     bool m_started{false};
 
-    int m_terminalId = -1;
-    int m_sessionTerminalId = 0;
+    VirtualTerminal::Terminal m_terminalId;
+    VirtualTerminal::Terminal m_sessionTerminalId;
 
     QString m_passPhrase;
     QString m_sessionName;

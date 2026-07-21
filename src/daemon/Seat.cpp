@@ -76,15 +76,15 @@ bool Seat::isTtyInUse(const QString &tty) const
     return false;
 }
 
-int Seat::availableVt() const
+VirtualTerminal::Terminal Seat::availableVt() const
 {
     if (!isTtyInUse(QStringLiteral("tty%1").arg(PLASMALOGIN_INITIAL_VT))) {
-        return PLASMALOGIN_INITIAL_VT;
+        return VirtualTerminal::openVt(PLASMALOGIN_INITIAL_VT);
     }
 
     const auto vt = VirtualTerminal::currentVt();
     if (vt > 0 && !isTtyInUse(QStringLiteral("tty%1").arg(vt))) {
-        return vt;
+        return VirtualTerminal::openVt(vt);
     }
 
     return VirtualTerminal::setUpNewVt();

@@ -58,7 +58,7 @@ Display::Display(Seat *parent)
     if (seat()->canTTY()) {
         m_terminalId = seat()->availableVt();
     }
-    qDebug("Using VT %d", m_terminalId);
+    qDebug("Using VT %d", m_terminalId.tty());
 
     // respond to authentication requests
     m_auth->setVerbose(true);
@@ -138,7 +138,7 @@ Display::~Display()
 
 int Display::terminalId() const
 {
-    return m_auth->isActive() ? m_sessionTerminalId : m_terminalId;
+    return (m_auth->isActive() ? m_sessionTerminalId : m_terminalId).tty();
 }
 
 QString Display::sessionType() const
@@ -283,7 +283,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     // last session later, in slotAuthenticationFinished()
     m_sessionName = session.fileName();
 
-    m_sessionTerminalId = m_terminalId;
+    m_sessionTerminalId = {m_terminalId.tty(), m_terminalId.ttyFd().duplicate()};
 
     if (m_greeter->isRunning()) {
         // Create a new VT when we need to have another compositor running
@@ -293,7 +293,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     }
 
     // some information
-    qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId << session.xdgSessionType();
+    qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId.tty() << session.xdgSessionType();
 
     QProcessEnvironment env;
     env.insert(QStringLiteral("PATH"), PlasmaLogin::config()->defaultPath());
@@ -306,8 +306,8 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("user"));
     env.insert(QStringLiteral("XDG_SESSION_TYPE"), session.xdgSessionType());
     env.insert(QStringLiteral("XDG_SEAT"), seat()->name());
-    if (m_sessionTerminalId > 0) {
-        env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_sessionTerminalId));
+    if (m_sessionTerminalId.isValid()) {
+        env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_sessionTerminalId.tty()));
     }
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 

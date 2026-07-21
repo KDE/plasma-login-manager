@@ -28,6 +28,7 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <utility>
 
 #define RELEASE_DISPLAY_SIGNAL (SIGRTMAX)
 #define ACQUIRE_DISPLAY_SIGNAL (SIGRTMAX - 1)
@@ -37,6 +38,27 @@ namespace PLASMALOGIN
 namespace VirtualTerminal
 {
 const char *defaultVtPath = "/dev/tty0";
+
+Terminal::Terminal(int tty, FileDescriptor ttyFd)
+    : m_tty(tty)
+    , m_ttyFd(std::move(ttyFd))
+{
+}
+
+bool Terminal::isValid() const
+{
+    return m_tty > 0;
+}
+
+int Terminal::tty() const
+{
+    return m_tty;
+}
+
+const FileDescriptor &Terminal::ttyFd() const
+{
+    return m_ttyFd;
+}
 
 QString path(int vt)
 {
@@ -171,13 +193,24 @@ int currentVt()
     return getVtActive(fd);
 }
 
-int setUpNewVt()
+Terminal openVt(int vt)
+{
+    const QString ttyPath = path(vt);
+    const int fd = open(qPrintable(ttyPath), O_RDWR | O_NOCTTY | O_CLOEXEC);
+    if (fd < 0) {
+        qWarning() << "Failed to open" << ttyPath << ':' << strerror(errno);
+        return {};
+    }
+    return {vt, FileDescriptor(fd)};
+}
+
+Terminal setUpNewVt()
 {
     // open VT master
     int fd = open(defaultVtPath, O_RDWR | O_NOCTTY);
     if (fd < 0) {
         qCritical() << "Failed to open VT master:" << strerror(errno);
-        return -1;
+        return {};
     }
     auto closeFd = qScopeGuard([fd] {
         close(fd);
@@ -185,18 +218,15 @@ int setUpNewVt()
 
     int vt = 0;
     if (ioctl(fd, VT_OPENQRY, &vt) < 0) {
-        qCritical() << "Failed to open new VT:" << strerror(errno);
-        return -1;
+        qCritical() << "Failed to find a new VT:" << strerror(errno);
+        return {};
     }
 
-    // fallback to active VT
-    if (vt <= 0) {
-        int vtActive = getVtActive(fd);
-        qWarning() << "New VT" << vt << "is not valid, fall back to" << vtActive;
-        return vtActive;
+    Terminal terminal = openVt(vt);
+    if (!terminal.isValid()) {
+        qCritical() << "Failed to open a new VT";
     }
-
-    return vt;
+    return terminal;
 }
 
 void jumpToVt(int vt, bool vt_auto)

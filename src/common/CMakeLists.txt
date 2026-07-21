@@ -1,6 +1,7 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Constants.h.in ${CMAKE_CURRENT_BINARY_DIR}/Constants.h IMMEDIATE @ONLY)
 
 add_library(plasmalogin-common OBJECT
+    filedescriptor.cpp
     SafeDataStream.cpp
     Session.cpp
     SocketWriter.cpp
