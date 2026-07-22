@@ -47,9 +47,20 @@ public:
         HomeDirRole,
         NeedsPasswordRole,
         UidRole,
-        GidRole
+        GidRole,
+        ExistingSessionTypeRole,
     };
     Q_ENUM(UserRoles)
+
+    enum ExistingSessionType {
+        // User is not logged into a graphical session anywhere
+        NoGraphicalSession,
+        // User is logged into a graphical session on the same seat, allow login to resume that session
+        ResumableGraphicalSession,
+        // User is logged into a graphical session on another seat, login should be denied to prevent multiple graphical sessions
+        BlockingGraphicalSession
+    };
+    Q_ENUM(ExistingSessionType)
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -60,6 +71,8 @@ public:
 
 private:
     void populate();
+
+    ExistingSessionType existingSessionTypeForUser(const QString &name);
 
     QList<User> m_users;
 };

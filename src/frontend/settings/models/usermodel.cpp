@@ -49,6 +49,8 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return user.uid;
     case UserModel::GidRole:
         return user.gid;
+    case UserModel::ExistingSessionTypeRole:
+        return {}; // TODO
     }
 
     return {};
@@ -64,6 +66,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[NeedsPasswordRole] = "needsPassword";
     roles[UidRole] = "uid";
     roles[GidRole] = "gid";
+    roles[ExistingSessionTypeRole] = "existingSessionType";
     return roles;
 }
 
@@ -126,6 +129,14 @@ void UserModel::populate()
     }
 
     endResetModel();
+}
+
+UserModel::ExistingSessionType UserModel::existingSessionTypeForUser(const QString &name)
+{
+    // TODO: D-Bus, org.freedesktop.login1 has the information we seek, enumerate sessions and check user and seat
+    Q_UNUSED(name);
+    // TODO: Emit dataChanged for all rows if org.freedesktop.login1 sessions change, maybe be smarter
+    return NoGraphicalSession;
 }
 
 #include "moc_usermodel.cpp"
