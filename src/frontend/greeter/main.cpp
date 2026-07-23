@@ -15,6 +15,7 @@
 #include <KWindowSystem>
 #include <LayerShellQt/Window>
 #include <PlasmaQuick/QuickViewSharedEngine>
+#include <PlasmaQuick/SharedQmlEngine>
 #include <kworkspace6/sessionmanagement.h>
 
 #include "backend/GreeterProxy.h"
@@ -33,6 +34,7 @@ class LoginGreeter : public QObject
 public:
     explicit LoginGreeter(QObject *parent = nullptr)
         : QObject(parent)
+        , m_engine(new PlasmaQuick::SharedQmlEngine)
     {
         connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
             createWindowForScreen(screen);
@@ -89,6 +91,7 @@ private:
         window->show();
     }
 
+    PlasmaQuick::SharedQmlEngine m_engine;
     static bool s_testMode;
 };
 
