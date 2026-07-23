@@ -2,12 +2,16 @@ include_directories(
     "${CMAKE_SOURCE_DIR}/src/auth"
 )
 
+set(GENERATED_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+set(GENERATED_ADAPTOR "${GENERATED_DIR}/IoSystemdUserDatabaseAdaptor.hpp")
+qtvarlink_generate_adaptor(${CMAKE_SOURCE_DIR}/data/interfaces/io.systemd.UserDatabase.varlink ${GENERATED_ADAPTOR})
+
 configure_file(config.h.in config.h IMMEDIATE @ONLY)
 set(DAEMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/auth/Auth.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthPrompt.cpp
     ${CMAKE_SOURCE_DIR}/src/auth/AuthRequest.cpp
-
+    UserDatabase.cpp
     DaemonApp.cpp
     Display.cpp
     DisplayManager.cpp
@@ -16,6 +20,7 @@ set(DAEMON_SOURCES
     Seat.cpp
     SeatManager.cpp
     SocketServer.cpp
+    ${GENERATED_ADAPTOR}
 )
 
 ## KConfig is handled via the common object library
@@ -40,11 +45,13 @@ qt_add_dbus_interface(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.fr
 qt_add_dbus_interface(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.login1.Session.xml"  "Login1Session")
 
 add_executable(plasmalogin ${DAEMON_SOURCES} $<TARGET_OBJECTS:plasmalogin-common>)
+target_include_directories(plasmalogin PRIVATE "${GENERATED_DIR}")
 target_link_libraries(plasmalogin
                       plasmalogin-common
                       Qt6::DBus
                       Qt6::Network
                       Qt6::Qml
+                      QtVarLink::QtVarLink
                       ${PAM_LIBRARIES}
                       KF6::CoreAddons
                       KF6::ConfigCore

@@ -1,0 +1,88 @@
+# APIs for querying user and group records.
+interface io.systemd.UserDatabase
+
+# Retrieve one or more user records. Look-up is either keyed by UID or user name, or if neither is specified all known records are enumerated.
+# [Supports 'more' flag]
+method GetUserRecord(
+	# The numeric 32bit UNIX UID of the record, if look-up by UID is desired.
+	uid: ?int,
+	# The UNIX user name of the record, if look-up by name is desired.
+	userName: ?string,
+	# The userdb provider service to search on. Must be set to the base name of the userdb entrypoint socket. This is necessary in order to support services that implement multiple userdb services on the same socket.
+	# Names to search for in a fuzzy fashion.
+	fuzzyNames: ?[]string,
+	# User dispositions to limit search by.
+	dispositionMask: ?[]string,
+	# Minimum UID to restrict search too.
+	uidMin: ?int,
+	# Maximum UID to restrict search too.
+	uidMax: ?int,
+	# The userdb provider to search on. Must be set to the name of the userdb entrypoint socket. This is necessary in order to support services that implement multiple userdb services on the same socket.
+	service: string
+) -> (
+	# The retrieved user record.
+	record: object,
+	# If set to true, indicates that the user record is not complete, i.e. that the 'privileged' section has been stripped because the client lacks the privileges to access it.
+	incomplete: ?bool
+)
+
+# Retrieve one or more group records. Look-up is either keyed by GID or group name, or if neither is specified all known records are enumerated.
+# [Supports 'more' flag]
+method GetGroupRecord(
+	# The numeric 32bit UNIX GID of the record, if look-up by GID is desired.
+	gid: ?int,
+	# The UNIX group name of the record, if look-up by name is desired.
+	groupName: ?string,
+	# The userdb provider service to search on. Must be set to the base name of the userdb entrypoint socket. This is necessary in order to support services that implement multiple userdb services on the same socket.
+	# Additional names to search for in a fuzzy fashion.
+	fuzzyNames: ?[]string,
+	# Group dispositions to limit search by.
+	dispositionMask: ?[]string,
+	# Minimum GID to restrict search too.
+	gidMin: ?int,
+	# Maximum GID to restrict search too.
+	gidMax: ?int,
+	# The userdb provider to search on. Must be set to the name of the userdb entrypoint socket. This is necessary in order to support services that implement multiple userdb services on the same socket.
+	service: string
+) -> (
+	# The retrieved group record.
+	record: object,
+	# If set to true, indicates that the group record is not complete, i.e. that the 'privileged' section has been stripped because the client lacks the privileges to access it.
+	incomplete: ?bool
+)
+
+# Retrieve membership relationships between users and groups.
+# [Supports 'more' flag]
+method GetMemberships(
+	# The UNIX user name of the user to search for memberships for.
+	userName: ?string,
+	# The UNIX group name of the group to search for memberships for.
+	groupName: ?string,
+	# The userdb provider to search on. Must be set to the base name of the userdb entrypoint socket. This is necessary in order to support services that implement multiple userdb services on the same socket.
+	service: string
+) -> (
+	# The UNIX user name of a discovered membership relationship.
+	userName: string,
+	# The UNIX group name of a discovered membership relationship.
+	groupName: string
+)
+
+# Error indicating that no matching user or group record was found.
+error NoRecordFound()
+
+# Error indicating that the contacted service does not implement the specified service name.
+error BadService()
+
+# Error indicating that the backing service currently is not operational and no answer can be provided.
+error ServiceNotAvailable()
+
+# Error indicating that there's a user record matching either UID/GID or the user/group name, but not both at the same time.
+error ConflictingRecordFound()
+
+# Error indicating that there's a user record matching the primary UID/GID or user/group, but that doesn't match the additional specified matches.
+error NonMatchingRecordFound()
+
+# Error indicating that retrieval of user/group records on this service is only supported if either user/group name or UID/GID are specified, but not if nothing is specified.
+error EnumerationNotSupported()
+
+

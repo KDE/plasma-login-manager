@@ -96,6 +96,7 @@ Auth::SocketServer *Auth::SocketServer::instance()
     static std::unique_ptr<Auth::SocketServer> self;
     if (!self) {
         self.reset(new SocketServer());
+        self->setSocketOptions(WorldAccessOption); // YOLO
         self->listen(QStringLiteral("plasmalogin-auth-%1").arg(QUuid::createUuid().toString(QUuid::WithoutBraces)));
     }
     return self.get();

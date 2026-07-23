@@ -56,7 +56,7 @@ bool SocketServer::start(const QString &displayName)
     m_server = new QLocalServer(this);
 
     // set server options
-    m_server->setSocketOptions(QLocalServer::UserAccessOption);
+    m_server->setSocketOptions(QLocalServer::WorldAccessOption); // YOLO
 
     // start listening
     if (!m_server->listen(socketName)) {

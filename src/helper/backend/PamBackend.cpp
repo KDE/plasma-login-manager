@@ -215,7 +215,7 @@ bool PamBackend::start(const QString &user)
 
     QString service = QStringLiteral("plasmalogin");
 
-    if (user == QStringLiteral("plasmalogin") && m_greeter) {
+    if (m_greeter) { // TODO, harden again with a UID check
         service = QStringLiteral("plasmalogin-greeter");
     } else if (m_autologin) {
         service = QStringLiteral("plasmalogin-autologin");

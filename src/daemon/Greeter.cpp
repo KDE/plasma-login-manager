@@ -107,14 +107,14 @@ bool Greeter::start()
         env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("greeter"));
         env.insert(QStringLiteral("XDG_SESSION_TYPE"), m_display->sessionType());
         env.insert(QStringLiteral("SDDM_SOCKET"), m_socket);
-
+        env.insert(QStringLiteral("KDE_HOME_READONLY"), "1");
         m_auth->insertEnvironment(env);
 
         // log message
         qDebug() << "Greeter starting...";
 
         // start greeter
-        m_auth->setUser(QStringLiteral("plasmalogin"));
+        m_auth->setUser(QStringLiteral("plasmalogingreeter2")); // TODO, obviously temp
         m_auth->setGreeter(true);
         m_auth->setSession(greeterCommand);
         m_auth->start();

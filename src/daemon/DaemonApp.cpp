@@ -18,6 +18,7 @@
 
 #include "DisplayManager.h"
 #include "SeatManager.h"
+#include "UserDatabase.h"
 #include <KSignalHandler>
 
 #include "MessageHandler.h"
@@ -49,6 +50,7 @@ DaemonApp::DaemonApp(int &argc, char **argv)
 
     // create seat manager
     m_seatManager = new SeatManager(this);
+    new UserDatabase(this);
 
     // connect with display manager
     connect(m_seatManager, &SeatManager::seatCreated, m_displayManager, &DisplayManager::AddSeat);
