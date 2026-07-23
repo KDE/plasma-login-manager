@@ -219,5 +219,9 @@ Item {
             setLastLoggedInSessionForUser(greeterState.lastLoggedInUser, greeterState.lastLoggedInSession);
             PlasmaLogin.StateConfig.save();
         }
+
+        function onLoginFailed() {
+            clearPasswords();
+        }
     }
 }
