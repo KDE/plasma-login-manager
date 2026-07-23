@@ -96,19 +96,16 @@ KCM.SimpleKCM {
 
                 QQC2.CheckBox {
                     id: autologinBox
+
                     text: i18nc("@label:listbox, the following combobox selects the user to log in automatically", "as user:")
                     checked: kcm.settings.user != ""
-                    KCM.SettingHighlighter {
-                        highlight: (kcm.settings.user != "" && kcm.settings.defaultUser == "") ||
-                                    (kcm.settings.user == "" && kcm.settings.defaultUser != "")
-                    }
                     onToggled: {
                         if (checked) {
-                            kcm.settings.user = autologinUser.currentText
-                            kcm.settings.session = autologinSession.valueAt(0)
+                            kcm.settings.user = autologinUser.indexOfValue(kcm.currentUser) !== -1 ? kcm.currentUser : autologinUser.valueAt(0);
+                            kcm.settings.session = autologinSession.valueAt(0);
                         } else {
-                            kcm.settings.user = ""
-                            kcm.settings.session = ""
+                            kcm.settings.user = "";
+                            kcm.settings.session = "";
                         }
 
                         // Deliberately imperative because we only want the message
@@ -118,30 +115,29 @@ KCM.SimpleKCM {
                             autologinMessage.visible = true;
                         }
                     }
+
+                    KCM.SettingHighlighter {
+                        highlight: (kcm.settings.user != "" && kcm.settings.defaultUser == "") ||
+                                    (kcm.settings.user == "" && kcm.settings.defaultUser != "")
+                    }
                 }
                 QQC2.ComboBox {
                     id: autologinUser
+
                     implicitWidth: Kirigami.Units.gridUnit * 12
+
                     model: kcm.userModel
                     textRole: "display"
                     valueRole: "name"
+
+                    currentValue: kcm.settings.user
                     onActivated: kcm.settings.user = currentValue
+
                     KCM.SettingStateBinding {
                         visible: autologinBox.checked
                         configObject: kcm.settings
                         settingName: "User"
                         extraEnabledConditions: autologinBox.checked
-                    }
-                    Component.onCompleted: updateSelectedUser()
-                    function setUserFromEditText() {
-                        kcm.settings.user = editText;
-                    }
-                    function updateSelectedUser() {
-                        currentIndex = indexOfValue(kcm.settings.user);
-                    }
-                    Connections { // Needed for "Reset" and "Default" buttons to work
-                        target: kcm.settings
-                        function onUserChanged() { autologinUser.updateSelectedUser(); }
                     }
                 }
             }
@@ -155,24 +151,21 @@ KCM.SimpleKCM {
                 }
                 QQC2.ComboBox {
                     id: autologinSession
+
                     implicitWidth: Kirigami.Units.gridUnit * 12
+
                     model: kcm.sessionModel
                     textRole: "display"
                     valueRole: "fileName"
+
+                    currentValue: kcm.settings.session
                     onActivated: kcm.settings.session = currentValue
+
                     KCM.SettingStateBinding {
                         visible: autologinBox.checked
                         configObject: kcm.settings
                         settingName: "Session"
                         extraEnabledConditions: autologinBox.checked
-                    }
-                    Component.onCompleted: updateCurrentIndex()
-                    function updateCurrentIndex() {
-                        currentIndex = indexOfValue(kcm.settings.session);
-                    }
-                    Connections { // Needed for "Reset" and "Default" buttons to work
-                        target: kcm.settings
-                        function onSessionChanged() { autologinSession.updateCurrentIndex(); }
                     }
                 }
             }
@@ -223,6 +216,10 @@ KCM.SimpleKCM {
                 onToggled: {
                     if (checked) {
                         kcm.settings.preselectedUser = "";
+                    } else {
+                        kcm.settings.preselectedUser = customPreselectedUserComboBox.indexOfValue(kcm.currentUser) !== -1
+                         ? kcm.currentUser
+                         : customPreselectedUserComboBox.valueAt(0);
                     }
                 }
 
@@ -242,7 +239,11 @@ KCM.SimpleKCM {
                     checked: kcm.settings.preselectedUser != ""
                     onToggled: {
                         if (checked) {
-                            kcm.settings.preselectedUser = customPreselectedUserComboBox.currentText
+                            kcm.settings.preselectedUser = customPreselectedUserComboBox.indexOfValue(kcm.currentUser) !== -1
+                             ? kcm.currentUser
+                             : customPreselectedUserComboBox.valueAt(0);
+                        } else {
+                            kcm.settings.preselectedUser = "";
                         }
                     }
 
@@ -255,26 +256,13 @@ KCM.SimpleKCM {
                     id: customPreselectedUserComboBox
 
                     implicitWidth: Kirigami.Units.gridUnit * 12
+
                     model: kcm.userModel
                     textRole: "display"
                     valueRole: "name"
-                    editable: true
-                    onActivated: kcm.settings.preselectedUser = currentText
-                    onEditTextChanged: kcm.settings.preselectedUser = editText;
 
-                    Component.onCompleted: updateSelectedUser()
-                    Connections {
-                        target: kcm.settings
-                        function onPreselectedUserChanged() { customPreselectedUserComboBox.updateSelectedUser(); }
-                    }
-
-                    function updateSelectedUser() {
-                        const index = find(kcm.settings.preselectedUser);
-                        if (index != -1) {
-                            currentIndex = index;
-                        }
-                        editText = kcm.settings.preselectedUser;
-                    }
+                    currentValue: kcm.settings.preselectedUser
+                    onActivated: kcm.settings.preselectedUser = currentValue
 
                     KCM.SettingStateBinding {
                         visible: customPreselectedUserRadioButton.checked
@@ -301,6 +289,8 @@ KCM.SimpleKCM {
                 onToggled: {
                     if (checked) {
                         kcm.settings.preselectedSession = "";
+                    } else {
+                        kcm.settings.preselectedSession = customPreselectedSessionComboBox.valueAt(0);
                     }
                 }
 
@@ -321,6 +311,8 @@ KCM.SimpleKCM {
                     onToggled: {
                         if (checked) {
                             kcm.settings.preselectedSession = customPreselectedSessionComboBox.valueAt(0);
+                        } else {
+                            kcm.settings.preselectedSession = "";
                         }
                     }
 
@@ -333,20 +325,13 @@ KCM.SimpleKCM {
                     id: customPreselectedSessionComboBox
 
                     implicitWidth: Kirigami.Units.gridUnit * 12
+
                     model: kcm.sessionModel
                     textRole: "display"
                     valueRole: "fileName"
+
+                    currentValue: kcm.settings.preselectedSession
                     onActivated: kcm.settings.preselectedSession = currentValue
-
-                    Component.onCompleted: updateCurrentIndex()
-                    Connections {
-                        target: kcm.settings
-                        function onPreselectedSessionChanged() { customPreselectedSessionComboBox.updateCurrentIndex(); }
-                    }
-
-                    function updateCurrentIndex() {
-                        currentIndex = indexOfValue(kcm.settings.preselectedSession);
-                    }
 
                     KCM.SettingStateBinding {
                         visible: customPreselectedSessionRadioButton.checked

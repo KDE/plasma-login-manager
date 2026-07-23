@@ -33,6 +33,7 @@ public:
     Q_PROPERTY(bool isDefaultsWallpaper READ isDefaultsWallpaper NOTIFY isDefaultsWallpaperChanged)
     Q_PROPERTY(UserModel *userModel READ userModel CONSTANT)
     Q_PROPERTY(SessionModel *sessionModel READ sessionModel CONSTANT)
+    Q_PROPERTY(QString currentUser READ currentUser CONSTANT)
 
     // TODO: Why not use directly? Could expose in PlasmaLoginSettings as Q_INVOKABLE
     Q_INVOKABLE QList<WallpaperInfo> availableWallpaperPlugins()
@@ -52,6 +53,7 @@ public:
     bool isDefaultsWallpaper() const;
     UserModel *userModel() const;
     SessionModel *sessionModel() const;
+    QString currentUser() const;
 
 public Q_SLOTS:
     void load() override;

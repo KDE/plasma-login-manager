@@ -359,6 +359,11 @@ SessionModel *PlasmaLoginKcm::sessionModel() const
     return &sessionModel;
 }
 
+QString PlasmaLoginKcm::currentUser() const
+{
+    return KUser().loginName();
+}
+
 bool PlasmaLoginKcm::KDEWalletAvailable()
 {
     return !QStandardPaths::findExecutable(QLatin1String("kwalletmanager5")).isEmpty();
