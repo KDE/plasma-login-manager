@@ -42,7 +42,7 @@ class Display : public QObject
     Q_DISABLE_COPY(Display)
 public:
     explicit Display(Seat *parent);
-    ~Display();
+    ~Display() override;
 
     int terminalId() const;
 
@@ -53,14 +53,10 @@ public:
     }
 
     Seat *seat() const;
-    void setAutoLogin(const QString &user, const QString &session);
 
 public slots:
-    bool start();
-    void stop();
-
-    void login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session);
-    void displayServerStarted();
+    virtual bool start();
+    virtual void stop();
 
 signals:
     void stopped();
@@ -68,11 +64,9 @@ signals:
     void loginFailed(QLocalSocket *socket);
     void loginSucceeded(QLocalSocket *socket);
 
-private:
+protected:
     bool startAuth(const QString &user, const QString &password, const Session &session);
-
-    void startSocketServerAndGreeter();
-    bool handleAutologinFailure();
+    virtual bool hasGreeter() const;
 
     bool m_started{false};
 
@@ -83,22 +77,61 @@ private:
     QString m_sessionName;
     QString m_reuseSessionId;
 
-    Session m_autologinSession;
-    QString m_autologinUser;
-
     Auth *m_auth{nullptr};
     Seat *m_seat{nullptr};
-    SocketServer *m_socketServer{nullptr};
     QPointer<QLocalSocket> m_socket;
+
+protected slots:
+    void slotRequestChanged();
+    void slotAuthenticationFinished(const QString &user, bool success);
+    void slotHelperFinished(Auth::HelperExitStatus status);
+    virtual void slotSessionStarted(bool success);
+    virtual void handleAutologinFailure();
+};
+
+class GreeterDisplay : public Display
+{
+    Q_OBJECT
+public:
+    explicit GreeterDisplay(Seat *parent);
+
+public slots:
+    bool start() override;
+    void stop() override;
+
+    void login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session);
+    void displayServerStarted();
+
+private:
+    void startSocketServerAndGreeter();
+    bool hasGreeter() const override;
+
+    SocketServer *m_socketServer{nullptr};
     Greeter *m_greeter{nullptr};
 
 private slots:
-    void slotRequestChanged();
-    void slotAuthenticationFinished(const QString &user, bool success);
-    void slotSessionStarted(bool success);
-    void slotHelperFinished(Auth::HelperExitStatus status);
     void slotAuthInfo(const QString &message, Auth::Info info);
     void slotAuthError(const QString &message, Auth::Error error);
+    void slotSessionStarted(bool success) override;
+};
+
+class AutoLoginDisplay : public Display
+{
+    Q_OBJECT
+public:
+    explicit AutoLoginDisplay(Seat *parent);
+
+    void setAutoLogin(const QString &user, const QString &session);
+
+public slots:
+    bool start() override;
+
+protected slots:
+    void handleAutologinFailure() override;
+
+private:
+    Session m_autologinSession;
+    QString m_autologinUser;
 };
 }
 

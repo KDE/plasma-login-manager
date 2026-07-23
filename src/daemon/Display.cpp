@@ -48,8 +48,6 @@ Display::Display(Seat *parent)
     : QObject(parent)
     , m_auth(new Auth(this))
     , m_seat(parent)
-    , m_socketServer(new SocketServer(this))
-    , m_greeter(new Greeter(this))
 {
     if (seat()->canTTY()) {
         m_terminalId = seat()->availableVt();
@@ -62,27 +60,6 @@ Display::Display(Seat *parent)
     connect(m_auth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
     connect(m_auth, &Auth::sessionStarted, this, &Display::slotSessionStarted);
     connect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
-    connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
-    connect(m_auth, &Auth::error, this, &Display::slotAuthError);
-
-    // connect login signal
-    connect(m_socketServer, &SocketServer::login, this, &Display::login);
-
-    // connect login result signals
-    connect(this, &Display::loginFailed, m_socketServer, &SocketServer::loginFailed);
-    connect(this, &Display::loginSucceeded, m_socketServer, &SocketServer::loginSucceeded);
-
-    connect(m_greeter, &Greeter::failed, this, &Display::stop);
-    connect(m_greeter, &Greeter::ttyFailed, this, [this] {
-        ++s_ttyFailures;
-        if (s_ttyFailures > 5) {
-            QCoreApplication::exit(23);
-        }
-        // It might be the case that we are trying a tty that has been taken over by a
-        // different process. In such a case, switch back to the initial one and try again.
-        VirtualTerminal::jumpToVt(PLASMALOGIN_INITIAL_VT, true);
-        stop();
-    });
 }
 
 Display::~Display()
@@ -106,22 +83,9 @@ Seat *Display::seat() const
     return m_seat;
 }
 
-void Display::setAutoLogin(const QString &user, const QString &session)
+bool Display::hasGreeter() const
 {
-    m_autologinUser = user;
-    m_autologinSession = Session();
-    if (user.isEmpty()) {
-        return;
-    }
-
-    m_autologinSession = Session::create(Session::WaylandSession, session);
-    if (!m_autologinSession.isValid()) {
-        m_autologinSession = Session::create(Session::X11Session, session);
-    }
-    if (!m_autologinSession.isValid()) {
-        qCritical() << "Unable to find autologin session entry" << session << "for user" << user << "on seat" << seat()->name()
-                    << "— falling back to the greeter";
-    }
+    return false;
 }
 
 bool Display::start()
@@ -131,24 +95,63 @@ bool Display::start()
     }
 
     m_started = true;
-
-    // Handle autologin early, unless it needs the display server to be up
-    // (rootful X + X11 autologin session).
-    if (m_autologinSession.isValid()) {
-        m_auth->setAutologin(true);
-        if (startAuth(m_autologinUser, QString(), m_autologinSession)) {
-            return true;
-        } else {
-            return handleAutologinFailure();
-        }
-    }
-
-    // no reason for this to be queued, other than porting
-    QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
     return true;
 }
 
-void Display::startSocketServerAndGreeter()
+void Display::stop()
+{
+    if (!m_started) {
+        return;
+    }
+
+    m_auth->stop();
+    m_started = false;
+    emit stopped();
+}
+
+GreeterDisplay::GreeterDisplay(Seat *parent)
+    : Display(parent)
+    , m_socketServer(new SocketServer(this))
+    , m_greeter(new Greeter(this))
+{
+    connect(m_auth, &Auth::info, this, &GreeterDisplay::slotAuthInfo);
+    connect(m_auth, &Auth::error, this, &GreeterDisplay::slotAuthError);
+
+    connect(m_socketServer, &SocketServer::login, this, &GreeterDisplay::login);
+    connect(this, &Display::loginFailed, m_socketServer, &SocketServer::loginFailed);
+    connect(this, &Display::loginSucceeded, m_socketServer, &SocketServer::loginSucceeded);
+
+    connect(m_greeter, &Greeter::failed, this, &GreeterDisplay::stop);
+    connect(m_greeter, &Greeter::ttyFailed, this, [this] {
+        ++s_ttyFailures;
+        if (s_ttyFailures > 5) {
+            QCoreApplication::exit(23);
+        }
+        VirtualTerminal::jumpToVt(PLASMALOGIN_INITIAL_VT, true);
+        stop();
+    });
+}
+
+bool GreeterDisplay::hasGreeter() const
+{
+    return m_greeter->isRunning();
+}
+
+bool GreeterDisplay::start()
+{
+    if (m_started) {
+        return true;
+    }
+
+    if (!Display::start()) {
+        return false;
+    }
+
+    QMetaObject::invokeMethod(this, &GreeterDisplay::displayServerStarted, Qt::QueuedConnection);
+    return true;
+}
+
+void GreeterDisplay::startSocketServerAndGreeter()
 {
     // start socket server
     m_socketServer->start(QString());
@@ -167,47 +170,24 @@ void Display::startSocketServerAndGreeter()
     m_greeter->start();
 }
 
-bool Display::handleAutologinFailure()
+void GreeterDisplay::displayServerStarted()
 {
-    qWarning() << "Autologin failed!";
-    m_auth->setAutologin(false);
-    // For late autologin handling only the greeter needs to be started.
-
-    QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
-    return true;
-}
-
-void Display::displayServerStarted()
-{
-    // log message
     qDebug() << "Display server started.";
-
     startSocketServerAndGreeter();
 }
 
-void Display::stop()
+void GreeterDisplay::stop()
 {
-    // check flag
     if (!m_started) {
         return;
     }
 
-    // stop the greeter
     m_greeter->stop();
-
-    m_auth->stop();
-
-    // stop socket server
     m_socketServer->stop();
-
-    // reset flag
-    m_started = false;
-
-    // emit signal
-    emit stopped();
+    Display::stop();
 }
 
-void Display::login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session)
+void GreeterDisplay::login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session)
 {
     m_socket = socket;
 
@@ -258,7 +238,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_sessionTerminalId = m_terminalId;
 
-    if (m_greeter->isRunning()) {
+    if (hasGreeter()) {
         // Create a new VT when we need to have another compositor running
         if (seat()->canTTY()) {
             m_sessionTerminalId = VirtualTerminal::setUpNewVt();
@@ -318,7 +298,7 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
     m_socket = nullptr;
 }
 
-void Display::slotAuthInfo(const QString &message, Auth::Info info)
+void GreeterDisplay::slotAuthInfo(const QString &message, Auth::Info info)
 {
     qWarning() << "Authentication information:" << info << message;
 
@@ -329,7 +309,7 @@ void Display::slotAuthInfo(const QString &message, Auth::Info info)
     m_socketServer->informationMessage(m_socket, message);
 }
 
-void Display::slotAuthError(const QString &message, Auth::Error error)
+void GreeterDisplay::slotAuthError(const QString &message, Auth::Error error)
 {
     qWarning() << "Authentication error:" << error << message;
 
@@ -355,6 +335,13 @@ void Display::slotHelperFinished(Auth::HelperExitStatus status)
     }
 }
 
+void Display::handleAutologinFailure()
+{
+    qWarning() << "Autologin failed!";
+    m_auth->setAutologin(false);
+    stop();
+}
+
 void Display::slotRequestChanged()
 {
     if (m_auth->request()->prompts().length() == 1) {
@@ -367,12 +354,69 @@ void Display::slotRequestChanged()
     }
 }
 
-void Display::slotSessionStarted(bool success)
+void Display::slotSessionStarted(bool)
+{
+}
+
+void GreeterDisplay::slotSessionStarted(bool success)
 {
     qDebug() << "Session started" << success;
     if (success) {
         QTimer::singleShot(5000, m_greeter, &Greeter::stop);
     }
+}
+
+AutoLoginDisplay::AutoLoginDisplay(Seat *parent)
+    : Display(parent)
+{
+}
+
+void AutoLoginDisplay::setAutoLogin(const QString &user, const QString &session)
+{
+    m_autologinUser = user;
+    m_autologinSession = Session();
+    if (user.isEmpty()) {
+        return;
+    }
+
+    m_autologinSession = Session::create(Session::WaylandSession, session);
+    if (!m_autologinSession.isValid()) {
+        m_autologinSession = Session::create(Session::X11Session, session);
+    }
+    if (!m_autologinSession.isValid()) {
+        qCritical() << "Unable to find autologin session entry" << session << "for user" << user << "on seat" << seat()->name()
+                    << "— falling back to the greeter";
+    }
+}
+
+bool AutoLoginDisplay::start()
+{
+    if (m_started) {
+        return true;
+    }
+
+    if (!Display::start()) {
+        return false;
+    }
+
+    if (!m_autologinSession.isValid()) {
+        return false;
+    }
+
+    m_auth->setAutologin(true);
+    if (startAuth(m_autologinUser, QString(), m_autologinSession)) {
+        return true;
+    }
+
+    handleAutologinFailure();
+    return false;
+}
+
+void AutoLoginDisplay::handleAutologinFailure()
+{
+    qWarning() << "Autologin failed!";
+    m_auth->setAutologin(false);
+    stop();
 }
 }
 

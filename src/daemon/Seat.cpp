@@ -175,7 +175,9 @@ void Seat::createDisplay()
         autologinUser = PlasmaLogin::config()->autologinUser();
         autologinSession = PlasmaLogin::config()->autologinSession();
     }
-    display->setAutoLogin(autologinUser, autologinSession);
+    if (auto *autologinDisplay = qobject_cast<AutoLoginDisplay *>(display)) {
+        autologinDisplay->setAutoLogin(autologinUser, autologinSession);
+    }
 
     // start the display
     startDisplay(display);
