@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-03 00:48+0000\n"
+"POT-Creation-Date: 2026-07-23 00:45+0000\n"
 "PO-Revision-Date: 2025-12-01 11:31+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -119,12 +119,12 @@ msgstr "Introduïu el nom d'usuari i la contrasenya"
 msgid "List Users"
 msgstr "Llista d'usuaris"
 
-#: qml/Main.qml:421
+#: qml/Main.qml:394
 #, kde-format
 msgid "Login Failed"
 msgstr "No s'ha pogut fer l'inici de la sessió"
 
-#: qml/SessionButton.qml:24
+#: qml/SessionButton.qml:23
 #, kde-format
 msgid "Desktop Session: %1"
 msgstr "Sessió d'escriptori: %1"
