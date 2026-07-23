@@ -9,20 +9,20 @@
 #pragma once
 
 #include <QQuickView>
-#include <QScreen>
 
 class WallpaperWindow : public QQuickView
 {
     Q_OBJECT
     Q_PROPERTY(bool blur READ blur NOTIFY blurChanged)
+
 public:
-    WallpaperWindow(QQmlEngine *engine, QScreen *screen);
+    WallpaperWindow(QQmlEngine *engine);
     bool blur() const;
     void setBlur(bool enable);
+
 Q_SIGNALS:
     void blurChanged();
 
 private:
-    QScreen *m_screen;
     bool m_blur = false;
 };
