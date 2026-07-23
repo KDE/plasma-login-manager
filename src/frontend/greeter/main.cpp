@@ -15,7 +15,6 @@
 
 #include <KLocalizedQmlContext>
 #include <KLocalizedString>
-#include <KWindowSystem>
 #include <LayerShellQt/Window>
 #include <PlasmaQuick/PlasmaQuick>
 #include <kworkspace6/sessionmanagement.h>
@@ -66,26 +65,15 @@ private:
 
         window->setGeometry(screen->geometry());
 
-        if (KWindowSystem::isPlatformWayland()) {
-            if (auto layerShellWindow = LayerShellQt::Window::get(window)) {
-                layerShellWindow->setScope(QStringLiteral("plasma-login-greeter"));
-                layerShellWindow->setLayer(LayerShellQt::Window::LayerTop);
-                layerShellWindow->setExclusiveZone(-1);
-                layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
-                layerShellWindow->setScreen(screen);
-            }
+        if (auto layerShellWindow = LayerShellQt::Window::get(window)) {
+            layerShellWindow->setScope(QStringLiteral("plasma-login-greeter"));
+            layerShellWindow->setLayer(LayerShellQt::Window::LayerTop);
+            layerShellWindow->setExclusiveZone(-1);
+            layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
+            layerShellWindow->setScreen(screen);
         }
 
         window->setResizeMode(QQuickView::SizeRootObjectToView);
-
-        if (KWindowSystem::isPlatformX11()) {
-            // X11 specific hint only on X11
-            window->setFlags(Qt::BypassWindowManagerHint);
-        } else if (!KWindowSystem::isPlatformWayland()) {
-            // on other platforms go fullscreen
-            // on Wayland we cannot go fullscreen due to QTBUG 54883
-            window->setWindowState(Qt::WindowFullScreen);
-        }
 
         window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
         window->show();
