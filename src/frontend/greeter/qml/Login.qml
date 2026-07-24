@@ -157,6 +157,8 @@ SessionManagementScreen {
 
     SessionButton {
         Layout.fillWidth: true
+
+        username: showUsernamePrompt ? "" : userList.selectedUser
     }
 
     // Synchronise state

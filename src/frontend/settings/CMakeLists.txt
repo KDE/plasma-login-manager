@@ -14,6 +14,7 @@ add_library(settings STATIC
     plasmaloginsettingsdefaults.cpp
     wallpaperintegration.cpp
     wallpapersettings.cpp
+    models/existingsessiontracker.cpp models/existingsessiontracker.h
     models/sessionmodel.cpp models/sessionmodel.h
     models/usermodel.cpp models/usermodel.h
 )
@@ -25,4 +26,5 @@ target_link_libraries(settings
     KF6::ConfigQml
     KF6::I18n
     KF6::Package
+    Qt::DBus
 )

@@ -9,6 +9,8 @@
 #include <QAbstractListModel>
 #include <QUrl>
 
+class ExistingSessionTracker;
+
 struct User {
     QString name;
     QString realName;
@@ -72,7 +74,9 @@ public:
 private:
     void populate();
 
-    ExistingSessionType existingSessionTypeForUser(const QString &name);
+    ExistingSessionType existingSessionTypeForUser(const User &user) const;
+    void handleGraphicalSessionsChanged(uint uid);
 
+    ExistingSessionTracker *m_existingSessionTracker = nullptr;
     QList<User> m_users;
 };

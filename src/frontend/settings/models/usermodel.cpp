@@ -4,19 +4,27 @@
  *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-#include <KUser>
-
 #include <pwd.h>
 
+#include <KUser>
+
+#include "existingsessiontracker.h"
 #include "plasmaloginsettings.h"
 
 #include "usermodel.h"
 
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel(parent)
+    , m_existingSessionTracker(new ExistingSessionTracker(this))
 {
+    connect(m_existingSessionTracker, &ExistingSessionTracker::graphicalSessionsChanged, this, &UserModel::handleGraphicalSessionsChanged);
+
     // TODO: Should use settings for uid limits, and repopulate on change
     populate();
+
+    for (int i = 0; i < rowCount(); ++i) {
+        qWarning() << i << UserModel::data(index(i, 0), RealNameRole) << UserModel::data(index(i, 0), ExistingSessionTypeRole);
+    }
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const
@@ -30,7 +38,7 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return {};
     }
 
-    User user = m_users[index.row()];
+    const User &user = m_users[index.row()];
 
     switch (role) {
     case Qt::DisplayRole:
@@ -50,7 +58,7 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
     case UserModel::GidRole:
         return user.gid;
     case UserModel::ExistingSessionTypeRole:
-        return {}; // TODO
+        return existingSessionTypeForUser(user);
     }
 
     return {};
@@ -102,11 +110,11 @@ void UserModel::populate()
 
         // Filter out users that cannot log in
         const bool cannotLogin = user.shell().endsWith("/nologin") || user.shell().endsWith("/false");
-        
+
         // Consider UID ranges (homed range from systemd: HOME_UID_MIN, HOME_UID_MAX)
         const bool inLogindDefRange = (uid >= PlasmaLoginSettings::getInstance().minimumUid() && uid <= PlasmaLoginSettings::getInstance().maximumUid());
         const bool inHomedRange = (uid >= 60001 && uid <= 60513);
-        
+
         if (cannotLogin || (!inLogindDefRange && !inHomedRange)) {
             continue;
         }
@@ -131,12 +139,31 @@ void UserModel::populate()
     endResetModel();
 }
 
-UserModel::ExistingSessionType UserModel::existingSessionTypeForUser(const QString &name)
+UserModel::ExistingSessionType UserModel::existingSessionTypeForUser(const User &user) const
 {
-    // TODO: D-Bus, org.freedesktop.login1 has the information we seek, enumerate sessions and check user and seat
-    Q_UNUSED(name);
-    // TODO: Emit dataChanged for all rows if org.freedesktop.login1 sessions change, maybe be smarter
-    return NoGraphicalSession;
+    const QStringList sessionSeats = m_existingSessionTracker->graphicalSessionSeatsForUser(static_cast<uint>(user.uid));
+    if (sessionSeats.isEmpty()) {
+        return NoGraphicalSession;
+    }
+
+    const QString currentSeat = m_existingSessionTracker->currentSeat();
+    if (!currentSeat.isEmpty() && sessionSeats.contains(currentSeat)) {
+        return ResumableGraphicalSession;
+    }
+
+    return BlockingGraphicalSession;
+}
+
+void UserModel::handleGraphicalSessionsChanged(uint uid)
+{
+    for (int row = 0; row < m_users.count(); ++row) {
+        if (m_users[row].uid != static_cast<int>(uid)) {
+            continue;
+        }
+
+        Q_EMIT dataChanged(index(row, 0), index(row, 0), {ExistingSessionTypeRole});
+        return;
+    }
 }
 
 #include "moc_usermodel.cpp"
