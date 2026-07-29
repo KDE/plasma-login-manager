@@ -178,28 +178,7 @@ void Seat::createDisplay()
     display->setAutoLogin(autologinUser, autologinSession);
 
     // start the display
-    startDisplay(display);
-}
-
-void Seat::startDisplay(Display *display, int tryNr)
-{
-    if (display->start()) {
-        return;
-    }
-
-    // It's possible that the system isn't ready yet (driver not loaded,
-    // device not enumerated, ...). It's not possible to tell when that changes,
-    // so try a few times with a delay in between.
-    qWarning() << "Attempt" << tryNr << "starting the Display server on vt" << display->terminalId() << "failed";
-
-    if (tryNr >= 3) {
-        qCritical() << "Could not start Display server on vt" << display->terminalId();
-        return;
-    }
-
-    QTimer::singleShot(2000, display, [this, display, tryNr] {
-        startDisplay(display, tryNr + 1);
-    });
+    display->start();
 }
 
 void Seat::displayStopped()

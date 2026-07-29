@@ -46,7 +46,6 @@ private slots:
     void displayStopped();
 
 private:
-    void startDisplay(PLASMALOGIN::Display *display, int tryNr = 1);
     bool isTtyInUse(const QString &tty) const;
 
     QString m_name;
