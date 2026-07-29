@@ -47,7 +47,6 @@ int currentVt();
 Terminal openVt(int vt);
 Terminal setUpNewVt();
 void jumpToVt(int vt, bool vt_auto);
-void ignoreVtSwitches();
 }
 }
 
