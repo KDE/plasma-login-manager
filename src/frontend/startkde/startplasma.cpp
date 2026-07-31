@@ -293,6 +293,13 @@ static std::pair<QString, KLookAndFeelManager::Contents> determineLookAndFeel()
 
 void setupPlasmaEnvironment()
 {
+    {
+        KConfig kglobalaccelrc("kglobalaccelrc");
+        kglobalaccelrc.group("General").writeEntry("useAllowList", true);
+        KConfigGroup allowedShortcutGroup = kglobalaccelrc.group("AllowedShortcuts");
+        allowedShortcutGroup.writeEntry("kwin", QStringList{"kwin", "view_zoom_in", "view_zoom_out", "view_actual_size"});
+    }
+
     // Manually disable auto scaling because we are scaling above
     // otherwise apps that manually opt in for high DPI get auto scaled by the developer AND manually scaled by us
     qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "0");
