@@ -4,4 +4,9 @@ BindsTo=plasma-login-kwin_wayland.service
 Requires=plasma-login.service
 BindsTo=plasma-login.service
 
+Requires=graphical-session.target
+
 Wants=plasma-wallpaper.service
+
+# Note, this shouldn't be merged without powerdevil having a better/second PartOf=  so that we close down neatly
+Wants=plasma-powerdevil.service

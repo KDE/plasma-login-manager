@@ -298,6 +298,18 @@ void setupPlasmaEnvironment()
         kglobalaccelrc.group("General").writeEntry("useAllowList", true);
         KConfigGroup allowedShortcutGroup = kglobalaccelrc.group("AllowedShortcuts");
         allowedShortcutGroup.writeEntry("kwin", QStringList{"kwin", "view_zoom_in", "view_zoom_out", "view_actual_size"});
+        allowedShortcutGroup.writeEntry("org_kde_powerdevil",
+                                        QStringList{"Sleep",
+                                                    "Hibernate",
+                                                    "PowerOff",
+                                                    "PowerDown",
+                                                    "Increase Keyboard Brightness",
+                                                    "Decrease Keyboard Brightness",
+                                                    "Toggle Keyboard Backlight",
+                                                    "Increase Screen Brightness",
+                                                    "Increase Screen Brightness Small",
+                                                    "Decrease Screen Brightness",
+                                                    "Decrease Screen Brightness Small"});
     }
 
     // Manually disable auto scaling because we are scaling above
