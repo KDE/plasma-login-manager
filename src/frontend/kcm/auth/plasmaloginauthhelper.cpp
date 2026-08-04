@@ -227,6 +227,8 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
 
         createConfigFile(QStringLiteral("plasmarc"));
 
+        createConfigFile(QStringLiteral("plasma-localerc"));
+
         createConfigFile(QStringLiteral("kcminputrc"));
 
         createConfigFile(QStringLiteral("kwinoutputconfig.json"));
