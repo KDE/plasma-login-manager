@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"POT-Creation-Date: 2026-08-06 02:46+0000\n"
 "PO-Revision-Date: 2026-04-01 11:20+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -38,7 +38,7 @@ msgstr ""
 "Kan Plasma instellingen niet synchroniseren omdat de gebruiker 'plasmalogin' "
 "niet bestaat. Controleer het installeren van uw Plasma aanmelden."
 
-#: kcm.cpp:267
+#: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

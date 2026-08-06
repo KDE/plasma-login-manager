@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"POT-Creation-Date: 2026-08-06 02:46+0000\n"
 "PO-Revision-Date: 2026-04-01 11:25+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Incapace a synchronisar preferentias de Plasma proque le usator de "
 "'plasmalogin' non existe. Pro favor verifica tu installation de Plasma Login."
 
-#: kcm.cpp:267
+#: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

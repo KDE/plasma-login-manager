@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"POT-Creation-Date: 2026-08-06 02:46+0000\n"
 "PO-Revision-Date: 2026-04-01 07:07+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -35,7 +35,7 @@ msgstr ""
 "Nastavitev Plasme ni mogoče sinhronizirati, ker uporabnik 'plasmalogin' ne "
 "obstaja. Preverite namestitev prijave v Plasmo."
 
-#: kcm.cpp:267
+#: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."

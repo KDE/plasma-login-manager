@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kcm_plasmalogin\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"POT-Creation-Date: 2026-08-06 02:46+0000\n"
 "PO-Revision-Date: 2026-04-01 12:24+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "«plasmalogin» no existe. Compruebe la instalación del inicio de sesión de "
 "Plasma."
 
-#: kcm.cpp:267
+#: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
