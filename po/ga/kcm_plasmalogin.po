@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-01 00:47+0000\n"
+"POT-Creation-Date: 2026-08-06 00:46+0000\n"
 "PO-Revision-Date: 2026-01-28 23:35+0000\n"
 "Last-Translator: Charlotte <altronic25@protonmail.com>\n"
 "Language-Team: Irish\n"
@@ -34,7 +34,7 @@ msgid ""
 "not exist. Please check your Plasma Login install."
 msgstr ""
 
-#: kcm.cpp:267
+#: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -90,10 +90,11 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"<para><list><item>Color scheme</item><item>Cursor theme and size</"
-"item><item>Font and font rendering</item><item>NumLock preference</"
-"item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-"configuration</item><item>Keyboard layouts</item></list></para>"
+"<para><list><item>Language and locale settings</item><item>Color scheme</"
+"item><item>Cursor theme and size</item><item>Font and font rendering</"
+"item><item>NumLock preference</item><item>Plasma theme</item><item>Scaling "
+"DPI</item><item>Screen configuration</item><item>Keyboard layouts</item></"
+"list></para>"
 msgstr ""
 
 #: ui/main.qml:67
