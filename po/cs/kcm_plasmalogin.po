@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-07 00:48+0000\n"
-"PO-Revision-Date: 2026-08-06 23:25+0200\n"
+"PO-Revision-Date: 2026-08-07 21:29+0200\n"
 "Last-Translator: Libor Filípek <libor.filipek@gmail.com>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -93,14 +93,7 @@ msgstr ""
 "vlastní úpravy následujících nastavení Plasma:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Language and locale settings</item><item>Color scheme</"
-#| "item><item>Cursor theme and size</item><item>Font and font rendering</"
-#| "item><item>NumLock preference</item><item>Plasma theme</"
-#| "item><item>Scaling DPI</item><item>Screen configuration</"
-#| "item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -109,23 +102,21 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>Nastavení jazyka a národního prostředí</item><item>Barevné "
-"schéma</item><item>Vzhled a velikost kurzoru</item><item>Písmo a jeho "
-"vykreslování</item><item>Nastavení klávesy NumLock</item><item>Vzhled "
-"Plasmy</item><item>Měřítko DPI</item><item>Nastavení obrazovky</"
-"item><item>Rozložení klávesnice</item></list></para>"
+"<para><list><item>Nastavení jazyka a národního prostředí</"
+"item><item>Rozložení klávesnice</item><item>Nastavení uspořádání, měřítka a "
+"orientace obrazovky</item><item>Nastavení klávesy NumLock</"
+"item><item>Nastavení písma a jeho vykreslování</item><item>Barevné schéma</"
+"item><item>Vzhled a velikost kurzoru</item><item>Motiv Plasma</item></list></"
+"para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"Poznámka: soubory tématu musí být nainstalovány globálně, aby se projevily "
-"na přihlašovací obrazovce Plasma."
+"Poznámka: soubory tématu a písma musí být nainstalovány globálně, aby se "
+"projevily na přihlašovací obrazovce Plasma."
 
 #: ui/main.qml:71
 #, kde-format

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-07 00:48+0000\n"
-"PO-Revision-Date: 2026-08-06 16:56+0200\n"
+"PO-Revision-Date: 2026-08-07 17:58+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -94,14 +94,7 @@ msgstr ""
 "Plasma-inställningar:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Language and locale settings</item><item>Color scheme</"
-#| "item><item>Cursor theme and size</item><item>Font and font rendering</"
-#| "item><item>NumLock preference</item><item>Plasma theme</"
-#| "item><item>Scaling DPI</item><item>Screen configuration</"
-#| "item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -110,23 +103,21 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>Språk och landsinställningar</item><item>Färgschema</"
-"item><item>Markörtema och storlek</item><item>Teckensnitt och "
-"teckenåtergivning</item><item>Num Lock inställning</item><item>Plasma tema</"
-"item><item>Skalning punkter/tum</item><item>Skärminställning</"
-"item><item>Tangentbordslayouter</item></list></para>"
+"<para><list><item>Språk och landsinställningar</item>\n"
+"<item>Tangentbordslayouter</item><item>Inställningar av skärmarrangemang, "
+"skalning och orientering</item><item>Num Lock inställning</"
+"item><item>Inställningar av teckensnitt och teckenåtergivning</"
+"item><item>Färgschema</item><item>Markörtema och storlek</item><item>Plasma "
+"tema</item></list></para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"Observera att temafiler måste installeras globalt för att reflekteras i "
-"Plasma inloggningsfönstret."
+"Observera att temafiler och teckensnittsfiler måste installeras globalt för "
+"att reflekteras i Plasma inloggningsfönstret."
 
 #: ui/main.qml:71
 #, kde-format
