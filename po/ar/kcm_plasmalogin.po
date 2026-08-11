@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-07 00:48+0000\n"
-"PO-Revision-Date: 2026-04-01 17:45+0400\n"
+"POT-Creation-Date: 2026-08-11 00:47+0000\n"
+"PO-Revision-Date: 2026-08-10 13:56+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -91,13 +91,7 @@ msgstr ""
 "سيؤدي هذا إلى جعل شاشة ولوج بلازما تعكس تخصيصاتك لإعدادات البلازما التالية:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -106,22 +100,20 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>تشكيلة الألوان</item><item>سمة المؤشر وحجمه</"
-"item><item>الخط و إظهاره</item><item>تفضيلات قفل الأرقام</item><item>سمة "
-"بلازما</item><item>تحجيم الخطوط لكل بوصة</item><item>ضبط الشاشة</item> "
-"<item>تخطيطات لوحة المفاتيح</item></list></para>"
+"<para><list><item>إعدادات اللغة والإعدادات المحلية</item><item>تخطيطات لوحة "
+"المفاتيح</item><item>إعدادات ترتيب الشاشة ومقياسها واتجاهها</"
+"item><item>تفضيلات قفل الأرقام</item><item>إعدادات الخطوط وعرضها</"
+"item><item>مخطط الألوان</item><item>سمة المؤشر وحجمه</item><item>سمة بلازما</"
+"item></list></para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"يرجى ملاحظة أنه يجب تثبيت ملفات السمات بشكل عام حتى يظهر ذلك على شاشة ولوج "
-"بلازما."
+"يرجى ملاحظة أنه يجب تثبيت ملفات السمات والخطوط بشكل عام حتى يظهر ذلك على "
+"شاشة ولوج بلازما."
 
 #: ui/main.qml:71
 #, kde-format
@@ -147,7 +139,7 @@ msgctxt "@option:check"
 msgid "Automatically log in:"
 msgstr "لولوج آليّ في:"
 
-#: ui/main.qml:99
+#: ui/main.qml:100
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the user to log in "
@@ -155,7 +147,7 @@ msgctxt ""
 msgid "as user:"
 msgstr "كمستخدم:"
 
-#: ui/main.qml:154
+#: ui/main.qml:150
 #, kde-format
 msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
@@ -163,7 +155,7 @@ msgctxt ""
 msgid "with session:"
 msgstr "بجلسة:"
 
-#: ui/main.qml:187
+#: ui/main.qml:180
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -176,42 +168,42 @@ msgstr ""
 "مرة تقوم فيها بالولوج.     <nl/><nl/> لتتفادى هذا يمكنك تغيير المحفظة لتكون "
 "دون كلمة سر. لاحظ أن هذا غير آمن ويجب أن يكون في بيئة آمنة."
 
-#: ui/main.qml:192
+#: ui/main.qml:185
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "افتح إعدادات محفظة كِيدِي"
 
-#: ui/main.qml:199
+#: ui/main.qml:192
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "لج مباشرة بعد الخروج"
 
-#: ui/main.qml:210
+#: ui/main.qml:203
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "المبدئيات"
 
-#: ui/main.qml:215
+#: ui/main.qml:208
 #, kde-format
 msgctxt "@label"
 msgid "Default user:"
 msgstr "المستخدم المبدئيّ:"
 
-#: ui/main.qml:221
+#: ui/main.qml:214
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "أخر مستخدم ولج النظام"
 
-#: ui/main.qml:293
+#: ui/main.qml:281
 #, kde-format
 msgctxt "@label"
 msgid "Default session:"
 msgstr "الجلسة المبدئية:"
 
-#: ui/main.qml:299
+#: ui/main.qml:287
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
