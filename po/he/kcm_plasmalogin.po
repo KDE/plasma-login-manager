@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-11 00:47+0000\n"
-"PO-Revision-Date: 2026-08-06 09:10+0300\n"
+"PO-Revision-Date: 2026-08-07 08:05+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -91,14 +91,7 @@ msgstr ""
 "הגדרה זו תגרום למסך הכניסה אל פלזמה לשקף את ההתאמות שלך להגדרות הפלזמה הבאות:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Language and locale settings</item><item>Color scheme</"
-#| "item><item>Cursor theme and size</item><item>Font and font rendering</"
-#| "item><item>NumLock preference</item><item>Plasma theme</"
-#| "item><item>Scaling DPI</item><item>Screen configuration</"
-#| "item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -107,22 +100,20 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>הגדרות שפה ומקום</item><item>ערכת צבעים</item><item>ערכת "
-"סמנים וגדלים</item><item>גופנים ועיבוד גופנים</item><item>העדפת NumLock</"
-"item><item>ערכת עיצוב של פלזמה</item><item>נקודות לאינץ׳ בקנה מידה</"
-"item><item>הגדרות מסך</item><item>פריסות מקלדת</item></list></para>"
+"<para><list><item>הגדרות שפה ומקום</item><item>פריסות מקלדת</"
+"item><item>הגדרות סידור מסכים, קנה מידה וכיוון</item><item>העדפת NumLock</"
+"item><item>הגדרות גופנים ותיצוג גופנים</item><item>ערכת צבעים</"
+"item><item>גודל וערכת מצביעים</item><item>ערכת עיצוב של פלזמה</item></list></"
+"para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"נא לשים לב שיש להתקין את קובצי ערכת העיצוב באופן מקיף כדי שישפיע על מסך "
-"הכניסה אל פלזמה."
+"נא לשים לב שיש להתקין את קובצי ערכת העיצוב והגופנים באופן מקיף כדי שישפיע על "
+"מסך הכניסה לפלזמה."
 
 #: ui/main.qml:71
 #, kde-format
