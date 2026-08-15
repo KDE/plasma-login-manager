@@ -371,7 +371,7 @@ bool PlasmaLoginKcm::KDEWalletAvailable()
 
 void PlasmaLoginKcm::openKDEWallet()
 {
-    KService::Ptr kwalletmanagerService = KService::serviceByDesktopName(QStringLiteral("org.kde.kwalletmanager5"));
+    KService::Ptr kwalletmanagerService = KService::serviceByDesktopName(QStringLiteral("org.kde.kwalletmanager"));
     auto *job = new KIO::ApplicationLauncherJob(kwalletmanagerService);
     job->start();
 }
