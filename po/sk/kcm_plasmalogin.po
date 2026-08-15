@@ -94,13 +94,7 @@ msgstr ""
 "prispôsobenia nasledujúcich nastavení Plasma:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -109,21 +103,19 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>Farebná schéma</item><item>Téma kurzora a veľkosť</"
-"item><item>Písmo a vykresľovanie písma</item><item>Predvoľba NumLock</"
-"item><item>Téma Plasma</item><item>Škálovanie DPI</item><item>Konfigurácia "
-"obrazovky</item><item>Rozloženia klávesnice</item></list></para>"
+"<para><list><item>Nastavenie jazyka a národného prostredia</"
+"item><item>Rozloženia klávesnice</item><item>Nastavenie usporiadania, mierky "
+"a orientácie obrazovky</item><item>Predvoľba NumLock</item><item>Nastavenie "
+"písma a jeho vykresľovania</item><item>Farebná schéma</item><item>Téma a "
+"veľkosť kurzora</item><item>Téma Plasma</item></list></para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"Upozorňujeme, že súbory tém musia byť nainštalované globálne, aby sa "
+"Upozorňujeme, že súbory tém a písem musia byť nainštalované globálne, aby sa "
 "prejavili na prihlasovacej obrazovke Plasma."
 
 #: ui/main.qml:71
