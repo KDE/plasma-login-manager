@@ -12,8 +12,9 @@ import Qt5Compat.GraphicalEffects
 
 import org.kde.kirigami as Kirigami
 import org.kde.breeze.components as BreezeComponents
-import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
+import org.kde.plasma.workspace.keyboardlayout as Keyboards
+import org.kde.plasma.workspace.loginlockscreen as LoginLockScreen
 
 import org.kde.plasma.login as PlasmaLogin
 
@@ -54,11 +55,9 @@ Item {
 
         onEscapeKeyPressed: {
             PlasmaLogin.GreeterState.timeoutWindow(loginScreenRoot.Window.window);
-            /*
--            if (inputPanel.keyboardActive) {
--                inputPanel.showHide();
--            }
--            */
+            if (Keyboards.KWinVirtualKeyboard.visible) {
+                Keyboards.KWinVirtualKeyboard.active = false;
+            }
             PlasmaLogin.GreeterState.clearPasswords();
         }
     }
@@ -352,32 +351,12 @@ Item {
             }
         }
 
-        RowLayout {
+        LoginLockScreen.Footer {
             id: footer
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: Kirigami.Units.smallSpacing
 
-            spacing: Kirigami.Units.smallSpacing
-
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: Kirigami.Units.longDuration
-                }
+            onOskActivated: {
+                userListComponent.mainPasswordBox.forceActiveFocus();
             }
-
-            /* Virtual keyboard btn */
-
-            KeyboardButton {
-                id: keyboardButton
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            BreezeComponents.Battery {}
         }
     }
 
