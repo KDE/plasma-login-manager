@@ -90,13 +90,7 @@ msgid ""
 msgstr "这将让 Plasma 登录屏幕使用您对下列 Plasma 设置的自定义选项："
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -105,19 +99,17 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>配色方案</item><item>光标方案和大小</item><item>字体和字体"
-"渲染方式</item><item>数字键锁定设置</item><item>Plasma 主题</item><item>缩放 "
-"DPI</item><item>屏幕配置</item><item>键盘布局</item></list></para>"
+"<para><list><item>语言和区域设置</item><item>键盘布局</item><item>屏幕排列、"
+"缩放和方向设置</item><item>NumLock 首选项</item><item>字体和字体渲染设置</"
+"item><item>配色方案</item><item>光标主题和大小</item><item>Plasma 主题</"
+"item></list></para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
-msgstr "提示：主题文件必须安装到系统全局才能被 Plasma 登录屏幕使用。"
+msgstr "提示：主题和字体文件必须安装到系统全局才能被在 Plasma 登录屏幕上生效。"
 
 #: ui/main.qml:71
 #, kde-format
