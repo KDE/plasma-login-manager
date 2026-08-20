@@ -6,7 +6,7 @@
 #pragma once
 #include <QObject>
 
-#include "../backend/Messages.h"
+#include "Messages.h"
 
 // this class needs the same QML interface as GreeterProxy
 class MockGreeterProxy : public QObject

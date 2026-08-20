@@ -7,7 +7,6 @@ set(LOGIN_GREETER_SRCS
     main.cpp
     stateconfig.cpp
     backend/GreeterProxy.cpp
-    backend/SocketWriter.cpp
     mockbackend/MockGreeterProxy.cpp
     blurscreenbridge.cpp
     greetereventfilter.cpp
@@ -57,6 +56,7 @@ target_link_libraries(plasma-login-greeter PRIVATE
     LayerShellQt::Interface
     PW::KWorkspace
     KF6::ScreenDpms
+    plasmalogin-common
 )
 
 ecm_finalize_qml_module(plasma-login-greeter)

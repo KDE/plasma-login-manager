@@ -31,6 +31,11 @@ enum class DaemonMessages {
     LoginFailed,
     InformationMessage,
 };
+
+enum class SessionType {
+    X11 = 0,
+    Wayland
+};
 }
 
 #endif // PLASMALOGIN_MESSAGES_H
