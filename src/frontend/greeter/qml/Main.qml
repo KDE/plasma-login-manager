@@ -21,6 +21,28 @@ Item {
     id: root
     anchors.fill: parent
 
+    RowLayout {
+        QQC2.TextArea {
+            id: infoText
+            Layout.fillWidth: true
+        }
+
+        QQC2.TextArea{
+            id: errorText
+            Layout.fillWidth: true
+        }
+
+        QQC2.TextArea{
+            id: promptText
+            Layout.fillWidth: true
+        }
+
+        QQC2.TextArea{
+            id: promptSecretText
+            Layout.fillWidth: true
+        }
+    }
+
     // If we're using software rendering, draw outlines instead of shadows
     // See https://bugs.kde.org/show_bug.cgi?id=398317
     readonly property bool softwareRendering: GraphicsInfo.api === GraphicsInfo.Software

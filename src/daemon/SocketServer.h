@@ -52,6 +52,8 @@ public slots:
 signals:
     void login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session);
     void connected();
+    void launchPAMWorker(QLocalSocket *socket, const QString &service, const QString &frontendAddress);
+    void quitPAMWorker(QLocalSocket *socket, const QString &service, const QString &frontendAddress);
 
 private:
     QLocalServer *m_server{nullptr};

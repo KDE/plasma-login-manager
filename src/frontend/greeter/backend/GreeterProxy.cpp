@@ -56,6 +56,16 @@ void GreeterProxy::setSessionModel(SessionModel *model)
     d->sessionModel = model;
 }
 
+void GreeterProxy::launchPAMWorker(const QString &service, const QString &frontendAddress)
+{
+    SocketWriter(d->socket) << quint32(GreeterMessages::LaunchPAMWorker) << service << frontendAddress;
+}
+
+void GreeterProxy::quitPAMWorker(const QString &service, const QString &frontendAddress)
+{
+    SocketWriter(d->socket) << quint32(GreeterMessages::QuitPAMWorker) << service << frontendAddress;
+}
+
 void GreeterProxy::login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const
 {
     SocketWriter(d->socket) << quint32(GreeterMessages::Login) << user << password << static_cast<uint32_t>(sessionType) << sessionFileName;

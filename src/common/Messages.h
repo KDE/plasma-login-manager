@@ -24,6 +24,8 @@ namespace PLASMALOGIN
 enum class GreeterMessages {
     Connect = 0,
     Login,
+    LaunchPAMWorker,
+    QuitPAMWorker,
 };
 
 enum class DaemonMessages {

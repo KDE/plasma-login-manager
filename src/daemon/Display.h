@@ -63,6 +63,10 @@ public slots:
     void login(QLocalSocket *socket, const QString &user, const QString &password, const Session &session);
     void displayServerStarted();
 
+private Q_SLOTS:
+    void launchPAMWorker(QLocalSocket *socket, const QString &service, const QString &frontendAddress);
+    void quitPAMWorker(QLocalSocket *socket, const QString &service, const QString &frontendAddress);
+
 signals:
     void stopped();
 
@@ -92,6 +96,7 @@ private:
     SocketServer *m_socketServer{nullptr};
     QPointer<QLocalSocket> m_socket;
     Greeter *m_greeter{nullptr};
+    QHash<QString, QProcess *> m_pamWorkers;
 
 private slots:
     void slotRequestChanged();

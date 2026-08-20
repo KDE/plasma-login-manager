@@ -138,11 +138,11 @@ void HelperApp::doAuth()
     }
 
     Q_ASSERT(getuid() == 0);
-    if (!m_backend->authenticate()) {
-        authenticated(QString());
-        exit(Auth::HELPER_AUTH_ERROR);
-        return;
-    }
+    // if (!m_backend->authenticate()) {
+    //     authenticated(QString());
+    //     exit(Auth::HELPER_AUTH_ERROR);
+    //     return;
+    // }
 
     m_user = m_backend->userName();
     QProcessEnvironment env = authenticated(m_user);

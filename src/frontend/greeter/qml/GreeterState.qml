@@ -120,6 +120,11 @@ Item {
     Timer {
         id: greeterTimeoutTimer
         running: false
+        onRunningChanged: {
+            if (running) {
+                running = false
+            }
+        }
         interval: 10000
         onTriggered: {
             if (internal.activeWindow) {
@@ -190,7 +195,7 @@ Item {
                 delete result[user];
             }
         }
-        
+
         return result;
     }
 

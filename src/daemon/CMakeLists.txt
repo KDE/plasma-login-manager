@@ -16,6 +16,7 @@ set(DAEMON_SOURCES
     Seat.cpp
     SeatManager.cpp
     SocketServer.cpp
+    Arbiter.cpp
 )
 
 ## KConfig is handled via the common object library
@@ -23,6 +24,9 @@ set(DAEMON_SOURCES
 qt_add_dbus_adaptor(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.DisplayManager.xml"          "DisplayManager.h" PLASMALOGIN::DisplayManager)
 qt_add_dbus_adaptor(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.DisplayManager.Seat.xml"     "DisplayManager.h" PLASMALOGIN::DisplayManagerSeat)
 qt_add_dbus_adaptor(DAEMON_SOURCES "${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.DisplayManager.Session.xml"  "DisplayManager.h" PLASMALOGIN::DisplayManagerSession)
+
+set_source_files_properties(../../../kscreenlocker/greeter/worker/org.kde.plasma.screenlocker.Arbiter.xml PROPERTIES NO_NAMESPACE TRUE)
+qt_add_dbus_adaptor(DAEMON_SOURCES ../../../kscreenlocker/greeter/worker/org.kde.plasma.screenlocker.Arbiter.xml "Arbiter.h" PLASMALOGIN::Arbiter)
 
 set_source_files_properties("${CMAKE_SOURCE_DIR}/data/interfaces/org.freedesktop.login1.Manager.xml" PROPERTIES
    INCLUDE "LogindDBusTypes.h"

@@ -40,6 +40,8 @@ public:
     void setSessionModel(SessionModel *model);
 
 public slots:
+    void launchPAMWorker(const QString &service, const QString &frontendAddress);
+    void quitPAMWorker(const QString &service, const QString &frontendAddress);
     void login(const QString &user, const QString &password, const PLASMALOGIN::SessionType sessionType, const QString &sessionFileName) const;
 
 private slots:

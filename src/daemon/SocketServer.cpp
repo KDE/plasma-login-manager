@@ -144,6 +144,24 @@ void SocketServer::readyRead()
             // emit signal
             emit login(socket, user, password, session);
         } break;
+        case GreeterMessages::LaunchPAMWorker: {
+            qDebug() << "Message received from greeter: LaunchPAMWorker";
+
+            QString service;
+            QString frontendAddress;
+            input >> service >> frontendAddress;
+
+            emit launchPAMWorker(socket, service, frontendAddress);
+        } break;
+        case GreeterMessages::QuitPAMWorker: {
+            qDebug() << "Message received from greeter: QuitPAMWorker";
+
+            QString service;
+            QString frontendAddress;
+            input >> service >> frontendAddress;
+
+            emit quitPAMWorker(socket, service, frontendAddress);
+        } break;
         default: {
             // log message
             qWarning() << "Unknown message" << message;

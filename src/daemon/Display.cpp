@@ -18,17 +18,22 @@
 
 #include "Display.h"
 
+#include "Arbiter.h"
 #include "DaemonApp.h"
 #include "DisplayManager.h"
 #include "Greeter.h"
 #include "MainConfigLoader.h"
 #include "Seat.h"
 #include "SocketServer.h"
+#include "arbiteradaptor.h"
 
+#include <QDBusServer>
 #include <QDebug>
 #include <QFile>
 #include <QLocalSocket>
 #include <QTimer>
+
+#include <KLibexec>
 
 #include <pwd.h>
 #include <sys/time.h>
@@ -67,6 +72,9 @@ Display::Display(Seat *parent)
 
     // connect login signal
     connect(m_socketServer, &SocketServer::login, this, &Display::login);
+
+    connect(m_socketServer, &SocketServer::launchPAMWorker, this, &Display::launchPAMWorker);
+    connect(m_socketServer, &SocketServer::quitPAMWorker, this, &Display::quitPAMWorker);
 
     // connect login result signals
     connect(this, &Display::loginFailed, m_socketServer, &SocketServer::loginFailed);
@@ -183,6 +191,55 @@ void Display::displayServerStarted()
     qDebug() << "Display server started.";
 
     startSocketServerAndGreeter();
+}
+
+void Display::launchPAMWorker(QLocalSocket *socket, const QString &service, const QString &frontendAddress)
+{
+    qWarning() << "Launching PAM worker for service" << service << "with frontend address" << frontendAddress;
+
+    using namespace Qt::StringLiterals;
+
+    auto arbiterServer = new QDBusServer(this);
+    connect(arbiterServer, &QDBusServer::newConnection, this, [this, arbiterServer](const QDBusConnection &constConnection) {
+        qWarning() << "New arbiter connection" << constConnection.name();
+
+        auto arbiter = new Arbiter(arbiterServer);
+        connect(arbiter, &Arbiter::result, this, &Display::slotAuthenticationFinished);
+        new ArbiterAdaptor(arbiter);
+
+        auto connection = constConnection;
+        connection.registerObject(QStringLiteral("/org/kde/plasma/screenlocker/Arbiter"), arbiter);
+    });
+
+    qWarning() << "Arbiter server listening on" << arbiterServer->address();
+
+    // TODO: Needs putting into a class in libkscreenlocker so we dont need to replicate this
+    auto worker = new QProcess(this);
+    worker->setProcessChannelMode(QProcess::ForwardedChannels);
+#warning fixme
+    worker->setProgram(u"/home/me/kde/usr/lib/libexec/kscreenlocker_worker"_s);
+    worker->setArguments({service});
+    qWarning() << "Starting kscreenlocker_worker with service" << worker->program() << worker->arguments();
+    worker->start();
+    worker->write(QJsonDocument(QJsonObject{
+                                    {u"screenlockerAddress"_s, frontendAddress},
+                                    {u"arbiterAddress"_s, arbiterServer->address()},
+                                })
+                      .toJson(QJsonDocument::Compact));
+    worker->closeWriteChannel();
+    m_pamWorkers.insert(frontendAddress, worker);
+}
+
+void Display::quitPAMWorker(QLocalSocket *socket, const QString &service, const QString &frontendAddress)
+{
+    using namespace std::chrono_literals;
+    if (auto worker = m_pamWorkers.take(frontendAddress); worker) {
+        worker->terminate();
+        if (!worker->waitForFinished((25ms).count())) {
+            qWarning() << "Worker did not terminate in time, killing it.";
+            worker->kill();
+        }
+    }
 }
 
 void Display::stop()
@@ -311,6 +368,11 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
         if (m_socket) {
             emit loginSucceeded(m_socket);
         }
+
+        using namespace Qt::StringLiterals;
+#warning fixme
+        startAuth(u"me"_s, {}, Session::create(Session::WaylandSession, u"plasma"_s));
+
     } else if (m_socket) {
         qDebug() << "Authentication for user " << user << " failed";
         emit loginFailed(m_socket);

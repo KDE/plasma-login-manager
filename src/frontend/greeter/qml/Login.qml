@@ -16,6 +16,8 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 
 import org.kde.plasma.login as PlasmaLogin
+import org.kde.kscreenlocker as ScreenLocker
+import org.kde.ki18n
 
 SessionManagementScreen {
     id: root
@@ -40,6 +42,95 @@ SessionManagementScreen {
         passwordBox.clear();
         focusFirstVisibleFormControl();
     }
+
+    authenticationTypeItem: RowLayout {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.fillWidth: true
+        visible: authenticationTypeRepeater.count > 1
+
+        ScreenLocker.Authenticators {
+            id: authenticators
+            launcher: PlasmaLogin.Authenticator
+            onLauncherChanged: {
+                console.log("!!!!!!!!!!!!!!!!!!!!!")
+                console.log("launcher changed ", launcher)
+            }
+            onInfoMessageChanged: {
+                console.log("info message changed ", infoMessage)
+                infoText.text += infoMessage + "\n"
+            }
+            onErrorMessageChanged: {
+                console.log("error message changed ", errorMessage)
+                errorText.text += errorMessage + "\n"
+            }
+            onPromptChanged: {
+                console.log("prompt changed ", prompt)
+                promptText.text += prompt + "\n"
+            }
+            onPromptForSecretChanged: {
+                console.log("prompt secret changed ", promptForSecret)
+                promptSecretText.text += promptForSecret + "\n"
+            }
+
+            property Timer timer: Timer {
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: authenticators.startAuthenticating()
+            }
+        }
+
+        Repeater {
+            id: authenticationTypeRepeater
+            model: ScreenLocker.AuthenticatorModel
+
+            delegate: PlasmaComponents3.Button {
+                required property int type
+                required property string iconName
+                required property bool passwordField
+                required property bool expectingPrompt
+                required property string tooltip
+                required property bool functional
+
+                // FIXME: needs porting
+                // onFunctionalChanged: {
+                //     if (functional) {
+                //         return
+                //     }
+                //     root.notification = ""
+                //     mainBlock.passwordInputVisible = false
+                //     lockScreenUi.handleMessage(KI18n.i18ndc(
+                //         "plasma_shell_org.kde.plasma.desktop",
+                //         "@info:status",
+                //         "This authentication method is not functioning correctly. Please try another method, and check your system configuration."))
+                // }
+
+                // Be careful if you remove this to ensure defunct handling is present in all scenarios (e.g. onClicked)
+                enabled: functional
+                icon.name: iconName
+                icon.color: functional ? undefined : Kirigami.Theme.negativeTextColor
+                checked: authenticators.authenticator === type
+                onClicked: {
+                    authenticators.authenticator = type
+                    // FIXME: needs porting
+                    // root.notification = ""
+                    // mainBlock.passwordInputVisible = passwordField
+                    // lockScreenUi.expectingPrompt = expectingPrompt
+                }
+
+                PlasmaComponents3.ToolTip.text: tooltip
+                PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents3.ToolTip.visible: hovered
+
+                Component.onCompleted: {
+                    if (checked) {
+                        clicked()
+                    }
+                }
+            }
+        }
+    }
+
 
     QQC2.StackView.onActivating: {
         // Controls are not visible yet.
