@@ -39,7 +39,6 @@ UserSession::UserSession(HelperApp *parent)
 
 bool UserSession::start()
 {
-    auto helper = qobject_cast<HelperApp *>(parent());
     QProcessEnvironment env = processEnvironment();
 
     bool isWaylandGreeter = false;
