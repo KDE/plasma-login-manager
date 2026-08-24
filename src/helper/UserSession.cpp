@@ -39,10 +39,7 @@ UserSession::UserSession(HelperApp *parent)
 
 bool UserSession::start()
 {
-    auto helper = qobject_cast<HelperApp *>(parent());
     QProcessEnvironment env = processEnvironment();
-
-    bool isWaylandGreeter = false;
 
     if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("x11")) {
         QString command = QStringLiteral("%1 \"%2\"").arg(SESSION_COMMAND).arg(m_path);
@@ -52,9 +49,6 @@ bool UserSession::start()
         QProcess::start();
 
     } else if (env.value(QStringLiteral("XDG_SESSION_TYPE")) == QLatin1String("wayland")) {
-        if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
-            isWaylandGreeter = true;
-        }
         setProgram(WAYLAND_SESSION_COMMAND);
         setArguments(QStringList{m_path});
         qInfo() << "Starting Wayland user session:" << program() << m_path;
@@ -65,15 +59,7 @@ bool UserSession::start()
         qCritical() << "Unable to run user session: unknown session type";
     }
 
-    const bool started = waitForStarted();
-    if (started) {
-        return true;
-    } else if (isWaylandGreeter) {
-        // This is probably fine, we need the compositor to start first
-        return true;
-    }
-
-    return false;
+    return waitForStarted();
 }
 
 void UserSession::stop()
