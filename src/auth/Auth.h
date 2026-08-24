@@ -74,7 +74,6 @@ public:
     static void registerTypes();
 
     bool autologin() const;
-    bool isGreeter() const;
     bool verbose() const;
     const QString &user() const;
     const QString &session() const;
@@ -107,12 +106,6 @@ public:
     void setAutologin(bool on = true);
 
     /**
-     * Set mode to greeter
-     * This will bypass authentication checks
-     */
-    void setGreeter(bool on = true);
-
-    /**
      * Forwards the output of the underlying authenticator to the current process
      * @param on true if should forward the output
      */
@@ -143,7 +136,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void autologinChanged();
-    void greeterChanged();
     void verboseChanged();
     void userChanged();
     void displayServerCommandChanged();

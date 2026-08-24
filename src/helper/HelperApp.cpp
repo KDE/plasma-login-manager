@@ -107,10 +107,6 @@ void HelperApp::setUp()
         m_backend->setAutologin(true);
     }
 
-    if ((pos = args.indexOf(QStringLiteral("--greeter"))) >= 0) {
-        m_backend->setGreeter(true);
-    }
-
     if (server.isEmpty() || m_id <= 0) {
         qCritical() << "This application is not supposed to be executed manually";
         exit(Auth::HELPER_OTHER_ERROR);
