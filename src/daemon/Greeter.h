@@ -41,16 +41,9 @@ public:
 public slots:
     bool start();
     void stop();
-    void finished();
 
 private slots:
-    void onRequestChanged();
-    void onSessionStarted(bool success);
     void onHelperFinished(Auth::HelperExitStatus status);
-    void onReadyReadStandardOutput();
-    void onReadyReadStandardError();
-    void authInfo(const QString &message, Auth::Info info);
-    void authError(const QString &message, Auth::Error error);
 
 signals:
     void ttyFailed();
@@ -58,13 +51,10 @@ signals:
     void displayServerFailed();
 
 private:
-    bool m_started{false};
-
     Display *const m_display{nullptr};
     QString m_socket;
-
-    Auth *m_auth{nullptr};
     QProcess *m_process{nullptr};
+    QString m_unitName;
 
     static void insertEnvironmentList(QStringList names, QProcessEnvironment sourceEnv, QProcessEnvironment &targetEnv);
 };

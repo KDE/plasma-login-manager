@@ -52,7 +52,6 @@ public:
     virtual ~PamBackend();
     int converse(int n, const struct pam_message **msg, struct pam_response **resp);
     void setAutologin(bool on = true);
-    void setGreeter(bool on = true);
 
 public slots:
     bool start(const QString &user = QString());
@@ -65,7 +64,6 @@ public slots:
 private:
     HelperApp *m_app{nullptr};
     bool m_autologin{false};
-    bool m_greeter{false};
     PamData *m_data{nullptr};
     PamHandle *m_pam{nullptr};
 };

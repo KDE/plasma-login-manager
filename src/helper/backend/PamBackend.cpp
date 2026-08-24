@@ -215,9 +215,7 @@ bool PamBackend::start(const QString &user)
 
     QString service = QStringLiteral("plasmalogin");
 
-    if (user == QStringLiteral("plasmalogin") && m_greeter) {
-        service = QStringLiteral("plasmalogin-greeter");
-    } else if (m_autologin) {
+    if (m_autologin) {
         service = QStringLiteral("plasmalogin-autologin");
     }
     result = m_pam->start(service, user);
@@ -287,9 +285,6 @@ bool PamBackend::openSession()
         env.insert(QStringLiteral("SHELL"), QString::fromLocal8Bit(pw->pw_shell));
         env.insert(QStringLiteral("USER"), QString::fromLocal8Bit(pw->pw_name));
         env.insert(QStringLiteral("LOGNAME"), QString::fromLocal8Bit(pw->pw_name));
-    }
-    if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
-        env.insert(QStringLiteral("QT_NO_XDG_DESKTOP_PORTAL"), QStringLiteral("1"));
     }
     m_app->session()->setProcessEnvironment(env);
     return m_app->session()->start();
@@ -385,11 +380,6 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
 void PamBackend::setAutologin(bool on)
 {
     m_autologin = on;
-}
-
-void PamBackend::setGreeter(bool on)
-{
-    m_greeter = on;
 }
 }
 
