@@ -37,8 +37,11 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
+#include "SessionRunner.h"
 #include "VirtualTerminal.h"
 #include "config.h"
+
+using namespace Qt::StringLiterals;
 
 static int s_ttyFailures = 0;
 
@@ -60,7 +63,6 @@ Display::Display(Seat *parent)
     m_auth->setVerbose(true);
     connect(m_auth, &Auth::requestChanged, this, &Display::slotRequestChanged);
     connect(m_auth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
-    connect(m_auth, &Auth::sessionStarted, this, &Display::slotSessionStarted);
     connect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
     connect(m_auth, &Auth::error, this, &Display::slotAuthError);
@@ -169,6 +171,9 @@ void Display::startSocketServerAndGreeter()
     m_greeter->setSocket(m_socketServer->socketAddress());
 
     // start greeter
+    // Make sure we are on the greeter VT or else kwin won't be able to start correctly because it doesn't have device
+    // permissions and whatnot.
+    VirtualTerminal::jumpToVt(m_terminalId.tty(), true);
     m_greeter->start();
 }
 
@@ -272,20 +277,52 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     qDebug() << "Session" << m_sessionName << "selected, command:" << session.exec() << "for VT" << m_sessionTerminalId.tty() << session.xdgSessionType();
 
     QProcessEnvironment env;
-    env.insert(QStringLiteral("PATH"), PlasmaLogin::config()->defaultPath());
-    env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(seat()->name()));
-    env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
     env.insert(QStringLiteral("DESKTOP_SESSION"), session.desktopSession());
     if (!session.desktopNames().isEmpty()) {
         env.insert(QStringLiteral("XDG_CURRENT_DESKTOP"), session.desktopNames());
     }
     env.insert(QStringLiteral("XDG_SESSION_CLASS"), QStringLiteral("user"));
     env.insert(QStringLiteral("XDG_SESSION_TYPE"), session.xdgSessionType());
-    env.insert(QStringLiteral("XDG_SEAT"), seat()->name());
     if (m_sessionTerminalId.isValid()) {
         env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_sessionTerminalId.tty()));
     }
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
+
+    auto parts = session.exec().split(QLatin1Char(' '), Qt::SkipEmptyParts);
+    auto cmd = parts.takeFirst();
+    auto args = parts;
+    m_session = SessionBuilder() //
+                    .environment(env)
+                    .name(u"plasmalogin-session@tty%1.service"_s.arg(m_sessionTerminalId.tty()))
+                    .properties({
+                        u"User="_s + user,
+                        u"PAMName=plasmalogin"_s,
+
+                        // TTY Configuration
+                        u"TTYPath=/dev/tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
+                        u"TTYReset=yes"_s, // Reset tty before and after
+                        u"TTYVHangup=yes"_s, // Hangup prior clients
+                        u"TTYVTDisallocate=yes"_s, // Clear VT scrollback etc.
+
+                        // Utmp tracking. Nobody knows what these do exactly!
+                        u"UtmpIdentifier=tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
+                        u"UtmpMode=user"_s,
+                    })
+                    .build(cmd, args, this);
+
+    connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+        switch (exitStatus) {
+        case QProcess::NormalExit:
+            break;
+        case QProcess::CrashExit:
+            qWarning() << "Greeter crashed with exit code" << exitCode;
+            break;
+        }
+        qWarning() << "User session startup finished with exit code" << exitCode;
+        if (exitCode == 0) {
+            QTimer::singleShot(5000, m_greeter, &Greeter::stop);
+        }
+    });
 
     m_auth->setUser(user);
     if (m_reuseSessionId.isNull()) {
@@ -308,6 +345,8 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
     if (success) {
         if (m_reuseSessionId.isNull()) {
             qDebug() << "Authentication for user" << user << "successful, starting session";
+            Q_ASSERT(m_session);
+            m_session->start();
         } else {
             qDebug() << "Authentication for user" << user << "successful, reusing session with ID" << m_reuseSessionId;
             seat()->unlockAndActivateSession(m_reuseSessionId);
@@ -360,9 +399,9 @@ void Display::slotHelperFinished(Auth::HelperExitStatus status)
     // we want to avoid greeter from restarting when an authentication
     // error happens (in this case we want to show the message from the
     // greeter
-    if (status != Auth::HELPER_AUTH_ERROR) {
-        stop();
-    }
+    // if (status != Auth::HELPER_AUTH_ERROR) {
+    //     stop();
+    // }
 }
 
 void Display::slotRequestChanged()
@@ -374,14 +413,6 @@ void Display::slotRequestChanged()
         m_auth->request()->prompts()[0]->setResponse(qPrintable(m_auth->user()));
         m_auth->request()->prompts()[1]->setResponse(qPrintable(m_passPhrase));
         m_auth->request()->done();
-    }
-}
-
-void Display::slotSessionStarted(bool success)
-{
-    qDebug() << "Session started" << success;
-    if (success) {
-        QTimer::singleShot(5000, m_greeter, &Greeter::stop);
     }
 }
 }

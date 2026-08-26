@@ -39,6 +39,7 @@ Greeter::Greeter(Display *parent)
 
 Greeter::~Greeter()
 {
+    qWarning() << "Greeter shutting down";
     stop();
 }
 
@@ -122,7 +123,7 @@ bool Greeter::start()
                         u"StandardOutput=journal"_s,
                         u"StandardError=journal"_s,
                     })
-                    .build(greeterCommand, m_display);
+                    .build(greeterCommand, {}, m_display);
 
     connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         switch (exitStatus) {

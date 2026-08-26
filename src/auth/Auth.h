@@ -154,13 +154,6 @@ Q_SIGNALS:
     void authentication(QString user, bool success);
 
     /**
-     * Emitted when session starting phase finishes
-     *
-     * @param success true if succeeded
-     */
-    void sessionStarted(bool success);
-
-    /**
      * Emitted when the display server is ready.
      *
      * @param displayName display name
