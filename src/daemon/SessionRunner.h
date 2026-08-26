@@ -40,7 +40,7 @@ public:
     [[nodiscard]] SessionBuilder &description(const QString &description);
     [[nodiscard]] SessionBuilder &properties(const QStringList &properties);
 
-    [[nodiscard]] std::unique_ptr<RunnableSession> build(const QString &command, Display *display);
+    [[nodiscard]] std::unique_ptr<RunnableSession> build(const QString &command, const QStringList &arguments, Display *display);
 
 private:
     std::optional<QProcessEnvironment> m_env;

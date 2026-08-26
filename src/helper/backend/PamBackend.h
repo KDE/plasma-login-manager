@@ -56,8 +56,6 @@ public:
 public slots:
     bool start(const QString &user = QString());
     bool authenticate();
-    bool openSession();
-    bool closeSession();
 
     QString userName();
 
