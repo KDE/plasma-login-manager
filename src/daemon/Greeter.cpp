@@ -17,12 +17,9 @@
 
 #include "Greeter.h"
 
-#include "Constants.h"
-#include "DaemonApp.h"
 #include "Display.h"
-#include "DisplayManager.h"
-#include "MainConfigLoader.h"
 #include "Seat.h"
+#include "SessionRunner.h"
 
 #include <QStandardPaths>
 #include <QtCore/QDebug>
@@ -52,7 +49,7 @@ void Greeter::setSocket(const QString &socket)
 
 bool Greeter::start()
 {
-    if (m_process) {
+    if (m_session) {
         return false;
     }
 
@@ -90,10 +87,6 @@ bool Greeter::start()
                           sysenv,
                           env);
 
-    env.insert(QStringLiteral("PATH"), PlasmaLogin::config()->defaultPath());
-    env.insert(QStringLiteral("XDG_SEAT"), m_display->seat()->name());
-    env.insert(QStringLiteral("XDG_SEAT_PATH"), daemonApp->displayManager()->seatPath(m_display->seat()->name()));
-    env.insert(QStringLiteral("XDG_SESSION_PATH"), daemonApp->displayManager()->sessionPath(QStringLiteral("Session%1").arg(daemonApp->newSessionId())));
     if (m_display->seat()->name() == QLatin1String("seat0") && m_display->terminalId() > 0) {
         env.insert(QStringLiteral("XDG_VTNR"), QString::number(m_display->terminalId()));
     }
@@ -104,13 +97,34 @@ bool Greeter::start()
 
     qDebug() << "Greeter starting...";
 
-    m_unitName = u"plasmalogin-greeter@tty%1.service"_s.arg(m_display->terminalId());
+    m_session = SessionBuilder() //
+                    .environment(env)
+                    .name(u"plasmalogin-greeter@tty%1.service"_s.arg(m_display->terminalId()))
+                    .description(u"Plasma Login Manager Greeter (TTY %1)"_s.arg(m_display->terminalId()))
+                    .properties({
+                        // Unit Configuration
+                        u"StopPropagatedFrom=plasmalogin.service"_s,
+                        u"User=plasmalogin"_s,
+                        u"PAMName=plasmalogin-greeter"_s,
 
-    m_process = new QProcess(this);
-    connect(m_process, &QProcess::started, this, [] {
-        qDebug() << "Greeter session started successfully";
-    });
-    connect(m_process, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+                        // TTY Configuration
+                        u"TTYPath=/dev/tty%1"_s.arg(m_display->terminalId()),
+                        u"TTYReset=yes"_s, // Reset tty before and after
+                        u"TTYVHangup=yes"_s, // Hangup prior clients
+                        u"TTYVTDisallocate=yes"_s, // Clear VT scrollback etc.
+
+                        // Utmp tracking. Nobody knows what these do exactly!
+                        u"UtmpIdentifier=tty%1"_s.arg(m_display->terminalId()),
+                        u"UtmpMode=user"_s,
+
+                        // Output
+                        u"StandardInput=tty-fail"_s,
+                        u"StandardOutput=journal"_s,
+                        u"StandardError=journal"_s,
+                    })
+                    .build(greeterCommand, m_display);
+
+    connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         switch (exitStatus) {
         case QProcess::NormalExit:
             onHelperFinished(static_cast<Auth::HelperExitStatus>(exitCode));
@@ -121,45 +135,8 @@ bool Greeter::start()
             break;
         }
     });
-    m_process->setProgram(u"systemd-run"_s);
-    m_process->setArguments([&] {
-        auto arguments = QStringList{
-            u"--unit="_s + m_unitName,
-            u"--description=Plasma Login Manager Greeter (TTY %1)"_s.arg(m_display->terminalId()),
-            u"--service-type=simple"_s,
-            u"--slice-inherit"_s,
-            u"--collect"_s, // Remove the unit after we are done
 
-            // Unit Configuration
-            u"--property=StopPropagatedFrom=plasmalogin.service"_s,
-            u"--property=Restart=no"_s, // Process gets managed by the Greeter class, not systemd
-            u"--property=User=plasmalogin"_s,
-            u"--property=PAMName=plasmalogin-greeter"_s,
-
-            // TTY Configuration
-            u"--property=TTYPath=/dev/tty%1"_s.arg(m_display->terminalId()),
-            u"--property=TTYReset=yes"_s, // Reset tty before and after
-            u"--property=TTYVHangup=yes"_s, // Hangup prior clients
-            u"--property=TTYVTDisallocate=yes"_s, // Clear VT scrollback etc.
-
-            // Utmp tracking. Nobody knows what these do exactly!
-            u"--property=UtmpIdentifier=tty%1"_s.arg(m_display->terminalId()),
-            u"--property=UtmpMode=user"_s,
-
-            // Output
-            u"--property=StandardInput=tty-fail"_s,
-            u"--property=StandardOutput=journal"_s,
-            u"--property=StandardError=journal"_s,
-
-            u"--json=short"_s,
-        };
-        for (const auto &var : env.toStringList()) {
-            arguments.append(u"--setenv=%1"_s.arg(var));
-        }
-        arguments.append(greeterCommand);
-        return arguments;
-    }());
-    m_process->start();
+    m_session->start();
 
     return true;
 }
@@ -175,7 +152,7 @@ void Greeter::insertEnvironmentList(QStringList names, QProcessEnvironment sourc
 
 void Greeter::stop()
 {
-    if (!m_process) {
+    if (!m_session) {
         return;
     }
 
@@ -183,36 +160,19 @@ void Greeter::stop()
 
     // We no longer care about its outcome. Let's ignore all signals to avoid confusion.
     // This also avoids problems with waitForFinished doing event looping and maybe deleting things out from under us.
-    m_process->disconnect(this);
-
-    QProcess term;
-    term.setProgram(u"systemctl"_s);
-    term.setArguments({u"kill"_s, u"--kill-whom=all"_s, u"--signal=SIGTERM"_s, m_unitName});
-    term.start();
-    if (!term.waitForFinished((250ms).count())) {
-        qWarning() << "Greeter did not stop in time, sending SIGKILL";
-        QProcess kill;
-        kill.setProgram(u"systemctl"_s);
-        kill.setArguments({u"kill"_s, u"--kill-whom=all"_s, u"--signal=SIGKILL"_s, m_unitName});
-        kill.start();
-        if (!kill.waitForFinished((100ms).count())) {
-            qWarning() << "Greeter did not stop in time, killing it";
-        }
-    }
+    m_session->disconnect(this);
+    m_session->stop();
+    m_session = nullptr;
 
     qDebug() << "Greeter stopped.";
-
-    m_process->deleteLater();
-    m_process = nullptr;
 }
 
 void Greeter::onHelperFinished(Auth::HelperExitStatus status)
 {
     qDebug() << "Greeter stopped." << status;
 
-    if (m_process) {
-        m_process->deleteLater();
-        m_process = nullptr;
+    if (m_session) {
+        m_session = nullptr;
     }
 
     if (status == Auth::HELPER_TTY_ERROR) {
@@ -224,7 +184,7 @@ void Greeter::onHelperFinished(Auth::HelperExitStatus status)
 
 bool Greeter::isRunning() const
 {
-    return m_process && m_process->state() == QProcess::Running;
+    return m_session && m_session->isRunning();
 }
 }
 
