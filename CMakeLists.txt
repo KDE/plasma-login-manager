@@ -54,7 +54,7 @@ find_package(PkgConfig)
 # XAU
 pkg_check_modules(LIBXAU REQUIRED "xau" IMPORTED_TARGET)
 
-pkg_check_modules(SYSTEMD REQUIRED "systemd")
+pkg_check_modules(SYSTEMD REQUIRED "systemd>=257")
 
 pkg_check_modules(LIBSYSTEMD REQUIRED "libsystemd" IMPORTED_TARGET)
 
