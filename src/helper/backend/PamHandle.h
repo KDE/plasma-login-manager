@@ -69,20 +69,6 @@ public:
     const void *getItem(int item_type);
 
     /**
-     * pam_open_session - start PAM session management
-     *
-     * \return true on success
-     */
-    bool openSession();
-
-    /**
-     * pam_close_session - terminate PAM session management
-     *
-     * \return true on success
-     */
-    bool closeSession();
-
-    /**
      * pam_setcred - establish / delete user credentials
      *
      * \param flags PAM flag(s)
@@ -183,7 +169,6 @@ private:
     struct pam_conv m_conv; ///< the current conversation
     pam_handle_t *m_handle{nullptr}; ///< the actual PAM handle
     int m_result{0}; ///< PAM result
-    bool m_open{false}; ///< whether the session is open
 };
 }
 

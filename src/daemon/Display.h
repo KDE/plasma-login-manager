@@ -36,6 +36,7 @@ class DisplayServer;
 class Seat;
 class SocketServer;
 class Greeter;
+class RunnableSession;
 
 class Display : public QObject
 {
@@ -92,6 +93,7 @@ private:
     SocketServer *m_socketServer{nullptr};
     QPointer<QLocalSocket> m_socket;
     Greeter *m_greeter{nullptr};
+    std::unique_ptr<RunnableSession> m_session;
 
 private slots:
     void slotRequestChanged();

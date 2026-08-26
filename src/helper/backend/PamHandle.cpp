@@ -95,30 +95,6 @@ bool PamHandle::setCred(int flags)
     return m_result == PAM_SUCCESS;
 }
 
-bool PamHandle::openSession()
-{
-    m_result = pam_open_session(m_handle, m_silent);
-    if (m_result != PAM_SUCCESS) {
-        qWarning() << "[PAM] openSession:" << pam_strerror(m_handle, m_result);
-    }
-    m_open = m_result == PAM_SUCCESS;
-    return m_open;
-}
-
-bool PamHandle::closeSession()
-{
-    m_result = pam_close_session(m_handle, m_silent);
-    if (m_result != PAM_SUCCESS) {
-        qWarning() << "[PAM] closeSession:" << pam_strerror(m_handle, m_result);
-    }
-    return m_result == PAM_SUCCESS;
-}
-
-bool PamHandle::isOpen() const
-{
-    return m_open;
-}
-
 bool PamHandle::setItem(int item_type, const void *item)
 {
     m_result = pam_set_item(m_handle, item_type, item);
