@@ -16,6 +16,7 @@ set(DAEMON_SOURCES
     Seat.cpp
     SeatManager.cpp
     SocketServer.cpp
+    SessionRunner.cpp
 )
 
 ## KConfig is handled via the common object library
