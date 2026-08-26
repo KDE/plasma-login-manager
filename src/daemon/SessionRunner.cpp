@@ -110,7 +110,7 @@ PLASMALOGIN::SessionBuilder &PLASMALOGIN::SessionBuilder::name(const QString &un
     return *this;
 }
 
-[[nodiscard]] std::unique_ptr<RunnableSession> PLASMALOGIN::SessionBuilder::build(const QString &command, Display *display)
+[[nodiscard]] std::unique_ptr<RunnableSession> PLASMALOGIN::SessionBuilder::build(const QString &command, const QStringList &commandArguments, Display *display)
 {
     auto process = std::make_unique<QProcess>();
     process->setProcessChannelMode(QProcess::ForwardedErrorChannel);
@@ -152,6 +152,7 @@ PLASMALOGIN::SessionBuilder &PLASMALOGIN::SessionBuilder::name(const QString &un
         }
 
         arguments.append(command);
+        arguments.append(commandArguments);
         return arguments;
     }());
 
