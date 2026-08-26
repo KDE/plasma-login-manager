@@ -26,6 +26,7 @@ class QProcess;
 namespace PLASMALOGIN
 {
 class Display;
+class RunnableSession;
 
 class Greeter : public QObject
 {
@@ -51,10 +52,10 @@ signals:
     void displayServerFailed();
 
 private:
+    // It is silly that we hold this because it can change state and no longer reflect what it did when we started.
     Display *const m_display{nullptr};
     QString m_socket;
-    QProcess *m_process{nullptr};
-    QString m_unitName;
+    std::unique_ptr<RunnableSession> m_session;
 
     static void insertEnvironmentList(QStringList names, QProcessEnvironment sourceEnv, QProcessEnvironment &targetEnv);
 };
