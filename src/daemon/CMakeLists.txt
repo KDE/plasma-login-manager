@@ -53,3 +53,9 @@ target_link_libraries(plasmalogin
                       PkgConfig::LIBSYSTEMD)
 
 install(TARGETS plasmalogin DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+find_package(PkgConfig)
+pkg_check_modules(pam REQUIRED IMPORTED_TARGET pam)
+add_library(pam_plasmalogin_loadkey MODULE pam_plasmalogin_loadkey.cpp)
+target_link_libraries(pam_plasmalogin_loadkey PRIVATE Qt6::Core PkgConfig::pam)
+install(TARGETS pam_plasmalogin_loadkey DESTINATION "${CMAKE_INSTALL_LIBDIR}/security")
