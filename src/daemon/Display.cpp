@@ -41,6 +41,7 @@
 #include "VirtualTerminal.h"
 #include "config.h"
 
+using namespace std::chrono_literals;
 using namespace Qt::StringLiterals;
 
 static int s_ttyFailures = 0;
@@ -286,6 +287,43 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     }
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 
+    // Pass the password **safely** into the PAM session opened by systemd.
+    // This involves some trickery. We first encrypt the password using systemd-creds
+    // and then pass it as SetCredential instead of SetCredentialEncrypted.
+    // This prevents systemd from decrypting it automatically and leaving the
+    // plaintext password for the entire user session to see.
+    // Inside pam_plasmalogin_loadkey we then pick up the encrypted credential
+    // and decrypt it (we are still in system-scope at that point, so that works).
+    // We then have the decrypted password to set as PAM_AUTHTOK.
+    //
+    // The credential is never decrypted in the filesystem and since it is encrypted as system credential the user cannot decrypt it on their own.
+    // For extra safety we also set a very short expiration time.
+    //
+    // Requirement is of course that pam_plasmalogin_loadkey is loaded as first module.
+    //
+    // This is loosely based on what systemd itself does (loading pam.authtok.*) and what pam_systemd_loadkey does (injecting the authtok).
+    // Our approach is neither leaking the credential to the session nor subject to race conditions though.
+    QString credentialName = u"encrypted.system.pam.authtok.plasmalogin"_s;
+    auto credential = [&] {
+        QProcess proc;
+        proc.setProcessChannelMode(QProcess::ForwardedErrorChannel);
+        proc.setProgram("systemd-creds");
+        proc.setArguments({
+            u"--system"_s,
+            u"--name="_s + credentialName,
+            u"--not-after=+8s"_s, // should be plenty of time for us to pick up the credential
+            u"encrypt"_s,
+            u"-"_s, // stdin
+            u"-"_s, // stdout
+        });
+        proc.start();
+        proc.write(password.toUtf8());
+        proc.closeWriteChannel();
+        proc.waitForFinished(std::chrono::milliseconds(2s).count());
+        // Make a single string, the output of systemd-creds is multi-line and contains spaces.
+        return proc.readAllStandardOutput().simplified();
+    }();
+
     auto parts = session.exec().split(QLatin1Char(' '), Qt::SkipEmptyParts);
     auto cmd = parts.takeFirst();
     auto args = parts;
@@ -295,6 +333,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
                     .properties({
                         u"User="_s + user,
                         u"PAMName=plasmalogin"_s,
+                        u"SetCredential=%1:%2"_s.arg(credentialName, QString::fromUtf8(credential)),
 
                         // TTY Configuration
                         u"TTYPath=/dev/tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
@@ -340,7 +379,6 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
             seat()->activateSession(m_reuseSessionId);
         } else if (m_session) {
             qWarning() << "Starting user session for user" << user;
-
             // Make sure we are on the session VT or else kwin won't be able to start correctly because it doesn't have device
             // permissions and whatnot.
             VirtualTerminal::jumpToVt(m_sessionTerminalId.tty(), true);
