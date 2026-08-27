@@ -11,3 +11,4 @@
 build*/
 
 compile_commands.json
+**/target/

@@ -54,3 +54,9 @@ target_link_libraries(plasmalogin
                       PkgConfig::LIBSYSTEMD)
 
 install(TARGETS plasmalogin DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+find_package(Corrosion REQUIRED)
+corrosion_import_crate(MANIFEST_PATH pam_plasmalogin_loadkey/Cargo.toml)
+install(FILES ${CMAKE_BINARY_DIR}/bin/libpam_plasmalogin_loadkey.so
+   DESTINATION "${CMAKE_INSTALL_LIBDIR}/security"
+   RENAME pam_plasmalogin_loadkey.so)
