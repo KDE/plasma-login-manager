@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-23 00:45+0000\n"
+"POT-Creation-Date: 2026-08-28 00:47+0000\n"
 "PO-Revision-Date: 2025-12-01 08:23-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -76,50 +76,50 @@ msgstr "Senha"
 msgid "Log In"
 msgstr "Entrar"
 
-#: qml/Main.qml:167 qml/Main.qml:291
+#: qml/Main.qml:166 qml/Main.qml:290
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps lock está ativado"
 
-#: qml/Main.qml:179 qml/Main.qml:318
+#: qml/Main.qml:178 qml/Main.qml:317
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Hibernar"
 
-#: qml/Main.qml:188 qml/Main.qml:327
+#: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Suspender"
 
-#: qml/Main.qml:197 qml/Main.qml:336
+#: qml/Main.qml:196 qml/Main.qml:335
 #, kde-format
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: qml/Main.qml:203 qml/Main.qml:342
+#: qml/Main.qml:202 qml/Main.qml:341
 #, kde-format
 msgid "Shut Down"
 msgstr "Desligar"
 
-#: qml/Main.qml:209
+#: qml/Main.qml:208
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Outros…"
 
-#: qml/Main.qml:307
+#: qml/Main.qml:306
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Digite o nome de usuário e a senha"
 
-#: qml/Main.qml:348
+#: qml/Main.qml:347
 #, kde-format
 msgid "List Users"
 msgstr "Listar usuários"
 
-#: qml/Main.qml:394
+#: qml/Main.qml:373
 #, kde-format
 msgid "Login Failed"
 msgstr "Falha ao entrar"

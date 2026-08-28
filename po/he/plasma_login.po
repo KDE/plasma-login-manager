@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-23 00:45+0000\n"
+"POT-Creation-Date: 2026-08-28 00:47+0000\n"
 "PO-Revision-Date: 2025-12-01 09:30+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -75,50 +75,50 @@ msgstr "סיסמה"
 msgid "Log In"
 msgstr "כניסה"
 
-#: qml/Main.qml:167 qml/Main.qml:291
+#: qml/Main.qml:166 qml/Main.qml:290
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock דולק"
 
-#: qml/Main.qml:179 qml/Main.qml:318
+#: qml/Main.qml:178 qml/Main.qml:317
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "תרדמת"
 
-#: qml/Main.qml:188 qml/Main.qml:327
+#: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "שינה"
 
-#: qml/Main.qml:197 qml/Main.qml:336
+#: qml/Main.qml:196 qml/Main.qml:335
 #, kde-format
 msgid "Restart"
 msgstr "הפעלה מחדש"
 
-#: qml/Main.qml:203 qml/Main.qml:342
+#: qml/Main.qml:202 qml/Main.qml:341
 #, kde-format
 msgid "Shut Down"
 msgstr "כיבוי"
 
-#: qml/Main.qml:209
+#: qml/Main.qml:208
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "אחר…"
 
-#: qml/Main.qml:307
+#: qml/Main.qml:306
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "נא להקליד שם משתמש וסיסמה"
 
-#: qml/Main.qml:348
+#: qml/Main.qml:347
 #, kde-format
 msgid "List Users"
 msgstr "הצגת משתמשים"
 
-#: qml/Main.qml:394
+#: qml/Main.qml:373
 #, kde-format
 msgid "Login Failed"
 msgstr "הכניסה נכשלה"

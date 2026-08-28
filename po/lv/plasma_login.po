@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-23 00:45+0000\n"
+"POT-Creation-Date: 2026-08-28 00:47+0000\n"
 "PO-Revision-Date: 2026-01-16 19:55+0200\n"
 "Last-Translator: Toms Trasuns <toms.trasuns@posteo.net>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -75,50 +75,50 @@ msgstr "Parole"
 msgid "Log In"
 msgstr "Ierakstīties"
 
-#: qml/Main.qml:167 qml/Main.qml:291
+#: qml/Main.qml:166 qml/Main.qml:290
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Ieslēgts burtslēga taustiņš („Caps Lock“)"
 
-#: qml/Main.qml:179 qml/Main.qml:318
+#: qml/Main.qml:178 qml/Main.qml:317
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Hibernēt"
 
-#: qml/Main.qml:188 qml/Main.qml:327
+#: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Iesnaudināt"
 
-#: qml/Main.qml:197 qml/Main.qml:336
+#: qml/Main.qml:196 qml/Main.qml:335
 #, kde-format
 msgid "Restart"
 msgstr "Pārstartēt"
 
-#: qml/Main.qml:203 qml/Main.qml:342
+#: qml/Main.qml:202 qml/Main.qml:341
 #, kde-format
 msgid "Shut Down"
 msgstr "Izslēgt"
 
-#: qml/Main.qml:209
+#: qml/Main.qml:208
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Cits…"
 
-#: qml/Main.qml:307
+#: qml/Main.qml:306
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Ierakstiet lietotājvārdu un paroli"
 
-#: qml/Main.qml:348
+#: qml/Main.qml:347
 #, kde-format
 msgid "List Users"
 msgstr "Uzskaitīt lietotājus"
 
-#: qml/Main.qml:394
+#: qml/Main.qml:373
 #, kde-format
 msgid "Login Failed"
 msgstr "Ierakstīšanās neizdevās"
