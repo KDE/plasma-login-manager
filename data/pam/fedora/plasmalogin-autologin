@@ -17,4 +17,5 @@ session    include     system-auth
 -session    optional    pam_gnome_keyring.so auto_start
 -session    optional    pam_kwallet5.so auto_start
 -session    optional    pam_kwallet.so auto_start
+-session    optional    pam_oo7.so auto_start
 session    include     postlogin
