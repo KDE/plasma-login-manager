@@ -369,8 +369,16 @@ Item {
     Connections {
         target: PlasmaLogin.Authenticator
 
+        // e.g. pam_u2f's "cue" asking the user to touch their key. Not auto-cleared
+        // like "Login Failed" is: handleLoginRequest() clears it on the next attempt.
+        function onInformationMessage(message) {
+            notificationMessage = message;
+        }
+
         function onLoginFailed() {
             notificationMessage = i18nd("plasma_login", "Login Failed");
+            // Only failures time out; started here rather than on every change.
+            notificationResetTimer.start();
 
             footer.enabled = true;
             mainStack.enabled = true;
@@ -382,12 +390,6 @@ Item {
         function onLoginSucceeded() {
             mainStack.opacity = 0;
             footer.opacity = 0;
-        }
-    }
-
-    onNotificationMessageChanged: {
-        if (notificationMessage) {
-            notificationResetTimer.start();
         }
     }
 
