@@ -40,6 +40,7 @@ public:
     VirtualTerminal::Terminal availableVt() const;
     QString reusableSessionId(const QString &user) const;
     void activateSession(const QString &sessionId) const;
+    void lockSession(const QString &sessionId) const;
     std::optional<int> vtForSession(const QString &sessionId) const;
 
 private slots:

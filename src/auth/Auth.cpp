@@ -189,9 +189,10 @@ void Auth::Private::dataPending()
             break;
         }
         case SESSION_STATUS: {
-            bool status;
-            str >> status;
-            Q_EMIT auth->sessionStarted(status);
+            bool success;
+            QString sessionId;
+            str >> success >> sessionId;
+            Q_EMIT auth->sessionStarted(success, sessionId);
             str.reset();
             str << SESSION_STATUS;
             str.send();

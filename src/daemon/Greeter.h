@@ -45,7 +45,7 @@ public slots:
 
 private slots:
     void onRequestChanged();
-    void onSessionStarted(bool success);
+    void onSessionStarted(const bool success, const QString &sessionId);
     void onHelperFinished(Auth::HelperExitStatus status);
     void onReadyReadStandardOutput();
     void onReadyReadStandardError();

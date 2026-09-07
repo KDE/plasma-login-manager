@@ -199,6 +199,17 @@ KCM.SimpleKCM {
                 }
             }
 
+            QQC2.CheckBox {
+                text: i18nc("@option:check", "Lock after automatically logging in")
+                checked: kcm.settings.lock
+                onToggled: kcm.settings.lock = checked
+                KCM.SettingStateBinding {
+                    configObject: kcm.settings
+                    settingName: "Lock"
+                    extraEnabledConditions: autologinBox.checked
+                }
+            }
+
             Item {
                 Kirigami.FormData.label: i18nc("@title:group", "Defaults")
                 Kirigami.FormData.isSection: true
