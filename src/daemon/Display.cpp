@@ -367,11 +367,16 @@ void Display::slotRequestChanged()
     }
 }
 
-void Display::slotSessionStarted(bool success)
+void Display::slotSessionStarted(const bool success, const QString &sessionId)
 {
     qDebug() << "Session started" << success;
     if (success) {
         QTimer::singleShot(5000, m_greeter, &Greeter::stop);
+
+        if (m_auth->autologin() && PlasmaLogin::config()->autologinLock() && !sessionId.isEmpty()) {
+            qDebug() << "Locking session" << sessionId << "after starting with autologin";
+            seat()->lockSession(sessionId);
+        }
     }
 }
 }

@@ -165,8 +165,9 @@ Q_SIGNALS:
      * Emitted when session starting phase finishes
      *
      * @param success true if succeeded
+     * @param sessionId the ID of the started session
      */
-    void sessionStarted(bool success);
+    void sessionStarted(const bool success, const QString &sessionId);
 
     /**
      * Emitted when the display server is ready.

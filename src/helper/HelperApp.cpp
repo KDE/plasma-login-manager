@@ -157,7 +157,7 @@ void HelperApp::doAuth()
             return;
         }
 
-        sessionOpened(true);
+        sessionOpened(true, m_session->processEnvironment().value(QStringLiteral("XDG_SESSION_ID")));
     } else {
         exit(Auth::HELPER_SUCCESS);
     }
@@ -220,11 +220,11 @@ QProcessEnvironment HelperApp::authenticated(const QString &user)
     return env;
 }
 
-void HelperApp::sessionOpened(bool success)
+void HelperApp::sessionOpened(const bool success, const QString &sessionId)
 {
     Msg m = Msg::MSG_UNKNOWN;
     SafeDataStream str(m_socket);
-    str << Msg::SESSION_STATUS << success;
+    str << Msg::SESSION_STATUS << success << sessionId;
     str.send();
     str.receive();
     str >> m;

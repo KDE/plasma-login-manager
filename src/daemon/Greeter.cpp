@@ -170,8 +170,10 @@ void Greeter::onRequestChanged()
     m_auth->request()->setFinishAutomatically(true);
 }
 
-void Greeter::onSessionStarted(bool success)
+void Greeter::onSessionStarted(const bool success, const QString &sessionId)
 {
+    Q_UNUSED(sessionId)
+
     // set flag
     m_started = success;
 

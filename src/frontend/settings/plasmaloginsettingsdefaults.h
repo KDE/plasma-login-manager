@@ -15,6 +15,7 @@ class PlasmaLoginSettingsDefaults : public KConfigSkeleton
     Q_PROPERTY(QString defaultUser READ defaultUser CONSTANT)
     Q_PROPERTY(QString defaultSession READ defaultSession CONSTANT)
     Q_PROPERTY(bool defaultRelogin READ defaultRelogin CONSTANT)
+    Q_PROPERTY(bool defaultLock READ defaultLock CONSTANT)
     Q_PROPERTY(QString defaultPreselectedUser READ defaultPreselectedUser CONSTANT)
     Q_PROPERTY(QString defaultPreselectedSession READ defaultPreselectedSession CONSTANT)
     Q_PROPERTY(bool defaultShowClock READ defaultShowClock CONSTANT)
@@ -26,6 +27,7 @@ public:
     static QString defaultUser();
     static QString defaultSession();
     static bool defaultRelogin();
+    static bool defaultLock();
     static QString defaultPreselectedUser();
     static QString defaultPreselectedSession();
     static bool defaultShowClock();
@@ -35,6 +37,7 @@ private:
     static QString s_defaultUser;
     static QString s_defaultSession;
     static bool s_defaultRelogin;
+    static bool s_defaultLock;
     static QString s_defaultPreselectedUser;
     static QString s_defaultPreselectedSession;
     static bool s_defaultShowClock;

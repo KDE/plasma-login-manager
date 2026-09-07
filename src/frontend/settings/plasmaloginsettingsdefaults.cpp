@@ -11,6 +11,7 @@
 QString PlasmaLoginSettingsDefaults::s_defaultUser;
 QString PlasmaLoginSettingsDefaults::s_defaultSession;
 bool PlasmaLoginSettingsDefaults::s_defaultRelogin;
+bool PlasmaLoginSettingsDefaults::s_defaultLock;
 QString PlasmaLoginSettingsDefaults::s_defaultPreselectedUser;
 QString PlasmaLoginSettingsDefaults::s_defaultPreselectedSession;
 bool PlasmaLoginSettingsDefaults::s_defaultShowClock;
@@ -23,6 +24,7 @@ PlasmaLoginSettingsDefaults::PlasmaLoginSettingsDefaults(KSharedConfigPtr config
     s_defaultUser = defaultConfig->group(QStringLiteral("AutoLogin")).readEntry("User", "");
     s_defaultSession = defaultConfig->group(QStringLiteral("AutoLogin")).readEntry("Session", "");
     s_defaultRelogin = defaultConfig->group(QStringLiteral("AutoLogin")).readEntry("Relogin", false);
+    s_defaultLock = defaultConfig->group(QStringLiteral("AutoLogin")).readEntry("Lock", false);
     s_defaultPreselectedUser = defaultConfig->group(QStringLiteral("Greeter")).readEntry("PreselectedUser", "");
     s_defaultPreselectedSession = defaultConfig->group(QStringLiteral("Greeter")).readEntry("PreselectedSession", "");
     s_defaultShowClock = defaultConfig->group(QStringLiteral("Greeter")).readEntry("ShowClock", true);
@@ -42,6 +44,11 @@ QString PlasmaLoginSettingsDefaults::defaultSession()
 bool PlasmaLoginSettingsDefaults::defaultRelogin()
 {
     return s_defaultRelogin;
+}
+
+bool PlasmaLoginSettingsDefaults::defaultLock()
+{
+    return s_defaultLock;
 }
 
 QString PlasmaLoginSettingsDefaults::defaultPreselectedUser()

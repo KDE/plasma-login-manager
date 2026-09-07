@@ -14,6 +14,9 @@
     <entry name="Relogin" type="Bool">
       <default code="true">defaultRelogin()</default>
     </entry>
+    <entry name="Lock" type="Bool">
+      <default code="true">defaultLock()</default>
+    </entry>
   </group>
   <group name="Greeter">
     <entry name="PreselectedUser" type="String">

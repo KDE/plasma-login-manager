@@ -73,6 +73,11 @@
   </property>
   <property name="IdleSinceHintMonotonic" type="t" access="read">
   </property>
+  <property name="CanLock" type="b" access="read">
+   <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="const"/>
+  </property>
+  <property name="LockedHint" type="b" access="read">
+  </property>
   <method name="Terminate">
    <annotation name="org.freedesktop.systemd1.Privileged" value="true"/>
   </method>
@@ -88,6 +93,9 @@
   </method>
   <method name="SetIdleHint">
    <arg type="b" direction="in"/>
+  </method>
+    <method name="SetLockedHint">
+   <arg type="b" name="locked" direction="in"/>
   </method>
   <method name="Kill">
    <arg type="s" direction="in"/>
@@ -129,4 +137,3 @@
   </signal>
  </interface>
 </node>
-

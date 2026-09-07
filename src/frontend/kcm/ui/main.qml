@@ -218,6 +218,20 @@ To avoid this, you can change the wallet to have a blank password. Note that thi
                     }
                 }
             }
+
+            Kirigami.FormEntry {
+                contentItem: QQC2.CheckBox {
+                    text: i18nc("@option:check", "Lock after automatically logging in")
+                    checked: kcm.settings.lock
+                    onToggled: kcm.settings.lock = checked
+
+                    KCM.SettingStateBinding {
+                        configObject: kcm.settings
+                        settingName: "Lock"
+                        extraEnabledConditions: autoLoginBox.checked
+                    }
+                }
+            }
         }
 
         Kirigami.FormGroup {

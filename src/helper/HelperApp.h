@@ -36,7 +36,7 @@ public slots:
     void error(const QString &message, Auth::Error type);
     QProcessEnvironment authenticated(const QString &user);
     void displayServerStarted(const QString &displayName);
-    void sessionOpened(bool success);
+    void sessionOpened(const bool success, const QString &sessionId = QString());
 
 private slots:
     void setUp();

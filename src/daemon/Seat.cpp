@@ -121,6 +121,21 @@ void Seat::activateSession(const QString &sessionId) const
     manager.ActivateSession(sessionId);
 }
 
+void Seat::lockSession(const QString &sessionId) const
+{
+    if (sessionId.isEmpty()) {
+        return;
+    }
+
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    auto sessionReply = manager.GetSession(sessionId);
+    sessionReply.waitForFinished();
+
+    OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionReply.value().path(), QDBusConnection::systemBus());
+    session.SetLockedHint(true);
+    session.Lock();
+}
+
 std::optional<int> Seat::vtForSession(const QString &sessionId) const
 {
     if (sessionId.isEmpty()) {
