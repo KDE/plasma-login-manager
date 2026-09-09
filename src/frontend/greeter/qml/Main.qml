@@ -372,6 +372,8 @@ Item {
         // e.g. pam_u2f's "cue" asking the user to touch their key. Not auto-cleared
         // like "Login Failed" is: handleLoginRequest() clears it on the next attempt.
         function onInformationMessage(message) {
+            // A reset pending from an earlier failure would clear this one early.
+            notificationResetTimer.stop();
             notificationMessage = message;
         }
 
