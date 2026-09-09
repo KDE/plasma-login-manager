@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-28 00:47+0000\n"
+"POT-Creation-Date: 2026-09-09 00:52+0000\n"
 "PO-Revision-Date: 2025-12-02 08:37+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
@@ -114,7 +114,7 @@ msgstr "Veuillez saisir votre nom d'utilisateur et votre mot de passe."
 msgid "List Users"
 msgstr "Liste d'utilisateurs"
 
-#: qml/Main.qml:373
+#: qml/Main.qml:379
 #, kde-format
 msgid "Login Failed"
 msgstr "Échec de connexion"

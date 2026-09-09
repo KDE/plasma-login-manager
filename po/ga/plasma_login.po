@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-28 00:47+0000\n"
+"POT-Creation-Date: 2026-09-09 00:52+0000\n"
 "PO-Revision-Date: 2026-01-05 23:18+0000\n"
 "Last-Translator: Charlotte <altronic25@protonmail.com>\n"
 "Language-Team: Irish\n"
@@ -117,7 +117,7 @@ msgstr "Clóscríobh an Ainm Úsáideora agus Focail Faire"
 msgid "List Users"
 msgstr "Liostáil Úsáideoirí"
 
-#: qml/Main.qml:373
+#: qml/Main.qml:379
 #, kde-format
 msgid "Login Failed"
 msgstr "Tá Logáil Isteach ag Teipthe"
