@@ -12,6 +12,8 @@ import QtQuick.Layouts
 import org.kde.kcmutils as KCM
 import org.kde.kirigami as Kirigami
 
+// TODO: Port to Kirigami.Form with kcm_wallpaper
+
 Kirigami.Page {
     // The following two must be set for correct alignment with wallpaper config
     id: appearanceRoot
