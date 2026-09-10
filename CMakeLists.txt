@@ -8,7 +8,7 @@ project(PLASMALOGIN VERSION ${PROJECT_VERSION})
 option(INSTALL_PAM_CONFIGURATION "Install PAM configuration files" ON)
 
 # Version settings
-set(PROJECT_DEP_VERSION "6.6.90")
+set(PROJECT_DEP_VERSION "6.7.90")
 
 set(QT_MIN_VERSION "6.11.0")
 set(KF6_MIN_VERSION "6.30.0")
