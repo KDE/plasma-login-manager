@@ -31,6 +31,8 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
     : QGuiApplication(argc, argv)
     , m_engine(PlasmaQuick::globalEngine())
 {
+    setQuitOnLastWindowClosed(false);
+
     KLocalization::setupLocalizedContext(m_engine.get());
 
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
