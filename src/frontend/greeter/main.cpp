@@ -104,6 +104,9 @@ int main(int argc, char *argv[])
     parser.addHelpOption();
 
     QGuiApplication app(argc, argv);
+
+    app.setQuitOnLastWindowClosed(false);
+
     parser.process(app);
     LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
 
