@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-11 00:47+0000\n"
+"POT-Creation-Date: 2026-09-17 00:46+0000\n"
 "PO-Revision-Date: 2026-08-13 09:45+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -47,23 +47,23 @@ msgstr ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 
-#: ui/Appearance.qml:23
+#: ui/Appearance.qml:25
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
 msgstr "Външен вид"
 
-#: ui/Appearance.qml:35
+#: ui/Appearance.qml:37
 #, kde-format
 msgid "Clock"
 msgstr "Часовник"
 
-#: ui/Appearance.qml:36
+#: ui/Appearance.qml:38
 #, kde-format
 msgid "Show clock"
 msgstr "Показване на часовник"
 
-#: ui/Appearance.qml:52
+#: ui/Appearance.qml:54
 #, kde-format
 msgid "Wallpaper type:"
 msgstr "Вид тапет:"
@@ -131,42 +131,74 @@ msgctxt "@action:button"
 msgid "Reset to Default Settings"
 msgstr "Връщане на стандартните настройки"
 
-#: ui/main.qml:89
+#: ui/main.qml:86
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
 msgstr "Автоматично влизане"
 
-#: ui/main.qml:94
-#, kde-format
-msgctxt "@option:check"
+#: ui/main.qml:89
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Automatically log in:"
+msgctxt ""
+"part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "Автоматично влизане:"
 
-#: ui/main.qml:100
-#, kde-format
+#: ui/main.qml:103
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label:listbox, the following combobox selects the user to log in "
+#| "automatically"
+#| msgid "as user:"
 msgctxt ""
-"@label:listbox, the following combobox selects the user to log in "
-"automatically"
+"@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
+"with session: bar]'"
 msgid "as user:"
 msgstr "като потребител:"
 
-#: ui/main.qml:150
+#: ui/main.qml:127
 #, kde-format
+msgid "Automatically log in with a specific user and session"
+msgstr ""
+
+#: ui/main.qml:149
+#, kde-format
+msgid "Select a user for automatic log in"
+msgstr ""
+
+#: ui/main.qml:161
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label:listbox, the following combobox selects the session that is "
+#| "started automatically"
+#| msgid "with session:"
 msgctxt ""
-"@label:listbox, the following combobox selects the session that is started "
-"automatically"
+"@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
+"with session: [bar]'"
 msgid "with session:"
 msgstr "със сесия:"
 
-#: ui/main.qml:180
-#, kde-kuit-format
+#: ui/main.qml:183
+#, kde-format
+msgid "Select a session for automatic log in"
+msgstr ""
+
+#: ui/main.qml:195
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
+#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
+#| "avoid this, you can change the wallet to have a blank password. Note that "
+#| "this is insecure and should only be done in a trusted environment."
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
-"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
-"this, you can change the wallet to have a blank password. Note that this is "
-"insecure and should only be done in a trusted environment."
+"will ask you to unlock it every time you log in.<nl/><nl/>To avoid this, you "
+"can change the wallet to have a blank password. Note that this is insecure "
+"and should only be done in a trusted environment."
 msgstr ""
 "Автоматичното влизане не поддържа автоматично отключване на вашия KDE "
 "портфейл, така че ще ви пита да го отключвате всеки път, когато влизате. <nl/"
@@ -174,43 +206,55 @@ msgstr ""
 "че да е празна. Обърнете внимание, че това е несигурно и трябва да се прави "
 "само в надеждна среда."
 
-#: ui/main.qml:185
+#: ui/main.qml:200
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "Отваряне на настройките на KDE Wallet"
 
-#: ui/main.qml:192
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "Повторно влизане веднага след излизане"
 
-#: ui/main.qml:203
+#: ui/main.qml:224
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "По подразбиране"
 
-#: ui/main.qml:208
-#, kde-format
-msgctxt "@label"
+#: ui/main.qml:227
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Default user:"
 msgid "Default user:"
 msgstr "Потребител по подразбиране:"
 
-#: ui/main.qml:214
+#: ui/main.qml:235
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Последно влязъл потребител"
 
-#: ui/main.qml:281
+#: ui/main.qml:295
 #, kde-format
-msgctxt "@label"
+msgid "Select the default user to be shown at the login screen"
+msgstr ""
+
+#: ui/main.qml:303
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Default session:"
 msgid "Default session:"
 msgstr "Сесия по подразбиране:"
 
-#: ui/main.qml:287
+#: ui/main.qml:311
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
 msgstr "Последно използвана сесия"
+
+#: ui/main.qml:369
+#, kde-format
+msgid "Select the default session to be shown at the login screen"
+msgstr ""

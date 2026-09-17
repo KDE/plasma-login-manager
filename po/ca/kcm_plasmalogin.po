@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-11 00:47+0000\n"
+"POT-Creation-Date: 2026-09-17 00:46+0000\n"
 "PO-Revision-Date: 2026-08-07 12:28+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -48,23 +48,23 @@ msgstr ""
 "No s'ha pogut reinicialitzar la configuració del Plasma perquè l'usuari "
 "«plasmalogin» no existeix. Comproveu la instal·lació del Plasma Login."
 
-#: ui/Appearance.qml:23
+#: ui/Appearance.qml:25
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
 msgstr "Aparença"
 
-#: ui/Appearance.qml:35
+#: ui/Appearance.qml:37
 #, kde-format
 msgid "Clock"
 msgstr "Rellotge"
 
-#: ui/Appearance.qml:36
+#: ui/Appearance.qml:38
 #, kde-format
 msgid "Show clock"
 msgstr "Mostra el rellotge"
 
-#: ui/Appearance.qml:52
+#: ui/Appearance.qml:54
 #, kde-format
 msgid "Wallpaper type:"
 msgstr "Tipus de fons de pantalla:"
@@ -134,42 +134,74 @@ msgctxt "@action:button"
 msgid "Reset to Default Settings"
 msgstr "Reinicialitza a la configuració predeterminada"
 
-#: ui/main.qml:89
+#: ui/main.qml:86
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
 msgstr "Inici de sessió automàtic"
 
-#: ui/main.qml:94
-#, kde-format
-msgctxt "@option:check"
+#: ui/main.qml:89
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Automatically log in:"
+msgctxt ""
+"part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "Inicia la sessió automàticament:"
 
-#: ui/main.qml:100
-#, kde-format
+#: ui/main.qml:103
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label:listbox, the following combobox selects the user to log in "
+#| "automatically"
+#| msgid "as user:"
 msgctxt ""
-"@label:listbox, the following combobox selects the user to log in "
-"automatically"
+"@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
+"with session: bar]'"
 msgid "as user:"
 msgstr "com a usuari:"
 
-#: ui/main.qml:150
+#: ui/main.qml:127
 #, kde-format
+msgid "Automatically log in with a specific user and session"
+msgstr ""
+
+#: ui/main.qml:149
+#, kde-format
+msgid "Select a user for automatic log in"
+msgstr ""
+
+#: ui/main.qml:161
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label:listbox, the following combobox selects the session that is "
+#| "started automatically"
+#| msgid "with session:"
 msgctxt ""
-"@label:listbox, the following combobox selects the session that is started "
-"automatically"
+"@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
+"with session: [bar]'"
 msgid "with session:"
 msgstr "amb la sessió:"
 
-#: ui/main.qml:180
-#, kde-kuit-format
+#: ui/main.qml:183
+#, kde-format
+msgid "Select a session for automatic log in"
+msgstr ""
+
+#: ui/main.qml:195
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
+#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
+#| "avoid this, you can change the wallet to have a blank password. Note that "
+#| "this is insecure and should only be done in a trusted environment."
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
-"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
-"this, you can change the wallet to have a blank password. Note that this is "
-"insecure and should only be done in a trusted environment."
+"will ask you to unlock it every time you log in.<nl/><nl/>To avoid this, you "
+"can change the wallet to have a blank password. Note that this is insecure "
+"and should only be done in a trusted environment."
 msgstr ""
 "L'inici automàtic de la sessió no permet desbloquejar automàticament la "
 "vostra cartera KDE, per tant, se us demanarà desbloquejar-la cada vegada que "
@@ -177,43 +209,55 @@ msgstr ""
 "tingui una contrasenya en blanc. Tingueu en compte que això és insegur i "
 "només s'hauria de fer en un entorn de confiança."
 
-#: ui/main.qml:185
+#: ui/main.qml:200
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "Obre la configuració de la cartera KDE"
 
-#: ui/main.qml:192
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "Torna a connectar immediatament després de desconnectar"
 
-#: ui/main.qml:203
+#: ui/main.qml:224
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "Valors predeterminats"
 
-#: ui/main.qml:208
-#, kde-format
-msgctxt "@label"
+#: ui/main.qml:227
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Default user:"
 msgid "Default user:"
 msgstr "Usuari predeterminat:"
 
-#: ui/main.qml:214
+#: ui/main.qml:235
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "Últim usuari que ha iniciat la sessió"
 
-#: ui/main.qml:281
+#: ui/main.qml:295
 #, kde-format
-msgctxt "@label"
+msgid "Select the default user to be shown at the login screen"
+msgstr ""
+
+#: ui/main.qml:303
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Default session:"
 msgid "Default session:"
 msgstr "Sessió predeterminada:"
 
-#: ui/main.qml:287
+#: ui/main.qml:311
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
 msgstr "Última sessió que s'ha iniciat"
+
+#: ui/main.qml:369
+#, kde-format
+msgid "Select the default session to be shown at the login screen"
+msgstr ""

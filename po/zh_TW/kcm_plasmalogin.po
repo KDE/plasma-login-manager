@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-08-11 00:47+0000\n"
+"POT-Creation-Date: 2026-09-17 00:46+0000\n"
 "PO-Revision-Date: 2026-09-15 14:05+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -42,23 +42,23 @@ msgstr ""
 "無法重設 Plasma 設定，因為 'plasmalogin' 使用者不存在。請確定您的 Plasma 登入"
 "畫面的安裝。"
 
-#: ui/Appearance.qml:23
+#: ui/Appearance.qml:25
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
 msgstr "外觀"
 
-#: ui/Appearance.qml:35
+#: ui/Appearance.qml:37
 #, kde-format
 msgid "Clock"
 msgstr "時鐘"
 
-#: ui/Appearance.qml:36
+#: ui/Appearance.qml:38
 #, kde-format
 msgid "Show clock"
 msgstr "顯示時鐘"
 
-#: ui/Appearance.qml:52
+#: ui/Appearance.qml:54
 #, kde-format
 msgid "Wallpaper type:"
 msgstr "桌布類型："
@@ -124,84 +124,128 @@ msgctxt "@action:button"
 msgid "Reset to Default Settings"
 msgstr "重設為預設設定"
 
-#: ui/main.qml:89
+#: ui/main.qml:86
 #, kde-format
 msgctxt "@title:group"
 msgid "Auto-login"
 msgstr "自動登入"
 
-#: ui/main.qml:94
-#, kde-format
-msgctxt "@option:check"
+#: ui/main.qml:89
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Automatically log in:"
+msgctxt ""
+"part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "自動登入："
 
-#: ui/main.qml:100
-#, kde-format
+#: ui/main.qml:103
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label:listbox, the following combobox selects the user to log in "
+#| "automatically"
+#| msgid "as user:"
 msgctxt ""
-"@label:listbox, the following combobox selects the user to log in "
-"automatically"
+"@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
+"with session: bar]'"
 msgid "as user:"
 msgstr "登入使用者："
 
-#: ui/main.qml:150
+#: ui/main.qml:127
 #, kde-format
+msgid "Automatically log in with a specific user and session"
+msgstr ""
+
+#: ui/main.qml:149
+#, kde-format
+msgid "Select a user for automatic log in"
+msgstr ""
+
+#: ui/main.qml:161
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@label:listbox, the following combobox selects the session that is "
+#| "started automatically"
+#| msgid "with session:"
 msgctxt ""
-"@label:listbox, the following combobox selects the session that is started "
-"automatically"
+"@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
+"with session: [bar]'"
 msgid "with session:"
 msgstr "，使用工作階段："
 
-#: ui/main.qml:180
-#, kde-kuit-format
+#: ui/main.qml:183
+#, kde-format
+msgid "Select a session for automatic log in"
+msgstr ""
+
+#: ui/main.qml:195
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
+#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
+#| "avoid this, you can change the wallet to have a blank password. Note that "
+#| "this is insecure and should only be done in a trusted environment."
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
-"will ask you to unlock it every time you log in.    <nl/><nl/>    To avoid "
-"this, you can change the wallet to have a blank password. Note that this is "
-"insecure and should only be done in a trusted environment."
+"will ask you to unlock it every time you log in.<nl/><nl/>To avoid this, you "
+"can change the wallet to have a blank password. Note that this is insecure "
+"and should only be done in a trusted environment."
 msgstr ""
 "自動登入不支援自動解鎖 KDE 錢包，因此每次登入後它都會要求解鎖。<nl/><nl/>將錢"
 "包密碼改為空白可以防止它每次登入都要求解鎖。但請注意這是不安全的，並請只在可"
 "信任的環境中這樣做。"
 
-#: ui/main.qml:185
+#: ui/main.qml:200
 #, kde-format
 msgid "Open KDE Wallet Settings"
 msgstr "開啟 KDE 錢包設定"
 
-#: ui/main.qml:192
+#: ui/main.qml:210
 #, kde-format
 msgctxt "@option:check"
 msgid "Log in again immediately after logging off"
 msgstr "登出後馬上重新登入"
 
-#: ui/main.qml:203
+#: ui/main.qml:224
 #, kde-format
 msgctxt "@title:group"
 msgid "Defaults"
 msgstr "預設值"
 
-#: ui/main.qml:208
-#, kde-format
-msgctxt "@label"
+#: ui/main.qml:227
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Default user:"
 msgid "Default user:"
 msgstr "預設使用者："
 
-#: ui/main.qml:214
+#: ui/main.qml:235
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in user"
 msgstr "上次登入的使用者"
 
-#: ui/main.qml:281
+#: ui/main.qml:295
 #, kde-format
-msgctxt "@label"
+msgid "Select the default user to be shown at the login screen"
+msgstr ""
+
+#: ui/main.qml:303
+#, fuzzy, kde-format
+#| msgctxt "@label"
+#| msgid "Default session:"
 msgid "Default session:"
 msgstr "預設工作階段："
 
-#: ui/main.qml:287
+#: ui/main.qml:311
 #, kde-format
 msgctxt "@option:radio"
 msgid "Last logged-in session"
 msgstr "上次使用的工作階段"
+
+#: ui/main.qml:369
+#, kde-format
+msgid "Select the default session to be shown at the login screen"
+msgstr ""
