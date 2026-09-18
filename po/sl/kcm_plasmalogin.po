@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-08-07 06:24+0200\n"
+"PO-Revision-Date: 2026-09-17 06:00+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -136,20 +136,14 @@ msgid "Auto-login"
 msgstr "Samodejna prijava"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
-msgstr "Samodejno se prijavi:"
+msgstr "Samodejna prijava:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -159,19 +153,15 @@ msgstr "kot uporabnik:"
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "Samodejna prijava z določenim uporabnikom in sejo"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Izberite uporabnika za samodejno prijavo."
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -181,16 +171,10 @@ msgstr "s sejo:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Izberite sejo za samodejno prijavo."
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -198,11 +182,10 @@ msgid ""
 "can change the wallet to have a blank password. Note that this is insecure "
 "and should only be done in a trusted environment."
 msgstr ""
-"Samodejna prijava ne podpira samodejnega odklepanja denarnice KDE, zato vas "
-"bo program vsakič, ko se prijavite, pozval k odklepanju.\n"
-"    <nl/><nl/>    Da bi se temu izognili, lahko denarnico spremenite tako, "
-"da ima prazno geslo. Upoštevajte, da to ni varno in se to sme izvajati le v "
-"zaupanja vrednem okolju."
+"Samodejna prijava ne podpira samodejnega odklepanja vaše listnice KDE (KDE "
+"Wallet), zato jo boste morali ob vsaki prijavi odkleniti ročno.<nl/><nl/"
+">Temu se lahko izognete tako, da za listnico nastavite prazno geslo. "
+"Upoštevajte, da to ni varno in je priporočljivo le v zaupanja vrednem okolju."
 
 #: ui/main.qml:200
 #, kde-format
@@ -222,9 +205,7 @@ msgid "Defaults"
 msgstr "Privzeto"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Privzeti uporabnik:"
 
@@ -237,12 +218,10 @@ msgstr "Zadnje prijavljeni uporabnik"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "Izberite privzetega uporabnika, ki bo prikazan na zaslonu za prijavo."
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Privzeta seja:"
 
@@ -255,7 +234,7 @@ msgstr "Zadnja prijavljena seja"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "Izberite privzeto sejo, ki naj bo prikazana na zaslonu za prijavo."
 
 #~ msgid "Apply Plasma Settings+//3//f/9-"
 #~ msgstr "Uporabi nastavitve Plasma+//3//f/9-"
