@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-08-12 09:00+0200\n"
+"PO-Revision-Date: 2026-09-18 09:01+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 26.07.90\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -138,20 +138,14 @@ msgid "Auto-login"
 msgstr "Connexion automatique"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "Se connecter automatiquement :"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -162,18 +156,15 @@ msgstr "en tant qu'utilisateur :"
 #, kde-format
 msgid "Automatically log in with a specific user and session"
 msgstr ""
+"Connectez-vous automatiquement avec un utilisateur et une session spécifiques"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Sélectionnez un utilisateur pour la connexion automatique"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -183,16 +174,10 @@ msgstr "avec la session :"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Sélectionnez une session pour la connexion automatique"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -225,9 +210,7 @@ msgid "Defaults"
 msgstr "Par défaut"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Utilisateur par défaut :"
 
@@ -241,11 +224,10 @@ msgstr "Dernier utilisateur connecté"
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
 msgstr ""
+"Sélectionnez l'utilisateur par défaut à afficher sur l'écran de connexion"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Session par défaut :"
 
@@ -258,4 +240,4 @@ msgstr "Dernière session connectée"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "Sélectionnez la session par défaut à afficher sur l'écran de connexion"
