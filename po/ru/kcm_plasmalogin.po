@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-09-06 15:14+0200\n"
+"PO-Revision-Date: 2026-09-19 20:52+0300\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
@@ -135,20 +135,14 @@ msgid "Auto-login"
 msgstr "Автоматический вход"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "Автоматически входить в систему:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -158,19 +152,15 @@ msgstr "под именем:"
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "Автоматически входить в систему с указанными пользователем и сеансом"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Выбор пользователя для автоматического входа в систему"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -180,16 +170,10 @@ msgstr "тип сеанса:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Выбор сеанса для автоматического входа в систему"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -199,7 +183,7 @@ msgid ""
 msgstr ""
 "Автоматический вход не поддерживает автоматическое разблокирование "
 "приложения «Бумажник KDE», поэтому разблокирование будет запрашиваться при "
-"каждом входе в систему. <nl/><nl/>Чтобы избежать запроса при каждом входе в "
+"каждом входе в систему.<nl/><nl/>Чтобы избежать запроса при каждом входе в "
 "систему, установите пустой пароль бумажника. Учтите, что использование "
 "пустого пароля небезопасно и может использоваться только в доверенном "
 "окружении."
@@ -222,9 +206,7 @@ msgid "Defaults"
 msgstr "По умолчанию"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Пользователь по умолчанию:"
 
@@ -238,11 +220,10 @@ msgstr "Последний вошедший в систему пользоват
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
 msgstr ""
+"Выбор пользователя, предлагаемого на экране входа в систему по умолчанию"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Сеанс по умолчанию:"
 
@@ -255,4 +236,4 @@ msgstr "Последний использованный сеанс"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "Выбор сеанса, предлагаемого на экране входа в систему по умолчанию"
