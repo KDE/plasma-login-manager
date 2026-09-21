@@ -3,9 +3,9 @@ add_executable(plasma-login-wallpaper)
 ecm_add_qml_module(plasma-login-wallpaper URI "org.kde.plasma.login.wallpaper" GENERATE_PLUGIN_SOURCE)
 
 target_sources(plasma-login-wallpaper PRIVATE
+    bluradaptor.cpp
     main.cpp
-    wallpaperapp.cpp
-    wallpaperwindow.cpp
+    wallpaper.cpp
 )
 
 ecm_target_qml_sources(plasma-login-wallpaper PRIVATE

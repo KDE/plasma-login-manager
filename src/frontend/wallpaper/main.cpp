@@ -1,23 +1,30 @@
 /*
- *  SPDX-FileCopyrightText: 2025 Oliver Beard <olib141@outlook.com>
+ * SPDX-FileCopyrightText: 2025 Oliver Beard
+ * SPDX-FileCopyrightText: 2025 2026 David Edmundson
  *
- *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
+ * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include <QQuickWindow>
+#include <QGuiApplication>
 #include <QSurfaceFormat>
+#include <QUrl>
+#include <qqmlapplicationengine.h>
 
-#include "wallpaperapp.h"
+#include <KLocalizedQmlContext>
 
 int main(int argc, char **argv)
 {
+    QGuiApplication app(argc, argv);
     QCoreApplication::setApplicationName(QStringLiteral("plasma-login-wallpaper"));
+    app.setQuitOnLastWindowClosed(false);
 
     auto format = QSurfaceFormat::defaultFormat();
     format.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(format);
 
-    WallpaperApp app(argc, argv);
+    QQmlApplicationEngine engine;
+    KLocalization::setupLocalizedContext(&engine);
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/org/kde/plasma/login/wallpaper/main.qml")));
 
     return app.exec();
 }
