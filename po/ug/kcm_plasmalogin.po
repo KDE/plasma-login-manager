@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-07-22 17:06-0400\n"
+"PO-Revision-Date: 2026-09-22 18:03+0900\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
@@ -32,16 +32,12 @@ msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
-"Plasma تەڭشەكنى قەدەمداشلىغىلى بولمىدى چۈنكى «plasmalogin» ئىشلەتكۈچى مەۋجۇت "
-"ئەمەس. Plasma تىزىمغا كىرىشنى ئورناتقانلىقىڭىزنى تەكشۈرۈڭ."
 
 #: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
-"Plasma تەڭشەكنى ئەسلىگە قايتۇرغىلى بولمىدى چۈنكى «plasmalogin» ئىشلەتكۈچى "
-"مەۋجۇت ئەمەس. Plasma تىزىمغا كىرىشنى ئورناتقانلىقىڭىزنى تەكشۈرۈڭ."
 
 #: ui/Appearance.qml:25
 #, kde-format
@@ -92,13 +88,7 @@ msgstr ""
 "تاللانمىسىغا تەسىر كۆرسىتىدۇ:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -107,22 +97,13 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>رەڭ لايىھە</item><item>نۇر بەلگە ئۆرنىكى ۋە چوڭلۇقى</"
-"item><item>خەت نۇسخا ۋە خەت شەكىللەندۈرۈش</item><item>NumLock مايىللىقى</"
-"item><item>Plasma ئۆرنەك</item><item>DPI نىسبىتى</item><item>ئېكران "
-"سەپلىمىسى</item><item>ھەرپتاختا جايلاشتۇرۇش</item></list></para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"ئەسكەرتىش ئۆرنەك ھۆججىتى چوقۇم پۈتكۈل سىستېما مىقياسىدا ئورنىتىلغاندا ئاندىن "
-"Plasma تىزىمغا كىرىش ئېكرانىدا ئەكس ئېتىدۇ."
 
 #: ui/main.qml:71
 #, kde-format
@@ -143,25 +124,19 @@ msgid "Auto-login"
 msgstr "ئۆزلۈكىدىن تىزىمغا كىر"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
-msgstr "ئۆزلۈكىدىن تىزىمغا كىر:"
+msgstr ""
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
 msgid "as user:"
-msgstr "ئىشلەتكۈچىدەك:"
+msgstr ""
 
 #: ui/main.qml:127
 #, kde-format
@@ -174,16 +149,12 @@ msgid "Select a user for automatic log in"
 msgstr ""
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
 msgid "with session:"
-msgstr "جەريانچاق بىلەن:"
+msgstr ""
 
 #: ui/main.qml:183
 #, kde-format
@@ -191,13 +162,7 @@ msgid "Select a session for automatic log in"
 msgstr ""
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -205,11 +170,6 @@ msgid ""
 "can change the wallet to have a blank password. Note that this is insecure "
 "and should only be done in a trusted environment."
 msgstr ""
-"ئۆزلۈكىدىن تىزىمغا كىرىش KDE ھەمياننىڭ قۇلۇپىنى ئۆزلۈكىدىن ئېچىشنى "
-"قوللىمايدۇ، شۇڭا ھەر قېتىم تىزىمغا كىرگەندىن كېيىن قۇلۇپ ئېچىشنى سورايدۇ.<nl/"
-"><nl/>بۇ خىل ئەھۋالدىن ساقلىنىش ئۈچۈن، ھەميانغا بوش ئىم تەڭشىسىڭىز بولىدۇ. "
-"ئەسكەرتىش بوش ئىم بىخەتەر ئەمەس پەقەت ئىشەنچلىك مۇھىتتىلا شۇنداق تەڭشەشكە "
-"بولىدۇ."
 
 #: ui/main.qml:200
 #, kde-format
@@ -229,9 +189,7 @@ msgid "Defaults"
 msgstr "كۆڭۈلدىكى"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "كۆڭۈلدىكى ئىشلەتكۈچى:"
 
@@ -247,11 +205,9 @@ msgid "Select the default user to be shown at the login screen"
 msgstr ""
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
-msgstr "كۆڭۈلدىكى جەريانچاق:"
+msgstr ""
 
 #: ui/main.qml:311
 #, kde-format
