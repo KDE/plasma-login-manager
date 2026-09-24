@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-08-10 13:56+0400\n"
+"PO-Revision-Date: 2026-09-23 18:50+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -134,42 +134,32 @@ msgid "Auto-login"
 msgstr "ولوج آليّ"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
-msgstr "لولوج آليّ في:"
+msgstr "الولوج آليًّا:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
 msgid "as user:"
-msgstr "كمستخدم:"
+msgstr "بالمستخدم:"
 
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "الولوج آليًا بمستخدم وجلسة محددين"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "اختر مستخدمًا للولوج الآلي"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -179,16 +169,10 @@ msgstr "بجلسة:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "اختر جلسة للولوج الآلي"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -197,7 +181,7 @@ msgid ""
 "and should only be done in a trusted environment."
 msgstr ""
 "لا يدعم الولوج الآليّ فتح محفظة كِيدِي آليّا، لذلك سيطلب منك إلغاء قفلها في كل "
-"مرة تقوم فيها بالولوج.     <nl/><nl/> لتتفادى هذا يمكنك تغيير المحفظة لتكون "
+"مرة تقوم فيها بالولوج.     <nl/><nl/>لتتفادى هذا يمكنك تغيير المحفظة لتكون "
 "دون كلمة سر. لاحظ أن هذا غير آمن ويجب أن يكون في بيئة آمنة."
 
 #: ui/main.qml:200
@@ -218,9 +202,7 @@ msgid "Defaults"
 msgstr "المبدئيات"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "المستخدم المبدئيّ:"
 
@@ -233,12 +215,10 @@ msgstr "أخر مستخدم ولج النظام"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "اختر المستخدم المبدئي الذي سيُعرض في شاشة الولوج"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "الجلسة المبدئية:"
 
@@ -251,4 +231,4 @@ msgstr "أخر جلسة ولج فيها إلى النظام"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "اختر الجلسة المبدئية التي ستُعرض في شاشة الولوج"
