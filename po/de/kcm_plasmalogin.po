@@ -2,22 +2,22 @@
 # German translation for plasma-login-manager.
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# SPDX-FileCopyrightText: 2025 Alois Spitzbart <spitz234@hotmail.com>
+# SPDX-FileCopyrightText: 2025-2026 Alois Spitzbart <spitz234@hotmail.com>
 # SPDX-FileCopyrightText: 2025-2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-11 00:47+0000\n"
-"PO-Revision-Date: 2026-09-19 12:49+0200\n"
-"Last-Translator: Philipp Kiemle <l10n.daphipz@fastmail.de>\n"
+"PO-Revision-Date: 2026-09-22 23:45+0200\n"
+"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.08.1\n"
+"X-Generator: Lokalize 26.08.0\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -174,10 +174,11 @@ msgid ""
 "insecure and should only be done in a trusted environment."
 msgstr ""
 "Das automatische Anmelden unterstützt nicht das automatische Entsperren des "
-"KDE-Passwortspeichers. Sie werden deshalb bei jeder Anmeldung zum Entsperren "
-"aufgefordert.    <nl/><nl/>    Um das zu vermeiden, können Sie den "
+"KDE-Passwortspeichers. Sie werden deshalb bei jeder Anmeldung aufgefordert, "
+"ihn zu entsperren.    <nl/><nl/>    Um das zu vermeiden, können Sie den "
 "Passwortspeicher mit einem leeren Passwort versehen. Bitte beachten Sie, "
-"dass dies unsicher ist und nur in vertrauten Umgebungen erfolgen sollte."
+"dass dies unsicher ist und nur in vertrauenswürdigen Umgebungen erfolgen "
+"sollte."
 
 #: ui/main.qml:185
 #, kde-format
