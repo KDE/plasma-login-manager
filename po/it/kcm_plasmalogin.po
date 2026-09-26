@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-08-08 21:21+0200\n"
+"PO-Revision-Date: 2026-09-22 21:18+0200\n"
 "Last-Translator: Valter Mura <valtermura@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 26.04.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -139,20 +139,14 @@ msgid "Auto-login"
 msgstr "Accesso automatico"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "Accedi automaticamente:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -162,19 +156,15 @@ msgstr "come utente:"
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "Accedi automaticamente con un utente e una sessione specifica"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Seleziona un utente per l'accesso automatico"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -184,16 +174,10 @@ msgstr "con sessione:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Seleziona una sessione per l'accesso automatico"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -202,10 +186,10 @@ msgid ""
 "and should only be done in a trusted environment."
 msgstr ""
 "L'accesso automatico non supporta lo sblocco automatico del tuo Portafoglio "
-"KDE, pertanto ti verrà chiesto di sbloccarlo ogni volta che accedi.    <nl/"
-"><nl/>    Per evitare questo comportamento, puoi modificare il portafoglio "
-"in modo da avere una password vuota. Nota che questa operazione non è sicura "
-"e deve essere eseguita soltanto all'interno di un ambiente affidabile."
+"KDE, pertanto ti verrà chiesto di sbloccarlo ogni volta che accedi.<nl/><nl/"
+">Per evitare questo comportamento, puoi modificare il portafoglio in modo da "
+"avere una password vuota. Nota che questa operazione non è sicura e deve "
+"essere eseguita soltanto all'interno di un ambiente affidabile."
 
 #: ui/main.qml:200
 #, kde-format
@@ -225,9 +209,7 @@ msgid "Defaults"
 msgstr "Predefinite"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Utente predefinito:"
 
@@ -240,12 +222,10 @@ msgstr "Ultimo utente di accesso"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "Seleziona l'utente predefinito da mostrare nella schermata di accesso"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Sessione predefinita:"
 
@@ -259,3 +239,4 @@ msgstr "Ultima sessione di accesso"
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
 msgstr ""
+"Seleziona la sessione predefinita da mostrare nella schermata di accesso"

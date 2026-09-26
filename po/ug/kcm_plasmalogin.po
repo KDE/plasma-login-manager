@@ -1,14 +1,14 @@
 # Uyghur translation for kcm_plasmalogin.
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# Abduqadir Abliz <sahranbay@gmail.com>, 2026., YEAR.
+# Abduqadir Abliz <sahranbay@gmail.com>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-09-23 06:56+0900\n"
+"PO-Revision-Date: 2026-09-24 20:14-0400\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
@@ -32,12 +32,16 @@ msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
 msgstr ""
+"Plasma تەڭشەكنى قەدەمداشلىغىلى بولمىدى چۈنكى «plasmalogin» ئىشلەتكۈچى مەۋجۇت "
+"ئەمەس. Plasma تىزىمغا كىرىشنى ئورناتقانلىقىڭىزنى تەكشۈرۈڭ."
 
 #: kcm.cpp:269
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
 msgstr ""
+"Plasma تەڭشەكنى ئەسلىگە قايتۇرغىلى بولمىدى چۈنكى «plasmalogin» ئىشلەتكۈچى "
+"مەۋجۇت ئەمەس. Plasma تىزىمغا كىرىشنى ئورناتقانلىقىڭىزنى تەكشۈرۈڭ."
 
 #: ui/Appearance.qml:25
 #, kde-format
@@ -97,6 +101,11 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
+"<para><list><item>تىل ۋە يەرلىك تەڭشەك</item><item>ھەرپتاختا جايلاشتۇرۇش</"
+"item><item>ئېكران رەتلەش، نىسبىتى ۋە يۆنىلىش تەڭشىكى</item><item>NumLock "
+"مايىللىقى</item><item>خەت نۇسخا ۋە خەت نۇسخا شەكىللەندۈرۈش تەڭشىكى settings</"
+"item><item>رەڭ لايىھەسى</item><item>نۇر بەلگە ئۆرنىكى ۋە چوڭلۇقى</"
+"item><item>Plasma ئۆرنەك</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
@@ -104,6 +113,8 @@ msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
+"ئەسكەرتىش ئۆرنەك ۋە خەت نۇسخا ھۆججىتى چوقۇم پۈتكۈل سىستېما مىقياسىدا "
+"ئورنىتىلغاندا ئاندىن Plasma تىزىمغا كىرىش ئېكرانىدا ئەكس ئېتىدۇ."
 
 #: ui/main.qml:71
 #, kde-format
@@ -128,7 +139,7 @@ msgstr "ئۆزلۈكىدىن تىزىمغا كىر"
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
-msgstr ""
+msgstr "ئۆزلۈكىدىن تىزىمغا كىر:"
 
 #: ui/main.qml:103
 #, kde-format
@@ -136,17 +147,17 @@ msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
 msgid "as user:"
-msgstr ""
+msgstr "ئىشلەتكۈچىدەك:"
 
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "مۇئەييەن ئىشلەتكۈچى ۋە جەريانچاق بىلەن ئۆزلۈكىدىن تىزىمغا كىرىدۇ"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "ئۆزلۈكىدىن تىزىمغا كىرىدىغان ئىشلەتكۈچى تاللىنىدۇ"
 
 #: ui/main.qml:161
 #, kde-format
@@ -154,12 +165,12 @@ msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
 msgid "with session:"
-msgstr ""
+msgstr "جەريانچاق بىلەن:"
 
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "ئۆزلۈكىدىن تىزىمغا كىرىدىغان جەريانچاق تاللىنىدۇ"
 
 #: ui/main.qml:195
 #, kde-kuit-format
@@ -170,6 +181,11 @@ msgid ""
 "can change the wallet to have a blank password. Note that this is insecure "
 "and should only be done in a trusted environment."
 msgstr ""
+"ئۆزلۈكىدىن تىزىمغا كىرىش KDE ھەمياننىڭ قۇلۇپىنى ئۆزلۈكىدىن ئېچىشنى "
+"قوللىمايدۇ، شۇڭا ھەر قېتىم تىزىمغا كىرگەندىن كېيىن قۇلۇپ ئېچىشنى سورايدۇ.<nl/"
+"><nl/>بۇ خىل ئەھۋالدىن ساقلىنىش ئۈچۈن، ھەميانغا بوش ئىم تەڭشىسىڭىز بولىدۇ. "
+"ئەسكەرتىش بوش ئىم بىخەتەر ئەمەس پەقەت ئىشەنچلىك مۇھىتتىلا شۇنداق تەڭشەشكە "
+"بولىدۇ."
 
 #: ui/main.qml:200
 #, kde-format
@@ -202,12 +218,12 @@ msgstr "ئاخىرقى تىزىمغا كىرگەن ئىشلەتكۈچى"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "تىزىمغا كىرىش ئېكرانىدا كۆرۈنىدىغان كۆڭۈلدىكى ئىشلەتكۈچى تاللىنىدۇ"
 
 #: ui/main.qml:303
 #, kde-format
 msgid "Default session:"
-msgstr ""
+msgstr "كۆڭۈلدىكى جەريانچاق:"
 
 #: ui/main.qml:311
 #, kde-format
@@ -218,4 +234,4 @@ msgstr "ئاخىرقى تىزىمغا كىرگەن جەريانچاق"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "تىزىمغا كىرىش ئېكرانىدا كۆرۈنىدىغان كۆڭۈلدىكى جەريانچاق تاللىنىدۇ"
