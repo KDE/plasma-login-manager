@@ -31,6 +31,7 @@ ecm_add_qml_module(plasma-login-greeter URI "org.kde.plasma.login" GENERATE_PLUG
 ecm_target_qml_sources(plasma-login-greeter
     SOURCES
     qml/Main.qml
+    qml/Greeter.qml
     qml/Login.qml
     qml/SessionButton.qml
     qml/KeyboardButton.qml
@@ -38,6 +39,11 @@ ecm_target_qml_sources(plasma-login-greeter
 
     RESOURCES
     qml/faces/.face.icon
+)
+
+ecm_target_qml_sources(plasma-login-greeter PATH "+test"
+    SOURCES
+    qml/+test/Main.qml
 )
 
 kconfig_add_kcfg_files(plasma-login-greeter GENERATE_MOC stateconfig.kcfgc)
@@ -48,6 +54,7 @@ target_link_libraries(plasma-login-greeter PRIVATE
     Qt::DBus
     KF6::I18n
     KF6::I18nQml
+    Plasma::Plasma
     Plasma::PlasmaQuick
     KF6::Package
     KF6::WindowSystem

@@ -6,18 +6,18 @@
 
 #include <QCommandLineOption>
 #include <QCommandLineParser>
+#include <QFileSelector>
 #include <QGuiApplication>
-#include <QObject>
-#include <QQmlContext>
-#include <QQuickView>
-#include <QScreen>
+#include <QQmlApplicationEngine>
+#include <QQuickWindow>
 #include <QSurfaceFormat>
+#include <QUrl>
 
 #include <KLocalizedQmlContext>
 #include <KLocalizedString>
-#include <LayerShellQt/Window>
-#include <PlasmaQuick/PlasmaQuick>
+#include <Plasma/Plasma>
 #include <kworkspace6/sessionmanagement.h>
+#include <qqmlfileselector.h>
 
 #include "backend/GreeterProxy.h"
 #include "mockbackend/MockGreeterProxy.h"
@@ -28,72 +28,6 @@
 #include "models/usermodel.h"
 #include "plasmaloginsettings.h"
 #include "stateconfig.h"
-
-class LoginGreeter : public QObject
-{
-    Q_OBJECT
-public:
-    explicit LoginGreeter(QObject *parent = nullptr)
-        : QObject(parent)
-        , m_engine(PlasmaQuick::globalEngine())
-    {
-        KLocalization::setupLocalizedContext(m_engine.get());
-
-        connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
-            createWindowForScreen(screen);
-        });
-        for (QScreen *screen : qApp->screens()) {
-            createWindowForScreen(screen);
-        }
-    }
-    static void setTestModeEnabled(bool testModeEnabled);
-    static bool testModeEnabled();
-
-private:
-    void createWindowForScreen(QScreen *screen)
-    {
-        auto *window = new QQuickView(m_engine.get(), nullptr);
-        window->QObject::setParent(this);
-        window->setScreen(screen);
-        window->setColor(s_testMode ? Qt::darkGray : Qt::transparent);
-
-        connect(qApp, &QGuiApplication::screenRemoved, window, [window](QScreen *screenRemoved) {
-            if (screenRemoved == window->screen()) {
-                delete window;
-            }
-        });
-
-        window->setGeometry(screen->geometry());
-
-        if (auto layerShellWindow = LayerShellQt::Window::get(window)) {
-            layerShellWindow->setScope(QStringLiteral("plasma-login-greeter"));
-            layerShellWindow->setLayer(LayerShellQt::Window::LayerTop);
-            layerShellWindow->setExclusiveZone(-1);
-            layerShellWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityExclusive);
-            layerShellWindow->setScreen(screen);
-        }
-
-        window->setResizeMode(QQuickView::SizeRootObjectToView);
-
-        window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
-        window->show();
-    }
-
-    static bool s_testMode;
-    std::shared_ptr<QQmlEngine> m_engine;
-};
-
-bool LoginGreeter::s_testMode = false;
-
-void LoginGreeter::setTestModeEnabled(bool testModeEnabled)
-{
-    s_testMode = testModeEnabled;
-}
-
-bool LoginGreeter::testModeEnabled()
-{
-    return s_testMode;
-}
 
 int main(int argc, char *argv[])
 {
@@ -108,14 +42,14 @@ int main(int argc, char *argv[])
     app.setQuitOnLastWindowClosed(false);
 
     parser.process(app);
-    LoginGreeter::setTestModeEnabled(parser.isSet(QStringLiteral("test")));
+    const bool testMode = parser.isSet(QStringLiteral("test"));
 
     auto format = QSurfaceFormat::defaultFormat();
     format.setOption(QSurfaceFormat::ResetNotification);
     QSurfaceFormat::setDefaultFormat(format);
 
     QQuickWindow::setDefaultAlphaBuffer(true);
-    if (LoginGreeter::testModeEnabled()) {
+    if (testMode) {
         qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new MockGreeterProxy);
     } else {
         qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "Authenticator", new PLASMALOGIN::GreeterProxy);
@@ -128,8 +62,14 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonInstance("org.kde.plasma.login", 0, 1, "BlurScreenBridge", new BlurScreenBridge);
     qmlRegisterType<GreeterEventFilter>("org.kde.plasma.login", 0, 1, "GreeterEventFilter");
 
-    LoginGreeter greeter;
+    QQmlApplicationEngine engine;
+    Plasma::setupPlasmaStyle(&engine);
+    KLocalization::setupLocalizedContext(&engine);
+    QQmlFileSelector selector(&engine);
+    if (testMode) {
+        selector.setExtraSelectors({QStringLiteral("test")});
+    }
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/org/kde/plasma/login/Main.qml")));
+
     return app.exec();
 }
-
-#include "main.moc"
