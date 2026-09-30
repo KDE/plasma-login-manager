@@ -45,6 +45,7 @@ Item {
     }
 
     PlasmaLogin.GreeterEventFilter {
+        id: greeterEventFilter
         window: root.Window.window
 
         onKeyPressed: {
@@ -59,6 +60,14 @@ Item {
                 Keyboards.KWinVirtualKeyboard.active = false;
             }
             PlasmaLogin.GreeterState.clearPasswords();
+        }
+    }
+
+    Connections {
+        target: PlasmaLogin.GreeterState
+
+        function onScreenOffRequested(): void {
+            greeterEventFilter.turnOffScreens();
         }
     }
 

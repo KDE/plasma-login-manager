@@ -117,6 +117,8 @@ Item {
         }
     }
 
+    signal screenOffRequested()
+
     Timer {
         id: greeterTimeoutTimer
         running: false
@@ -125,8 +127,18 @@ Item {
             if (internal.activeWindow) {
                 greeterState.showPassword = false;
                 timeoutWindow(internal.activeWindow);
+                if (screenOffTimer.interval > 0) {
+                    screenOffTimer.start();
+                }
             }
         }
+    }
+
+    Timer {
+        id: screenOffTimer
+        running: false
+        interval: PlasmaLogin.Settings.screenOffTimeout * 1000
+        onTriggered: greeterState.screenOffRequested()
     }
 
     function clearPasswords(): void {
@@ -143,6 +155,8 @@ Item {
 
         window.requestActivate();
 
+        screenOffTimer.stop();
+
         if (!inhibitGreeterTimeout) {
             greeterTimeoutTimer.restart();
         }
@@ -154,6 +168,7 @@ Item {
         }
 
         greeterTimeoutTimer.stop();
+        screenOffTimer.stop();
     }
 
     // Remember last logged in user/session

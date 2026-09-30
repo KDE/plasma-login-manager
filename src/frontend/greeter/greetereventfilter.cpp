@@ -40,6 +40,21 @@ void GreeterEventFilter::setWindow(QQuickWindow *window)
     Q_EMIT windowChanged();
 }
 
+void GreeterEventFilter::turnOffScreens()
+{
+    auto dpms = new KScreen::Dpms(this);
+    if (dpms->isSupported()) {
+        connect(dpms, &KScreen::Dpms::hasPendingChangesChanged, this, [dpms](bool hasPendingChanges) {
+            if (!hasPendingChanges) {
+                dpms->deleteLater();
+            }
+        });
+        dpms->switchMode(KScreen::Dpms::Off);
+    } else {
+        dpms->deleteLater();
+    }
+}
+
 bool GreeterEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
     Q_UNUSED(obj)
@@ -48,19 +63,7 @@ bool GreeterEventFilter::eventFilter(QObject *obj, QEvent *event)
         auto *keyEvent = static_cast<QKeyEvent *>(event);
 
         if (keyEvent->key() == Qt::Key_Escape) {
-            // Esc -> turn off screens
-            auto dpms = new KScreen::Dpms(this);
-            if (dpms->isSupported()) {
-                connect(dpms, &KScreen::Dpms::hasPendingChangesChanged, this, [dpms](bool hasPendingChanges) {
-                    if (!hasPendingChanges) {
-                        dpms->deleteLater();
-                    }
-                });
-                dpms->switchMode(KScreen::Dpms::Off);
-            } else {
-                dpms->deleteLater();
-            }
-
+            turnOffScreens();
             Q_EMIT escapeKeyPressed();
 
             return true;

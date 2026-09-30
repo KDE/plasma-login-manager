@@ -18,6 +18,8 @@ public:
     QQuickWindow *window() const;
     void setWindow(QQuickWindow *window);
 
+    Q_INVOKABLE void turnOffScreens();
+
 Q_SIGNALS:
     void windowChanged();
 

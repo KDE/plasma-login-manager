@@ -28,5 +28,9 @@
     <entry name="WallpaperPluginId" type="String">
       <default code="true">defaultWallpaperPluginId()</default>
     </entry>
+    <entry name="ScreenOffTimeout" type="Int">
+      <default>30</default>
+      <min>0</min>
+    </entry>
   </group>
 </kcfg>
