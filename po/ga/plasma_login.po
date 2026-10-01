@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:48+0000\n"
+"POT-Creation-Date: 2026-10-01 00:47+0000\n"
 "PO-Revision-Date: 2026-01-05 23:18+0000\n"
 "Last-Translator: Charlotte <altronic25@protonmail.com>\n"
 "Language-Team: Irish\n"
@@ -74,50 +74,50 @@ msgstr "Focail Faire"
 msgid "Log In"
 msgstr "Logáil Isteach"
 
-#: qml/Main.qml:166 qml/Main.qml:290
+#: qml/Main.qml:175 qml/Main.qml:299
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Tá Caps Lock Ar"
 
-#: qml/Main.qml:178 qml/Main.qml:317
+#: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Geimhrigh"
 
-#: qml/Main.qml:187 qml/Main.qml:326
+#: qml/Main.qml:196 qml/Main.qml:335
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Codail"
 
-#: qml/Main.qml:196 qml/Main.qml:335
+#: qml/Main.qml:205 qml/Main.qml:344
 #, kde-format
 msgid "Restart"
 msgstr "Atosaigh"
 
-#: qml/Main.qml:202 qml/Main.qml:341
+#: qml/Main.qml:211 qml/Main.qml:350
 #, kde-format
 msgid "Shut Down"
 msgstr "Múch"
 
-#: qml/Main.qml:208
+#: qml/Main.qml:217
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Eile..."
 
-#: qml/Main.qml:306
+#: qml/Main.qml:315
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Clóscríobh an Ainm Úsáideora agus Focail Faire"
 
-#: qml/Main.qml:347
+#: qml/Main.qml:356
 #, kde-format
 msgid "List Users"
 msgstr "Liostáil Úsáideoirí"
 
-#: qml/Main.qml:381
+#: qml/Main.qml:390
 #, kde-format
 msgid "Login Failed"
 msgstr "Tá Logáil Isteach ag Teipthe"

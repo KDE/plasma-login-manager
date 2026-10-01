@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-10 00:48+0000\n"
+"POT-Creation-Date: 2026-10-01 00:47+0000\n"
 "PO-Revision-Date: 2025-12-01 07:16+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -72,50 +72,50 @@ msgstr "Geslo"
 msgid "Log In"
 msgstr "Prijava"
 
-#: qml/Main.qml:166 qml/Main.qml:290
+#: qml/Main.qml:175 qml/Main.qml:299
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Caps Lock je vklopljen"
 
-#: qml/Main.qml:178 qml/Main.qml:317
+#: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "V mirovanje"
 
-#: qml/Main.qml:187 qml/Main.qml:326
+#: qml/Main.qml:196 qml/Main.qml:335
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Zaspi"
 
-#: qml/Main.qml:196 qml/Main.qml:335
+#: qml/Main.qml:205 qml/Main.qml:344
 #, kde-format
 msgid "Restart"
 msgstr "Ponovni zagon"
 
-#: qml/Main.qml:202 qml/Main.qml:341
+#: qml/Main.qml:211 qml/Main.qml:350
 #, kde-format
 msgid "Shut Down"
 msgstr "Izklop sistema"
 
-#: qml/Main.qml:208
+#: qml/Main.qml:217
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Ostalo…"
 
-#: qml/Main.qml:306
+#: qml/Main.qml:315
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Vnesite uporabniško ime in geslo"
 
-#: qml/Main.qml:347
+#: qml/Main.qml:356
 #, kde-format
 msgid "List Users"
 msgstr "Seznam uporabnikov"
 
-#: qml/Main.qml:381
+#: qml/Main.qml:390
 #, kde-format
 msgid "Login Failed"
 msgstr "Prijava ni uspela"
