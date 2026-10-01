@@ -45,8 +45,10 @@ HelperApp::HelperApp(int &argc, char **argv)
     qInstallMessageHandler(HelperMessageHandler);
     auto sig = KSignalHandler::self();
     sig->watchSignal(SIGTERM);
+    // systemd follows SIGTERM with SIGHUP when it stops the session scope
+    sig->watchSignal(SIGHUP);
     QObject::connect(sig, &KSignalHandler::signalReceived, m_session, [](int s) {
-        if (s == SIGTERM) {
+        if (s == SIGTERM || s == SIGHUP) {
             QCoreApplication::instance()->exit(Auth::HELPER_SUCCESS);
         }
     });
