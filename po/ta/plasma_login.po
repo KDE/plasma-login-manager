@@ -1,22 +1,21 @@
-# Uyghur translation for plasma_login.
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# Abduqadir Abliz <sahranbay@gmail.com>, 2026.
 #
+# SPDX-FileCopyrightText: 2026 Kishore G <kishore96@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-01 00:47+0000\n"
-"PO-Revision-Date: 2026-10-03 19:51-0400\n"
-"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
-"Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
-"Language: ug\n"
+"PO-Revision-Date: 2026-10-04 12:44+0200\n"
+"Last-Translator: Kishore G <kishore96@gmail.com>\n"
+"Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.9\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -24,7 +23,7 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (X11) (%2)"
-msgstr "%1 (X11) (%2)"
+msgstr ""
 
 #: ../settings/models/sessionmodel.cpp:82
 #, kde-format
@@ -32,19 +31,19 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (Wayland) (%2)"
-msgstr "%1 (Wayland) (%2)"
+msgstr ""
 
 #: ../settings/models/sessionmodel.cpp:89
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (X11)"
-msgstr "%1 (X11)"
+msgstr ""
 
 #: ../settings/models/sessionmodel.cpp:91
 #, kde-format
 msgctxt "@item:inmenu %1 is the localised name of a desktop session"
 msgid "%1 (Wayland)"
-msgstr "%1 (Wayland)"
+msgstr ""
 
 #: ../settings/models/sessionmodel.cpp:94
 #, kde-format
@@ -52,78 +51,78 @@ msgctxt ""
 "@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
 "of the session"
 msgid "%1 (%2)"
-msgstr "%1 (%2)"
+msgstr ""
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr "جايلاشتۇرۇش ئالماشتۇر"
+msgstr "தளவமைப்பை மாற்று"
 
 #: qml/Login.qml:88
 #, kde-format
 msgid "Username"
-msgstr "ئىشلەتكۈچى ئاتى"
+msgstr ""
 
 #: qml/Login.qml:105
 #, kde-format
 msgid "Password"
-msgstr "ئىم"
+msgstr ""
 
 #: qml/Login.qml:145 qml/Login.qml:151
 #, kde-format
 msgid "Log In"
-msgstr "تىزىمغا كىر"
+msgstr ""
 
 #: qml/Main.qml:175 qml/Main.qml:299
 #, kde-format
 msgid "Caps Lock is on"
-msgstr "Caps Lock ئوچوق"
+msgstr ""
 
 #: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
-msgstr "ئۈچەك"
+msgstr ""
 
 #: qml/Main.qml:196 qml/Main.qml:335
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr "ئۇخلات"
+msgstr ""
 
 #: qml/Main.qml:205 qml/Main.qml:344
 #, kde-format
 msgid "Restart"
-msgstr "قايتا قوزغات"
+msgstr ""
 
 #: qml/Main.qml:211 qml/Main.qml:350
 #, kde-format
 msgid "Shut Down"
-msgstr "تاقا"
+msgstr ""
 
 #: qml/Main.qml:217
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr "باشقا…"
+msgstr ""
 
 #: qml/Main.qml:315
 #, kde-format
 msgid "Type in Username and Password"
-msgstr "ئىشلەتكۈچى ئاتى ۋە ئىم كىرگۈزۈلىدۇ"
+msgstr ""
 
 #: qml/Main.qml:356
 #, kde-format
 msgid "List Users"
-msgstr "ئىشلەتكۈچى تىزىمى"
+msgstr ""
 
 #: qml/Main.qml:390
 #, kde-format
 msgid "Login Failed"
-msgstr "تىزىمغا كىرەلمىدى"
+msgstr ""
 
 #: qml/SessionButton.qml:23
 #, kde-format
 msgid "Desktop Session: %1"
-msgstr "ئۈستەلئۈستى جەريانچاق: %1"
+msgstr ""
