@@ -20,3 +20,6 @@ Dependencies:
 Options:
  cmake-options: "-DUID_MIN=1000 -DUID_MAX=60000"
  run-qmllint: true
+
+Environment:
+ ID_LIKE: "debian"
