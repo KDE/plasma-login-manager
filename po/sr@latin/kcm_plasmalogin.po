@@ -1,0 +1,237 @@
+# Nemanja Hiršl <nemhirsl@gmail.com>, 2026.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-09-17 00:46+0000\n"
+"PO-Revision-Date: 2026-10-06 10:30+0200\n"
+"Last-Translator: Nemanja Hiršl <nemhirsl@gmail.com>\n"
+"Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
+"Language: sr@latin\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Environment: kde\n"
+
+#: kcm.cpp:78
+msgid ""
+"Unable to save settings because a temporary directory could not be created."
+msgstr ""
+"Ne mogu da sačuvam postavke jer ne mogu da napravim privremenu fasciklu."
+
+#: kcm.cpp:139
+msgid "Unable to save settings because the config could not be opened."
+msgstr "Ne mogu da sačuvam postavke jer ne mogu da otvorim postavu."
+
+#: kcm.cpp:214
+msgid ""
+"Unable to synchronise Plasma settings because the 'plasmalogin' user does "
+"not exist. Please check your Plasma Login install."
+msgstr ""
+"Ne mogu da sinhronizujem postavke Plasme jer korisnik „plasmalogin“ ne "
+"postoji. Proverite instalaciju menadžera prijavljivanja Plasme."
+
+#: kcm.cpp:269
+msgid ""
+"Unable to reset Plasma settings because the 'plasmalogin' user does not "
+"exist. Please check your Plasma Login install."
+msgstr ""
+"Ne mogu da resetujem postavke Plasme jer korisnik „plasmalogin“ ne postoji. "
+"Proverite instalaciju menadžera prijavljivanja Plasme."
+
+#: ui/Appearance.qml:25
+#, kde-format
+msgctxt "@title"
+msgid "Appearance"
+msgstr "Izgled"
+
+#: ui/Appearance.qml:37
+#, kde-format
+msgid "Clock"
+msgstr "Sat"
+
+#: ui/Appearance.qml:38
+#, kde-format
+msgid "Show clock"
+msgstr "Prikaži sat"
+
+#: ui/Appearance.qml:54
+#, kde-format
+msgid "Wallpaper type:"
+msgstr "Tip tapeta:"
+
+#: ui/main.qml:28
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply Plasma Settings…"
+msgstr "Primeni postavke Plasme…"
+
+#: ui/main.qml:33
+#, kde-format
+msgctxt "@action:button"
+msgid "Configure Appearance…"
+msgstr "Podesi izgled…"
+
+#: ui/main.qml:64
+#, kde-format
+msgctxt "@title:window"
+msgid "Apply Plasma Settings"
+msgstr "Primena postavki Plasme"
+
+#: ui/main.qml:65
+#, kde-format
+msgid ""
+"This will make the Plasma login screen reflect your customizations to the "
+"following Plasma settings:"
+msgstr ""
+"Prijavni ekran Plasme će time odražavati vaše izmene sledećih postavki "
+"Plasme:"
+
+#: ui/main.qml:66
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
+"item><item>Screen arrangement, scale, and orientation settings</"
+"item><item>NumLock preference</item><item>Font and font rendering settings</"
+"item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
+"theme</item></list></para>"
+msgstr ""
+"<para><list><item>Postavke jezika i lokaliteta</item><item>Rasporedi "
+"tastature</item><item>Postavke rasporeda, skaliranja i orijentacije ekrana</"
+"item><item>Postavka tastera NumLock</item><item>Postavke fonta i "
+"renderovanja fontova</item><item>Šema boja</item><item>Tema i veličina "
+"pokazivača</item><item>Tema Plasme</item></list></para>"
+
+#: ui/main.qml:67
+#, kde-format
+msgid ""
+"Please note that theme and font files must be installed globally to be "
+"reflected on the Plasma login screen."
+msgstr ""
+"Imajte na umu da fajlovi tema i fontova moraju biti instalirani globalno da "
+"bi se videli na prijavnom ekranu Plasme."
+
+#: ui/main.qml:71
+#, kde-format
+msgctxt "@action:button"
+msgid "Apply"
+msgstr "Primeni"
+
+#: ui/main.qml:76
+#, kde-format
+msgctxt "@action:button"
+msgid "Reset to Default Settings"
+msgstr "Resetuj na podrazumevane postavke"
+
+#: ui/main.qml:86
+#, kde-format
+msgctxt "@title:group"
+msgid "Auto-login"
+msgstr "Automatsko prijavljivanje"
+
+#: ui/main.qml:89
+#, kde-format
+msgctxt ""
+"part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
+msgid "Automatically log in:"
+msgstr "Automatsko prijavljivanje:"
+
+#: ui/main.qml:103
+#, kde-format
+msgctxt ""
+"@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
+"with session: bar]'"
+msgid "as user:"
+msgstr "kao korisnik:"
+
+#: ui/main.qml:127
+#, kde-format
+msgid "Automatically log in with a specific user and session"
+msgstr "Automatsko prijavljivanje sa zadatim korisnikom i sesijom"
+
+#: ui/main.qml:149
+#, kde-format
+msgid "Select a user for automatic log in"
+msgstr "Izaberite korisnika za automatsko prijavljivanje"
+
+#: ui/main.qml:161
+#, kde-format
+msgctxt ""
+"@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
+"with session: [bar]'"
+msgid "with session:"
+msgstr "sa sesijom:"
+
+#: ui/main.qml:183
+#, kde-format
+msgid "Select a session for automatic log in"
+msgstr "Izaberite sesiju za automatsko prijavljivanje"
+
+#: ui/main.qml:195
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Auto-login does not support unlocking your KDE Wallet automatically, so it "
+"will ask you to unlock it every time you log in.<nl/><nl/>To avoid this, you "
+"can change the wallet to have a blank password. Note that this is insecure "
+"and should only be done in a trusted environment."
+msgstr ""
+"Automatsko prijavljivanje ne podržava automatsko otključavanje K‑novčanika, "
+"pa će tražiti da ga otključate pri svakom prijavljivanju.<nl/><nl/>Da biste "
+"to izbegli, možete novčaniku postaviti praznu lozinku. Imajte na umu da to "
+"nije bezbedno i da treba da se radi samo u pouzdanom okruženju."
+
+#: ui/main.qml:200
+#, kde-format
+msgid "Open KDE Wallet Settings"
+msgstr "Otvori postavke K‑novčanika"
+
+#: ui/main.qml:210
+#, kde-format
+msgctxt "@option:check"
+msgid "Log in again immediately after logging off"
+msgstr "Ponovo se prijavi odmah posle odjavljivanja"
+
+#: ui/main.qml:224
+#, kde-format
+msgctxt "@title:group"
+msgid "Defaults"
+msgstr "Podrazumevano"
+
+#: ui/main.qml:227
+#, kde-format
+msgid "Default user:"
+msgstr "Podrazumevani korisnik:"
+
+#: ui/main.qml:235
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in user"
+msgstr "Poslednji prijavljeni korisnik"
+
+#: ui/main.qml:295
+#, kde-format
+msgid "Select the default user to be shown at the login screen"
+msgstr ""
+"Izaberite podrazumevanog korisnika koji se prikazuje na prijavnom ekranu"
+
+#: ui/main.qml:303
+#, kde-format
+msgid "Default session:"
+msgstr "Podrazumevana sesija:"
+
+#: ui/main.qml:311
+#, kde-format
+msgctxt "@option:radio"
+msgid "Last logged-in session"
+msgstr "Poslednja korišćena sesija"
+
+#: ui/main.qml:369
+#, kde-format
+msgid "Select the default session to be shown at the login screen"
+msgstr "Izaberite podrazumevanu sesiju koja se prikazuje na prijavnom ekranu"
