@@ -1,0 +1,128 @@
+# Nemanja Hiršl <nemhirsl@gmail.com>, 2026.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma-login-manager\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-09-10 00:48+0000\n"
+"PO-Revision-Date: 2026-10-06 10:30+0200\n"
+"Last-Translator: Nemanja Hiršl <nemhirsl@gmail.com>\n"
+"Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Environment: kde\n"
+
+#: ../settings/models/sessionmodel.cpp:77
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (X11) (%2)"
+msgstr "%1 (Икс11) (%2)"
+
+#: ../settings/models/sessionmodel.cpp:82
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (Wayland) (%2)"
+msgstr "%1 (вејланд) (%2)"
+
+#: ../settings/models/sessionmodel.cpp:89
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (X11)"
+msgstr "%1 (Икс11)"
+
+#: ../settings/models/sessionmodel.cpp:91
+#, kde-format
+msgctxt "@item:inmenu %1 is the localised name of a desktop session"
+msgid "%1 (Wayland)"
+msgstr "%1 (вејланд)"
+
+#: ../settings/models/sessionmodel.cpp:94
+#, kde-format
+msgctxt ""
+"@item:inmenu %1 is the localised name of a desktop session, %2 is the index "
+"of the session"
+msgid "%1 (%2)"
+msgstr "%1 (%2)"
+
+#: qml/KeyboardButton.qml:15
+#, kde-format
+msgctxt "Button to change keyboard layout"
+msgid "Switch layout"
+msgstr "Пребаци распоред"
+
+#: qml/Login.qml:88
+#, kde-format
+msgid "Username"
+msgstr "Корисничко име"
+
+#: qml/Login.qml:105
+#, kde-format
+msgid "Password"
+msgstr "Лозинка"
+
+#: qml/Login.qml:145 qml/Login.qml:151
+#, kde-format
+msgid "Log In"
+msgstr "Пријави ме"
+
+#: qml/Main.qml:166 qml/Main.qml:290
+#, kde-format
+msgid "Caps Lock is on"
+msgstr "CapsLock укључен"
+
+#: qml/Main.qml:178 qml/Main.qml:317
+#, kde-format
+msgctxt "Suspend to disk"
+msgid "Hibernate"
+msgstr "У хибернацију"
+
+#: qml/Main.qml:187 qml/Main.qml:326
+#, kde-format
+msgctxt "Suspend to RAM"
+msgid "Sleep"
+msgstr "На спавање"
+
+#: qml/Main.qml:196 qml/Main.qml:335
+#, kde-format
+msgid "Restart"
+msgstr "Поново покрени"
+
+#: qml/Main.qml:202 qml/Main.qml:341
+#, kde-format
+msgid "Shut Down"
+msgstr "Угаси"
+
+#: qml/Main.qml:208
+#, kde-format
+msgctxt "For switching to a username and password prompt"
+msgid "Other…"
+msgstr "Други…"
+
+#: qml/Main.qml:306
+#, kde-format
+msgid "Type in Username and Password"
+msgstr "Унесите корисничко име и лозинку"
+
+#: qml/Main.qml:347
+#, kde-format
+msgid "List Users"
+msgstr "Прикажи кориснике"
+
+#: qml/Main.qml:381
+#, kde-format
+msgid "Login Failed"
+msgstr "Пријављивање пропало"
+
+#: qml/SessionButton.qml:23
+#, kde-format
+msgid "Desktop Session: %1"
+msgstr "Сесија површи: %1"
