@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-set(PROJECT_VERSION "6.7.91")
+set(PROJECT_VERSION "6.8.0")
 
 project(PLASMALOGIN VERSION ${PROJECT_VERSION})
 
