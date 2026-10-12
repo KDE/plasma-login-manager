@@ -1,16 +1,23 @@
 # Translation for plasma_login.po to Euskara/Basque (eu).
-# Copyright (C) 2025 This file is copyright:
+# Copyright (C) 2025-2026 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# SPDX-FileCopyrightText: 2025 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2025-2026 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
 #
 # Translators:
-# SPDX-FileCopyrightText: 2025 Iñigo Salvador Azurmendi <xalba@ni.eus>
+# SPDX-FileCopyrightText: Iñigo Salvador Azurmendi <xalba@ni.eus>, 2025, 2026.
+#
+# Egoera:
+# Proiektu osoaren berrikuspen integrala: 2026-10-11.
+# Azken berrikuspena: 2026-10-11 — egoera ondua lortu da.
+# Terminologia, estiloa, ortotipografia, kohesioa eta koherentzia berrikusi dira.
+# Erreferentzia-gida: —
+# Ikus, halaber: KDE-eu-berrikuspen-integralen-erregistroa.md
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-10-01 00:47+0000\n"
-"PO-Revision-Date: 2025-12-06 10:50+0100\n"
+"PO-Revision-Date: 2026-10-11 18:13+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.08.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -60,7 +67,7 @@ msgstr "%1 (%2)"
 #, kde-format
 msgctxt "Button to change keyboard layout"
 msgid "Switch layout"
-msgstr "Aldatu antolaera"
+msgstr "Antolaera aldatu"
 
 #: qml/Login.qml:88
 #, kde-format
@@ -80,7 +87,7 @@ msgstr "Saioa hasi"
 #: qml/Main.qml:175 qml/Main.qml:299
 #, kde-format
 msgid "Caps Lock is on"
-msgstr "Blok Maius piztuta dago"
+msgstr "Blok Maius aktibatuta dago"
 
 #: qml/Main.qml:187 qml/Main.qml:326
 #, kde-format
@@ -92,7 +99,7 @@ msgstr "Hibernatu"
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
-msgstr "Lokartu"
+msgstr "Lo moduan jarri"
 
 #: qml/Main.qml:205 qml/Main.qml:344
 #, kde-format
@@ -108,22 +115,22 @@ msgstr "Itzali"
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
-msgstr "Bestelakoa..."
+msgstr "Beste erabiltzaile bat…"
 
 #: qml/Main.qml:315
 #, kde-format
 msgid "Type in Username and Password"
-msgstr "Tekleatu erabiltzaile-izena eta pasahitza"
+msgstr "Erabiltzaile-izena eta pasahitza tekleatu"
 
 #: qml/Main.qml:356
 #, kde-format
 msgid "List Users"
-msgstr "Zerrendatu erabiltzaileak"
+msgstr "Erabiltzaileak zerrendatu"
 
 #: qml/Main.qml:390
 #, kde-format
 msgid "Login Failed"
-msgstr "Saioa hastea huts egin du"
+msgstr "Saioa hastean huts egin du"
 
 #: qml/SessionButton.qml:23
 #, kde-format
