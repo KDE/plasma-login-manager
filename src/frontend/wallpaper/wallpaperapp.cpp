@@ -54,6 +54,11 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
 
 void WallpaperApp::createWindowForScreen(QScreen *screen)
 {
+    // Ignore the placeholder screen Qt adds when there are no outputs
+    if (screen->name().isEmpty()) {
+        return;
+    }
+
     WallpaperWindow *window = new WallpaperWindow(m_engine.get());
     window->QObject::setParent(this);
     window->setScreen(screen);

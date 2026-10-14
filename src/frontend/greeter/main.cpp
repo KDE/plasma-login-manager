@@ -52,6 +52,11 @@ public:
 private:
     void createWindowForScreen(QScreen *screen)
     {
+        // Ignore the placeholder screen Qt adds when there are no outputs
+        if (screen->name().isEmpty()) {
+            return;
+        }
+
         auto *window = new QQuickView(m_engine.get(), nullptr);
         window->QObject::setParent(this);
         window->setScreen(screen);
