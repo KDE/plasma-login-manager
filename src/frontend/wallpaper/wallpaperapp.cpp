@@ -54,6 +54,10 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
 
 void WallpaperApp::createWindowForScreen(QScreen *screen)
 {
+    if (screen->geometry().isNull()) {
+        return;
+    }
+
     WallpaperWindow *window = new WallpaperWindow(m_engine.get());
     window->QObject::setParent(this);
     window->setScreen(screen);

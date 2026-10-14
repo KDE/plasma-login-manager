@@ -52,6 +52,10 @@ public:
 private:
     void createWindowForScreen(QScreen *screen)
     {
+        if (screen->geometry().isNull()) {
+            return;
+        }
+
         auto *window = new QQuickView(m_engine.get(), nullptr);
         window->QObject::setParent(this);
         window->setScreen(screen);
