@@ -127,9 +127,12 @@ void Seat::displayStopped()
     // remove display
     removeDisplay(display);
 
-    // restart otherwise
+    // restart otherwise, unless the system is shutting down anyway
     if (m_displays.isEmpty()) {
-        createDisplay();
+        OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+        if (!Logind::isAvailable() || !manager.preparingForShutdown()) {
+            createDisplay();
+        }
     }
     // If there is still a session running on some display,
     // switch to last display in display vector.
