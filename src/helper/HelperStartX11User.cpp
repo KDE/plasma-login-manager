@@ -31,8 +31,10 @@ int main(int argc, char **argv)
     QCoreApplication app(argc, argv);
     auto sig = KSignalHandler::self();
     sig->watchSignal(SIGTERM);
+    // systemd follows SIGTERM with SIGHUP when it stops the session scope
+    sig->watchSignal(SIGHUP);
     QObject::connect(sig, &KSignalHandler::signalReceived, &app, [](int s) {
-        if (s == SIGTERM) {
+        if (s == SIGTERM || s == SIGHUP) {
             QCoreApplication::instance()->exit(0);
         }
     });
