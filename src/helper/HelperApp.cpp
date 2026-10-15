@@ -47,7 +47,7 @@ HelperApp::HelperApp(int &argc, char **argv)
     sig->watchSignal(SIGTERM);
     QObject::connect(sig, &KSignalHandler::signalReceived, m_session, [](int s) {
         if (s == SIGTERM) {
-            QCoreApplication::instance()->exit(-1);
+            QCoreApplication::instance()->exit(Auth::HELPER_SUCCESS);
         }
     });
 
