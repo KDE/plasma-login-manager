@@ -89,7 +89,7 @@ static bool runAsPlasmaLoginUser(Func function)
         if (waitpid(pid, &status, 0) < 0) {
             return false;
         }
-        return status == EXIT_SUCCESS;
+        return WIFEXITED(status) && WEXITSTATUS(status) == EXIT_SUCCESS;
     }
 }
 
