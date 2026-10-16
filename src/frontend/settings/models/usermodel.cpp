@@ -4,9 +4,12 @@
  *  SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
+#include <QStringList>
+
 #include <KUser>
 
 #include <pwd.h>
+#include <unistd.h>
 
 #include "plasmaloginsettings.h"
 
@@ -88,6 +91,13 @@ void UserModel::populate()
 
     m_users.clear();
 
+    QStringList validShells;
+    setusershell();
+    while (const char *shell = getusershell()) {
+        validShells.append(QString::fromUtf8(shell));
+    }
+    endusershell();
+
     for (const KUser &user : KUser::allUsers()) {
         if (!user.isValid()) {
             qWarning() << "Invalid user";
@@ -98,7 +108,10 @@ void UserModel::populate()
         const K_GID gid = user.groupId().nativeId();
 
         // Filter out users that cannot log in
-        const bool cannotLogin = user.shell().endsWith("/nologin") || user.shell().endsWith("/false");
+        const QString shell = user.shell();
+        const QString shellName = shell.section('/', -1);
+        // Non-login shells may also be listed by getusershell().
+        const bool cannotLogin = shell.isEmpty() || shellName == "nologin" || shellName == "false" || !validShells.contains(shell);
         
         // Consider UID ranges (homed range from systemd: HOME_UID_MIN, HOME_UID_MAX)
         const bool inLogindDefRange = (uid >= PlasmaLoginSettings::getInstance().minimumUid() && uid <= PlasmaLoginSettings::getInstance().maximumUid());
