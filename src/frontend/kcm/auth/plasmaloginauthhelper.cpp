@@ -10,6 +10,7 @@
 
 #include <dirent.h>
 #include <fcntl.h> /* Definition of O_* and S_* constants */
+#include <grp.h>
 #include <linux/openat2.h> /* Definition of RESOLVE_* constants */
 #include <sys/stat.h>
 #include <sys/syscall.h> /* Definition of SYS_* constants */
@@ -65,6 +66,10 @@ static bool runAsPlasmaLoginUser(Func function)
         qWarning() << "Failed to fork plasmalogin helper process";
         return false;
     } else if (pid == 0) {
+        if (setgroups(0, nullptr) != 0) {
+            qWarning() << "Failed to setgroups in plasmalogin helper subprocess";
+            _exit(EXIT_FAILURE);
+        }
         if (setgid(user.groupId().nativeId()) != 0) {
             qWarning() << "Failed to setgid in plasmalogin helper subprocess";
             _exit(EXIT_FAILURE);
