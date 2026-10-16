@@ -305,19 +305,19 @@ static bool isRegularFd(int fd)
 
 ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
 {
+    if (args[QStringLiteral("config")].toString().toUtf8().size() > 1 * 1024 * 1024) {
+        qWarning() << "Config size is greater than 1 MiB";
+        return ActionReply::HelperErrorReply();
+    }
+
     QFile file(QLatin1String(PLASMALOGIN_CONFIG_FILE));
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate, standardPermissions)) {
         return ActionReply::HelperErrorReply();
     }
 
-    if (args[QStringLiteral("config")].toString().toUtf8().size() > 1 * 1024 * 1024) {
-        qWarning() << "Config size is greater than 1 MiB";
-        return ActionReply::HelperErrorReply();
-    } else {
-        QTextStream out(&file);
-        out << args[QStringLiteral("config")].toString();
-        out.flush();
-    }
+    QTextStream out(&file);
+    out << args[QStringLiteral("config")].toString();
+    out.flush();
 
     file.close();
 
