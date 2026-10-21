@@ -37,6 +37,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
+#include "Constants.h"
 #include "SessionRunner.h"
 #include "VirtualTerminal.h"
 #include "config.h"
@@ -326,27 +327,43 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
         return proc.readAllStandardOutput().simplified();
     }();
 
-    auto parts = session.exec().split(QLatin1Char(' '), Qt::SkipEmptyParts);
-    auto cmd = parts.takeFirst();
-    auto args = parts;
+    auto &&[cmd, args, extraProperties] = [&]() -> std::tuple<QString, QStringList, QStringList> {
+        if (env.value(u"XDG_SESSION_TYPE"_s) == "x11"_L1) {
+            auto args = QStringList{u"%1 \"%2\""_s.arg(QStringLiteral(SESSION_COMMAND), session.exec())};
+            auto extraProperties = QStringList{
+                // Output
+                u"StandardInput=tty-fail"_s,
+                u"StandardOutput=tty-fail"_s,
+                u"StandardError=tty-fail"_s,
+            };
+            return {QStringLiteral(LIBEXEC_INSTALL_DIR "/plasmalogin-helper-start-x11user"), args, extraProperties};
+        }
+        if (env.value(u"XDG_SESSION_TYPE"_s) == "wayland"_L1) {
+            return {QStringLiteral(WAYLAND_SESSION_COMMAND), QStringList{session.exec()}, {}};
+        }
+        Q_ASSERT("Unexpected XDG_SESSION_TYPE");
+        return {};
+    }();
+
     m_session = SessionBuilder() //
                     .environment(env)
                     .name(u"plasmalogin-session@tty%1.service"_s.arg(m_sessionTerminalId.tty()))
-                    .properties({
-                        u"User="_s + user,
-                        u"PAMName=plasmalogin"_s,
-                        u"SetCredential=%1:%2"_s.arg(credentialName, QString::fromUtf8(credential)),
+                    .properties(QStringList{
+                                    u"User="_s + user,
+                                    u"PAMName=plasmalogin"_s,
+                                    u"SetCredential=%1:%2"_s.arg(credentialName, QString::fromUtf8(credential)),
 
-                        // TTY Configuration
-                        u"TTYPath=/dev/tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
-                        u"TTYReset=yes"_s, // Reset tty before and after
-                        u"TTYVHangup=yes"_s, // Hangup prior clients
-                        u"TTYVTDisallocate=yes"_s, // Clear VT scrollback etc.
+                                    // TTY Configuration
+                                    u"TTYPath=/dev/tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
+                                    u"TTYReset=yes"_s, // Reset tty before and after
+                                    u"TTYVHangup=yes"_s, // Hangup prior clients
+                                    u"TTYVTDisallocate=yes"_s, // Clear VT scrollback etc.
 
-                        // Utmp tracking. Nobody knows what these do exactly!
-                        u"UtmpIdentifier=tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
-                        u"UtmpMode=user"_s,
-                    })
+                                    // Utmp tracking. Nobody knows what these do exactly!
+                                    u"UtmpIdentifier=tty%1"_s.arg(QString::number(m_sessionTerminalId.tty())),
+                                    u"UtmpMode=user"_s,
+                                }
+                                + extraProperties)
                     .build(cmd, args, this);
 
     connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
