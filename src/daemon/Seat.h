@@ -34,7 +34,7 @@ public:
     explicit Seat(const QString &name, QObject *parent = 0);
 
     const QString &name() const;
-    void createDisplay();
+    Display *createDisplay();
     bool canTTY();
     bool tryLockFirstLogin();
     VirtualTerminal::Terminal availableVt() const;
@@ -47,6 +47,7 @@ private slots:
 
 private:
     bool isTtyInUse(const QString &tty) const;
+    void setupAutoLogin(Display *display);
 
     QString m_name;
 
