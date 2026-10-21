@@ -156,5 +156,7 @@ PLASMALOGIN::SessionBuilder &PLASMALOGIN::SessionBuilder::name(const QString &un
         return arguments;
     }());
 
+    qDebug() << "Preparing to run" << process->program() << process->arguments();
+
     return std::make_unique<RunnableSession>(std::move(process));
 }
