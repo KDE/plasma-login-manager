@@ -45,7 +45,9 @@ Seat::Seat(const QString &name, QObject *parent)
     : QObject(parent)
     , m_name(name)
 {
-    createDisplay();
+    auto display = createDisplay();
+    setupAutoLogin(display);
+    display->start();
 }
 
 const QString &Seat::name() const
@@ -137,10 +139,8 @@ std::optional<int> Seat::vtForSession(const QString &sessionId) const
     return QStringView(session.tTY()).mid(3).toInt(); // we need to convert ttyN to N
 }
 
-void Seat::createDisplay()
+Display *Seat::createDisplay()
 {
-    PlasmaLogin::config()->load();
-
     // create a new display
     qDebug() << "Adding new display...";
     Display *display = new Display(this);
@@ -150,6 +150,13 @@ void Seat::createDisplay()
 
     // add display to the list
     m_displays << display;
+
+    return display;
+}
+
+void Seat::setupAutoLogin(Display *display)
+{
+    PlasmaLogin::config()->load();
 
     // Per-seat autologin overrides the global [Autologin] keys for a dedicated seat.
     // Resolve it here, after the configuration has been reloaded, rather than caching it
@@ -176,9 +183,6 @@ void Seat::createDisplay()
         autologinSession = PlasmaLogin::config()->autologinSession();
     }
     display->setAutoLogin(autologinUser, autologinSession);
-
-    // start the display
-    display->start();
 }
 
 void Seat::displayStopped()
@@ -196,7 +200,9 @@ void Seat::displayStopped()
     if (m_displays.isEmpty()) {
         OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
         if (!Logind::isAvailable() || !manager.preparingForShutdown()) {
-            createDisplay();
+            auto display = createDisplay();
+            setupAutoLogin(display);
+            display->start();
         }
     }
     // If there is still a session running on some display,

@@ -182,7 +182,8 @@ void SeatManager::switchToGreeter(const QString &name)
     }
 
     // switch to greeter
-    m_seats.value(name)->createDisplay();
+    auto display = m_seats.value(name)->createDisplay();
+    display->start();
 }
 
 void PLASMALOGIN::SeatManager::logindSecureAttentionKey(const QString &name, const QDBusObjectPath &objectPath)
