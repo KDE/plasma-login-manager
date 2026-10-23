@@ -137,20 +137,14 @@ msgid "Auto-login"
 msgstr "Automatické prihlásenie"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "Automaticky prihlásiť:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -160,19 +154,15 @@ msgstr "ako používateľ:"
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "Automaticky prihlásiť konkrétneho používateľa a reláciu"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Vyberte používateľa pre automatické prihlásenie"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -182,16 +172,10 @@ msgstr "s reláciou:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Vyberte reláciu pre automatické prihlásenie"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -200,8 +184,8 @@ msgid ""
 "and should only be done in a trusted environment."
 msgstr ""
 "Automatické prihlásenie nepodporuje automatické odomknutie KDE Peňaženky, "
-"preto vás požiada o jej odomknutie pri každom prihlásení.    <nl/><nl/>    "
-"Aby ste sa tomu vyhli, môžete zmeniť peňaženku tak, aby mala prázdne heslo. "
+"preto vás požiada o jej odomknutie pri každom prihlásení.<nl/><nl/>Aby ste "
+"sa tomu vyhli, môžete zmeniť peňaženku tak, aby mala prázdne heslo. "
 "Upozorňujeme, že toto nie je bezpečné a malo by sa robiť iba v dôveryhodnom "
 "prostredí."
 
@@ -223,9 +207,7 @@ msgid "Defaults"
 msgstr "Predvolené"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Predvolený používateľ:"
 
@@ -239,11 +221,10 @@ msgstr "Posledný prihlásený používateľ"
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
 msgstr ""
+"Vyberte predvoleného používateľa zobrazeného na prihlasovacej obrazovke"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Predvolená relácia:"
 
@@ -256,4 +237,4 @@ msgstr "Posledná prihlásená relácia"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "Vyberte predvolenú reláciu zobrazenú na prihlasovacej obrazovke"
