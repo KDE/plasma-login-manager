@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-11 00:47+0000\n"
-"PO-Revision-Date: 2026-06-14 21:32+0900\n"
+"PO-Revision-Date: 2026-10-17 21:49+0900\n"
 "Last-Translator: Mint <5602mint@gmail.com>\n"
-"Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
+"Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 26.04.2\n"
+"X-Generator: Lokalize 26.04.3\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -90,13 +90,7 @@ msgstr ""
 "Plasma 設定に適用された以下の変更を、Plasma ログイン画面にも反映します。"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -105,22 +99,20 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>カラースキーム</item><item>カーソルのテーマとサイズ</"
-"item><item>フォントとフォントレンダリング</item><item>NumLock 設定</"
-"item><item>Plasma テーマ</item><item>スケーリング DPI</item><item>スクリーン"
-"の設定</item><item>キーボードレイアウト</item></list></para>"
+"<para><list><item>言語と地域設定</item><item>キーボードレイアウト</"
+"item><item>画面の配置やスケール、向きの設定</item><item>NumLock 設定</"
+"item><item>フォントとフォントレンダリング</item><item>カラースキーム</"
+"item><item>カーソルのテーマとサイズ</item><item>Plasma テーマ</item></list></"
+"para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"テーマを Plasma ログイン画面に反映させるには、テーマファイルがシステム全体に"
-"インストールされている必要があります。"
+"テーマを Plasma ログイン画面に反映させるには、テーマとフォントのファイルがシ"
+"ステム全体にインストールされている必要があります。"
 
 #: ui/main.qml:71
 #, kde-format
