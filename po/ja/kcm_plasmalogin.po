@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-06-14 21:32+0900\n"
+"PO-Revision-Date: 2026-10-17 21:49+0900\n"
 "Last-Translator: Mint <5602mint@gmail.com>\n"
-"Language-Team: Japanese <kde-i18n-doc@kde.org>\n"
+"Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 26.04.2\n"
+"X-Generator: Lokalize 26.04.3\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -90,13 +90,7 @@ msgstr ""
 "Plasma 設定に適用された以下の変更を、Plasma ログイン画面にも反映します。"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -105,22 +99,20 @@ msgid ""
 "item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
 "theme</item></list></para>"
 msgstr ""
-"<para><list><item>カラースキーム</item><item>カーソルのテーマとサイズ</"
-"item><item>フォントとフォントレンダリング</item><item>NumLock 設定</"
-"item><item>Plasma テーマ</item><item>スケーリング DPI</item><item>スクリーン"
-"の設定</item><item>キーボードレイアウト</item></list></para>"
+"<para><list><item>言語と地域設定</item><item>キーボードレイアウト</"
+"item><item>画面の配置やスケール、向きの設定</item><item>NumLock 設定</"
+"item><item>フォントとフォントレンダリング</item><item>カラースキーム</"
+"item><item>カーソルのテーマとサイズ</item><item>Plasma テーマ</item></list></"
+"para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"テーマを Plasma ログイン画面に反映させるには、テーマファイルがシステム全体に"
-"インストールされている必要があります。"
+"テーマを Plasma ログイン画面に反映させるには、テーマとフォントのファイルがシ"
+"ステム全体にインストールされている必要があります。"
 
 #: ui/main.qml:71
 #, kde-format
@@ -141,42 +133,32 @@ msgid "Auto-login"
 msgstr "自動ログイン"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
 msgstr "自動的にログイン:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
 msgid "as user:"
-msgstr "ユーザ:"
+msgstr "ユーザー:"
 
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "指定したユーザーとセッションで自動ログイン"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "自動ログインを行うユーザーを選択"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -186,16 +168,10 @@ msgstr "セッション:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "自動ログインを行うセッションを選択"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -226,9 +202,7 @@ msgid "Defaults"
 msgstr "デフォルト"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "デフォルトのユーザー:"
 
@@ -241,12 +215,10 @@ msgstr "最後にログインしたユーザー"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "ログイン画面でデフォルトとして表示するユーザーを選択"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "デフォルトのセッション:"
 
@@ -259,4 +231,4 @@ msgstr "前回ログインしたセッション"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "ログイン画面でデフォルトとして表示するセッションを選択"
