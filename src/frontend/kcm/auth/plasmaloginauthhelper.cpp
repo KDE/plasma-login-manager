@@ -37,6 +37,13 @@
 static const QFile::Permissions standardPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ReadGroup | QFile::ReadOther;
 static const QFile::Permissions standardDirectoryPermissions = QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther;
 
+// Upper bounds for the wallpaper data a single save() call may write into
+// the plasmalogin home directory. Sized to fit wallpaper packages (several
+// high-resolution images) while keeping one request from filling the disk.
+static constexpr qint64 maxWallpaperFileSize = 64 * 1024 * 1024;
+static constexpr qint64 maxWallpaperTotalSize = 256 * 1024 * 1024;
+static constexpr int maxWallpaperFileCount = 64;
+
 /*
  * Return the plasmalogin user path
  */
@@ -358,6 +365,12 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
         });
 
         const QStringList wallpapers = args[QStringLiteral("wallpapers")].toStringList();
+        if (wallpapers.size() > maxWallpaperFileCount) {
+            qWarning() << "Too many wallpapers in the save request:" << wallpapers.size();
+            return false;
+        }
+
+        qint64 totalWallpaperSize = 0;
         for (const QString &wallpaper : wallpapers) {
             // This shouldn't be needed with the explicit openat flags, but
             // another check can't hurt
@@ -398,6 +411,7 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
                 qWarning() << "Failed to open wallpaper";
                 return false;
             }
+            qint64 fileSize = 0;
             QByteArray buf(4096, 0);
             while (true) {
                 qint64 n = wallpaperIn.read(buf.data(), buf.size());
@@ -406,9 +420,19 @@ ActionReply PlasmaLoginAuthHelper::save(const QVariantMap &args)
                 } else if (n < 0) {
                     qWarning() << "Failed to transfer wallpaper data for file" << relativeFilePath;
                     return false;
-                } else {
-                    out.writeRawData(buf.data(), n);
                 }
+
+                fileSize += n;
+                totalWallpaperSize += n;
+                if (fileSize > maxWallpaperFileSize || totalWallpaperSize > maxWallpaperTotalSize) {
+                    qWarning() << "Wallpaper data exceeds the size limit for file" << relativeFilePath;
+                    file.close();
+                    // Do not leave a truncated file behind
+                    unlinkat(rootWallpaperFd, wallpaper.toUtf8().constData(), 0);
+                    return false;
+                }
+
+                out.writeRawData(buf.data(), n);
             }
         }
         return true;
