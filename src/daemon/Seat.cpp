@@ -78,7 +78,13 @@ bool Seat::isTtyInUse(const QString &tty) const
     const auto info = reply.value();
     for (const SessionInfo &sessionInfo : info) {
         OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionInfo.sessionPath.path(), QDBusConnection::systemBus());
-        if (tty == session.tTY() && session.state() != QLatin1String("closing")) {
+        // logind keeps a session's tty allocated until the session is
+        // removed, including while it is in the "closing" state waiting
+        // for its remaining processes to exit. A tty in that state is not
+        // free: a display placed on it shares the VT with the dying
+        // session while the seat can still have that session active, so
+        // any registered session marks its tty as in use.
+        if (tty == session.tTY()) {
             qDebug() << "tty" << tty << "already in use by" << session.user().path.path() << session.state() << session.display() << session.desktop()
                      << session.vTNr();
             return true;
