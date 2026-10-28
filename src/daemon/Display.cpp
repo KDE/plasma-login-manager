@@ -65,7 +65,6 @@ Display::Display(Seat *parent)
     m_auth->setVerbose(true);
     connect(m_auth, &Auth::requestChanged, this, &Display::slotRequestChanged);
     connect(m_auth, &Auth::authentication, this, &Display::slotAuthenticationFinished);
-    connect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     connect(m_auth, &Auth::info, this, &Display::slotAuthInfo);
     connect(m_auth, &Auth::error, this, &Display::slotAuthError);
 
@@ -91,7 +90,6 @@ Display::Display(Seat *parent)
 
 Display::~Display()
 {
-    disconnect(m_auth, &Auth::finished, this, &Display::slotHelperFinished);
     stop();
 }
 
@@ -171,11 +169,6 @@ void Display::startSocketServerAndGreeter()
     }
 
     m_greeter->setSocket(m_socketServer->socketAddress());
-
-    // start greeter
-    // Make sure we are on the greeter VT or else kwin won't be able to start correctly because it doesn't have device
-    // permissions and whatnot.
-    VirtualTerminal::jumpToVt(m_terminalId.tty(), true);
     m_greeter->start();
 }
 
@@ -375,9 +368,6 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
             break;
         }
         qWarning() << "User session startup finished with exit code" << exitCode;
-        if (exitCode == 0) {
-            QTimer::singleShot(5000, m_greeter, &Greeter::stop);
-        }
     });
 
     m_auth->setUser(user);
@@ -445,19 +435,6 @@ void Display::slotAuthError(const QString &message, Auth::Error error)
     if (error == Auth::ERROR_AUTHENTICATION) {
         emit loginFailed(m_socket);
     }
-}
-
-void Display::slotHelperFinished(Auth::HelperExitStatus status)
-{
-    qInfo() << "Helper finished with status:" << status;
-    // Don't restart greeter and display server unless plasmalogin-helper exited
-    // with an internal error or the user session finished successfully,
-    // we want to avoid greeter from restarting when an authentication
-    // error happens (in this case we want to show the message from the
-    // greeter
-    // if (status != Auth::HELPER_AUTH_ERROR) {
-    //     stop();
-    // }
 }
 
 void Display::slotRequestChanged()
