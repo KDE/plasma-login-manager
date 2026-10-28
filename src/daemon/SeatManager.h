@@ -1,5 +1,6 @@
 /***************************************************************************
  * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ * SPDX-FileCopyrightText: 2026 Harald Sitter <sitter@kde.org>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  *
@@ -17,6 +18,7 @@
 #ifndef PLASMALOGIN_SEATMANAGER_H
 #define PLASMALOGIN_SEATMANAGER_H
 
+#include "GreeterSession.h"
 #include <QDBusObjectPath>
 #include <QHash>
 #include <QObject>
@@ -40,6 +42,8 @@ public:
     void removeSeat(const QString &name);
     void switchToGreeter(const QString &seat);
 
+    std::optional<GreeterSession> greeterSessionForSeat(const QString &seatName);
+
 Q_SIGNALS:
     void seatCreated(const QString &name);
     void seatRemoved(const QString &name);
@@ -55,8 +59,10 @@ private:
     void trackSession(const QString &id, const std::shared_ptr<LogindSession> &session);
     void untrackSession(const QString &id, const std::shared_ptr<LogindSession> &session);
 
-    //! Maybe switches to the greeter depending on the state of the removed session and the active seat
-    void maybeSwitchToGreeter(LogindSeat *seat);
+    void maybeSwitchOnSessionAdd(Seat *graphicalSeat, const std::shared_ptr<LogindSession> &session);
+    void maybeSwitchOnSessionRemove(Seat *graphicalSeat, const std::shared_ptr<LogindSession> &session);
+    void maybeSwitchOnSessionActive(Seat *graphicalSeat);
+    void discardGreeterForSeat(const QString &seatName);
 
     OrgFreedesktopLogin1ManagerInterface *m_logind;
 

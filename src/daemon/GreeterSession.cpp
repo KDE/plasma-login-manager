@@ -3,6 +3,8 @@
 
 #include "GreeterSession.h"
 
+#include <csignal>
+
 namespace PLASMALOGIN
 {
 
@@ -14,6 +16,16 @@ GreeterSession::GreeterSession(const QDBusObjectPath &path)
 void GreeterSession::activate()
 {
     m_interface.Activate();
+}
+
+void GreeterSession::sigterm()
+{
+    m_interface.Kill("all", SIGTERM);
+}
+
+void GreeterSession::terminate()
+{
+    m_interface.Terminate();
 }
 
 } // namespace PLASMALOGIN

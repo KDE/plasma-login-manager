@@ -10,7 +10,7 @@ namespace PLASMALOGIN
 
 class Display;
 
-//! A greeter session represents a logind session used for our greeter.
+//! A greeter session represents a logind session used for our greeter. Every Seat should generally have one of these.
 class GreeterSession
 {
 public:
@@ -18,6 +18,17 @@ public:
 
     //! Activates the greeter session.
     void activate();
+
+    //! Sends SIGTERM to the session.
+    void sigterm();
+
+    /*!
+        Forcefully terminate the session.
+
+        It's not defined what forcefully means but it seems to just outright kill.
+        Because of this you should only use this after having asked nicely using a sigterm.
+    */
+    void terminate();
 
 private:
     OrgFreedesktopLogin1SessionInterface m_interface;

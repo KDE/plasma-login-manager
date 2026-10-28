@@ -31,6 +31,7 @@
 #include <QDir>
 #include <QFileInfo>
 
+#include "SeatManager.h"
 #include <Login1Manager.h>
 #include <Login1Seat.h>
 #include <Login1Session.h>
@@ -52,9 +53,10 @@ struct Autologin {
 
 namespace PLASMALOGIN
 {
-Seat::Seat(const QString &name, QObject *parent)
+Seat::Seat(const QString &name, SeatManager *parent)
     : QObject(parent)
     , m_name(name)
+    , m_seatManager(parent)
 {
 }
 
@@ -154,14 +156,13 @@ void Seat::unlockAndActivateSession(const QString &sessionId) const
 
 bool Seat::activateExistingGreeter()
 {
-    if (!m_greeterSession) {
-        qDebug() << "No existing greeter session found. Not able to activate it.";
-        return false;
+    if (auto greeterSession = m_seatManager->greeterSessionForSeat(m_name); greeterSession) {
+        qDebug() << "Found existing greeter session for seat:" << m_name;
+        greeterSession->activate();
+        return true;
     }
-
-    qDebug() << "Activating existing greeter session...";
-    m_greeterSession->activate();
-    return true;
+    qDebug() << "No existing greeter session found for seat:" << m_name;
+    return false;
 }
 
 void Seat::switchToGreeter()
@@ -175,20 +176,6 @@ void Seat::switchToGreeter()
         maybeSetupAutoLogin(display);
         display->start();
     }
-}
-
-void Seat::setGreeterSession(const std::optional<QDBusObjectPath> &objectPath)
-{
-    if (!objectPath) {
-        qInfo() << "Resetting greeter session for seat:" << m_name;
-        m_greeterSession.reset();
-        return;
-    }
-
-    if (m_greeterSession) {
-        qWarning() << "Greeter session already exists, replacing it. This is probably a bug!";
-    }
-    m_greeterSession.emplace(objectPath.value());
 }
 
 Display *Seat::createDisplay()

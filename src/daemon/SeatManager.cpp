@@ -1,5 +1,6 @@
 /***************************************************************************
  * SPDX-FileCopyrightText: 2013 Abdurrahman AVCI <abdurrahmanavci@gmail.com>
+ * SPDX-FileCopyrightText: 2026 Harald Sitter <sitter@kde.org>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  *
@@ -40,15 +41,15 @@ public:
     LogindSeat(const QString &name, const QDBusObjectPath &objectPath);
     QString name() const;
     bool canGraphical() const;
-    QString activeTty() const;
-    [[nodiscard]] bool hasActiveTTY() const
+
+    [[nodiscard]] QString activeSession() const
     {
-        return !m_activeTty.isEmpty();
+        return m_activeSession;
     }
 
 Q_SIGNALS:
     void canGraphicalChanged(bool canGraphical);
-    void hasActiveTTYChanged();
+    void activeSessionChanged();
 
 private Q_SLOTS:
     void propertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
@@ -58,15 +59,19 @@ private:
 
     QString m_name;
     bool m_canGraphical = false;
-    QString m_activeTty;
+    QString m_activeSession;
 };
 
 class LogindSession
 {
 public:
     LogindSession(const QDBusObjectPath &objectPath, const QString &seatName = QString());
+    [[nodiscard]] QString id() const
+    {
+        return m_id;
+    }
     QString seatName() const;
-    QDBusObjectPath objectPath() const
+    [[nodiscard]] QDBusObjectPath objectPath() const
     {
         return m_objectPath;
     }
@@ -75,9 +80,21 @@ public:
         return m_isGreeter;
     }
 
+    [[nodiscard]] static bool isGreeter(const OrgFreedesktopLogin1SessionInterface &sessionInterface)
+    {
+        auto userName = sessionInterface.name(); // the Name property is indeed the user's name
+        auto service = sessionInterface.service();
+        return userName == "plasmalogin"_L1 && service == "plasmalogin-greeter"_L1;
+    }
+    [[nodiscard]] uint vtNr() const
+    {
+        return m_vtNr;
+    }
+
 private:
     QString m_seatName;
-    QString m_tty;
+    uint m_vtNr = 0;
+    QString m_id;
     QDBusObjectPath m_objectPath;
     bool m_isGreeter = false;
 };
@@ -137,11 +154,6 @@ QString LogindSeat::name() const
     return m_name;
 }
 
-QString LogindSeat::activeTty() const
-{
-    return m_activeTty;
-}
-
 void LogindSeat::propertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
     qInfo() << "Properties changed for interface:" << interface << "changed properties:" << changedProperties
@@ -167,14 +179,15 @@ void LogindSeat::updateActiveSession(const NamedSessionPath &activeSession)
 
     const QString activeSessionPath = activeSession.path.path();
     if (activeSessionPath.isEmpty() || activeSessionPath == QLatin1String("/")) {
-        m_activeTty.clear();
-        Q_EMIT hasActiveTTYChanged();
+        // There is no active session right now. Let's figure out what to do.
+        m_activeSession.clear();
+        Q_EMIT activeSessionChanged();
         return;
     }
 
     OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), activeSessionPath, QDBusConnection::systemBus());
-    m_activeTty = session.tTY();
-    Q_EMIT hasActiveTTYChanged();
+    m_activeSession = activeSession.name;
+    Q_EMIT activeSessionChanged();
 }
 
 LogindSession::LogindSession(const QDBusObjectPath &objectPath, const QString &seatName)
@@ -185,6 +198,9 @@ LogindSession::LogindSession(const QDBusObjectPath &objectPath, const QString &s
     if (m_seatName.isEmpty()) {
         m_seatName = session.seat().name;
     }
+
+    m_id = session.id();
+    m_vtNr = session.vTNr();
 
     auto userName = session.name(); // the Name property is indeed the user's name
     auto service = session.service();
@@ -280,6 +296,16 @@ void SeatManager::switchToGreeter(const QString &name)
     m_graphicalSeats.value(name)->switchToGreeter();
 }
 
+std::optional<GreeterSession> SeatManager::greeterSessionForSeat(const QString &seatName)
+{
+    for (const auto &[id, session] : m_systemSessions.asKeyValueRange()) {
+        if (session->seatName() == seatName && session->isGreeter()) {
+            return std::make_optional<GreeterSession>(session->objectPath());
+        }
+    }
+    return std::nullopt;
+}
+
 void SeatManager::logindSecureAttentionKey(const QString &name, [[maybe_unused]] const QDBusObjectPath &objectPath)
 {
     daemonApp->seatManager()->switchToGreeter(name);
@@ -295,8 +321,10 @@ void SeatManager::logindSeatAdded(const QString &name, const QDBusObjectPath &ob
             removeSeat(logindSeat->name());
         }
     });
-    connect(logindSeat.get(), &LogindSeat::hasActiveTTYChanged, this, [this, logindSeat = logindSeat.get() /* don't hold a shared_ptr! */]() {
-        maybeSwitchToGreeter(logindSeat);
+    connect(logindSeat.get(), &LogindSeat::activeSessionChanged, this, [this, logindSeat = logindSeat.get() /* don't hold a shared_ptr! */]() {
+        if (auto seat = m_graphicalSeats.value(logindSeat->name()); seat) {
+            maybeSwitchOnSessionActive(seat);
+        }
     });
 
     m_systemSeats.insert(name, std::move(logindSeat));
@@ -329,19 +357,17 @@ void PLASMALOGIN::SeatManager::logindSessionRemoved(const QString &id, [[maybe_u
 
 void SeatManager::trackSession(const QString &id, const std::shared_ptr<LogindSession> &session)
 {
+    qInfo() << "Tracking session with id:" << id;
     m_systemSessions.insert(id, session);
 
-    if (session->isGreeter()) {
-        auto seatName = session->seatName();
-        if (session->seatName().isEmpty()) {
-            qWarning() << "Greeter session has no associated seat name. Seems like a bug." << id;
-            return;
-        }
+    auto seatName = session->seatName();
+    if (session->seatName().isEmpty()) {
+        qInfo() << "Added session has no associated seat name. Will not manage it." << id;
+        return;
+    }
 
-        if (auto seat = m_graphicalSeats.value(seatName); seat) {
-            seat->setGreeterSession(session->objectPath());
-            seat->activateExistingGreeter();
-        }
+    if (auto seat = m_graphicalSeats.value(seatName); seat) {
+        maybeSwitchOnSessionAdd(seat, session);
     }
 }
 
@@ -349,33 +375,144 @@ void SeatManager::untrackSession(const QString &id, const std::shared_ptr<Logind
 {
     m_systemSessions.remove(id);
 
-    if (session->isGreeter()) {
-        auto seatName = session->seatName();
-        if (session->seatName().isEmpty()) {
-            qWarning() << "Greeter session has no associated seat name. Seems like a bug." << id;
-            return;
-        }
+    auto seatName = session->seatName();
+    if (session->seatName().isEmpty()) {
+        qInfo() << "Removed session has no associated seat name. Will not manage it." << id;
+        return;
+    }
 
-        if (auto seat = m_graphicalSeats.value(seatName); seat) {
-            seat->setGreeterSession(std::nullopt);
-        }
+    if (auto seat = m_graphicalSeats.value(seatName); seat) {
+        maybeSwitchOnSessionRemove(seat, session);
     }
 }
 
-void SeatManager::maybeSwitchToGreeter(LogindSeat *seat)
+void SeatManager::maybeSwitchOnSessionAdd(Seat *graphicalSeat, const std::shared_ptr<LogindSession> &session)
 {
-    if (!m_graphicalSeats.contains(seat->name())) {
-        // Not a graphical seat so we don't switch on it anyway.
+    qInfo() << Q_FUNC_INFO;
+
+    auto seat = m_systemSeats.value(graphicalSeat->name(), nullptr);
+    if (!seat) {
+        qWarning() << "No system seat found for graphical seat:" << graphicalSeat->name() << "This is a bug!";
         return;
     }
 
-    if (seat->hasActiveTTY()) {
-        // Seat is already active
+    {
+        auto sessionsForSeat = m_systemSessions.asKeyValueRange() | std::views::filter([seat](const auto &pair) {
+                                   auto &&[sessionName, session] = pair;
+                                   return session->seatName() == seat->name();
+                               });
+
+        auto sessionNames = sessionsForSeat | std::views::keys;
+        const auto count = std::ranges::distance(sessionNames);
+        if (count == 0) {
+            qWarning() << "No sessions for graphical seat:" << graphicalSeat->name() << "This is a bug considering we are currently adding!";
+            return;
+        }
+
+        if (count == 1) {
+            qDebug() << "Only one session for graphical seat:" << graphicalSeat->name() << "Switching to it";
+            graphicalSeat->activateSession(sessionNames.front());
+            return;
+        }
+    }
+
+    // We have more than one session if we reached this point.
+
+    if (session->isGreeter()) {
+        qDebug() << "Added session is a greeter for graphical seat:" << graphicalSeat->name();
+        graphicalSeat->activateSession(session->id());
         return;
     }
 
-    qDebug() << "Switching to greeter for seat:" << seat->name();
+    qDebug() << "Added session is a user session for graphical seat:" << graphicalSeat->name() << ". Discarding greeter.";
+    discardGreeterForSeat(graphicalSeat->name());
+    graphicalSeat->activateSession(session->id());
+}
+
+void SeatManager::maybeSwitchOnSessionRemove(Seat *graphicalSeat, const std::shared_ptr<LogindSession> &session)
+{
+    qInfo() << Q_FUNC_INFO;
+
+    auto seat = m_systemSeats.value(graphicalSeat->name(), nullptr);
+    if (!seat) {
+        qWarning() << "No system seat found for graphical seat:" << graphicalSeat->name() << "This is a bug!";
+        return;
+    }
+
+    auto wasActiveVT = session->vtNr() == VirtualTerminal::currentVt();
+    if (!wasActiveVT) {
+        qWarning() << "Session is not on the active VT for graphical seat:" << graphicalSeat->name();
+        return;
+    }
+
+    {
+        auto sessionsForSeat = m_systemSessions.asKeyValueRange() | std::views::filter([seat](const auto &pair) {
+                                   auto &&[sessionName, session] = pair;
+                                   return session->seatName() == seat->name();
+                               });
+        const auto count = std::ranges::distance(sessionsForSeat);
+        if (count == 0) {
+            qDebug() << "We've run out of sessions. Firing up a new greeter.";
+            switchToGreeter(seat->name());
+            return;
+        }
+    }
+
+    // We have at least one session if we reached this point.
+
+    if (session->isGreeter()) {
+        qDebug() << "Removed session was a greeter for graphical seat:" << graphicalSeat->name();
+        return;
+    }
+
+    qDebug() << "Removed session was a user session for graphical seat:" << graphicalSeat->name() << ". Switching to greeter..";
     switchToGreeter(seat->name());
+}
+
+void SeatManager::maybeSwitchOnSessionActive(Seat *graphicalSeat)
+{
+    qInfo() << Q_FUNC_INFO;
+
+    auto seat = m_systemSeats.value(graphicalSeat->name(), nullptr);
+    if (!seat) {
+        qWarning() << "No system seat found for graphical seat:" << graphicalSeat->name() << "This is a bug!";
+        return;
+    }
+
+    auto session = m_systemSessions.value(seat->activeSession(), nullptr);
+    if (session) {
+        if (session->isGreeter()) {
+            qDebug() << "Active session for graphical seat:" << graphicalSeat->name() << "is a greeter.";
+            return;
+        }
+
+        qDebug() << "Active session for graphical seat:" << graphicalSeat->name() << "is a user session. Discarding greeter.";
+        discardGreeterForSeat(seat->name());
+        return;
+    }
+
+    // No session is currently active
+
+    // On startup let's jump to the greeter immediately. This ensures we don't end up in a weird scenario where a tty
+    // user doesn't know which VT the greeter happens to appear on.
+    if (static auto initialJump = false; !initialJump) {
+        initialJump = true;
+        switchToGreeter(seat->name());
+        return;
+    }
+
+    qDebug() << "Don't know what to do. Staying on current VT";
+}
+
+void SeatManager::discardGreeterForSeat(const QString &seatName)
+{
+    for (const auto &[id, session] : m_systemSessions.asKeyValueRange()) {
+        if (session->seatName() == seatName && session->isGreeter()) {
+            qDebug() << "Discarding greeter session:" << id << "for seat:" << seatName;
+            // Let's assume we know what we are doing and sigterm will always result in actual timely termination :O
+            GreeterSession(session->objectPath()).sigterm();
+        }
+    }
 }
 
 } // namespace PLASMALOGIN

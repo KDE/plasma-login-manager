@@ -26,13 +26,14 @@
 namespace PLASMALOGIN
 {
 class Display;
+class SeatManager;
 
 class Seat : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(Seat)
 public:
-    explicit Seat(const QString &name, QObject *parent = 0);
+    explicit Seat(const QString &name, SeatManager *parent = nullptr);
 
     const QString &name() const;
     [[nodiscard]] Display *createDisplay();
@@ -44,7 +45,6 @@ public:
     void unlockAndActivateSession(const QString &sessionId) const;
     bool activateExistingGreeter();
     void switchToGreeter();
-    void setGreeterSession(const std::optional<QDBusObjectPath> &objectPath);
 
 private slots:
     void displayStopped();
@@ -54,6 +54,7 @@ private:
     void maybeSetupAutoLogin(Display *display);
 
     QString m_name;
+    SeatManager *m_seatManager = nullptr;
 
     bool m_firstLoginLock = false;
 
@@ -62,7 +63,6 @@ private:
         matters a bit because a Display may be "stopped" (have no Greeter) but still be active in so far as a session is managed by it.
     */
     QVector<Display *> m_displays;
-    std::optional<GreeterSession> m_greeterSession;
 };
 }
 
