@@ -101,7 +101,6 @@ private:
 private slots:
     void slotRequestChanged();
     void slotAuthenticationFinished(const QString &user, bool success);
-    void slotHelperFinished(Auth::HelperExitStatus status);
     void slotAuthInfo(const QString &message, Auth::Info info);
     void slotAuthError(const QString &message, Auth::Error error);
 };

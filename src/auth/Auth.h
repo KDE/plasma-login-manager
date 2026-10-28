@@ -161,14 +161,6 @@ Q_SIGNALS:
     void displayServerReady(const QString &displayName);
 
     /**
-     * Emitted when the helper quits, either after authentication or when the session ends.
-     * Or, when something goes wrong.
-     *
-     * @param success true if every underlying task went fine
-     */
-    void finished(Auth::HelperExitStatus status);
-
-    /**
      * Emitted on error
      *
      * @param message message to be displayed to the user

@@ -128,7 +128,7 @@ bool Greeter::start()
     connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         switch (exitStatus) {
         case QProcess::NormalExit:
-            onHelperFinished(static_cast<Auth::HelperExitStatus>(exitCode));
+            // DO NOT auto-stop! The SeatManager will handle stopping the greeter as necessary.
             break;
         case QProcess::CrashExit:
             qWarning() << "Greeter crashed with exit code" << exitCode;

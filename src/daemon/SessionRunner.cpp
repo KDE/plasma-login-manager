@@ -22,19 +22,7 @@ PLASMALOGIN::RunnableSession::RunnableSession(std::unique_ptr<QProcess> process,
     , m_process(std::move(process))
 {
     connect(m_process.get(), &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
-        switch (exitStatus) {
-        case QProcess::NormalExit:
-            break;
-        case QProcess::CrashExit:
-            Q_EMIT finished(exitCode, exitStatus);
-            return;
-        }
-
-        if (exitCode != 0) {
-            qWarning() << "RunnableSession exited with non-zero exit code" << exitCode;
-            Q_EMIT finished(exitCode, exitStatus);
-            return;
-        }
+        qDebug() << "RunnableSession exited with exit code" << exitCode << "and status" << exitStatus;
 
         m_unitName = [&]() -> std::optional<QString> {
             auto doc = QJsonDocument::fromJson(m_process->readAllStandardOutput());
@@ -43,6 +31,8 @@ PLASMALOGIN::RunnableSession::RunnableSession(std::unique_ptr<QProcess> process,
             }
             return std::nullopt;
         }();
+
+        Q_EMIT finished(exitCode, exitStatus);
     });
 }
 
