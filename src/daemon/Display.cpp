@@ -253,8 +253,6 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
         return false;
     }
 
-    m_reuseSessionId = QString();
-
     m_reuseSessionId = seat()->reusableSessionId(user);
 
     // save session desktop file name, we'll use it to set the
@@ -308,20 +306,24 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
     }
 
     if (success) {
-        qDebug() << "Authentication for user " << user << " successful. Reusing session id?" << m_reuseSessionId;
-
-        if (!m_reuseSessionId.isNull()) {
-            qDebug() << "Reusing session with ID:" << m_reuseSessionId;
+        if (m_reuseSessionId.isNull()) {
+            qDebug() << "Authentication for user" << user << "successful, starting session";
+        } else {
+            qDebug() << "Authentication for user" << user << "successful, reusing session with ID" << m_reuseSessionId;
             seat()->activateSession(m_reuseSessionId);
         }
 
         if (m_socket) {
             emit loginSucceeded(m_socket);
         }
-    } else if (m_socket) {
-        qDebug() << "Authentication for user " << user << " failed";
-        emit loginFailed(m_socket);
+    } else {
+        qDebug() << "Authentication for user" << user << "failed";
+
+        if (m_socket) {
+            emit loginFailed(m_socket);
+        }
     }
+
     m_socket = nullptr;
 }
 
