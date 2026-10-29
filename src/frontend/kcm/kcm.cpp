@@ -36,9 +36,10 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     : KQuickManagedConfigModule(parent, data)
     , m_data(new PlasmaLoginData(this))
 {
-    setAuthActionName(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.save"));
     registerSettings(m_data->plasmaLoginSettings());
     registerSettings(m_data->wallpaperSettings()->wallpaperSkeleton());
+
+    setAuthActionName(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.save"));
 
     constexpr const char *url = "org.kde.private.kcms.plasmalogin";
     qRegisterMetaType<QList<WallpaperInfo>>("QList<WallpaperInfo>");
@@ -54,17 +55,12 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     constexpr const char *uri = "org.kde.plasma.plasmoid";
     qmlRegisterUncreatableType<QObject>(uri, 2, 0, "PlasmoidPlaceholder", QStringLiteral("Do not create objects of type Plasmoid"));
 
-    connect(m_data->plasmaLoginSettings(), &PlasmaLoginSettings::WallpaperPluginIdChanged, m_data->wallpaperSettings(), &WallpaperSettings::loadWallpaperConfig);
     connect(m_data->wallpaperSettings(), &WallpaperSettings::currentWallpaperChanged, this, &PlasmaLoginKcm::currentWallpaperChanged);
 }
 
 void PlasmaLoginKcm::load()
 {
     KQuickManagedConfigModule::load();
-    m_data->wallpaperSettings()->load();
-
-    updateState();
-    Q_EMIT loadCalled();
 }
 
 void PlasmaLoginKcm::save()
@@ -154,8 +150,6 @@ void PlasmaLoginKcm::save()
     connect(job, &KJob::result, this, [this, job] {
         if (job->error()) {
             Q_EMIT errorOccurred(job->errorString());
-        } else {
-            updateState();
         }
         // Clarify enable or disable the Apply button.
         this->setNeedsSave(job->error());
@@ -288,33 +282,16 @@ void PlasmaLoginKcm::defaults()
 {
     KQuickManagedConfigModule::defaults();
     m_data->wallpaperSettings()->defaults();
-
-    updateState();
-    Q_EMIT defaultsCalled();
-}
-
-void PlasmaLoginKcm::updateState()
-{
-    m_forceUpdateState = false;
-    settingsChanged();
-    Q_EMIT isDefaultsWallpaperChanged();
-}
-
-void PlasmaLoginKcm::forceUpdateState()
-{
-    m_forceUpdateState = true;
-    settingsChanged();
-    Q_EMIT isDefaultsWallpaperChanged();
 }
 
 bool PlasmaLoginKcm::isSaveNeeded() const
 {
-    return m_forceUpdateState || m_data->wallpaperSettings()->isSaveNeeded();
+    return m_data->plasmaLoginSettings()->isSaveNeeded() || m_data->wallpaperSettings()->isSaveNeeded();
 }
 
 bool PlasmaLoginKcm::isDefaults() const
 {
-    return m_data->wallpaperSettings()->isDefaults();
+    return m_data->plasmaLoginSettings()->isDefaults() && m_data->wallpaperSettings()->isDefaults();
 }
 
 KConfigPropertyMap *PlasmaLoginKcm::wallpaperConfiguration() const
@@ -329,14 +306,7 @@ PlasmaLoginSettings *PlasmaLoginKcm::settings() const
 
 QString PlasmaLoginKcm::currentWallpaper() const
 {
-    // TODO: Used?
     return m_data->plasmaLoginSettings()->wallpaperPluginId();
-}
-
-bool PlasmaLoginKcm::isDefaultsWallpaper() const
-{
-    // TODO: Used?
-    return m_data->wallpaperSettings()->isDefaults();
 }
 
 QUrl PlasmaLoginKcm::wallpaperConfigFile() const

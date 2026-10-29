@@ -13,6 +13,7 @@
 #include <KCoreConfigSkeleton>
 #include <KPackage/Package>
 
+#include "plasmaloginsettings.h"
 #include "wallpaperintegration.h"
 
 class WallpaperSettings : public QObject
@@ -30,14 +31,14 @@ public:
 
     KCoreConfigSkeleton *wallpaperSkeleton() const;
 
-    void load();
+    void load(PlasmaLoginSettings *plasmaLoginSettings);
     void save();
     void defaults();
 
     bool isDefaults() const;
     bool isSaveNeeded() const;
 
-    void loadWallpaperConfig();
+    void loadWallpaperConfig(PlasmaLoginSettings *plasmaLoginSettings);
 
 Q_SIGNALS:
     void currentWallpaperChanged();

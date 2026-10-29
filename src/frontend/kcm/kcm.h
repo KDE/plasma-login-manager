@@ -29,7 +29,6 @@ public:
     Q_PROPERTY(QUrl wallpaperConfigFile READ wallpaperConfigFile NOTIFY currentWallpaperChanged)
     Q_PROPERTY(WallpaperIntegration *wallpaperIntegration READ wallpaperIntegration NOTIFY currentWallpaperChanged)
     Q_PROPERTY(QString currentWallpaper READ currentWallpaper NOTIFY currentWallpaperChanged)
-    Q_PROPERTY(bool isDefaultsWallpaper READ isDefaultsWallpaper NOTIFY isDefaultsWallpaperChanged)
     Q_PROPERTY(UserModel *userModel READ userModel CONSTANT)
     Q_PROPERTY(SessionModel *sessionModel READ sessionModel CONSTANT)
     Q_PROPERTY(QString currentUser READ currentUser CONSTANT)
@@ -49,7 +48,6 @@ public:
     QUrl wallpaperConfigFile() const;
     WallpaperIntegration *wallpaperIntegration() const;
     QString currentWallpaper() const;
-    bool isDefaultsWallpaper() const;
     UserModel *userModel() const;
     SessionModel *sessionModel() const;
     QString currentUser() const;
@@ -58,26 +56,12 @@ public Q_SLOTS:
     void load() override;
     void save() override;
     void defaults() override;
-    void updateState();
-    void forceUpdateState();
 
 Q_SIGNALS:
     void errorOccurred(const QString &untranslatedMessage);
     void syncAttempted();
 
-    /**
-     * Emitted when the defaults function is called.
-     */
-    void defaultsCalled();
-
-    void isDefaultsWallpaperChanged();
-
     void currentWallpaperChanged();
-
-    /**
-     * Emitted when the load function is called.
-     */
-    void loadCalled();
 
 private:
     bool isSaveNeeded() const override;
@@ -89,5 +73,4 @@ private:
     PlasmaLoginData *m_data;
 
     QString m_currentWallpaper;
-    bool m_forceUpdateState = false;
 };

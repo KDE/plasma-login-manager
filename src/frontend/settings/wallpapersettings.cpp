@@ -40,9 +40,9 @@ KCoreConfigSkeleton *WallpaperSettings::wallpaperSkeleton() const
     return m_wallpaperSettings;
 }
 
-void WallpaperSettings::load()
+void WallpaperSettings::load(PlasmaLoginSettings *plasmaLoginSettings)
 {
-    loadWallpaperConfig();
+    loadWallpaperConfig(plasmaLoginSettings);
 
     if (m_wallpaperSettings) {
         m_wallpaperSettings->load();
@@ -86,21 +86,30 @@ bool WallpaperSettings::isSaveNeeded() const
     return saveNeeded;
 }
 
-void WallpaperSettings::loadWallpaperConfig()
+void WallpaperSettings::loadWallpaperConfig(PlasmaLoginSettings *plasmaLoginSettings)
 {
     if (m_wallpaperIntegration) {
-        if (m_wallpaperIntegration->pluginName() == PlasmaLoginSettings::self()->wallpaperPluginId()) {
+        if (m_wallpaperIntegration->pluginName() == plasmaLoginSettings->wallpaperPluginId()) {
             // nothing changed
             return;
         }
     }
 
     m_wallpaperIntegration = std::make_unique<WallpaperIntegration>();
-    m_wallpaperIntegration->setConfig(PlasmaLoginSettings::self()->sharedConfig());
-    m_wallpaperIntegration->setPluginName(PlasmaLoginSettings::self()->wallpaperPluginId());
+    m_wallpaperIntegration->setConfig(plasmaLoginSettings->sharedConfig());
+    m_wallpaperIntegration->setPluginName(plasmaLoginSettings->wallpaperPluginId());
     m_wallpaperIntegration->init();
+
+    // TODO: Why can't we delete the old skeleton? (crash in KCM on wallpaper plugin change)
+    /*
+    if (m_wallpaperSettings) {
+        m_wallpaperSettings->deleteLater();
+    }
+    */
     m_wallpaperSettings = m_wallpaperIntegration->configScheme();
+
     m_wallpaperConfigFile = m_wallpaperIntegration->package().fileUrl(QByteArrayLiteral("ui"), QStringLiteral("config.qml"));
+
     Q_EMIT currentWallpaperChanged();
 }
 

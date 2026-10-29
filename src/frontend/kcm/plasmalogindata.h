@@ -24,6 +24,9 @@ public:
     PlasmaLoginSettings *plasmaLoginSettings() const;
     WallpaperSettings *wallpaperSettings() const;
 
+    bool isDefaults() const override;
+    void revertToDefaults() override;
+
 private:
     PlasmaLoginSettings *m_plasmaLoginSettings = nullptr;
     WallpaperSettings *m_wallpaperSettings = nullptr;
