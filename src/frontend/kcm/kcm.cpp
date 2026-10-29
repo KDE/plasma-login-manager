@@ -38,7 +38,7 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     , m_wallpaperSettings(new WallpaperSettings(this))
 {
     setAuthActionName(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.save"));
-    registerSettings(&PlasmaLoginSettings::getInstance());
+    registerSettings(PlasmaLoginSettings::self());
 
     constexpr const char *url = "org.kde.private.kcms.plasmalogin";
     qRegisterMetaType<QList<WallpaperInfo>>("QList<WallpaperInfo>");
@@ -54,7 +54,7 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     constexpr const char *uri = "org.kde.plasma.plasmoid";
     qmlRegisterUncreatableType<QObject>(uri, 2, 0, "PlasmoidPlaceholder", QStringLiteral("Do not create objects of type Plasmoid"));
 
-    connect(&PlasmaLoginSettings::getInstance(), &PlasmaLoginSettings::WallpaperPluginIdChanged, m_wallpaperSettings, &WallpaperSettings::loadWallpaperConfig);
+    connect(PlasmaLoginSettings::self(), &PlasmaLoginSettings::WallpaperPluginIdChanged, m_wallpaperSettings, &WallpaperSettings::loadWallpaperConfig);
     connect(m_wallpaperSettings, &WallpaperSettings::currentWallpaperChanged, this, &PlasmaLoginKcm::currentWallpaperChanged);
 }
 
@@ -83,14 +83,14 @@ void PlasmaLoginKcm::save()
     KConfig tempConfig(tempFileName, KConfig::SimpleConfig);
 
     // Write our config
-    for (const auto &item : PlasmaLoginSettings::getInstance().items()) {
+    for (const auto &item : PlasmaLoginSettings::self()->items()) {
         if (!item->isDefault()) {
             tempConfig.group(item->group()).writeEntry(item->key(), item->property());
         }
     }
 
     // Write wallpaper config
-    const QString wallpaperPluginId = PlasmaLoginSettings::getInstance().wallpaperPluginId();
+    const QString wallpaperPluginId = PlasmaLoginSettings::self()->wallpaperPluginId();
     for (const auto item : m_wallpaperSettings->wallpaperSkeleton()->items()) {
         if (item->isDefault()) {
             continue;
@@ -324,12 +324,12 @@ KConfigPropertyMap *PlasmaLoginKcm::wallpaperConfiguration() const
 
 PlasmaLoginSettings *PlasmaLoginKcm::settings() const
 {
-    return &PlasmaLoginSettings::getInstance();
+    return PlasmaLoginSettings::self();
 }
 
 QString PlasmaLoginKcm::currentWallpaper() const
 {
-    return PlasmaLoginSettings::getInstance().wallpaperPluginId();
+    return PlasmaLoginSettings::self()->wallpaperPluginId();
 }
 
 bool PlasmaLoginKcm::isDefaultsWallpaper() const

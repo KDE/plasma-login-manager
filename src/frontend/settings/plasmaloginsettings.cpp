@@ -34,24 +34,25 @@ static void addDirectoryToConfig(KSharedConfig::Ptr config, const QDir &dir)
     config->addConfigSources(sources);
 }
 
-PlasmaLoginSettings &PlasmaLoginSettings::getInstance()
+PlasmaLoginSettings *PlasmaLoginSettings::self()
 {
-    auto config = KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE), KConfig::NoGlobals);
+    static PlasmaLoginSettings instance([] {
+        auto config = KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE), KConfig::NoGlobals);
 
-    QDir plasmaLoginSystemConfigDir(QStringLiteral(PLASMALOGIN_CONFIG_DIR));
-    if (plasmaLoginSystemConfigDir.exists()) {
-        addDirectoryToConfig(config, plasmaLoginSystemConfigDir);
-    }
+        QDir plasmaLoginSystemConfigDir(QStringLiteral(PLASMALOGIN_CONFIG_DIR));
+        if (plasmaLoginSystemConfigDir.exists()) {
+            addDirectoryToConfig(config, plasmaLoginSystemConfigDir);
+        }
 
-    config->addConfigSources({QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE)});
+        config->addConfigSources({QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE)});
 
-    QDir plasmaLoginConfigDir(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_DIR));
-    if (plasmaLoginConfigDir.exists()) {
-        addDirectoryToConfig(config, plasmaLoginConfigDir);
-    }
-
-    static PlasmaLoginSettings instance(config);
-    return instance;
+        QDir plasmaLoginConfigDir(QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_DIR));
+        if (plasmaLoginConfigDir.exists()) {
+            addDirectoryToConfig(config, plasmaLoginConfigDir);
+        }
+        return config;
+    }());
+    return &instance;
 }
 
 PlasmaLoginSettings::PlasmaLoginSettings(KSharedConfig::Ptr config, QObject *parent)

@@ -36,7 +36,7 @@ WallpaperApp::WallpaperApp(int &argc, char **argv)
     KLocalization::setupLocalizedContext(m_engine.get());
 
     m_wallpaperPackage = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Wallpaper"));
-    m_wallpaperPackage.setPath(PlasmaLoginSettings::getInstance().wallpaperPluginId());
+    m_wallpaperPackage.setPath(PlasmaLoginSettings::self()->wallpaperPluginId());
 
     connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
         createWindowForScreen(screen);
@@ -95,11 +95,11 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
 
     const QString xmlPath = m_wallpaperPackage.filePath(QByteArrayLiteral("config"), QStringLiteral("main.xml"));
 
-    const KConfigGroup cfg = PlasmaLoginSettings::getInstance()
-                                 .sharedConfig()
+    const KConfigGroup cfg = PlasmaLoginSettings::self()
+                                 ->sharedConfig()
                                  ->group(QStringLiteral("Greeter"))
                                  .group(QStringLiteral("Wallpaper"))
-                                 .group(PlasmaLoginSettings::getInstance().wallpaperPluginId());
+                                 .group(PlasmaLoginSettings::self()->wallpaperPluginId());
 
     KConfigLoader *configLoader;
     if (xmlPath.isEmpty()) {
@@ -125,7 +125,7 @@ void WallpaperApp::setupWallpaperPlugin(WallpaperWindow *window)
     window->setSource(QUrl(QStringLiteral("qrc:/qt/qml/org/kde/plasma/login/wallpaper/main.qml")));
 
     const QVariantMap properties = {{QStringLiteral("configuration"), QVariant::fromValue(config)},
-                                    {QStringLiteral("pluginName"), PlasmaLoginSettings::getInstance().wallpaperPluginId()}};
+                                    {QStringLiteral("pluginName"), PlasmaLoginSettings::self()->wallpaperPluginId()}};
     QObject *wallpaperObject = component->createWithInitialProperties(properties, window->rootContext());
     auto wallpaperItem = qobject_cast<QQuickItem *>(wallpaperObject);
     if (!wallpaperItem) {

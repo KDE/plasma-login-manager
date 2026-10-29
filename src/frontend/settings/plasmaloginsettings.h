@@ -22,7 +22,7 @@ class PlasmaLoginSettings : public PlasmaLoginSettingsBase
     Q_OBJECT
 
 public:
-    static PlasmaLoginSettings &getInstance();
+    static PlasmaLoginSettings *self();
 
     ~PlasmaLoginSettings() override;
 

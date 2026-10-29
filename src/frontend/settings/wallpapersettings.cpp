@@ -89,15 +89,15 @@ bool WallpaperSettings::isSaveNeeded() const
 void WallpaperSettings::loadWallpaperConfig()
 {
     if (m_wallpaperIntegration) {
-        if (m_wallpaperIntegration->pluginName() == PlasmaLoginSettings::getInstance().wallpaperPluginId()) {
+        if (m_wallpaperIntegration->pluginName() == PlasmaLoginSettings::self()->wallpaperPluginId()) {
             // nothing changed
             return;
         }
     }
 
     m_wallpaperIntegration = std::make_unique<WallpaperIntegration>();
-    m_wallpaperIntegration->setConfig(PlasmaLoginSettings::getInstance().sharedConfig());
-    m_wallpaperIntegration->setPluginName(PlasmaLoginSettings::getInstance().wallpaperPluginId());
+    m_wallpaperIntegration->setConfig(PlasmaLoginSettings::self()->sharedConfig());
+    m_wallpaperIntegration->setPluginName(PlasmaLoginSettings::self()->wallpaperPluginId());
     m_wallpaperIntegration->init();
     m_wallpaperSettings = m_wallpaperIntegration->configScheme();
     m_wallpaperConfigFile = m_wallpaperIntegration->package().fileUrl(QByteArrayLiteral("ui"), QStringLiteral("config.qml"));

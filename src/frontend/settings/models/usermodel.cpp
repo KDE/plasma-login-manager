@@ -114,7 +114,7 @@ void UserModel::populate()
         const bool cannotLogin = shell.isEmpty() || shellName == "nologin" || shellName == "false" || !validShells.contains(shell);
         
         // Consider UID ranges (homed range from systemd: HOME_UID_MIN, HOME_UID_MAX)
-        const bool inLogindDefRange = (uid >= PlasmaLoginSettings::getInstance().minimumUid() && uid <= PlasmaLoginSettings::getInstance().maximumUid());
+        const bool inLogindDefRange = (uid >= PlasmaLoginSettings::self()->minimumUid() && uid <= PlasmaLoginSettings::self()->maximumUid());
         const bool inHomedRange = (uid >= 60001 && uid <= 60513);
         
         if (cannotLogin || (!inLogindDefRange && !inHomedRange)) {

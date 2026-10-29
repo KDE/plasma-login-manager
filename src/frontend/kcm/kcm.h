@@ -38,7 +38,7 @@ public:
     // TODO: Why not use directly? Could expose in PlasmaLoginSettings as Q_INVOKABLE
     Q_INVOKABLE QList<WallpaperInfo> availableWallpaperPlugins()
     {
-        return PlasmaLoginSettings::getInstance().availableWallpaperPlugins();
+        return PlasmaLoginSettings::self()->availableWallpaperPlugins();
     }
 
     Q_INVOKABLE void synchronizeSettings();

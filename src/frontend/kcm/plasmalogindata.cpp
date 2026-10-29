@@ -38,7 +38,7 @@ PlasmaLoginData::PlasmaLoginData(QObject *parent)
 
 bool PlasmaLoginData::isDefaults() const
 {
-    return PlasmaLoginSettings::getInstance().isDefaults() && m_wallpaperSettings->isDefaults();
+    return PlasmaLoginSettings::self()->isDefaults() && m_wallpaperSettings->isDefaults();
 }
 
 #include "moc_plasmalogindata.cpp"
