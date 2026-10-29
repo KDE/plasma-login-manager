@@ -9,12 +9,11 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 
-#include "plasmaloginsettings.h"
-
 #include "plasmalogindata.h"
 
 PlasmaLoginData::PlasmaLoginData(QObject *parent)
     : KCModuleData(parent)
+    , m_plasmaLoginSettings(PlasmaLoginSettings::self())
     , m_wallpaperSettings(new WallpaperSettings(this))
 {
     QDBusMessage msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.systemd1"),
@@ -34,11 +33,19 @@ PlasmaLoginData::PlasmaLoginData(QObject *parent)
     }
 
     m_wallpaperSettings->load();
+
+    registerSkeleton(m_plasmaLoginSettings);
+    registerSkeleton(m_wallpaperSettings->wallpaperSkeleton()); // TODO: Does the skeleton change on wallpaper plugin change?
 }
 
-bool PlasmaLoginData::isDefaults() const
+PlasmaLoginSettings *PlasmaLoginData::plasmaLoginSettings() const
 {
-    return PlasmaLoginSettings::self()->isDefaults() && m_wallpaperSettings->isDefaults();
+    return m_plasmaLoginSettings;
+}
+
+WallpaperSettings *PlasmaLoginData::wallpaperSettings() const
+{
+    return m_wallpaperSettings;
 }
 
 #include "moc_plasmalogindata.cpp"

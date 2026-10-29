@@ -26,7 +26,6 @@
 
 #include "models/sessionmodel.h"
 #include "models/usermodel.h"
-#include "plasmalogindata.h"
 #include "wallpapersettings.h"
 
 #include "kcm.h"
@@ -35,10 +34,11 @@ K_PLUGIN_FACTORY_WITH_JSON(PlasmaLoginKcmFactory, "kcm_plasmalogin.json", regist
 
 PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     : KQuickManagedConfigModule(parent, data)
-    , m_wallpaperSettings(new WallpaperSettings(this))
+    , m_data(new PlasmaLoginData(this))
 {
     setAuthActionName(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.save"));
-    registerSettings(PlasmaLoginSettings::self());
+    registerSettings(m_data->plasmaLoginSettings());
+    registerSettings(m_data->wallpaperSettings()->wallpaperSkeleton());
 
     constexpr const char *url = "org.kde.private.kcms.plasmalogin";
     qRegisterMetaType<QList<WallpaperInfo>>("QList<WallpaperInfo>");
@@ -54,14 +54,14 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     constexpr const char *uri = "org.kde.plasma.plasmoid";
     qmlRegisterUncreatableType<QObject>(uri, 2, 0, "PlasmoidPlaceholder", QStringLiteral("Do not create objects of type Plasmoid"));
 
-    connect(PlasmaLoginSettings::self(), &PlasmaLoginSettings::WallpaperPluginIdChanged, m_wallpaperSettings, &WallpaperSettings::loadWallpaperConfig);
-    connect(m_wallpaperSettings, &WallpaperSettings::currentWallpaperChanged, this, &PlasmaLoginKcm::currentWallpaperChanged);
+    connect(m_data->plasmaLoginSettings(), &PlasmaLoginSettings::WallpaperPluginIdChanged, m_data->wallpaperSettings(), &WallpaperSettings::loadWallpaperConfig);
+    connect(m_data->wallpaperSettings(), &WallpaperSettings::currentWallpaperChanged, this, &PlasmaLoginKcm::currentWallpaperChanged);
 }
 
 void PlasmaLoginKcm::load()
 {
     KQuickManagedConfigModule::load();
-    m_wallpaperSettings->load();
+    m_data->wallpaperSettings()->load();
 
     updateState();
     Q_EMIT loadCalled();
@@ -90,8 +90,8 @@ void PlasmaLoginKcm::save()
     }
 
     // Write wallpaper config
-    const QString wallpaperPluginId = PlasmaLoginSettings::self()->wallpaperPluginId();
-    for (const auto item : m_wallpaperSettings->wallpaperSkeleton()->items()) {
+    const QString wallpaperPluginId = m_data->plasmaLoginSettings()->wallpaperPluginId();
+    for (const auto item : m_data->wallpaperSettings()->wallpaperSkeleton()->items()) {
         if (item->isDefault()) {
             continue;
         }
@@ -287,7 +287,7 @@ void PlasmaLoginKcm::resetSynchronizedSettings()
 void PlasmaLoginKcm::defaults()
 {
     KQuickManagedConfigModule::defaults();
-    m_wallpaperSettings->defaults();
+    m_data->wallpaperSettings()->defaults();
 
     updateState();
     Q_EMIT defaultsCalled();
@@ -309,42 +309,44 @@ void PlasmaLoginKcm::forceUpdateState()
 
 bool PlasmaLoginKcm::isSaveNeeded() const
 {
-    return m_forceUpdateState || m_wallpaperSettings->isSaveNeeded();
+    return m_forceUpdateState || m_data->wallpaperSettings()->isSaveNeeded();
 }
 
 bool PlasmaLoginKcm::isDefaults() const
 {
-    return m_wallpaperSettings->isDefaults();
+    return m_data->wallpaperSettings()->isDefaults();
 }
 
 KConfigPropertyMap *PlasmaLoginKcm::wallpaperConfiguration() const
 {
-    return m_wallpaperSettings->wallpaperConfiguration();
+    return m_data->wallpaperSettings()->wallpaperConfiguration();
 }
 
 PlasmaLoginSettings *PlasmaLoginKcm::settings() const
 {
-    return PlasmaLoginSettings::self();
+    return m_data->plasmaLoginSettings();
 }
 
 QString PlasmaLoginKcm::currentWallpaper() const
 {
-    return PlasmaLoginSettings::self()->wallpaperPluginId();
+    // TODO: Used?
+    return m_data->plasmaLoginSettings()->wallpaperPluginId();
 }
 
 bool PlasmaLoginKcm::isDefaultsWallpaper() const
 {
-    return m_wallpaperSettings->isDefaults();
+    // TODO: Used?
+    return m_data->wallpaperSettings()->isDefaults();
 }
 
 QUrl PlasmaLoginKcm::wallpaperConfigFile() const
 {
-    return m_wallpaperSettings->wallpaperConfigFile();
+    return m_data->wallpaperSettings()->wallpaperConfigFile();
 }
 
 WallpaperIntegration *PlasmaLoginKcm::wallpaperIntegration() const
 {
-    return m_wallpaperSettings->wallpaperIntegration();
+    return m_data->wallpaperSettings()->wallpaperIntegration();
 }
 
 UserModel *PlasmaLoginKcm::userModel() const

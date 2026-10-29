@@ -13,8 +13,7 @@
 #include <KConfigPropertyMap>
 #include <KQuickManagedConfigModule>
 
-#include "plasmaloginsettings.h"
-#include "wallpaperintegration.h"
+#include "plasmalogindata.h"
 
 class UserModel;
 class SessionModel;
@@ -87,7 +86,8 @@ private:
     QVariantMap syncWallpaper(const QUrl &url);
     KConfigPropertyMap *wallpaperConfiguration() const;
 
-    WallpaperSettings *m_wallpaperSettings;
+    PlasmaLoginData *m_data;
+
     QString m_currentWallpaper;
     bool m_forceUpdateState = false;
 };

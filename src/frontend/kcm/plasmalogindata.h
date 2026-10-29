@@ -10,6 +10,8 @@
 #include <QObject>
 
 #include "kcmoduledata.h"
+
+#include "plasmaloginsettings.h"
 #include "wallpapersettings.h"
 
 class PlasmaLoginData : public KCModuleData
@@ -19,8 +21,10 @@ class PlasmaLoginData : public KCModuleData
 public:
     explicit PlasmaLoginData(QObject *parent);
 
-    bool isDefaults() const override;
+    PlasmaLoginSettings *plasmaLoginSettings() const;
+    WallpaperSettings *wallpaperSettings() const;
 
 private:
+    PlasmaLoginSettings *m_plasmaLoginSettings = nullptr;
     WallpaperSettings *m_wallpaperSettings = nullptr;
 };
