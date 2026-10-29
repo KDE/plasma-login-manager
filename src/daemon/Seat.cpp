@@ -136,6 +136,18 @@ void Seat::activateSession(const QString &sessionId) const
     }
 
     OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
+    manager.ActivateSession(sessionId);
+}
+
+void Seat::unlockAndActivateSession(const QString &sessionId) const
+{
+    qDebug() << "Unlocking and activating session with ID:" << sessionId;
+    if (sessionId.isEmpty()) {
+        qWarning() << "No session ID provided to unlock and activate.";
+        return;
+    }
+
+    OrgFreedesktopLogin1ManagerInterface manager(Logind::serviceName(), Logind::managerPath(), QDBusConnection::systemBus());
     manager.UnlockSession(sessionId);
     manager.ActivateSession(sessionId);
 }

@@ -41,6 +41,7 @@ public:
     VirtualTerminal::Terminal availableVt() const;
     QString reusableSessionId(const QString &user) const;
     void activateSession(const QString &sessionId) const;
+    void unlockAndActivateSession(const QString &sessionId) const;
     bool activateExistingGreeter();
     void switchToGreeter();
     void setGreeterSession(const std::optional<QDBusObjectPath> &objectPath);

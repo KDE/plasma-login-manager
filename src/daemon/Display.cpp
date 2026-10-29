@@ -310,7 +310,7 @@ void Display::slotAuthenticationFinished(const QString &user, bool success)
             qDebug() << "Authentication for user" << user << "successful, starting session";
         } else {
             qDebug() << "Authentication for user" << user << "successful, reusing session with ID" << m_reuseSessionId;
-            seat()->activateSession(m_reuseSessionId);
+            seat()->unlockAndActivateSession(m_reuseSessionId);
         }
 
         if (m_socket) {
