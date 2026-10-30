@@ -65,6 +65,15 @@ private:
 class LogindSession
 {
 public:
+    enum class Type {
+        Unknown,
+        Unspecified,
+        TTY,
+        X11,
+        Mir,
+        Wayland,
+    };
+
     LogindSession(const QDBusObjectPath &objectPath, const QString &seatName = QString());
     [[nodiscard]] QString id() const
     {
@@ -90,6 +99,21 @@ public:
     {
         return m_vtNr;
     }
+    [[nodiscard]] bool isGraphical() const
+    {
+        switch (m_type) {
+        case LogindSession::Type::TTY:
+        case LogindSession::Type::Unspecified:
+        case LogindSession::Type::Unknown:
+            return false;
+        case LogindSession::Type::Mir:
+        case LogindSession::Type::Wayland:
+        case LogindSession::Type::X11:
+            break;
+        }
+        // Default to true so future session types, which are more likely to be graphical, are handled correctly.
+        return true;
+    }
 
 private:
     QString m_seatName;
@@ -97,6 +121,7 @@ private:
     QString m_id;
     QDBusObjectPath m_objectPath;
     bool m_isGreeter = false;
+    Type m_type = Type::Unknown;
 };
 
 LogindSeat::LogindSeat(const QString &name, const QDBusObjectPath &objectPath)
@@ -201,6 +226,25 @@ LogindSession::LogindSession(const QDBusObjectPath &objectPath, const QString &s
 
     m_id = session.id();
     m_vtNr = session.vTNr();
+    m_type = [&] {
+        if (session.type() == "wayland"_L1) {
+            return Type::Wayland;
+        }
+        if (session.type() == "tty"_L1) {
+            return Type::TTY;
+        }
+        if (session.type() == "unspecified"_L1) {
+            return Type::Unspecified;
+        }
+        if (session.type() == "x11"_L1) {
+            return Type::X11;
+        }
+        if (session.type() == "mir"_L1) {
+            return Type::Mir;
+        }
+        qWarning() << "Unknown login1 session type:" << session.type();
+        return Type::Unknown;
+    }();
 
     auto userName = session.name(); // the Name property is indeed the user's name
     auto service = session.service();
@@ -424,9 +468,14 @@ void SeatManager::maybeSwitchOnSessionAdd(Seat *graphicalSeat, const std::shared
         return;
     }
 
-    qDebug() << "Added session is a user session for graphical seat:" << graphicalSeat->name() << ". Discarding greeter.";
-    discardGreeterForSeat(graphicalSeat->name());
-    graphicalSeat->activateSession(session->id());
+    if (session->isGraphical()) {
+        qDebug() << "Added session is a graphical session for graphical seat:" << graphicalSeat->name() << ". Discarding greeter.";
+        discardGreeterForSeat(graphicalSeat->name());
+        graphicalSeat->activateSession(session->id());
+        return;
+    }
+
+    qDebug() << "Don't know what to do. Staying on current VT";
 }
 
 void SeatManager::maybeSwitchOnSessionRemove(Seat *graphicalSeat, const std::shared_ptr<LogindSession> &session)
@@ -446,11 +495,11 @@ void SeatManager::maybeSwitchOnSessionRemove(Seat *graphicalSeat, const std::sha
     }
 
     {
-        auto sessionsForSeat = m_systemSessions.asKeyValueRange() | std::views::filter([seat](const auto &pair) {
-                                   auto &&[sessionName, session] = pair;
-                                   return session->seatName() == seat->name();
-                               });
-        const auto count = std::ranges::distance(sessionsForSeat);
+        auto graphicalSessionsForSeat = m_systemSessions.asKeyValueRange() | std::views::filter([seat](const auto &pair) {
+                                            auto &&[sessionName, session] = pair;
+                                            return session->isGraphical() && session->seatName() == seat->name();
+                                        });
+        const auto count = std::ranges::distance(graphicalSessionsForSeat);
         if (count == 0) {
             qDebug() << "We've run out of sessions. Firing up a new greeter.";
             switchToGreeter(seat->name());
@@ -486,12 +535,15 @@ void SeatManager::maybeSwitchOnSessionActive(Seat *graphicalSeat)
             return;
         }
 
-        qDebug() << "Active session for graphical seat:" << graphicalSeat->name() << "is a user session. Discarding greeter.";
-        discardGreeterForSeat(seat->name());
-        return;
+        if (session->isGraphical()) {
+            qDebug() << "Active session for graphical seat:" << graphicalSeat->name() << "is a graphical session. Discarding greeter.";
+            discardGreeterForSeat(seat->name());
+            return;
+        }
+        qInfo() << "Active session for graphical seat:" << graphicalSeat->name() << "is not a graphical session. Keeping greeter.";
     }
 
-    // No session is currently active
+    // No **graphical** session is currently active
 
     // On startup let's jump to the greeter immediately. This ensures we don't end up in a weird scenario where a tty
     // user doesn't know which VT the greeter happens to appear on.
