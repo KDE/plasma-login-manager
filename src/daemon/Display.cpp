@@ -126,11 +126,6 @@ void Display::setAutoLogin(const QString &user, const QString &session)
     }
 }
 
-[[nodiscard]] bool Display::isGreeter() const
-{
-    return m_greeter && m_greeter->isRunning();
-}
-
 bool Display::start()
 {
     if (m_started) {
@@ -197,9 +192,6 @@ void Display::stop()
         return;
     }
 
-    // stop the greeter
-    m_greeter->stop();
-
     m_auth->stop();
 
     // stop socket server
@@ -261,11 +253,9 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_sessionTerminalId = {m_terminalId.tty(), m_terminalId.ttyFd().duplicate()};
 
-    if (m_greeter->isRunning()) {
-        // Create a new VT when we need to have another compositor running
-        if (seat()->canTTY()) {
-            m_sessionTerminalId = VirtualTerminal::setUpNewVt();
-        }
+    // Create a new VT when we need to have another compositor running
+    if (seat()->hasGreeter() && seat()->canTTY()) {
+        m_sessionTerminalId = VirtualTerminal::setUpNewVt();
     }
 
     // some information

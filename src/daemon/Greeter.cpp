@@ -176,16 +176,18 @@ void Greeter::onHelperFinished(Auth::HelperExitStatus status)
         m_session = nullptr;
     }
 
-    if (status == Auth::HELPER_TTY_ERROR) {
+    switch (status) {
+    case Auth::HELPER_SUCCESS:
+        break;
+    case Auth::HELPER_TTY_ERROR:
         Q_EMIT ttyFailed();
-    } else if (status == Auth::HELPER_SESSION_ERROR) {
+        break;
+    case Auth::HELPER_AUTH_ERROR:
+    case Auth::HELPER_SESSION_ERROR:
+    case Auth::HELPER_OTHER_ERROR:
         Q_EMIT failed();
+        break;
     }
-}
-
-bool Greeter::isRunning() const
-{
-    return m_session && m_session->isRunning();
 }
 }
 
