@@ -125,7 +125,7 @@ bool Greeter::start()
                     })
                     .build(greeterCommand, {}, m_display);
 
-    connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(m_session.get(), &RunnableSession::started, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         switch (exitStatus) {
         case QProcess::NormalExit:
             // DO NOT auto-stop! The SeatManager will handle stopping the greeter as necessary.
@@ -162,7 +162,6 @@ void Greeter::stop()
     // We no longer care about its outcome. Let's ignore all signals to avoid confusion.
     // This also avoids problems with waitForFinished doing event looping and maybe deleting things out from under us.
     m_session->disconnect(this);
-    m_session->stop();
     m_session = nullptr;
 
     qDebug() << "Greeter stopped.";

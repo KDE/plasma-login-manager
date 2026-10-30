@@ -21,11 +21,9 @@ class RunnableSession : public QObject
 public:
     RunnableSession(std::unique_ptr<QProcess> process, QObject *parent = nullptr);
     void start();
-    void stop();
-    [[nodiscard]] bool isRunning() const;
 
 Q_SIGNALS:
-    void finished(int exitCode, QProcess::ExitStatus exitStatus);
+    void started(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
     std::unique_ptr<QProcess> m_process;
