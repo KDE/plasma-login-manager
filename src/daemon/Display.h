@@ -57,9 +57,6 @@ public:
     Seat *seat() const;
     void setAutoLogin(const QString &user, const QString &session);
 
-    //! Whether we currently present a Greeter.
-    [[nodiscard]] bool isGreeter() const;
-
 public slots:
     bool start();
     void stop();

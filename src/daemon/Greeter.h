@@ -37,11 +37,9 @@ public:
     ~Greeter();
 
     void setSocket(const QString &socket);
-    bool isRunning() const;
 
 public slots:
     bool start();
-    void stop();
 
 private slots:
     void onHelperFinished(Auth::HelperExitStatus status);
@@ -49,9 +47,9 @@ private slots:
 signals:
     void ttyFailed();
     void failed();
-    void displayServerFailed();
 
 private:
+    void stop();
     // It is silly that we hold this because it can change state and no longer reflect what it did when we started.
     Display *const m_display{nullptr};
     QString m_socket;

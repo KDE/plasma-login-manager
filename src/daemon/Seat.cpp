@@ -78,6 +78,8 @@ bool Seat::isTtyInUse(const QString &tty) const
     const auto info = reply.value();
     for (const SessionInfo &sessionInfo : info) {
         OrgFreedesktopLogin1SessionInterface session(Logind::serviceName(), sessionInfo.sessionPath.path(), QDBusConnection::systemBus());
+        qWarning() << "Checking session on tty" << tty << "with session path" << sessionInfo.sessionPath.path() << session.tTY() << session.vTNr()
+                   << session.state();
         if (tty == session.tTY() && session.state() != QLatin1String("closing")) {
             qDebug() << "tty" << tty << "already in use by" << session.user().path.path() << session.state() << session.display() << session.desktop()
                      << session.vTNr();
@@ -178,16 +180,14 @@ void Seat::switchToGreeter()
     }
 }
 
+[[nodiscard]] bool Seat::hasGreeter() const
+{
+    return m_seatManager->greeterSessionForSeat(name()).has_value();
+}
+
 Display *Seat::createDisplay()
 {
-    // Check if we have a display "queued". This is important to not double-queue startup of greeter displays.
-    for (const auto &display : m_displays) {
-        if (display->isGreeter()) {
-            qWarning() << "Found an existing display in greeter state, reusing it. This may indicate a race condition and should get investigated!";
-            return display;
-        }
-    }
-    // If no existing display is in greeter state then we need a new one.
+    Q_ASSERT(!hasGreeter()); // there should not be any case where we end up with two greeters for the same seat!
 
     qDebug() << "Adding new display...";
     Display *display = new Display(this);

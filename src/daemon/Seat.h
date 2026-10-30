@@ -45,6 +45,7 @@ public:
     void unlockAndActivateSession(const QString &sessionId) const;
     bool activateExistingGreeter();
     void switchToGreeter();
+    [[nodiscard]] bool hasGreeter() const;
 
 private slots:
     void displayStopped();
