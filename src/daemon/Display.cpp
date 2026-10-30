@@ -349,7 +349,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
                                 + extraProperties)
                     .build(cmd, args, this);
 
-    connect(m_session.get(), &RunnableSession::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(m_session.get(), &RunnableSession::started, this, [](int exitCode, QProcess::ExitStatus exitStatus) {
         switch (exitStatus) {
         case QProcess::NormalExit:
             break;
