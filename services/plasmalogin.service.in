@@ -6,6 +6,7 @@ After=systemd-user-sessions.service getty@tty${PLASMALOGIN_INITIAL_VT}.service k
 PartOf=graphical.target
 StartLimitIntervalSec=30
 StartLimitBurst=2
+OnFailure=plasma-login-failure.service
 
 [Service]
 ExecStartPre=-udevadm settle --timeout=10
@@ -14,4 +15,3 @@ Restart=always
 
 [Install]
 Alias=display-manager.service
-

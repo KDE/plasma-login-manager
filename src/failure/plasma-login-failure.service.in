@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2026 Harald Sitter <sitter@kde.org>
+
+[Unit]
+Description=Plasma Login failure handler
+# Upon any exit we'll switch to kmscon/agetty on our designated initial VT so the user can log in.
+OnSuccess=autovt@tty${PLASMALOGIN_INITIAL_VT}.service
+OnFailure=autovt@tty${PLASMALOGIN_INITIAL_VT}.service
+RefuseManualStart=yes
+
+[Service]
+Type=oneshot
+ExecStart=@CMAKE_INSTALL_FULL_LIBEXECDIR@/plasma-login-failure
+
+# portable service strict profile (mostly - we need some perms :D)
+MountAPIVFS=yes
+BindLogSockets=yes
+BindReadOnlyPaths=/etc/machine-id
+RemoveIPC=yes
+CapabilityBoundingSet=
+PrivateUsers=yes
+ProtectSystem=strict
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+LockPersonality=yes
+NoNewPrivileges=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+DelegateNamespaces=no
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+SystemCallArchitectures=native
+PrivateNetwork=yes
+IPAddressDeny=any
+TasksMax=4
+
+# yet more strict stuff that isn't part of portable service strict profile
+PrivateTmp=yes

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: None
+
+[package]
+name = "plasma-login-failure"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gettext-rs = { version = "0.8.0", default-features = false, features = ["gettext-system"] }
+rs-release = "0.1"
