@@ -37,7 +37,7 @@ PlasmaLoginKcm::PlasmaLoginKcm(QObject *parent, const KPluginMetaData &data)
     , m_data(new PlasmaLoginData(this))
 {
     registerSettings(m_data->plasmaLoginSettings());
-    registerSettings(m_data->wallpaperSettings()->wallpaperSkeleton());
+    registerSettings(m_data->wallpaperSettings()->wallpaperSkeleton()); // TODO this changes so don't register and impl ourselves
 
     setAuthActionName(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.save"));
 
@@ -65,6 +65,7 @@ void PlasmaLoginKcm::load()
 
 void PlasmaLoginKcm::save()
 {
+    qWarning() << "!!!!" << "::save start" << needsSave();
     // We are not allowed to write GUI items to the arg map passed to KAuth, such as QColor
     // which is used in most wallpapers. So instead, we'll have to save a temporary copy of
     // the written-out config and have KAuth update the installed file with its content.
@@ -148,13 +149,17 @@ void PlasmaLoginKcm::save()
 
     auto job = saveAction.execute();
     connect(job, &KJob::result, this, [this, job] {
+        qWarning() << "!!!!" << "::save job result" << needsSave();
         if (job->error()) {
             Q_EMIT errorOccurred(job->errorString());
         }
+        /*
         // Clarify enable or disable the Apply button.
         this->setNeedsSave(job->error());
+        */
     });
     job->start();
+    qWarning() << "!!!!" << "::save end" << needsSave();
 }
 
 QVariantMap PlasmaLoginKcm::syncWallpaper(const QUrl &imageUri)
