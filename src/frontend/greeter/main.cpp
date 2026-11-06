@@ -42,21 +42,32 @@ public:
         connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
             createWindowForScreen(screen);
         });
-        for (QScreen *screen : qApp->screens()) {
-            createWindowForScreen(screen);
+
+        auto screens = qApp->screens();
+        screens.removeIf([](const auto &screen) {
+            // Ignore the placeholder screen Qt adds when there are no outputs
+            return screen->name().isEmpty();
+        });
+
+        bool created = false;
+        for (QScreen *screen : screens) {
+            created = created | createWindowForScreen(screen);
+        }
+
+        if (!screens.isEmpty()) {
+            Q_ASSERT_X(created, Q_FUNC_INFO, "Failed to create any views.");
+            if (!created) {
+                qApp->exit(1);
+                return;
+            }
         }
     }
     static void setTestModeEnabled(bool testModeEnabled);
     static bool testModeEnabled();
 
 private:
-    void createWindowForScreen(QScreen *screen)
+    bool createWindowForScreen(QScreen *screen)
     {
-        // Ignore the placeholder screen Qt adds when there are no outputs
-        if (screen->name().isEmpty()) {
-            return;
-        }
-
         auto *window = new QQuickView(m_engine.get(), nullptr);
         window->QObject::setParent(this);
         window->setScreen(screen);
@@ -80,8 +91,15 @@ private:
 
         window->setResizeMode(QQuickView::SizeRootObjectToView);
 
-        window->setSource(QUrl("qrc:/qt/qml/org/kde/plasma/login/Main.qml"));
+        window->loadFromModule(u"org.kde.plasma.login", u"Main");
+        if (window->status() == QQuickView::Error) {
+            // Errors should have been printed by the view, let's not repeat them here.
+            qWarning() << "Failed to load QML for screen" << screen->name();
+            return false;
+        }
+
         window->show();
+        return true;
     }
 
     static bool s_testMode;
