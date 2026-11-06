@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-09-17 00:46+0000\n"
-"PO-Revision-Date: 2026-08-24 19:56+0300\n"
+"PO-Revision-Date: 2026-10-05 15:42+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -134,20 +134,14 @@ msgid "Auto-login"
 msgstr "Automaattikirjautuminen"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
-msgstr "Kirjaudu automaattisesti ajassa:"
+msgstr "Kirjaudu automaattisesti:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -157,19 +151,15 @@ msgstr "käyttäjänä:"
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "Kirjaa määräkäyttäjä istuntoon automaattisesti"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Valitse automaattisesti kirjattava käyttäjä"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -179,16 +169,10 @@ msgstr "istuntoon:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Valitse istunto, johon automaattisesti kirjaudutaan"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -197,7 +181,7 @@ msgid ""
 "and should only be done in a trusted environment."
 msgstr ""
 "Automaattikirjautuminen ei automaattisesti tue KDE:n lompakkosi avaamista, "
-"joten sitä kysytään aina kirjautuessasi.<nl/><nl/>    Tämän voi välttää "
+"joten sitä kysytään aina kirjautuessasi.<nl/><nl/>Tämän voi välttää "
 "asettamalla lompakolla tyhjän salasanan. Huomaa, ettei tämä ole turvallista, "
 "joten niin pitäisi tehdä vain luotettavassa ympäristössä."
 
@@ -219,9 +203,7 @@ msgid "Defaults"
 msgstr "Oletukset"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Oletuskäyttäjä:"
 
@@ -234,12 +216,10 @@ msgstr "Viimeksi kirjautunut käyttäjä"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "Valitse kirjautumisnäytössä oletukseksi näytettävä käyttäjä"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Oletusistunto:"
 
@@ -252,4 +232,4 @@ msgstr "Viimeksi käytetty istunto"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "Valitse kirjautumisnäytössä oletukseksi näytettävä istunto"
