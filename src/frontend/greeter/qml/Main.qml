@@ -11,6 +11,7 @@ import QtQuick.Controls as QQC2
 import Qt5Compat.GraphicalEffects
 
 import org.kde.kirigami as Kirigami
+import org.kde.ki18n
 import org.kde.breeze.components as BreezeComponents
 import org.kde.plasma.private.keyboardindicator as KeyboardIndicator
 import org.kde.plasma.workspace.keyboardlayout as Keyboards
@@ -172,7 +173,7 @@ Item {
                 notificationMessage: {
                     const parts = [];
                     if (capsLockState.locked) {
-                        parts.push(i18nd("plasma_login", "Caps Lock is on"));
+                        parts.push(KI18n.i18nd("plasma_login", "Caps Lock is on"));
                     }
                     if (root.notificationMessage) {
                         parts.push(root.notificationMessage);
@@ -184,7 +185,7 @@ Item {
                 actionItems: [
                     BreezeComponents.ActionButton {
                         icon.name: "system-hibernate"
-                        text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
+                        text: KI18n.i18ndc("plasma_login", "Suspend to disk", "Hibernate")
                         visible: PlasmaLogin.SessionManagement.canHibernate
                         onClicked: {
                             PlasmaLogin.GreeterState.clearPasswords();
@@ -193,7 +194,7 @@ Item {
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
-                        text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
+                        text: KI18n.i18ndc("plasma_login", "Suspend to RAM", "Sleep")
                         visible: PlasmaLogin.SessionManagement.canSuspend
                         onClicked: {
                             PlasmaLogin.GreeterState.clearPasswords();
@@ -202,19 +203,19 @@ Item {
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
-                        text: i18nd("plasma_login", "Restart")
+                        text: KI18n.i18nd("plasma_login", "Restart")
                         visible: PlasmaLogin.SessionManagement.canReboot
                         onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
-                        text: i18nd("plasma_login", "Shut Down")
+                        text: KI18n.i18nd("plasma_login", "Shut Down")
                         visible: PlasmaLogin.SessionManagement.canShutdown
                         onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-prompt"
-                        text: i18ndc("plasma_login", "For switching to a username and password prompt", "Other…")
+                        text: KI18n.i18ndc("plasma_login", "For switching to a username and password prompt", "Other…")
                         onClicked: PlasmaLogin.GreeterState.loginState = PlasmaLogin.GreeterState.LoginState.UserPrompt
                         visible: !userListComponent.showUsernamePrompt
                     }]
@@ -296,7 +297,7 @@ Item {
                 notificationMessage: {
                     const parts = [];
                     if (capsLockState.locked) {
-                        parts.push(i18nd("plasma_login", "Caps Lock is on"));
+                        parts.push(KI18n.i18nd("plasma_login", "Caps Lock is on"));
                     }
                     if (root.notificationMessage) {
                         parts.push(root.notificationMessage);
@@ -312,7 +313,7 @@ Item {
                     }
                     Component.onCompleted: {
                         // as we can't bind inside ListElement
-                        setProperty(0, "realName", i18nd("plasma_login", "Type in Username and Password"));
+                        setProperty(0, "realName", KI18n.i18nd("plasma_login", "Type in Username and Password"));
                         setProperty(0, "icon", Qt.resolvedUrl(".face.icon").toString());
                     }
                 }
@@ -323,7 +324,7 @@ Item {
                 actionItems: [
                     BreezeComponents.ActionButton {
                         icon.name: "system-hibernate"
-                        text: i18ndc("plasma_login", "Suspend to disk", "Hibernate")
+                        text: KI18n.i18ndc("plasma_login", "Suspend to disk", "Hibernate")
                         visible: PlasmaLogin.SessionManagement.canHibernate
                         onClicked: {
                             PlasmaLogin.GreeterState.clearPasswords();
@@ -332,7 +333,7 @@ Item {
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-suspend"
-                        text: i18ndc("plasma_login", "Suspend to RAM", "Sleep")
+                        text: KI18n.i18ndc("plasma_login", "Suspend to RAM", "Sleep")
                         visible: PlasmaLogin.SessionManagement.canSuspend
                         onClicked: {
                             PlasmaLogin.GreeterState.clearPasswords();
@@ -341,19 +342,19 @@ Item {
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-reboot"
-                        text: i18nd("plasma_login", "Restart")
+                        text: KI18n.i18nd("plasma_login", "Restart")
                         visible: PlasmaLogin.SessionManagement.canReboot
                         onClicked: PlasmaLogin.SessionManagement.requestReboot(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-shutdown"
-                        text: i18nd("plasma_login", "Shut Down")
+                        text: KI18n.i18nd("plasma_login", "Shut Down")
                         visible: PlasmaLogin.SessionManagement.canShutdown
                         onClicked: PlasmaLogin.SessionManagement.requestShutdown(PlasmaLogin.SessionManagement.ConfirmationMode.Skip)
                     },
                     BreezeComponents.ActionButton {
                         icon.name: "system-user-list"
-                        text: i18nd("plasma_login", "List Users")
+                        text: KI18n.i18nd("plasma_login", "List Users")
                         onClicked: PlasmaLogin.GreeterState.loginState = PlasmaLogin.GreeterState.LoginState.UserList
                     }
                 ]
@@ -387,7 +388,7 @@ Item {
         }
 
         function onLoginFailed() {
-            notificationMessage = i18nd("plasma_login", "Login Failed");
+            notificationMessage = KI18n.i18nd("plasma_login", "Login Failed");
             // Only failures time out; started here rather than on every change.
             notificationResetTimer.start();
 
