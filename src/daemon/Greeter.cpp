@@ -107,6 +107,7 @@ bool Greeter::start()
                         u"StopPropagatedFrom=plasmalogin.service"_s,
                         u"User=plasmalogin"_s,
                         u"PAMName=plasmalogin-greeter"_s,
+                        u"OnFailure=plasma-login-failure.service"_s,
 
                         // TTY Configuration
                         u"TTYPath=/dev/tty%1"_s.arg(m_display->terminalId()),

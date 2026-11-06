@@ -1,6 +1,7 @@
 [Unit]
 Description=KDE Window Manager (Login Manager Version)
 PartOf=graphical-session.target
+OnFailure=plasma-login-failure-forwarder.service
 
 [Service]
 Environment="KWIN_USE_OVERLAYS=0"

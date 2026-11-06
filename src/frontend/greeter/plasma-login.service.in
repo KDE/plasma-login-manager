@@ -2,8 +2,8 @@
 Description=Plasma Login
 PartOf=plasma-login-wayland.target
 After=plasma-login-kwin_wayland.service
+OnFailure=plasma-login-failure-forwarder.service
 
 [Service]
 ExecStart=@CMAKE_INSTALL_FULL_LIBEXECDIR@/plasma-login-greeter
 Slice=session.slice
-

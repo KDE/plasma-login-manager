@@ -1,7 +1,11 @@
 [Unit]
 Requires=plasma-login-kwin_wayland.service
 BindsTo=plasma-login-kwin_wayland.service
+After=plasma-login-kwin_wayland.service
 Requires=plasma-login.service
 BindsTo=plasma-login.service
+After=plasma-login.service
 
 Wants=plasma-wallpaper.service
+
+OnFailure=plasma-login-failure.service

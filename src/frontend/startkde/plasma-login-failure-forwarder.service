@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2026 Harald Sitter <sitter@kde.org>
+
+[Unit]
+Description=Plasma Login Failure Forwarder
+ConditionUser=plasmalogin
+
+[Service]
+Type=oneshot
+# Confusingly we cannot TERM only the leader because we get AccessDenied. TERM all.
+ExecStart=loginctl --kill-whom=all --signal=SIGTERM kill-session $XDG_SESSION_ID
