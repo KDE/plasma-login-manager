@@ -491,11 +491,12 @@ int main(int argc, char **argv)
         QDBusReply<QDBusObjectPath> reply = QDBusConnection::sessionBus().call(msg);
         if (!reply.isValid()) {
             qWarning() << "Could not start systemd managed Plasma session:" << reply.error().name() << reply.error().message();
+            return 1;
         }
     }
 
     // stopped by the sigterm handler
-    app.exec();
+    const auto exitCode = app.exec();
 
     qDebug() << "stopping";
 
@@ -527,5 +528,5 @@ int main(int argc, char **argv)
         }
     }
 
-    return 0;
+    return exitCode;
 }
