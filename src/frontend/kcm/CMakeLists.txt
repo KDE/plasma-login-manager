@@ -10,6 +10,7 @@ target_link_libraries(kcm_plasmalogin PRIVATE
     settings
     KF6::I18n
     KF6::AuthCore
+    KF6::ConfigCore
     #KF6::KCMUtils
     KF6::KCMUtilsCore
     KF6::KCMUtilsQuick

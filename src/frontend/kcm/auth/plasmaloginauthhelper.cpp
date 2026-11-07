@@ -246,6 +246,18 @@ ActionReply PlasmaLoginAuthHelper::sync(const QVariantMap &args)
         createConfigFile(QStringLiteral("kwinoutputconfig.json"));
 
         createConfigFile(QStringLiteral("fontconfig/fonts.conf"));
+
+        createConfigFile(QStringLiteral("knighttimerc"));
+
+        // The login screen's KWin keeps its own settings in kwinrc
+        KConfig kwinrc(homeDir + QStringLiteral("/.config/kwinrc"), KConfig::SimpleConfig);
+        KConfigGroup nightColor = kwinrc.group(QStringLiteral("NightColor"));
+        nightColor.deleteGroup();
+        const QVariantMap nightColorEntries = args.value(QStringLiteral("NightColor")).toMap();
+        for (auto it = nightColorEntries.cbegin(); it != nightColorEntries.cend(); ++it) {
+            nightColor.writeEntry(it.key(), it.value().toString());
+        }
+        kwinrc.sync();
         return true;
     });
 

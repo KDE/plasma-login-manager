@@ -7,12 +7,17 @@
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include <memory>
+
 #include <QFile>
 #include <QList>
 #include <QTemporaryDir>
+#include <QTemporaryFile>
 #include <QTextStream>
 
 #include <KAuth/ExecuteJob>
+#include <KConfig>
+#include <KConfigGroup>
 #include <KConfigLoader>
 #include <KConfigPropertyMap>
 #include <KIO/ApplicationLauncherJob>
@@ -247,6 +252,33 @@ void PlasmaLoginKcm::synchronizeSettings()
     }
 
     addConfigFile(QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kxkbrc")), QStringLiteral("kxkbrc"));
+
+    const KConfig kwinrc(QStringLiteral("kwinrc"), KConfig::SimpleConfig);
+    const QMap<QString, QString> nightColorEntries = kwinrc.group(QStringLiteral("NightColor")).entryMap();
+    QVariantMap nightColor;
+    for (auto it = nightColorEntries.cbegin(); it != nightColorEntries.cend(); ++it) {
+        nightColor.insert(it.key(), it.value());
+    }
+    args[QStringLiteral("NightColor")] = nightColor;
+
+    // The login screen cannot detect a location itself
+    QTemporaryFile knighttimercCopy;
+    if (!nightColor.isEmpty() && knighttimercCopy.open()) {
+        const KConfig knighttimerc(QStringLiteral("knighttimerc"), KConfig::SimpleConfig);
+        std::unique_ptr<KConfig> copy(knighttimerc.copyTo(knighttimercCopy.fileName()));
+
+        const KConfig state(QStringLiteral("knighttimestaterc"), KConfig::SimpleConfig, QStandardPaths::GenericStateLocation);
+        const KConfigGroup cachedLocation = state.group(QStringLiteral("AutomaticLocation"));
+        KConfigGroup location = copy->group(QStringLiteral("Location"));
+        if (location.readEntry("Automatic", true) && cachedLocation.readEntry("Available", false)) {
+            location.writeEntry("Automatic", false);
+            location.writeEntry("Latitude", QString::number(cachedLocation.readEntry("Latitude", 0.0), 'f', 2));
+            location.writeEntry("Longitude", QString::number(cachedLocation.readEntry("Longitude", 0.0), 'f', 2));
+        }
+
+        copy->sync();
+        addConfigFile(knighttimercCopy.fileName(), QStringLiteral("knighttimerc"));
+    }
 
     KAuth::Action syncAction(QStringLiteral("org.kde.kcontrol.kcmplasmalogin.sync"));
     syncAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmplasmalogin"));
