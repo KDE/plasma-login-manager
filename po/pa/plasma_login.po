@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
-"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-10-01 00:47+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-08 02:59+0000\n"
 "PO-Revision-Date: 2026-10-12 20:13-0500\n"
 "Last-Translator: A S Alam <aman@punlinux.org>\n"
 "Language-Team: pa\n"
@@ -52,6 +52,24 @@ msgctxt ""
 "of the session"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
+
+#: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:29
+msgid ""
+"Plasma Login failed to start.\n"
+"This usually indicates a severe problem with your system.\n"
+"You can try restarting by pressing the power button to shut down.\n"
+"\n"
+"You can get additional support from your distribution."
+msgstr ""
+
+#: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
+msgid ""
+"Plasma Login failed to start.\n"
+"This usually indicates a severe problem with your system.\n"
+"You can try restarting by pressing the power button to shut down.\n"
+"\n"
+"Get additional support at: {support_url}"
+msgstr ""
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
