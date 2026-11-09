@@ -3,21 +3,21 @@
 #
 # SPDX-FileCopyrightText: 2025 Guilherme Marçal Silva <guimarcalsilva@gmail.com>
 # SPDX-FileCopyrightText: 2025 Geraldo Simiao <geraldosimiao@fedoraproject.org>
-# SPDX-FileCopyrightText: 2025 Marcus Gama <marcus.gama@gmail.com>
+# SPDX-FileCopyrightText: 2025-2026 Marcus Gama <marcus.gama@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-08 02:59+0000\n"
-"PO-Revision-Date: 2025-12-01 08:23-0300\n"
+"PO-Revision-Date: 2026-11-08 06:56-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@gmail.com>\n"
-"Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
+"Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.08.3\n"
+"X-Generator: Lokalize 26.08.3\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -63,6 +63,12 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"A inicialização do Plasma Login falhou.\n"
+"Isso geralmente indica um problema grave no seu sistema.\n"
+"Você pode tentar reiniciar o sistema pressionando o botão liga/desliga para "
+"desligá-lo.\n"
+"\n"
+"Você pode obter suporte adicional junto à sua distribuição."
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -72,6 +78,12 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"A inicialização do Plasma Login falhou.\n"
+"Isso geralmente indica um problema grave no seu sistema.\n"
+"Você pode tentar reiniciar o sistema pressionando o botão liga/desliga para "
+"desligá-lo.\n"
+"\n"
+"Obtenha suporte adicional em: {support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format

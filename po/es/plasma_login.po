@@ -1,15 +1,15 @@
 # Spanish translations for plasma_login.po package.
-# Copyright (C) 2025 This file is copyright:
+# Copyright (C) 2025-2026 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 # Automatically generated, 2025.
 #
-# SPDX-FileCopyrightText: 2025 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2025-2026 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_login\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-08 02:59+0000\n"
-"PO-Revision-Date: 2025-12-02 01:37+0100\n"
+"PO-Revision-Date: 2026-11-09 01:24+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.08.3\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -63,6 +63,12 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"Ha fallado el inicio de la sesión de Plasma.\n"
+"Esto suele indicar un problema grave en el sistema.\n"
+"Puede intentar reiniciar el equipo pulsando el botón de encendido para "
+"apagarlo.\n"
+"\n"
+"Puede obtener asistencia adicional a través de su distribución."
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -72,6 +78,12 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"Ha fallado el inicio de la sesión de Plasma.\n"
+"Esto suele indicar un problema grave en el sistema.\n"
+"Puede intentar reiniciar el equipo pulsando el botón de encendido para "
+"apagarlo.\n"
+"\n"
+"Puede obtener asistencia adicional en: {support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format

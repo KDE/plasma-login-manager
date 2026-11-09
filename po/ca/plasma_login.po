@@ -1,15 +1,15 @@
 # Translation of plasma_login.po to Catalan
-# Copyright (C) 2025 This_file_is_part_of_KDE
+# Copyright (C) 2025-2026 This_file_is_part_of_KDE
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# SPDX-FileCopyrightText: 2025 Josep M. Ferrer <txemaq@gmail.com>
+# SPDX-FileCopyrightText: 2025-2026 Josep M. Ferrer <txemaq@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-08 02:59+0000\n"
-"PO-Revision-Date: 2025-12-01 11:31+0100\n"
+"PO-Revision-Date: 2026-11-08 09:42+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -63,6 +63,11 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"No s'ha pogut iniciar el Plasma Login.\n"
+"Això normalment indica un problema greu amb aquest sistema.\n"
+"Podeu intentar reiniciar prement el botó d'encesa per apagar.\n"
+"\n"
+"Podeu obtenir suport addicional de la vostra distribució."
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -72,6 +77,11 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"No s'ha pogut iniciar el Plasma Login.\n"
+"Això normalment indica un problema greu amb aquest sistema.\n"
+"Podeu intentar reiniciar prement el botó d'encesa per apagar.\n"
+"\n"
+"Podeu obtenir suport addicional a: {support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
