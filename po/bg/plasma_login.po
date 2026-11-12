@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-08 02:59+0000\n"
-"PO-Revision-Date: 2026-02-12 23:01+0100\n"
+"POT-Creation-Date: 2026-11-12 01:04+0000\n"
+"PO-Revision-Date: 2026-11-11 17:48+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.03.70\n"
+"X-Generator: Lokalize 26.08.3\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -61,6 +61,12 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"Влизането в Plasma е неуспешно.\n"
+"Това обикновено показва сериозен проблем с вашата система.\n"
+"Можете да опитате рестартиране, като натиснете бутона за вклчване и "
+"изключване.\n"
+"\n"
+"Можете да получите допълнителна поддръжка от вашата дистрибуция."
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -70,6 +76,12 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"Влизането в Plasma е неуспешно.\n"
+"Това обикновено показва сериозен проблем с вашата система.\n"
+"Можете да опитате рестартиране, като натиснете бутона за включване и "
+"изключване.\n"
+"\n"
+"Получете допълнителна поддръжка на: {support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
@@ -92,50 +104,50 @@ msgstr "Парола"
 msgid "Log In"
 msgstr "Влизане"
 
-#: qml/Main.qml:175 qml/Main.qml:299
+#: qml/Main.qml:176 qml/Main.qml:300
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "Клавишът \"Caps Lock\" е натиснат"
 
-#: qml/Main.qml:187 qml/Main.qml:326
+#: qml/Main.qml:188 qml/Main.qml:327
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Хибернация"
 
-#: qml/Main.qml:196 qml/Main.qml:335
+#: qml/Main.qml:197 qml/Main.qml:336
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Приспиване"
 
-#: qml/Main.qml:205 qml/Main.qml:344
+#: qml/Main.qml:206 qml/Main.qml:345
 #, kde-format
 msgid "Restart"
 msgstr "Рестартиране"
 
-#: qml/Main.qml:211 qml/Main.qml:350
+#: qml/Main.qml:212 qml/Main.qml:351
 #, kde-format
 msgid "Shut Down"
 msgstr "Изключване"
 
-#: qml/Main.qml:217
+#: qml/Main.qml:218
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Други…"
 
-#: qml/Main.qml:315
+#: qml/Main.qml:316
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Въведете потребителско име и парола"
 
-#: qml/Main.qml:356
+#: qml/Main.qml:357
 #, kde-format
 msgid "List Users"
 msgstr "Списък на потребителите"
 
-#: qml/Main.qml:390
+#: qml/Main.qml:391
 #, kde-format
 msgid "Login Failed"
 msgstr "Неуспешно влизане"

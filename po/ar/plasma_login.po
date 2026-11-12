@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
-# SPDX-FileCopyrightText: 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2025-2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-08 02:59+0000\n"
-"PO-Revision-Date: 2025-12-03 16:52+0400\n"
+"POT-Creation-Date: 2026-11-12 01:04+0000\n"
+"PO-Revision-Date: 2026-11-11 20:50+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -62,6 +62,11 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"فشل بدء تشغيل ولوج بلازما.\n"
+"عادةً ما يشير هذا إلى وجود مشكلة خطيرة في نظامك.\n"
+"يمكنك محاولة إعادة التشغيل بالضغط على زر الطاقة لإيقاف تشغيل الجهاز.\n"
+"\n"
+"يمكنك الحصول على دعم إضافي من توزيعتك."
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -71,6 +76,11 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"فشل بدء تشغيل ولوج بلازما.\n"
+"عادةً ما يشير هذا إلى وجود مشكلة خطيرة في نظامك.\n"
+"يمكنك محاولة إعادة التشغيل بالضغط على زر الطاقة لإيقاف تشغيل الجهاز.\n"
+"\n"
+"احصل على دعم إضافي من: {support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
@@ -93,50 +103,50 @@ msgstr "كلمة السّر"
 msgid "Log In"
 msgstr "لِج"
 
-#: qml/Main.qml:175 qml/Main.qml:299
+#: qml/Main.qml:176 qml/Main.qml:300
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "مفتاح Caps Lock مفعّل"
 
-#: qml/Main.qml:187 qml/Main.qml:326
+#: qml/Main.qml:188 qml/Main.qml:327
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "أسبِت"
 
-#: qml/Main.qml:196 qml/Main.qml:335
+#: qml/Main.qml:197 qml/Main.qml:336
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "علّق"
 
-#: qml/Main.qml:205 qml/Main.qml:344
+#: qml/Main.qml:206 qml/Main.qml:345
 #, kde-format
 msgid "Restart"
 msgstr "أعد التّشغيل"
 
-#: qml/Main.qml:211 qml/Main.qml:350
+#: qml/Main.qml:212 qml/Main.qml:351
 #, kde-format
 msgid "Shut Down"
 msgstr "أطفئ"
 
-#: qml/Main.qml:217
+#: qml/Main.qml:218
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "مستخدم أخر…"
 
-#: qml/Main.qml:315
+#: qml/Main.qml:316
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "اكتب اسم المستخدم و كلمة السّر"
 
-#: qml/Main.qml:356
+#: qml/Main.qml:357
 #, kde-format
 msgid "List Users"
 msgstr "اسرد المستخدمين"
 
-#: qml/Main.qml:390
+#: qml/Main.qml:391
 #, kde-format
 msgid "Login Failed"
 msgstr "فشل الولوج"

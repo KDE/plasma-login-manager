@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-08 02:59+0000\n"
+"POT-Creation-Date: 2026-11-12 01:04+0000\n"
 "PO-Revision-Date: 2026-11-08 09:42+0100\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -104,50 +104,50 @@ msgstr "Contrasenya"
 msgid "Log In"
 msgstr "Inici de sessió"
 
-#: qml/Main.qml:175 qml/Main.qml:299
+#: qml/Main.qml:176 qml/Main.qml:300
 #, kde-format
 msgid "Caps Lock is on"
 msgstr "El bloqueig de majúscules està activat"
 
-#: qml/Main.qml:187 qml/Main.qml:326
+#: qml/Main.qml:188 qml/Main.qml:327
 #, kde-format
 msgctxt "Suspend to disk"
 msgid "Hibernate"
 msgstr "Hiberna"
 
-#: qml/Main.qml:196 qml/Main.qml:335
+#: qml/Main.qml:197 qml/Main.qml:336
 #, kde-format
 msgctxt "Suspend to RAM"
 msgid "Sleep"
 msgstr "Suspén"
 
-#: qml/Main.qml:205 qml/Main.qml:344
+#: qml/Main.qml:206 qml/Main.qml:345
 #, kde-format
 msgid "Restart"
 msgstr "Reinicia"
 
-#: qml/Main.qml:211 qml/Main.qml:350
+#: qml/Main.qml:212 qml/Main.qml:351
 #, kde-format
 msgid "Shut Down"
 msgstr "Para"
 
-#: qml/Main.qml:217
+#: qml/Main.qml:218
 #, kde-format
 msgctxt "For switching to a username and password prompt"
 msgid "Other…"
 msgstr "Altres…"
 
-#: qml/Main.qml:315
+#: qml/Main.qml:316
 #, kde-format
 msgid "Type in Username and Password"
 msgstr "Introduïu el nom d'usuari i la contrasenya"
 
-#: qml/Main.qml:356
+#: qml/Main.qml:357
 #, kde-format
 msgid "List Users"
 msgstr "Llista d'usuaris"
 
-#: qml/Main.qml:390
+#: qml/Main.qml:391
 #, kde-format
 msgid "Login Failed"
 msgstr "No s'ha pogut fer l'inici de la sessió"
