@@ -10,3 +10,8 @@ if(KF6KCMUtils_VERSION VERSION_GREATER_EQUAL "6.27.0")
         ENVIRONMENT_MODIFICATION QT_PLUGIN_PATH=path_list_prepend:${CMAKE_BINARY_DIR}/bin
     )
 endif()
+
+add_executable(sessionmodeltest sessionmodeltest.cpp)
+target_include_directories(sessionmodeltest PRIVATE ${CMAKE_SOURCE_DIR}/src/frontend/settings)
+target_link_libraries(sessionmodeltest Qt6::Test settings)
+add_test(NAME sessionmodeltest COMMAND sessionmodeltest)

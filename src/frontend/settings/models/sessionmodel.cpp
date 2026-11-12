@@ -8,6 +8,7 @@
 #include <QFileSystemWatcher>
 #include <QStandardPaths>
 
+#include <KConfigGroup>
 #include <KDesktopFile>
 #include <KLocalizedString>
 
@@ -146,12 +147,18 @@ void SessionModel::populate(const QStringList &xSessionsPaths, const QStringList
 
     m_sessions.clear();
 
+    // getSessionsPaths() has already dropped lower-priority duplicates, so a hidden
+    // session file also hides same-named files from lower-priority dirs
     for (const auto &xSession : getSessionsPaths(xSessionsPaths)) {
-        m_sessions << getSession(xSession, Session::Type::X11);
+        if (auto session = getSession(xSession, Session::Type::X11)) {
+            m_sessions << *session;
+        }
     }
 
     for (const auto &waylandSession : getSessionsPaths(waylandSessionsPaths)) {
-        m_sessions << getSession(waylandSession, Session::Type::Wayland);
+        if (auto session = getSession(waylandSession, Session::Type::Wayland)) {
+            m_sessions << *session;
+        }
     }
 
     std::sort(m_sessions.begin(), m_sessions.end(), [](const Session &a, const Session &b) {
@@ -210,11 +217,18 @@ QStringList SessionModel::getSessionsPaths(const QStringList &sessionsDirs) cons
     return sessionsPaths;
 }
 
-Session SessionModel::getSession(const QString path, const Session::Type type) const
+std::optional<Session> SessionModel::getSession(const QString path, const Session::Type type) const
 {
     qDebug().nospace() << "Reading session (" << type << ") from " << path;
 
     KDesktopFile desktop(path);
+
+    // Read the keys directly: KDesktopFile::noDisplay() also applies OnlyShowIn/NotShowIn, which is not meaningful here
+    const KConfigGroup group = desktop.desktopGroup();
+    if (group.readEntry("Hidden", false) || group.readEntry("NoDisplay", false)) {
+        return std::nullopt;
+    }
+
     return Session(type, path, desktop.readName(), desktop.readComment());
 }
 

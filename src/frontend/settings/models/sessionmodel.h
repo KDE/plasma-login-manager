@@ -7,6 +7,8 @@
 #include <QAbstractListModel>
 #include <QUrl>
 
+#include <optional>
+
 struct Session {
     enum Type {
         X11 = 0,
@@ -53,7 +55,7 @@ public:
 private:
     void populate(const QStringList &xSessionsDirs, const QStringList &waylandSessionsDirs);
     QStringList getSessionsPaths(const QStringList &sessionsDirs) const;
-    Session getSession(const QString path, const Session::Type type) const;
+    std::optional<Session> getSession(const QString path, const Session::Type type) const;
 
     QList<Session> m_sessions;
 };
