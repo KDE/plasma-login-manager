@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the plasma-login-manager package.
 #
-# SPDX-FileCopyrightText: 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2025-2026 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-11-12 01:04+0000\n"
-"PO-Revision-Date: 2025-12-16 21:26+0900\n"
+"PO-Revision-Date: 2026-11-12 19:30+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 26.03.70\n"
+"X-Generator: Lokalize 26.11.70\n"
 
 #: ../settings/models/sessionmodel.cpp:77
 #, kde-format
@@ -61,6 +61,11 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"Plasma Login 啟動失敗。\n"
+"這通常代表您的系統有嚴重問題。\n"
+"您可以試試看重新開機：按電源按鈕來關機。\n"
+"\n"
+"您可以從您的發行版取得更多支援資訊。"
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -70,6 +75,11 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"Plasma Login 啟動失敗。\n"
+"這通常代表您的系統有嚴重問題。\n"
+"您可以試試看重新開機：按電源按鈕來關機。\n"
+"\n"
+"更多支援資訊請見：{support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
