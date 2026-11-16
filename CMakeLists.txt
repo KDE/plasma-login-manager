@@ -82,7 +82,6 @@ set(STATE_DIR                   "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/plasmal
 set(RUNTIME_DIR                 "${RUNTIME_DIR_DEFAULT}"                            CACHE PATH      "Runtime data storage directory")
 
 set(SESSION_COMMAND             "${DATA_INSTALL_DIR}/scripts/Xsession"              CACHE PATH      "Script to execute when starting the X11 desktop session")
-set(WAYLAND_SESSION_COMMAND     "${DATA_INSTALL_DIR}/scripts/wayland-session"       CACHE PATH      "Script to execute when starting the Wayland desktop session")
 
 set(CONFIG_FILE                 "${CMAKE_INSTALL_FULL_SYSCONFDIR}/plasmalogin.conf"        CACHE PATH      "Path of the plasmalogin config file")
 set(CONFIG_DIR                  "${CMAKE_INSTALL_FULL_SYSCONFDIR}/plasmalogin.conf.d"      CACHE PATH      "Path of the plasmalogin config directory")

@@ -55,9 +55,14 @@ bool UserSession::start()
         if (env.value(QStringLiteral("XDG_SESSION_CLASS")) == QLatin1String("greeter")) {
             isWaylandGreeter = true;
         }
-        setProgram(WAYLAND_SESSION_COMMAND);
-        setArguments(QStringList{m_path});
-        qInfo() << "Starting Wayland user session:" << program() << m_path;
+        QStringList command = QProcess::splitCommand(m_path);
+        if (command.isEmpty()) {
+            qCritical() << "Unable to run Wayland user session: empty command";
+            return false;
+        }
+        setProgram(command.takeFirst());
+        setArguments(command);
+        qInfo() << "Starting Wayland user session:" << program() << arguments();
         QProcess::start();
         closeWriteChannel();
         closeReadChannel(QProcess::StandardOutput);
