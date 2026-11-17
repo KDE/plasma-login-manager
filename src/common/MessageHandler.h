@@ -69,16 +69,16 @@ static void standardLogger(QtMsgType type, const QString &msg)
     // Try to open the log file if we're not outputting to a terminal
     if (!file.isOpen() && !isatty(STDERR_FILENO)) {
         if (!file.open(QFile::Append | QFile::WriteOnly))
-            file.open(QFile::Truncate | QFile::WriteOnly);
+            std::ignore = file.open(QFile::Truncate | QFile::WriteOnly);
 
         // If we can't open the file, create it in a writable location
-        // It will look spmething like ~/.local/share/$appname/plasmalogin.log
+        // It will look something like ~/.local/share/$appname/plasmalogin.log
         // or for the plasmalogin user /var/lib/plasmalogin/.local/share/$appname/plasmalogin.log
         if (!file.isOpen()) {
             QDir().mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
             file.setFileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QLatin1String("/plasmalogin.log"));
             if (!file.open(QFile::Append | QFile::WriteOnly))
-                file.open(QFile::Truncate | QFile::WriteOnly);
+                std::ignore = file.open(QFile::Truncate | QFile::WriteOnly);
         }
     }
 
