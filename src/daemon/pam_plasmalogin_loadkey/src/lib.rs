@@ -35,6 +35,28 @@ fn set_item_authtok(pam: *mut pam_handle_t, authtok: &str) -> u32 {
     PAM_SUCCESS
 }
 
+fn set_data_gnome_keyring(pam: *mut pam_handle_t, authtok: &str) -> u32 {
+    let c_authtok = CString::new(authtok).expect("Failed to convert authtok to CString");
+    let data = c_authtok.into_raw();
+    unsafe {
+        if pam_set_data(
+            pam,
+            CString::new("gkr_system_authtok").unwrap().as_ptr(),
+            data as *mut c_void,
+            Some(free_data),
+        ) != PAM_SUCCESS as c_int
+        {
+            syslog(pam, LOG_ERR, "Failed to set gkr_system_authtok");
+            return PAM_SERVICE_ERR;
+        }
+    }
+    PAM_SUCCESS
+}
+
+unsafe extern "C" fn free_data(_pam: *mut pam_handle_t, data: *mut c_void, _error_status: c_int) {
+    drop(unsafe { CString::from_raw(data as *mut c_char) });
+}
+
 fn sm_open_session(pam: *mut pam_handle_t) -> u32 {
     // systemd doesn't set CREDENTIALS_DIRECTORY for PAM so we need to hardcode /run/credentials :(
     let unit = match env::var("SYSTEMD_ACTIVATION_UNIT") {
@@ -79,6 +101,11 @@ fn sm_open_session(pam: *mut pam_handle_t) -> u32 {
 
     if set_item_authtok(pam, &password) != PAM_SUCCESS {
         syslog(pam, LOG_ERR, "pam_set_item(PAM_AUTHTOK) failed");
+        return PAM_SERVICE_ERR;
+    }
+
+    if set_data_gnome_keyring(pam, &password) != PAM_SUCCESS {
+        syslog(pam, LOG_ERR, "pam_set_data(gkr_system_authtok) failed");
         return PAM_SERVICE_ERR;
     }
 
