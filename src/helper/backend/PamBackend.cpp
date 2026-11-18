@@ -214,9 +214,6 @@ bool PamBackend::start(const QString &user)
 
     QString service = QStringLiteral("plasmalogin");
 
-    if (m_autologin) {
-        service = QStringLiteral("plasmalogin-autologin");
-    }
     result = m_pam->start(service, user);
 
     if (!result) {
@@ -312,11 +309,6 @@ int PamBackend::converse(int n, const struct pam_message **msg, struct pam_respo
     }
 
     return PAM_SUCCESS;
-}
-
-void PamBackend::setAutologin(bool on)
-{
-    m_autologin = on;
 }
 }
 

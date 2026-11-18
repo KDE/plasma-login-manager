@@ -74,7 +74,6 @@ private:
     bool startAuth(const QString &user, const QString &password, const Session &session);
 
     void startSocketServerAndGreeter();
-    bool handleAutologinFailure();
 
     bool m_started{false};
 

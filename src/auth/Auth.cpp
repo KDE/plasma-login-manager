@@ -58,7 +58,6 @@ public:
     QLocalSocket *socket{nullptr};
     QString sessionPath{};
     QString user{};
-    bool autologin{false};
     QProcessEnvironment environment{};
     qint64 id{0};
     static qint64 lastId;
@@ -233,12 +232,11 @@ void Auth::Private::requestFinished()
     request->setRequest();
 }
 
-Auth::Auth(const QString &user, const QString &session, bool autologin, QObject *parent, bool verbose)
+Auth::Auth(const QString &user, const QString &session, QObject *parent, bool verbose)
     : QObject(parent)
     , d(new Private(this))
 {
     setUser(user);
-    setAutologin(autologin);
     setSession(session);
     setVerbose(verbose);
 }
@@ -260,11 +258,6 @@ void Auth::registerTypes()
     qmlRegisterAnonymousType<AuthPrompt>("Auth", 1);
     qmlRegisterAnonymousType<AuthRequest>("Auth", 1);
     qmlRegisterType<Auth>("Auth", 1, 0, "Auth");
-}
-
-bool Auth::autologin() const
-{
-    return d->autologin;
 }
 
 const QString &Auth::session() const
@@ -310,14 +303,6 @@ void Auth::setUser(const QString &user)
     }
 }
 
-void Auth::setAutologin(bool on)
-{
-    if (on != d->autologin) {
-        d->autologin = on;
-        Q_EMIT autologinChanged();
-    }
-}
-
 void Auth::setSession(const QString &path)
 {
     if (path != d->sessionPath) {
@@ -348,9 +333,6 @@ void Auth::start()
     }
     if (!d->user.isEmpty()) {
         args << QStringLiteral("--user") << d->user;
-    }
-    if (d->autologin) {
-        args << QStringLiteral("--autologin");
     }
     d->child->start(QStringLiteral("%1/plasmalogin-helper").arg(QStringLiteral(LIBEXEC_INSTALL_DIR)), args);
 }

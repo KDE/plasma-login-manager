@@ -29,9 +29,6 @@ namespace PLASMALOGIN
  *  * Logging the user in after authenticating him - You'll have to set the
  *      \ref session property to do that.
  *
- *  * Logging the user in without authenticating - You'll have to set the
- *      \ref session and \ref autologin properties to do that.
- *
  * Usage:
  *
  * Just construct, connect the signals (especially \ref requestChanged)
@@ -41,7 +38,7 @@ class Auth : public QObject
 {
     Q_OBJECT
 public:
-    explicit Auth(const QString &user = QString(), const QString &session = QString(), bool autologin = false, QObject *parent = 0, bool verbose = false);
+    explicit Auth(const QString &user = QString(), const QString &session = QString(), QObject *parent = 0, bool verbose = false);
     explicit Auth(QObject *parent);
     ~Auth();
 
@@ -73,7 +70,6 @@ public:
 
     static void registerTypes();
 
-    bool autologin() const;
     bool verbose() const;
     const QString &user() const;
     const QString &session() const;
@@ -97,13 +93,6 @@ public:
      * @param value value
      */
     void insertEnvironment(const QString &key, const QString &value);
-
-    /**
-     * Set mode to autologin.
-     * Ignored if session is not started
-     * @param on true if should autologin
-     */
-    void setAutologin(bool on = true);
 
     /**
      * Forwards the output of the underlying authenticator to the current process
@@ -135,7 +124,6 @@ public Q_SLOTS:
     void stop();
 
 Q_SIGNALS:
-    void autologinChanged();
     void verboseChanged();
     void userChanged();
     void displayServerCommandChanged();

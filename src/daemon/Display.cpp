@@ -137,11 +137,8 @@ bool Display::start()
     // Handle autologin early, unless it needs the display server to be up
     // (rootful X + X11 autologin session).
     if (m_autologinSession.isValid()) {
-        m_auth->setAutologin(true);
         if (startAuth(m_autologinUser, QString(), m_autologinSession)) {
             return true;
-        } else {
-            return handleAutologinFailure();
         }
     }
 
@@ -165,16 +162,6 @@ void Display::startSocketServerAndGreeter()
 
     m_greeter->setSocket(m_socketServer->socketAddress());
     m_greeter->start();
-}
-
-bool Display::handleAutologinFailure()
-{
-    qWarning() << "Autologin failed!";
-    m_auth->setAutologin(false);
-    // For late autologin handling only the greeter needs to be started.
-
-    QMetaObject::invokeMethod(this, &Display::displayServerStarted, Qt::QueuedConnection);
-    return true;
 }
 
 void Display::displayServerStarted()
@@ -328,12 +315,19 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
         return {};
     }();
 
+    auto pamName = [this] {
+        if (m_autologinSession.isValid()) {
+            return u"plasmalogin-autologin"_s;
+        }
+        return u"plasmalogin"_s;
+    }();
+
     m_session = SessionBuilder() //
                     .environment(env)
                     .name(u"plasmalogin-session@tty%1.service"_s.arg(m_sessionTerminalId.tty()))
                     .properties(QStringList{
                                     u"User="_s + user,
-                                    u"PAMName=plasmalogin"_s,
+                                    u"PAMName="_s + pamName,
                                     u"SetCredential=%1:%2"_s.arg(credentialName, QString::fromUtf8(credential)),
 
                                     // TTY Configuration
@@ -366,18 +360,23 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
         m_auth->setSession(session.exec());
     }
     m_auth->insertEnvironment(env);
-    m_auth->start();
+
+    if (m_autologinSession.isValid()) {
+        QMetaObject::invokeMethod(
+            this,
+            [this, user] {
+                slotAuthenticationFinished(user, true);
+            },
+            Qt::QueuedConnection);
+    } else {
+        m_auth->start();
+    }
 
     return true;
 }
 
 void Display::slotAuthenticationFinished(const QString &user, bool success)
 {
-    if (m_auth->autologin() && !success) {
-        handleAutologinFailure();
-        return;
-    }
-
     if (success) {
         if (m_reuseSessionId.isNull()) {
             qDebug() << "Authentication for user" << user << "successful, starting session";

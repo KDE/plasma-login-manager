@@ -94,10 +94,6 @@ void HelperApp::setUp()
             return;
         }
     }
-#warning fixme
-    if ((pos = args.indexOf(QStringLiteral("--autologin"))) >= 0) {
-        m_backend->setAutologin(true);
-    }
 
     if (server.isEmpty() || m_id <= 0) {
         qCritical() << "This application is not supposed to be executed manually";

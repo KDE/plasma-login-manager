@@ -51,7 +51,6 @@ public:
     explicit PamBackend(HelperApp *parent);
     virtual ~PamBackend();
     int converse(int n, const struct pam_message **msg, struct pam_response **resp);
-    void setAutologin(bool on = true);
 
 public slots:
     bool start(const QString &user = QString());
@@ -61,7 +60,6 @@ public slots:
 
 private:
     HelperApp *m_app{nullptr};
-    bool m_autologin{false};
     PamData *m_data{nullptr};
     PamHandle *m_pam{nullptr};
 };
