@@ -5,6 +5,7 @@ account  substack       common-account
 account  include        postlogin-account
 password substack       common-password
 password include        postlogin-password
+session  optional       pam_plasmalogin_loadkey.so
 session  required       pam_loginuid.so
 session  optional       pam_keyinit.so revoke force
 session  substack       common-session

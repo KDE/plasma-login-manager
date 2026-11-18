@@ -12,8 +12,8 @@ account     include     system-login
 password    include     system-login
 -password   optional    pam_gnome_keyring.so    use_authtok
 
-session     required    pam_plasmalogin_loadkey.so
 session     optional    pam_keyinit.so          force revoke
 session     include     system-login
+session     optional    pam_plasmalogin_loadkey.so
 -session    optional    pam_gnome_keyring.so    auto_start
 -session    optional    pam_kwallet5.so         auto_start
