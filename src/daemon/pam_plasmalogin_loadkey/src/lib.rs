@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 // SPDX-FileCopyrightText: 2026 Harald Sitter <sitter@kde.org>
 
-#![feature(linux_pidfd)]
-
 use std::{
     env,
-    ffi::{CString, c_char, c_int, c_void},
-    os::linux::process::CommandExt,
+    ffi::{c_char, c_int, c_void, CString},
     path,
     process::{Command, Stdio},
 };
@@ -80,7 +77,6 @@ fn sm_open_session(pam: *mut pam_handle_t) -> u32 {
             &credential_path_str,
             "-", // output to stdout
         ])
-        .create_pidfd(true)
         .stdout(Stdio::piped())
         .spawn()
         .expect("Failed to spawn child");
