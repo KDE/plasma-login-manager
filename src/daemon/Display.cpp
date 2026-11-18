@@ -316,8 +316,8 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
             auto extraProperties = QStringList{
                 // Output
                 u"StandardInput=tty-fail"_s,
-                u"StandardOutput=tty-fail"_s,
-                u"StandardError=tty-fail"_s,
+                u"StandardOutput=journal"_s,
+                u"StandardError=journal"_s,
             };
             return {QStringLiteral(LIBEXEC_INSTALL_DIR "/plasmalogin-helper-start-x11user"), args, extraProperties};
         }
