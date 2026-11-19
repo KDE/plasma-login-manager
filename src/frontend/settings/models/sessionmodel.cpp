@@ -107,6 +107,8 @@ QVariant SessionModel::data(const QModelIndex &index, int role) const
         return session.type;
     case SessionModel::FileNameRole:
         return QFileInfo(session.path).fileName();
+    case SessionModel::SafeModeSessionFileNameRole:
+        return session.safeModeSessionFileName;
     case SessionModel::CommentRole:
         return session.comment;
     default:
@@ -123,6 +125,7 @@ QHash<int, QByteArray> SessionModel::roleNames() const
     roles[DisplayNameRole] = "displayName";
     roles[CommentRole] = "comment";
     roles[FileNameRole] = "fileName";
+    roles[SafeModeSessionFileNameRole] = "safeModeSessionFileName";
     return roles;
 }
 
@@ -189,6 +192,22 @@ void SessionModel::populate(const QStringList &xSessionsPaths, const QStringList
         }
     });
 
+    auto isValidSessionFile = [](Session::Type type, const QString &fileName) -> bool {
+        const QString sessionsDirName = type == Session::Type::X11 ? QStringLiteral("xsessions") : QStringLiteral("wayland-sessions");
+        const QString path = QStandardPaths::locate(QStandardPaths::GenericDataLocation, sessionsDirName + QLatin1Char('/') + fileName);
+        if (path.isEmpty()) {
+            return false;
+        }
+        const bool hidden = KDesktopFile(path).desktopGroup().readEntry("Hidden", false); // NoDisplay=true is fine, not shown but valid
+        return !hidden;
+    };
+
+    for (auto &session : m_sessions) {
+        if (!session.safeModeSessionFileName.isEmpty() && !isValidSessionFile(session.type, session.safeModeSessionFileName)) {
+            session.safeModeSessionFileName.clear();
+        }
+    }
+
     endResetModel();
 }
 
@@ -228,8 +247,9 @@ std::optional<Session> SessionModel::getSession(const QString path, const Sessio
     if (group.readEntry("Hidden", false) || group.readEntry("NoDisplay", false)) {
         return std::nullopt;
     }
+    const auto safeModeSession = group.readEntry("X-KDE-SafeModeSession", QString());
 
-    return Session(type, path, desktop.readName(), desktop.readComment());
+    return Session(type, path, desktop.readName(), desktop.readComment(), safeModeSession);
 }
 
 #include "moc_sessionmodel.cpp"

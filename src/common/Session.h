@@ -44,6 +44,7 @@ public:
     QString xdgSessionType() const;
     QString exec() const;
     QString desktopNames() const;
+    QString safeModeSessionFileName() const;
 
 private:
     Session(Type type, KSharedConfigPtr desktopFile);

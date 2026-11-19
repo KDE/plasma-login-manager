@@ -159,6 +159,14 @@ SessionManagementScreen {
         Layout.fillWidth: true
     }
 
+    PlasmaComponents3.Switch {
+        Layout.fillWidth: true
+        text: i18nd("plasma_login", "Start in Safe Mode")
+        visible: PlasmaLogin.GreeterState.safeModeSessionAvailable
+        checked: PlasmaLogin.GreeterState.safeModeSessionEnabled
+        onToggled: PlasmaLogin.GreeterState.safeModeSessionEnabled = checked
+    }
+
     // Synchronise state
     Item {
         id: sync

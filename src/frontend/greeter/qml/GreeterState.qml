@@ -61,6 +61,20 @@ Item {
         }
     }
 
+    readonly property bool safeModeSessionAvailable: {
+        const sessionModelIndex = PlasmaLogin.SessionModel.index(greeterState.sessionIndex, 0);
+        const safeModeSessionFileName = PlasmaLogin.SessionModel.data(sessionModelIndex, PlasmaLogin.SessionModel.SafeModeSessionFileNameRole);
+        return safeModeSessionFileName.length > 0;
+    }
+
+    property bool safeModeSessionEnabled: false
+    onSessionIndexChanged: safeModeSessionEnabled = false
+    onSafeModeSessionAvailableChanged: {
+        if (!safeModeSessionAvailable) {
+            safeModeSessionEnabled = false;
+        }
+    }
+
     property int userListIndex: {
         // indexOfData will return -1 if passed an empty string, which these are by default
         let preselectedUserIndex = PlasmaLogin.UserModel.indexOfData(PlasmaLogin.Settings.preselectedUser, PlasmaLogin.UserModel.NameRole);
@@ -179,9 +193,15 @@ Item {
     function handleLoginRequest(username, password) {
         greeterState.lastLoggedInUser = username;
 
-        let sessionType = PlasmaLogin.SessionModel.data(PlasmaLogin.SessionModel.index(greeterState.sessionIndex, 0), PlasmaLogin.SessionModel.TypeRole)
-        let sessionFileName = PlasmaLogin.SessionModel.data(PlasmaLogin.SessionModel.index(greeterState.sessionIndex, 0), PlasmaLogin.SessionModel.FileNameRole)
+        const sessionModelIndex = PlasmaLogin.SessionModel.index(greeterState.sessionIndex, 0);
+        let sessionType = PlasmaLogin.SessionModel.data(sessionModelIndex, PlasmaLogin.SessionModel.TypeRole);
+        let sessionFileName = PlasmaLogin.SessionModel.data(sessionModelIndex, PlasmaLogin.SessionModel.FileNameRole);
         greeterState.lastLoggedInSession = sessionFileName;
+
+        if (greeterState.safeModeSessionAvailable && greeterState.safeModeSessionEnabled) {
+            sessionFileName = PlasmaLogin.SessionModel.data(sessionModelIndex, PlasmaLogin.SessionModel.SafeModeSessionFileNameRole);
+            // sessionType is the same as the original session, guaranteed by SessionModel
+        }
 
         PlasmaLogin.Authenticator.login(username, password, sessionType, sessionFileName);
     }
