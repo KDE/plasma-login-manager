@@ -19,12 +19,14 @@ struct Session {
     QString path;
     QString displayName;
     QString comment;
+    QString safeModeSessionFileName;
 
-    Session(Type type, QString path, QString displayName, QString comment)
+    Session(Type type, QString path, QString displayName, QString comment, QString safeModeSessionFileName)
         : type(type)
         , path(std::move(path))
         , displayName(std::move(displayName))
         , comment(std::move(comment))
+        , safeModeSessionFileName(std::move(safeModeSessionFileName))
     {
     }
 };
@@ -40,6 +42,7 @@ public:
     enum SessionRoles {
         TypeRole = Qt::UserRole + 1,
         FileNameRole,
+        SafeModeSessionFileNameRole,
         DisplayNameRole,
         CommentRole
     };
