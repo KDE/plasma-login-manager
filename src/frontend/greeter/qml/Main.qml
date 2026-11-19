@@ -185,7 +185,7 @@ Item {
                 actionItems: [
                     BreezeComponents.ActionButton {
                         icon.name: "system-hibernate"
-                        text: KI18n.i18ndc("plasma_login", "Suspend to disk", "Hibernate")
+                        text: KI18n.i18ndc("plasma_login", "Suspend to disk", "Test Hibernate")
                         visible: PlasmaLogin.SessionManagement.canHibernate
                         onClicked: {
                             PlasmaLogin.GreeterState.clearPasswords();
