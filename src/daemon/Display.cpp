@@ -93,7 +93,7 @@ Display::~Display()
 
 int Display::terminalId() const
 {
-    return (m_auth->isActive() ? m_sessionTerminalId : m_terminalId).tty();
+    return (m_auth->isActive() && m_sessionTerminalId.isValid() ? m_sessionTerminalId : m_terminalId).tty();
 }
 
 QString Display::sessionType() const
@@ -238,7 +238,23 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
 
     m_passPhrase = password;
 
-    // sanity check
+    m_reuseSessionId = seat()->reusableSessionId(user);
+
+    if (!m_reuseSessionId.isNull()) {
+        // for a different user, the reused session details can also be different
+        m_sessionName.clear();
+        m_sessionTerminalId = {};
+
+        qDebug() << "Trying to reuse existing session for user" << user;
+        m_auth->setUser(user);
+        m_auth->setSession({});
+        m_auth->start();
+        return true;
+    }
+
+    qDebug() << "No reusable session found for user" << user;
+
+    // sanity check for new session
     if (!session.isValid()) {
         qCritical() << "Invalid session" << session.fileName();
         return false;
@@ -252,8 +268,6 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
         qCritical() << "Failed to find command for session" << session.fileName();
         return false;
     }
-
-    m_reuseSessionId = seat()->reusableSessionId(user);
 
     // save session desktop file name, we'll use it to set the
     // last session later, in slotAuthenticationFinished()
@@ -288,10 +302,7 @@ bool Display::startAuth(const QString &user, const QString &password, const Sess
     env.insert(QStringLiteral("XDG_SESSION_DESKTOP"), session.desktopNames());
 
     m_auth->setUser(user);
-    if (m_reuseSessionId.isNull()) {
-        qDebug() << "No reusable session found for user" << user;
-        m_auth->setSession(session.exec());
-    }
+    m_auth->setSession(session.exec());
     m_auth->insertEnvironment(env);
     m_auth->start();
 
