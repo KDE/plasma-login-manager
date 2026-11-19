@@ -18,6 +18,7 @@ class SessionModelTest : public QObject
 private Q_SLOTS:
     void initTestCase();
     void testSessions();
+    void testSafeModeSessions();
 
 private:
     void writeSession(const QString &dir, const QString &fileName, const QByteArray &name, const QByteArray &extra = {});
@@ -47,17 +48,20 @@ void SessionModelTest::initTestCase()
     const QString lowWayland = m_lowDir.path() + QStringLiteral("/wayland-sessions");
     const QString lowX = m_lowDir.path() + QStringLiteral("/xsessions");
 
-    writeSession(lowWayland, QStringLiteral("zeta.desktop"), "Zeta");
+    writeSession(lowWayland, QStringLiteral("zeta.desktop"), "Zeta", "X-KDE-SafeModeSession=missing-safemode.desktop\n");
     writeSession(lowWayland, QStringLiteral("alpha.desktop"), "Alpha");
     writeSession(lowX, QStringLiteral("alpha.desktop"), "Alpha");
-    writeSession(lowWayland, QStringLiteral("plasma.desktop"), "Plasma");
+    writeSession(lowWayland, QStringLiteral("plasma.desktop"), "Plasma", "X-KDE-SafeModeSession=plasma-safemode.desktop\n");
+    writeSession(lowWayland, QStringLiteral("plasma-safemode.desktop"), "Plasma (Safe Mode)", "NoDisplay=true\n");
     writeSession(lowX, QStringLiteral("onlyshowin.desktop"), "OnlyShowIn", "OnlyShowIn=SomethingElse;\n");
 
     // The higher-priority file wins, also when it hides the session
     writeSession(lowWayland, QStringLiteral("overridden.desktop"), "Overridden Low");
-    writeSession(highWayland, QStringLiteral("overridden.desktop"), "Overridden High");
+    writeSession(highWayland, QStringLiteral("overridden.desktop"), "Overridden High", "X-KDE-SafeModeSession=masked-safemode.desktop\n");
     writeSession(lowWayland, QStringLiteral("masked.desktop"), "Masked");
     writeSession(highWayland, QStringLiteral("masked.desktop"), "Masked", "Hidden=true\n");
+    writeSession(lowWayland, QStringLiteral("masked-safemode.desktop"), "Masked Safe Mode");
+    writeSession(highWayland, QStringLiteral("masked-safemode.desktop"), "Masked Safe Mode", "Hidden=true\n");
 
     writeSession(lowWayland, QStringLiteral("hidden.desktop"), "Hidden", "Hidden=true\n");
     writeSession(lowX, QStringLiteral("nodisplay.desktop"), "NoDisplay", "NoDisplay=true\n");
@@ -91,6 +95,27 @@ void SessionModelTest::testSessions()
         QCOMPARE(model.data(index, SessionModel::TypeRole).toInt(), int(expected[i].type));
         QCOMPARE(model.data(index, Qt::DisplayRole).toString(), expected[i].display);
     }
+}
+
+void SessionModelTest::testSafeModeSessions()
+{
+    SessionModel model;
+
+    auto safeModeSessionFor = [&model](const QString &fileName) -> QString {
+        const int index = model.indexOfData(fileName, SessionModel::FileNameRole);
+        return index >= 0 ? model.data(model.index(index, 0), SessionModel::SafeModeSessionFileNameRole).toString() : QStringLiteral("<missing>");
+    };
+
+    // The model doesn't list Safe Mode session files specifying NoDisplay=true
+    QCOMPARE(model.indexOfData(QStringLiteral("plasma-safemode.desktop"), SessionModel::FileNameRole), -1);
+
+    // A regular session can associate with a Safe Mode session file specifying NoDisplay=true
+    QCOMPARE(safeModeSessionFor(QStringLiteral("plasma.desktop")), QStringLiteral("plasma-safemode.desktop"));
+
+    // No Safe Mode session for:
+    QCOMPARE(safeModeSessionFor(QStringLiteral("alpha.desktop")), QString()); // Lack of X-KDE-SafeModeSession key
+    QCOMPARE(safeModeSessionFor(QStringLiteral("zeta.desktop")), QString()); // Specified but non-existent Safe Mode session file
+    QCOMPARE(safeModeSessionFor(QStringLiteral("overridden.desktop")), QString()); // Masked Safe Mode session file
 }
 
 QTEST_GUILESS_MAIN(SessionModelTest)
