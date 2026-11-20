@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:46+0000\n"
+"POT-Creation-Date: 2026-11-19 15:37+0000\n"
 "PO-Revision-Date: 2026-09-22 00:25+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 26.11.70\n"
 
-#: kcm.cpp:78
+#: kcm.cpp:83
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr "無法儲存設定，因為有暫存目錄無法建立。"
 
-#: kcm.cpp:139
+#: kcm.cpp:144
 msgid "Unable to save settings because the config could not be opened."
 msgstr "無法儲存設定，因為設定檔案無法開啟。"
 
-#: kcm.cpp:214
+#: kcm.cpp:219
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -34,7 +34,7 @@ msgstr ""
 "無法同步 Plasma 設定，因為 'plasmalogin' 使用者不存在。請確定您的 Plasma 登入"
 "畫面的安裝。"
 
-#: kcm.cpp:269
+#: kcm.cpp:301
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -89,14 +89,22 @@ msgid ""
 msgstr "這將會使 Plasma 登入畫面反映您對以下 Plasma 設定的自訂："
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Language and locale settings</item><item>Keyboard "
+#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
+#| "item><item>NumLock preference</item><item>Font and font rendering "
+#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Plasma theme</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
 "item><item>Screen arrangement, scale, and orientation settings</"
-"item><item>NumLock preference</item><item>Font and font rendering settings</"
-"item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
-"theme</item></list></para>"
+"item><item>Night Light settings and the approximate location used for its "
+"schedule</item><item>NumLock preference</item><item>Font and font rendering "
+"settings</item><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Plasma theme</item></list></para>"
 msgstr ""
 "<para><list><item>語言與地域設定</item><item>鍵盤佈局</item><item>螢幕配置、"
 "縮放與方向設定</item><item>NumLock 偏好設定</item><item>字型與字型算繪設定</"

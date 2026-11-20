@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:46+0000\n"
+"POT-Creation-Date: 2026-11-19 15:37+0000\n"
 "PO-Revision-Date: 2026-09-18 09:01+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
@@ -14,20 +14,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 26.08.0\n"
 
-#: kcm.cpp:78
+#: kcm.cpp:83
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 "Impossible d'enregistrer la configuration car un dossier temporaire n'a pas "
 "pu être créé."
 
-#: kcm.cpp:139
+#: kcm.cpp:144
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "Impossible d'enregistrer la configuration car celle-ci n'a pas pu être "
 "ouverte."
 
-#: kcm.cpp:214
+#: kcm.cpp:219
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -36,7 +36,7 @@ msgstr ""
 "« plasmalogin » n'existe pas. Veuillez vérifier votre installation de "
 "« Plasma Login »."
 
-#: kcm.cpp:269
+#: kcm.cpp:301
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -94,14 +94,22 @@ msgstr ""
 "personnalisations à la configuration suivante de Plasma :"
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Language and locale settings</item><item>Keyboard "
+#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
+#| "item><item>NumLock preference</item><item>Font and font rendering "
+#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Plasma theme</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
 "item><item>Screen arrangement, scale, and orientation settings</"
-"item><item>NumLock preference</item><item>Font and font rendering settings</"
-"item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
-"theme</item></list></para>"
+"item><item>Night Light settings and the approximate location used for its "
+"schedule</item><item>NumLock preference</item><item>Font and font rendering "
+"settings</item><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Plasma theme</item></list></para>"
 msgstr ""
 "<para><list> <item>Configuration de langue et de localisation,</item> "
 "<item>Dispositions de clavier,</item> <item>Configuration pour la "

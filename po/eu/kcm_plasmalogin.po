@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:46+0000\n"
+"POT-Creation-Date: 2026-11-19 15:37+0000\n"
 "PO-Revision-Date: 2026-10-11 16:31+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -27,18 +27,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 26.08.1\n"
 
-#: kcm.cpp:78
+#: kcm.cpp:83
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 "Ezarpenak ezin izan dira gorde, aldi baterako direktorio bat ezin izan "
 "delako sortu."
 
-#: kcm.cpp:139
+#: kcm.cpp:144
 msgid "Unable to save settings because the config could not be opened."
 msgstr "Ezarpenak ezin izan dira gorde, konfigurazioa ezin izan delako ireki."
 
-#: kcm.cpp:214
+#: kcm.cpp:219
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -46,7 +46,7 @@ msgstr ""
 "Plasmaren ezarpenak ezin izan dira sinkronizatu, «plasmalogin» erabiltzailea "
 "existitzen ez delako. Mesedez, egiaztatu zure Plasma Login instalazioa."
 
-#: kcm.cpp:269
+#: kcm.cpp:301
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -103,14 +103,22 @@ msgstr ""
 "egin dituzun moldaketak islatuko ditu:"
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Language and locale settings</item><item>Keyboard "
+#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
+#| "item><item>NumLock preference</item><item>Font and font rendering "
+#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Plasma theme</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
 "item><item>Screen arrangement, scale, and orientation settings</"
-"item><item>NumLock preference</item><item>Font and font rendering settings</"
-"item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
-"theme</item></list></para>"
+"item><item>Night Light settings and the approximate location used for its "
+"schedule</item><item>NumLock preference</item><item>Font and font rendering "
+"settings</item><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Plasma theme</item></list></para>"
 msgstr ""
 "<para><list><item>Hizkuntza- eta eskualde-ezarpenak</item><item>Teklatu-"
 "antolaerak</item><item>Pantailen antolaeraren, eskalaren eta orientazioaren "

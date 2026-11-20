@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:46+0000\n"
+"POT-Creation-Date: 2026-11-19 15:37+0000\n"
 "PO-Revision-Date: 2026-09-29 00:01+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Lokalize 25.12.3\n"
 
-#: kcm.cpp:78
+#: kcm.cpp:83
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr "임시 디렉터리를 만들 수 없어서 설정을 저장할 수 없습니다."
 
-#: kcm.cpp:139
+#: kcm.cpp:144
 msgid "Unable to save settings because the config could not be opened."
 msgstr "설정을 열 수 없어서 설정을 저장할 수 없습니다."
 
-#: kcm.cpp:214
+#: kcm.cpp:219
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -34,7 +34,7 @@ msgstr ""
 "'plasmalogin' 사용자가 없어서 Plasma 설정을 동기화할 수 없습니다. Plasma 로그"
 "인 설치 상태를 확인하십시오."
 
-#: kcm.cpp:269
+#: kcm.cpp:301
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -89,14 +89,22 @@ msgid ""
 msgstr "다음 사용자 정의 Plasma 설정을 Plasma 로그인 화면에도 적용합니다:"
 
 #: ui/main.qml:66
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "<para><list><item>Language and locale settings</item><item>Keyboard "
+#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
+#| "item><item>NumLock preference</item><item>Font and font rendering "
+#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
+#| "item><item>Plasma theme</item></list></para>"
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
 "item><item>Screen arrangement, scale, and orientation settings</"
-"item><item>NumLock preference</item><item>Font and font rendering settings</"
-"item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
-"theme</item></list></para>"
+"item><item>Night Light settings and the approximate location used for its "
+"schedule</item><item>NumLock preference</item><item>Font and font rendering "
+"settings</item><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Plasma theme</item></list></para>"
 msgstr ""
 "<para><list><item>언어와 로캘 설정</item><item>키보드 레이아웃</item><item>화"
 "면 배열, 크기 조정, 방향 설정</item><item>NumLock 설정</item><item>글꼴과 글"

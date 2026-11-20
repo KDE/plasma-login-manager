@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:46+0000\n"
+"POT-Creation-Date: 2026-11-19 15:37+0000\n"
 "PO-Revision-Date: 2026-03-04 00:12+0400\n"
 "Last-Translator: Kheyyam <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
@@ -17,20 +17,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 25.12.2\n"
 
-#: kcm.cpp:78
+#: kcm.cpp:83
 msgid ""
 "Unable to save settings because a temporary directory could not be created."
 msgstr ""
 "Ayarları saxlamaq mümkün olmadı, çünki müvəqqəti qovluq yaratmaq mümkün "
 "olmadı."
 
-#: kcm.cpp:139
+#: kcm.cpp:144
 msgid "Unable to save settings because the config could not be opened."
 msgstr ""
 "Ayarları saxlamaq mümkün olmadı, çünki tənzimləmə faylını açmaq mümkün "
 "olmadı."
 
-#: kcm.cpp:214
+#: kcm.cpp:219
 msgid ""
 "Unable to synchronise Plasma settings because the 'plasmalogin' user does "
 "not exist. Please check your Plasma Login install."
@@ -39,7 +39,7 @@ msgstr ""
 "istifadəçi mövcud deyil. Plasma login tətbiqinin quraşdırılıb "
 "quraşdırılmadığını yoxlayın."
 
-#: kcm.cpp:269
+#: kcm.cpp:301
 msgid ""
 "Unable to reset Plasma settings because the 'plasmalogin' user does not "
 "exist. Please check your Plasma Login install."
@@ -108,9 +108,10 @@ msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
 "item><item>Screen arrangement, scale, and orientation settings</"
-"item><item>NumLock preference</item><item>Font and font rendering settings</"
-"item><item>Color scheme</item><item>Cursor theme and size</item><item>Plasma "
-"theme</item></list></para>"
+"item><item>Night Light settings and the approximate location used for its "
+"schedule</item><item>NumLock preference</item><item>Font and font rendering "
+"settings</item><item>Color scheme</item><item>Cursor theme and size</"
+"item><item>Plasma theme</item></list></para>"
 msgstr ""
 "<para><list><item>Rəng sxemi</item><item>Kursor görünüşü və ölçüsü</"
 "item><item>Şrift və şriftin görünüşü</item><item>NumLock seçimləri</"

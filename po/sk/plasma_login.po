@@ -61,6 +61,11 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"Plasma Login sa nepodarilo spustiť.\n"
+"Zvyčajne to znamená vážny problém s vaším systémom.\n"
+"Môžete skúsiť reštart: stlačením tlačidla napájania vypnite počítač.\n"
+"\n"
+"Ďalšiu podporu môžete získať od svojej distribúcie."
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -70,6 +75,11 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"Plasma Login sa nepodarilo spustiť.\n"
+"Zvyčajne to znamená vážny problém s vaším systémom.\n"
+"Môžete skúsiť reštart: stlačením tlačidla napájania vypnite počítač.\n"
+"\n"
+"Ďalšiu podporu získate na: {support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
