@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-19 15:37+0000\n"
-"PO-Revision-Date: 2026-11-15 19:38+0300\n"
+"PO-Revision-Date: 2026-11-20 17:08+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -91,14 +91,7 @@ msgstr ""
 "özelleştirmelerinizi yansıtmasını sağlayacaktır:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Language and locale settings</item><item>Keyboard "
-#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
-#| "item><item>NumLock preference</item><item>Font and font rendering "
-#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Plasma theme</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -110,9 +103,10 @@ msgid ""
 msgstr ""
 "<para><list><item>Dil ve yerel ayarlar</item><item>Klavye yerleşimleri</"
 "item><item>Ekran düzeni, ölçeği ve yönelimi ayarları</item><item>Sayı Kilidi "
-"tercihi</item><item>Yazı tipi ve yazı tipi sunma ayarları</item><item>Renk "
-"şeması</item><item>İmleç teması ve boyutu</item><item>Plasma teması</item></"
-"list></para>"
+"tercihi</item><item>Gece Işığı ayarları ve zamanlaması için kullanılan "
+"takribî konum</item><item>Yazı tipi ve yazı tipi sunma ayarları</"
+"item><item>Renk şeması</item><item>İmleç teması ve boyutu</item><item>Plasma "
+"teması</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format

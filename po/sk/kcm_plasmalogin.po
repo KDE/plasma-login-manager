@@ -94,14 +94,7 @@ msgstr ""
 "prispôsobenia nasledujúcich nastavení Plasma:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Language and locale settings</item><item>Keyboard "
-#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
-#| "item><item>NumLock preference</item><item>Font and font rendering "
-#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Plasma theme</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -113,9 +106,11 @@ msgid ""
 msgstr ""
 "<para><list><item>Nastavenie jazyka a národného prostredia</"
 "item><item>Rozloženia klávesnice</item><item>Nastavenie usporiadania, mierky "
-"a orientácie obrazovky</item><item>Predvoľba NumLock</item><item>Nastavenie "
-"písma a jeho vykresľovania</item><item>Farebná schéma</item><item>Téma a "
-"veľkosť kurzora</item><item>Téma Plasma</item></list></para>"
+"a orientácie obrazovky</item><item>Nastavenie nočného svetla a približná "
+"poloha použitá pre jeho plán</item><item>Predvoľba NumLock</"
+"item><item>Nastavenie písma a jeho vykresľovania</item><item>Farebná schéma</"
+"item><item>Téma a veľkosť kurzora</item><item>Téma Plasma</item></list></"
+"para>"
 
 #: ui/main.qml:67
 #, kde-format

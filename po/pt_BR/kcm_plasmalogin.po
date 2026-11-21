@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-19 15:37+0000\n"
-"PO-Revision-Date: 2026-09-17 09:18-0300\n"
+"PO-Revision-Date: 2026-11-20 08:51-0300\n"
 "Last-Translator: Marcus Gama <marcus.gama@kde.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 26.08.1\n"
+"X-Generator: Lokalize 26.08.2\n"
 
 #: kcm.cpp:83
 msgid ""
@@ -97,14 +97,7 @@ msgstr ""
 "seguintes configurações do Plasma:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Language and locale settings</item><item>Keyboard "
-#| "layouts</item><item>Screen arrangement, scale, and orientation settings</"
-#| "item><item>NumLock preference</item><item>Font and font rendering "
-#| "settings</item><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Plasma theme</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -116,9 +109,11 @@ msgid ""
 msgstr ""
 "<para><list><item>Configurações de região e idioma</item><item>Layouts de "
 "teclado</item><item>Configurações de disposição, escala e orientação da "
-"tela</item><item>Preferência do NumLock</item><item>Configurações de fontes "
-"e renderização de fontes</item><item>Esquema de cores</item><item>Tema e "
-"tamanho do cursor</item><item>Tema do Plasma</item></list></para>"
+"tela</item><item>Configurações do modo noturno e a localização aproximada "
+"usada para o seu agendamento</item><item>Preferência do NumLock</"
+"item><item>Configurações de fontes e renderização de fontes</"
+"item><item>Esquema de cores</item><item>Tema e tamanho do cursor</"
+"item><item>Tema do Plasma</item></list></para>"
 
 #: ui/main.qml:67
 #, kde-format
