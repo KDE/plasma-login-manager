@@ -61,6 +61,11 @@ msgid ""
 "\n"
 "You can get additional support from your distribution."
 msgstr ""
+"Plasma Login 启动失败。\n"
+"您的系统可能存在严重问题。\n"
+"您可以尝试按电源键关机，然后重新启动。\n"
+"\n"
+"要获取更多支持，请从本机安装的发行版处获取相关信息。"
 
 #: /home/scripty/prod/git-unstable-kf6/plasma-login-manager/tmp_po/../src/failure/src/main.rs:37
 msgid ""
@@ -70,6 +75,11 @@ msgid ""
 "\n"
 "Get additional support at: {support_url}"
 msgstr ""
+"Plasma Login 启动失败。\n"
+"您的系统可能存在严重问题。\n"
+"您可以尝试按电源键关机，然后重新启动。\n"
+"\n"
+"要获取更多支持，请访问：{support_url}"
 
 #: qml/KeyboardButton.qml:15
 #, kde-format
