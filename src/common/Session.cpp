@@ -128,4 +128,13 @@ QString Session::desktopNames() const
     return m_desktopFile->group(QStringLiteral("Desktop Entry")).readEntry(QStringLiteral("DesktopNames"));
 }
 
+QString Session::safeModeSessionFileName() const
+{
+    Q_ASSERT(isValid());
+    if (!isValid()) {
+        return QString();
+    }
+    return m_desktopFile->group(QStringLiteral("Desktop Entry")).readEntry(QStringLiteral("X-KDE-SafeModeSession"));
+}
+
 } // namespace PLASMALOGIN
