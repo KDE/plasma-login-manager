@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-trunk/messages/plasma-login-manager/kcm_plasmalogin."
+"X-Crowdin-File: /kf6-stable/messages/plasma-login-manager/kcm_plasmalogin."
 "pot\n"
-"X-Crowdin-File-ID: 58058\n"
+"X-Crowdin-File-ID: 59870\n"
 
 #: kcm.cpp:78
 msgid ""
@@ -149,7 +149,7 @@ msgctxt ""
 "@label:listbox, the following combobox selects the session that is started "
 "automatically"
 msgid "with session:"
-msgstr "跟随会话："
+msgstr "使用会话："
 
 #: ui/main.qml:180
 #, kde-kuit-format
