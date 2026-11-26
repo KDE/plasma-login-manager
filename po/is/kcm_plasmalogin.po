@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: plasma-login-manager\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-11-19 15:37+0000\n"
-"PO-Revision-Date: 2026-04-13 17:29+0000\n"
+"PO-Revision-Date: 2026-11-25 17:37+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -93,13 +93,7 @@ msgstr ""
 "eftirfarandi stillingum Plasma:"
 
 #: ui/main.qml:66
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "<para><list><item>Color scheme</item><item>Cursor theme and size</"
-#| "item><item>Font and font rendering</item><item>NumLock preference</"
-#| "item><item>Plasma theme</item><item>Scaling DPI</item><item>Screen "
-#| "configuration</item><item>Keyboard layouts</item></list></para>"
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "<para><list><item>Language and locale settings</item><item>Keyboard layouts</"
@@ -109,22 +103,21 @@ msgid ""
 "settings</item><item>Color scheme</item><item>Cursor theme and size</"
 "item><item>Plasma theme</item></list></para>"
 msgstr ""
-"<para><list><item>Litastef</item><item>Bendilþema og stærð</item><item>Letur "
-"og myndgerð leturs</item><item>Kjörstilling NumLock</item><item>Plasma-þema</"
-"item><item>Kvörðun PÁT/DPI</item><item>Skjástillingar</"
-"item><item>Framsetning lyklaborðs</item></list></para>"
+"<para><list><item>Stillingar tungumáls og staðfærslu</"
+"item><item>Framsetningar lyklaborðs</item><item>Framsetning skjás, kvarði og "
+"stefnustillingar</item><item>Stillingar næturlýsingar og áætluð staðsetning "
+"fyrir notkun hennar</item><item>Kjörstilling NumLock</item><item>Letur og "
+"myndgerð leturs</item><item>Litastef</item><item>Þema og stærð bendils</"
+"item><item>Plasma-þema</item></list></para>"
 
 #: ui/main.qml:67
-#, fuzzy, kde-format
-#| msgid ""
-#| "Please note that theme files must be installed globally to be reflected "
-#| "on the Plasma login screen."
+#, kde-format
 msgid ""
 "Please note that theme and font files must be installed globally to be "
 "reflected on the Plasma login screen."
 msgstr ""
-"Athugaðu að þemaskrár verða að vera settar upp fyrir allt kerfið svo þær "
-"geti haft áhrif á innskráningarskjá Plasma."
+"Athugaðu að þemu og leturskrár verða að vera settar upp fyrir allt kerfið "
+"svo þær geti haft áhrif á innskráningarskjá Plasma."
 
 #: ui/main.qml:71
 #, kde-format
@@ -145,20 +138,14 @@ msgid "Auto-login"
 msgstr "Sjálfvirk innskráning"
 
 #: ui/main.qml:89
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Automatically log in:"
+#, kde-format
 msgctxt ""
 "part of a sentence: 'Automatically log in [as user: foo / with session: bar]'"
 msgid "Automatically log in:"
-msgstr "Skrá sjálfkrafa inn:"
+msgstr "Skrá inn sjálfkrafa:"
 
 #: ui/main.qml:103
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the user to log in "
-#| "automatically"
-#| msgid "as user:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in] as user: [foo / "
 "with session: bar]'"
@@ -168,19 +155,15 @@ msgstr "sem notandi:"
 #: ui/main.qml:127
 #, kde-format
 msgid "Automatically log in with a specific user and session"
-msgstr ""
+msgstr "Skrá inn sjálfvirkt með tilteknum notanda og setu"
 
 #: ui/main.qml:149
 #, kde-format
 msgid "Select a user for automatic log in"
-msgstr ""
+msgstr "Veldu notanda fyrir sjálfvirka innskráningu"
 
 #: ui/main.qml:161
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label:listbox, the following combobox selects the session that is "
-#| "started automatically"
-#| msgid "with session:"
+#, kde-format
 msgctxt ""
 "@label:listbox part of a sentence: '[Automatically log in as user: foo / ] "
 "with session: [bar]'"
@@ -190,16 +173,10 @@ msgstr "með setu:"
 #: ui/main.qml:183
 #, kde-format
 msgid "Select a session for automatic log in"
-msgstr ""
+msgstr "Veldu setu fyrir sjálfvirka innskráningu"
 
 #: ui/main.qml:195
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Auto-login does not support unlocking your KDE Wallet automatically, so "
-#| "it will ask you to unlock it every time you log in.    <nl/><nl/>    To "
-#| "avoid this, you can change the wallet to have a blank password. Note that "
-#| "this is insecure and should only be done in a trusted environment."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Auto-login does not support unlocking your KDE Wallet automatically, so it "
@@ -207,11 +184,11 @@ msgid ""
 "can change the wallet to have a blank password. Note that this is insecure "
 "and should only be done in a trusted environment."
 msgstr ""
-"Sjálfvirk innskráning styður ekki að aflæsa KDE-veskinu þínu sjálfkrafa, "
-"þannig að spurt verður um aflæsingu á því í hvert skipti sem skráð er inn. "
-"<nl/><nl/>Til að koma í veg fyrir þetta er hægt að láta veskið vera með tómt "
-"lykilorð. Slíkt er hinsvegar óöruggt og ætti ekki að gera nema í alveg "
-"öruggu umhverfi."
+"Sjálfvirk innskráning styður ekki sjálfkrafa aflæsingu á KWallet og því "
+"biður forritið þig um að aflæsa því í hvert sinn sem þú skráir þig inn.<nl/"
+"><nl/>Til að koma í veg fyrir þetta geturðu breytt því þannig að veskið sé "
+"með autt lykilorð. Hafðu í huga að þetta er óöruggt og ætti aðeins að gera í "
+"traustu notandaumhverfi."
 
 #: ui/main.qml:200
 #, kde-format
@@ -231,9 +208,7 @@ msgid "Defaults"
 msgstr "Sjálfgefin gildi"
 
 #: ui/main.qml:227
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default user:"
+#, kde-format
 msgid "Default user:"
 msgstr "Sjálfgefinn notandi:"
 
@@ -246,12 +221,10 @@ msgstr "Síðast innskráður notandi"
 #: ui/main.qml:295
 #, kde-format
 msgid "Select the default user to be shown at the login screen"
-msgstr ""
+msgstr "Veldu sjálfgefinn notanda til að birta á innskráningarskjánum"
 
 #: ui/main.qml:303
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Default session:"
+#, kde-format
 msgid "Default session:"
 msgstr "Sjálfgefin seta:"
 
@@ -264,4 +237,4 @@ msgstr "Síðasta innskráða seta"
 #: ui/main.qml:369
 #, kde-format
 msgid "Select the default session to be shown at the login screen"
-msgstr ""
+msgstr "Veldu sjálfgefna setu til að birta á innskráningarskjánum"
