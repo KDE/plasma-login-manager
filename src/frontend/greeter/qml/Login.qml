@@ -74,6 +74,7 @@ SessionManagementScreen {
         //
         // See https://bugreports.qt.io/browse/QTBUG-55460
         loginButton.forceActiveFocus();
+        passwordBox.showPassword = false;
         loginRequest(username, password);
     }
 
